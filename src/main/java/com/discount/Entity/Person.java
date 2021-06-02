@@ -1,10 +1,9 @@
-package com.discount.java11.Entity;
+package com.discount.Entity;
 
 import lombok.Data;
 import lombok.Generated;
 
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 

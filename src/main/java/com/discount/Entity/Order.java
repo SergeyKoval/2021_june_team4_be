@@ -1,10 +1,8 @@
-package com.discount.java11.Entity;
+package com.discount.Entity;
 
 import lombok.Data;
 
 import javax.persistence.*;
-import java.util.HashSet;
-import java.util.Set;
 
 @Data
 @Entity

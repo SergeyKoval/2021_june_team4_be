@@ -9,7 +9,7 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.discount</groupId>
-	<artifactId>java11</artifactId>
+	<artifactId>java11Maven</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>2021_june_team4_be</name>
 	<description>June project for Spring Boot2.5.0, Maven, Postgres</description>

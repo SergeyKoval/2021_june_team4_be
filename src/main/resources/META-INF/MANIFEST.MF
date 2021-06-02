@@ -1,1 +1,1 @@
-Main-Class: com.discount.java11.Application
+Main-Class: com.discount.Application

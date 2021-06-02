@@ -1,8 +1,8 @@
-package com.discount.java11.Service;
+package com.discount.Service;
 
 
-import com.discount.java11.Entity.Person;
-import com.discount.java11.Repository.PersonRepository;
+import com.discount.Entity.Person;
+import com.discount.Repository.PersonRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;

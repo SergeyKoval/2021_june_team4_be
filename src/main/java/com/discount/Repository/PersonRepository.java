@@ -1,6 +1,6 @@
-package com.discount.java11.Repository;
+package com.discount.Repository;
 
-import com.discount.java11.Entity.Person;
+import com.discount.Entity.Person;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

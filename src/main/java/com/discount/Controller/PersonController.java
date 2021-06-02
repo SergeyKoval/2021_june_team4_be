@@ -1,7 +1,7 @@
-package com.discount.java11.Controller;
+package com.discount.Controller;
 
-import com.discount.java11.Entity.Person;
-import com.discount.java11.Service.PersonService;
+import com.discount.Entity.Person;
+import com.discount.Service.PersonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
