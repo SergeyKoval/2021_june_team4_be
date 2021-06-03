@@ -1,4 +1,4 @@
-package com.discount;
+package com.exadel.discount;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
