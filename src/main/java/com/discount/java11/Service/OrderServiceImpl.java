@@ -24,6 +24,12 @@ public class OrderServiceImpl implements OrderService {
         return orderRepository.save(order);
     }
 
+    public Order deleteOrder(Long id) {
+        Order order = findOrderById(id);
+        orderRepository.delete(order);
+        return order;
+    }
+
     @Override
     public Order findOrderById(Long id) {
         return orderRepository.findById(id).orElseThrow(() -> new OrderNotFoundException(id));
@@ -37,9 +43,18 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public List<Order> findOrderByPrice(int price) {
-        List<Order> orders= StreamSupport.stream(orderRepository.findByPrice(price).spliterator(), false)
+        List<Order> orders = StreamSupport.stream(orderRepository.findByPrice(price).spliterator(), false)
                 .collect(Collectors.toList());
         if (orders.isEmpty()) throw new OrderNotFoundAtPriceException(price);
-    return orders;
+        return orders;
     }
+
+    @Override
+    public Order editOrder(Long id, Order order) {
+        Order orderUnderEdition = findOrderById(id);
+        orderUnderEdition.setId(order.getId());
+        orderUnderEdition.setPrice(order.getPrice());
+        return order;
+    }
+
 }

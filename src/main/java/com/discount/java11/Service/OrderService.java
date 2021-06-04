@@ -9,9 +9,9 @@ import java.util.List;
 @Service
 public interface OrderService {
     Order findOrderById(Long id);
-
     List<Order> findAllOrders();
-
+    Order addOrder(Order order);
     List<Order> findOrderByPrice(int price);
+    Order editOrder(Long id, Order order);
 
 }

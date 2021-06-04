@@ -2,8 +2,10 @@ package com.discount.java11.Entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
+import lombok.NonNull;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -20,7 +22,9 @@ public class Person {
     private String email;
     private String login;
     @JsonIgnore
+    @NotNull
     private String password;
+    @NotNull
     private String Role;
 
     @OneToMany(cascade = CascadeType.ALL)

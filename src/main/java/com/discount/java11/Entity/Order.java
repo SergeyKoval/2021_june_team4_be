@@ -18,10 +18,4 @@ public class Order {
 
     public Order() {
     }
-
-    public Order(int price, Person person) {
-        this.price = price;
-        this.person = person;
-    }
-
 }

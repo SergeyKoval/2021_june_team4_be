@@ -7,12 +7,11 @@ import java.util.List;
 @Service
 public interface PersonService {
     Person findPersonById(Long id);
-
+    Person addPerson (Person person);
+    Person deletePerson (Long id);
     List<Person> findAllPeople();
-
-    List<Person> findPersonByFirstName(String firstName);
-
-    List<Person> findPersonBySecondName(String secondName);
+    List<Person> findPersonByName(String name);
+    Person editPerson(Long id,Person person);
 }
 
 
