@@ -13,7 +13,7 @@ import java.util.UUID;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class DetailedVendorDTO extends BaseVendorDTO{
+public class DetailedVendorDTO {
     private UUID id;
     private String name;
     private Set<LocationInfoDTO> locations;
