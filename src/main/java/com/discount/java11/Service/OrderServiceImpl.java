@@ -1,13 +1,14 @@
 package com.discount.java11.Service;
 
 import com.discount.java11.Entity.Order;
+import com.discount.java11.Exception.OrderNotFoundAtPriceException;
+import com.discount.java11.Exception.OrderNotFoundException;
 import com.discount.java11.Repository.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
 @Service
@@ -19,11 +20,13 @@ public class OrderServiceImpl implements OrderService {
         this.orderRepository = orderRepository;
     }
 
+    public Order addOrder(Order order) {
+        return orderRepository.save(order);
+    }
+
     @Override
     public Order findOrderById(Long id) {
-        List<Order> orders = StreamSupport.stream(orderRepository.findById(id).stream().spliterator(), false)
-                .collect(Collectors.toList());
-        return orders.get(0);
+        return orderRepository.findById(id).orElseThrow(() -> new OrderNotFoundException(id));
     }
 
     @Override
@@ -34,7 +37,9 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public List<Order> findOrderByPrice(int price) {
-        return StreamSupport.stream(orderRepository.findByPrice(price).stream().spliterator(), false)
+        List<Order> orders= StreamSupport.stream(orderRepository.findByPrice(price).spliterator(), false)
                 .collect(Collectors.toList());
+        if (orders.isEmpty()) throw new OrderNotFoundAtPriceException(price);
+    return orders;
     }
 }
