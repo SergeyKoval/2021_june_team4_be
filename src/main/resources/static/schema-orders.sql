@@ -3,8 +3,8 @@ CREATE TABLE orders
 (
     id    SERIAL PRIMARY KEY,
     price INT,
-    serial_number CHAR,
-    id_order  INT NOT NULL REFERENCES person(id) ON DELETE CASCADE
+    serial_number VARCHAR(80),
+    id_order  INT NOT NULL REFERENCES persons(id) ON DELETE CASCADE
 );
 INSERT INTO orders
 VALUES (1, 333, '12343er', 1),
