@@ -4,6 +4,6 @@ import java.text.MessageFormat;
 
 public class PersonSuchNameNotFoundException {
     public PersonSuchNameNotFoundException(String name){
-        MessageFormat.format("Could not found person with iname:{0}", name);
+        MessageFormat.format("Could not found person with name:{0}", name);
     }
 }

@@ -13,4 +13,5 @@ CREATE TABLE persons
 INSERT INTO persons
 VALUES (1, 'Jon', 'Herring', '380675553311', 'Herring@gmail.com', 'Herring', 'password', 'user' ),
        (2, 'Max', 'Malcolm', '380895544331', 'Malcolm@gmail.com',  'Malcolm', 'password', 'user'),
-       (3, 'Jack', 'Jackson', '380683337799', 'Jackson@gmail.com', 'Jackson', 'admin', 'admin')
+       (3, 'Jack', 'Jackson', '380683337799', 'Jackson@gmail.com', 'Jackson', 'admin', 'admin');
+

@@ -1,7 +1,6 @@
 package com.discount.java11.Repository;
 
 import com.discount.java11.Entity.Person;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
@@ -16,6 +15,11 @@ public interface PersonRepository extends CrudRepository<Person, Long> {
 //            "or lower(c.secondName) like lower(concat('%', :searchTerm, '%'))")
 //    List<Person> findPersonByName(@Param("searchTerm") String searchTerm);
 
-    @Query(value="select * from persons a where a.first_name= :('%', :searchTerm, '%') or a:second_name= :('%', :searchTerm, '%')", nativeQuery=true)
-    List<Person> findPersonByName(@Param("searchTerm") String searchTerm);
+//    @Query(value = "select a from persons a where a.first_name= :('%searchTerm%') or a.second_name= :('%searchTerm%')", nativeQuery = true)
+//    List<Person> findPersonByName(@Param("searchTerm") String searchTerm);
+//AND lower(a.lastName) LIKE lower(concat('%',:lastName,'%'))
+
+    @Query(value = "select * from persons m where lower(a.firstName) like lower(concat('%',:firstName,'%'))", nativeQuery = true)
+    List<Person> findPersonByName(@Param("firstName") String firstName);
+   // List<Person> findPersonBySecondName(@Param("title") String title);
 }

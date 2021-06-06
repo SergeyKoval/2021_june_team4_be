@@ -1,8 +1,6 @@
 package com.discount.java11.Repository;
 
 import com.discount.java11.Entity.Order;
-import com.discount.java11.Entity.Person;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
@@ -17,6 +15,6 @@ public interface OrderRepository extends CrudRepository<Order, Long> {
 //            "where lower(c.serialNumber) like lower(concat('%', :searchTerm, '%'))")
 //    List<Order> findBySerialNumber(String serialNumber);
 
-    @Query(value="select * from orders a where a.seriual_number= :('%', :searchTerm, '%')", nativeQuery=true)
+    @Query(value = "select a from orders a where a.seriual_number= :('%', :searchTerm, '%')", nativeQuery = true)
     List<Order> findBySerialNumber(@Param("searchTerm") String searchTerm);
 }

@@ -13,6 +13,7 @@ import java.util.List;
 @Table(name = "Persons")
 @Data
 public class Person {
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
@@ -29,8 +30,8 @@ public class Person {
     @NotNull
     private String Role;
 
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "persons_id")
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name = "id")
     private List<Order> orders = new ArrayList<>();
 
     public Person() {

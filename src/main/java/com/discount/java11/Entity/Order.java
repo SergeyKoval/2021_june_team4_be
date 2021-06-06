@@ -7,15 +7,17 @@ import javax.persistence.*;
 
 @Data
 @Entity
-@Table(name = "Orders")
+@Table(name = "orders")
 public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+
     private Long id;
     private int price;
     private String SerialNumber;
 
     @ManyToOne
+    @JoinColumn(name = "id_person")
     private Person person;
 
     public Order() {
