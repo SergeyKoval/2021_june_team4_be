@@ -1,6 +1,7 @@
 package com.discount.java11.Service;
 
 
+import com.discount.java11.Entity.Order;
 import com.discount.java11.Entity.Person;
 import com.discount.java11.Exception.PersonNotFoundException;
 import com.discount.java11.Repository.PersonRepository;
@@ -66,5 +67,20 @@ public class PersonServiceImpl implements PersonService {
         editedPerson.setPassword(person.getPassword());
         return editedPerson;
     }
+
+    public Person addOrderToPerson(Long orderId, Long personId) {
+        Person person = findPersonById(personId);
+        Order order = orderService.findOrderById(orderId);
+        person.addOrder(order);
+        return person;
+    }
+
+    public Person removeOrderFromPerson(Long orderId, Long personId) {
+        Person person = findPersonById(personId);
+        Order order = orderService.findOrderById(orderId);
+        person.removeOrder(order);
+        return person;
+    }
+
 }
 

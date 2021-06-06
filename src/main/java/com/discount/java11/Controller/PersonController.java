@@ -1,12 +1,10 @@
 package com.discount.java11.Controller;
 
+import com.discount.java11.Dto.PersonDto;
 import com.discount.java11.Entity.Person;
 import com.discount.java11.Service.PersonService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -14,12 +12,15 @@ import java.util.List;
 @RequestMapping("/people")
 public class PersonController {
 
-
     private final PersonService personService;
+
     @Autowired
     public PersonController(PersonService personService) {
         this.personService = personService;
     }
+
+    @PostMapping
+    public PesponseEntity<PersonDto> AddPerson(PersonDto PersonDto)
 
     @GetMapping("/all")
     public List<Person> getAllPeople() {
