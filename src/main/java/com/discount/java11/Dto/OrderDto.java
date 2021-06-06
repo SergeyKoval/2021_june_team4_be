@@ -9,10 +9,12 @@ import javax.persistence.ManyToOne;
 public class OrderDto {
     private Long id;
     private int price;
+    private String SerialNumber;
 
     public static OrderDto from(Order order) {
         OrderDto orderDto = new OrderDto();
-        orderDto.setId(order.getId());
         orderDto.setPrice(order.getPrice());
+        orderDto.setSerialNumber(order.getSerialNumber());
+        return orderDto;
     }
 }

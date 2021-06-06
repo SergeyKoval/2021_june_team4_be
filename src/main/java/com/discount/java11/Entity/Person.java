@@ -2,7 +2,6 @@ package com.discount.java11.Entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
-import lombok.NonNull;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -19,7 +18,9 @@ public class Person {
     private String firstName;
     private String secondName;
     private String telephone;
+    @NotNull
     private String email;
+    NotNull
     private String login;
     @JsonIgnore
     @NotNull
@@ -33,10 +34,12 @@ public class Person {
 
     public Person() {
     }
-    public void addOrder(Order order){
+
+    public void addOrder(Order order) {
         orders.add(order);
     }
-    public void removeOrder(Order order){
+
+    public void removeOrder(Order order) {
         orders.remove(order);
     }
 }
