@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -40,20 +39,26 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public List<Order> findAllOrders() {
-        return new ArrayList<>(orderRepository.findAll());
+        return StreamSupport
+                .stream(orderRepository.findAll().spliterator(), false)
+                .collect(Collectors.toList());
     }
 
     @Override
     public List<Order> findOrderByPrice(int price) {
-        List<Order> orders = new ArrayList<>(orderRepository.findByPrice(price));
+        List<Order> orders = StreamSupport
+                .stream(orderRepository.findByPrice(price).spliterator(), false)
+                .collect(Collectors.toList());
         if (orders.isEmpty()) throw new OrderNotFoundAtPriceException(price);
         return orders;
     }
 
     @Override
     public List<Order> findOrderBySerialNumber(String serialNumber) {
-        List<Order> orders = new ArrayList<Order>(orderRepository.findBySerialNumber(serialNumber));
-
+        List<Order> orders = StreamSupport
+                .stream(orderRepository.findBySerialNumber(serialNumber)
+                .spliterator(), false)
+                .collect(Collectors.toList());
         if (orders.isEmpty()) throw new OrderNotFoundAtSerialNumberException(serialNumber);
         return orders;
     }
