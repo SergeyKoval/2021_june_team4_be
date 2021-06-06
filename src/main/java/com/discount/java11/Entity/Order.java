@@ -7,7 +7,7 @@ import javax.persistence.*;
 
 @Data
 @Entity
-@Table(name = "Orders")
+@Table(schema = "Orders")
 public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

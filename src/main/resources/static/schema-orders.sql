@@ -3,7 +3,7 @@ CREATE TABLE orders
 (
     id    SERIAL PRIMARY KEY,
     price INT,
-    serial_number VARCHAR(80),
+    serialnumber VARCHAR(80),
     id_order  INT NOT NULL REFERENCES persons(id) ON DELETE CASCADE
 );
 INSERT INTO orders

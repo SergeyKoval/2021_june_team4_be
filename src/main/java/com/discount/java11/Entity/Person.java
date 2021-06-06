@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "persons")
+@Table(schema = "Persons")
 @Data
 public class Person {
     @Id
@@ -30,7 +30,7 @@ public class Person {
     private String Role;
 
     @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "person_id")
+    @JoinColumn(name = "persons_id")
     private List<Order> orders = new ArrayList<>();
 
     public Person() {

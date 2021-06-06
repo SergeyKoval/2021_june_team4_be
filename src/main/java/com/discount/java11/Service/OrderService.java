@@ -9,7 +9,7 @@ import java.util.List;
 public interface OrderService {
     Order findOrderById(Long id);
 
-    public Order deleteOrder(Long id);
+    Order deleteOrder(Long id);
 
     List<Order> findAllOrders();
 
