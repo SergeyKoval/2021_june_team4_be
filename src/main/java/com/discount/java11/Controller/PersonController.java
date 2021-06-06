@@ -4,9 +4,12 @@ import com.discount.java11.Dto.PersonDto;
 import com.discount.java11.Entity.Person;
 import com.discount.java11.Service.PersonService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/people")
@@ -20,27 +23,55 @@ public class PersonController {
     }
 
     @PostMapping
-    public PesponseEntity<PersonDto> AddPerson(PersonDto PersonDto)
-
-    @GetMapping("/all")
-    public List<Person> getAllPeople() {
-
-        return personService.findAllPeople();
+    public ResponseEntity<PersonDto> addPerson(@RequestBody final PersonDto personDto) {
+        Person person = personService.addPerson(Person.from(personDto));
+        return new ResponseEntity<>(PersonDto.from(person), HttpStatus.OK);
     }
 
-    @GetMapping("/id/{id}")
-    public Person findPeopleById(@PathVariable Long id) {
-        return personService.findPersonById(id);
-
+    @GetMapping
+    public ResponseEntity<List<PersonDto>> getPeople() {
+        List<Person> people = personService.findAllPeople();
+        List<PersonDto> peopleDto = people.stream().map(PersonDto::from).collect(Collectors.toList());
+        return new ResponseEntity<>(peopleDto, HttpStatus.OK);
     }
 
-    @GetMapping("/firstname/{firstName}")
-    public List<Person> getPeopleByFirstName(@PathVariable String firstName) {
-        return personService.findPersonByName(firstName);
+    @GetMapping("{id}")
+    public ResponseEntity<PersonDto> getPerson(@PathVariable final Long id) {
+        Person person = personService.findPersonById(id);
+        return new ResponseEntity<>(PersonDto.from(person), HttpStatus.OK);
     }
 
-    @GetMapping("/secondname/{secondName}")
-    public List<Person> getPeopleBySecondName(@PathVariable String secondName) {
-        return personService.findPersonByName(secondName);
+    @DeleteMapping("{id}")
+    public ResponseEntity<PersonDto> deletePerson(@PathVariable final Long id) {
+        Person person = personService.deletePerson(id);
+        return new ResponseEntity<>(PersonDto.from(person), HttpStatus.OK);
+    }
+
+    @PutMapping("{id}")
+    public ResponseEntity<PersonDto> editPerson(@PathVariable final Long id,
+                                                @PathVariable final PersonDto personDto) {
+        Person person = personService.editPerson(id, Person.from(personDto));
+        return new ResponseEntity<>(PersonDto.from(person), HttpStatus.OK);
+    }
+
+    @GetMapping("/name/{name}")
+    public ResponseEntity<List<PersonDto>> getPeopleBySecondName(@PathVariable String name) {
+        List<Person> people = personService.findPersonByName(name);
+        List<PersonDto> peopleDto = people.stream().map(PersonDto::from).collect(Collectors.toList());
+        return new ResponseEntity<>(peopleDto, HttpStatus.OK);
+    }
+
+    @PostMapping("{pirsonId}/orders/{orderId}/add")
+    public ResponseEntity<PersonDto> addOrderToPerson(@PathVariable final Long pirsonId,
+                                                      @PathVariable final Long orderId) {
+        Person person = personService.addOrderToPerson(pirsonId, orderId);
+        return new ResponseEntity<>(PersonDto.from(person), HttpStatus.OK);
+    }
+
+    @DeleteMapping("{pirsonId}/orders/{orderId}/remove")
+    public ResponseEntity<PersonDto> removeOrderFromPerson(@PathVariable final Long pirsonId,
+                                                           @PathVariable final Long orderId) {
+        Person person = personService.removeOrderFromPerson(pirsonId, orderId);
+        return new ResponseEntity<>(PersonDto.from(person), HttpStatus.OK);
     }
 }

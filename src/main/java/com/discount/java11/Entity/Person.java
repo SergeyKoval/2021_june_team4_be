@@ -1,12 +1,13 @@
 package com.discount.java11.Entity;
 
+import com.discount.java11.Dto.PersonDto;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "persons")
@@ -20,7 +21,7 @@ public class Person {
     private String telephone;
     @NotNull
     private String email;
-    NotNull
+    @NotNull
     private String login;
     @JsonIgnore
     @NotNull
@@ -30,7 +31,7 @@ public class Person {
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "person_id")
-    private Set<Order> orders = new HashSet<>();
+    private List<Order> orders = new ArrayList<>();
 
     public Person() {
     }
@@ -41,5 +42,17 @@ public class Person {
 
     public void removeOrder(Order order) {
         orders.remove(order);
+    }
+
+    public static Person from(PersonDto personDto) {
+        Person person = new Person();
+        person.setFirstName(personDto.getFirstName());
+        person.setSecondName(personDto.getSecondName());
+        person.setTelephone(personDto.getTelephone());
+        person.setEmail(personDto.getEmail());
+        person.setLogin(personDto.getLogin());
+        person.setPassword(personDto.getPassword());
+        person.setRole(personDto.getRole());
+        return person;
     }
 }

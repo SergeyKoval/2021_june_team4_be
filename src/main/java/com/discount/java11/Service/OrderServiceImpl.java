@@ -7,6 +7,7 @@ import com.discount.java11.Exception.OrderNotFoundException;
 import com.discount.java11.Repository.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -38,13 +39,15 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public List<Order> findAllOrders() {
-        return StreamSupport.stream(orderRepository.findAll().spliterator(), false)
+        return StreamSupport
+                .stream(orderRepository.findAll().spliterator(), false)
                 .collect(Collectors.toList());
     }
 
     @Override
     public List<Order> findOrderByPrice(int price) {
-        List<Order> orders = StreamSupport.stream(orderRepository.findByPrice(price).spliterator(), false)
+        List<Order> orders = StreamSupport
+                .stream(orderRepository.findByPrice(price).spliterator(), false)
                 .collect(Collectors.toList());
         if (orders.isEmpty()) throw new OrderNotFoundAtPriceException(price);
         return orders;
@@ -52,17 +55,20 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public List<Order> findOrderBySerialNumber(String serialNumber) {
-        List<Order> orders = StreamSupport.stream(orderRepository.findBySerialNumber(serialNumber).spliterator(), false)
+        List<Order> orders = StreamSupport
+                .stream(orderRepository.findBySerialNumber(serialNumber)
+                .spliterator(), false)
                 .collect(Collectors.toList());
         if (orders.isEmpty()) throw new OrderNotFoundAtSerialNumberException(serialNumber);
         return orders;
     }
 
+    @Transactional
     @Override
     public Order editOrder(Long id, Order order) {
         Order orderUnderEdition = findOrderById(id);
-        orderUnderEdition.setId(order.getId());
         orderUnderEdition.setPrice(order.getPrice());
+        orderUnderEdition.setSerialNumber(order.getSerialNumber());
         return order;
     }
 

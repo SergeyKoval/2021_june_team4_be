@@ -34,7 +34,7 @@ public class OrderController {
         return new ResponseEntity<>(allOrdersDto, HttpStatus.OK);
     }
 
-    @GetMapping("/id")
+    @GetMapping("{id}")
     public ResponseEntity<OrderDto> getOrder(@PathVariable final Long id) {
         Order order = orderService.findOrderById(id);
         return new ResponseEntity<>(OrderDto.from(order), HttpStatus.OK);
@@ -46,7 +46,7 @@ public class OrderController {
         return new ResponseEntity<>(OrderDto.from(order), HttpStatus.OK);
     }
 
-    @PutMapping("/id")
+    @PutMapping("{id}")
     public ResponseEntity<OrderDto> editOrder(@PathVariable final long id,
                                               @RequestBody final OrderDto orderDto) {
         Order editedOrder = orderService.editOrder(id, Order.from(orderDto));

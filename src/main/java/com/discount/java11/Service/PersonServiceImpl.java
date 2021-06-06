@@ -3,12 +3,15 @@ package com.discount.java11.Service;
 
 import com.discount.java11.Entity.Order;
 import com.discount.java11.Entity.Person;
+import com.discount.java11.Exception.OrderIsAlreadyAssignedException;
 import com.discount.java11.Exception.PersonNotFoundException;
 import com.discount.java11.Repository.PersonRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -56,6 +59,7 @@ public class PersonServiceImpl implements PersonService {
                 .collect(Collectors.toList());
     }
 
+    @Transactional
     public Person editPerson(Long id, Person person) {
         Person editedPerson = findPersonById(id);
         editedPerson.setFirstName(person.getFirstName());
@@ -68,13 +72,20 @@ public class PersonServiceImpl implements PersonService {
         return editedPerson;
     }
 
+    @Transactional
     public Person addOrderToPerson(Long orderId, Long personId) {
         Person person = findPersonById(personId);
         Order order = orderService.findOrderById(orderId);
+        if(Objects.nonNull(order.getPerson())){
+            throw new OrderIsAlreadyAssignedException(orderId,
+                    order.getPerson().getId());
+        }
         person.addOrder(order);
+        order.setPerson(person);
         return person;
     }
 
+    @Transactional
     public Person removeOrderFromPerson(Long orderId, Long personId) {
         Person person = findPersonById(personId);
         Order order = orderService.findOrderById(orderId);
