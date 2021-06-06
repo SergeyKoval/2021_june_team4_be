@@ -1,7 +1,7 @@
 DROP TABLE IF EXISTS orders;
 CREATE TABLE orders
 (
-    id    SERIAL PRIMARY KEY,
+    id    BIGSERIAL PRIMARY KEY,
     price INT,
     serialnumber VARCHAR(80),
     id_person  INT NOT NULL REFERENCES persons(id) ON DELETE CASCADE

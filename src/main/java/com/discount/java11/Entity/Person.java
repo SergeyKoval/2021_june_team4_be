@@ -2,6 +2,7 @@ package com.discount.java11.Entity;
 
 import com.discount.java11.Dto.PersonDto;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -10,12 +11,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "Persons")
+@Table(name = "persons")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @Data
 public class Person {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id")
+    @SequenceGenerator(name = "personsIdSeq", sequenceName = "persons_id_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "personsIdSeq")
     private Long id;
     private String firstName;
     private String secondName;
@@ -31,7 +35,7 @@ public class Person {
     private String Role;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "id_person")
     private List<Order> orders = new ArrayList<>();
 
     public Person() {

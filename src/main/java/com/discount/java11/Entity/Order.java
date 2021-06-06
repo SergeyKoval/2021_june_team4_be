@@ -1,23 +1,27 @@
 package com.discount.java11.Entity;
 
 import com.discount.java11.Dto.OrderDto;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 
 import javax.persistence.*;
 
 @Data
 @Entity
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @Table(name = "orders")
-public class Order {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
 
+public class Order {
+    @Column(name = "id")
+    @SequenceGenerator(name = "ordersIdSeq", sequenceName = "orders_id_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ordersIdSeq")
+    @Id
     private Long id;
     private int price;
     private String SerialNumber;
 
     @ManyToOne
-    @JoinColumn(name = "id_person")
+    @JoinColumn
     private Person person;
 
     public Order() {
