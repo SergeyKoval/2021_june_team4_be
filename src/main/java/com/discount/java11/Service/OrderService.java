@@ -15,6 +15,8 @@ public interface OrderService {
 
     List<Order> findOrderByPrice(int price);
 
+    List<Order> findOrderBySerialNumber(String serialNumber);
+
     Order editOrder(Long id, Order order);
 
 }

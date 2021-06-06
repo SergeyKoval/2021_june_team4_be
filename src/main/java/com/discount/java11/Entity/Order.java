@@ -12,6 +12,7 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private int price;
+    private String SerialNumber;
 
     @ManyToOne
     private Person person;

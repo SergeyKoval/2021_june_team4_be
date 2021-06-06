@@ -2,6 +2,7 @@ package com.discount.java11.Service;
 
 import com.discount.java11.Entity.Order;
 import com.discount.java11.Exception.OrderNotFoundAtPriceException;
+import com.discount.java11.Exception.OrderNotFoundAtSerialNumberException;
 import com.discount.java11.Exception.OrderNotFoundException;
 import com.discount.java11.Repository.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,6 +47,14 @@ public class OrderServiceImpl implements OrderService {
         List<Order> orders = StreamSupport.stream(orderRepository.findByPrice(price).spliterator(), false)
                 .collect(Collectors.toList());
         if (orders.isEmpty()) throw new OrderNotFoundAtPriceException(price);
+        return orders;
+    }
+
+    @Override
+    public List<Order> findOrderBySerialNumber(String serialNumber) {
+        List<Order> orders = StreamSupport.stream(orderRepository.findBySerialNumber(serialNumber).spliterator(), false)
+                .collect(Collectors.toList());
+        if (orders.isEmpty()) throw new OrderNotFoundAtSerialNumberException(serialNumber);
         return orders;
     }
 
