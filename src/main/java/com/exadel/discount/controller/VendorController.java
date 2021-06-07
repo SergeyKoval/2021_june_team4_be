@@ -8,6 +8,7 @@ import com.exadel.discount.dto.vendor.DetailedVendorDTO;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -28,36 +29,28 @@ public class VendorController {
 
     @GetMapping
     @ApiOperation("Get list of all vendors")
-    public ResponseEntity<List<BaseVendorDTO>> getVendorsList() {
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .body(baseVendorsServiceMock);
+    public List<BaseVendorDTO> getVendorsList() {
+        return baseVendorsServiceMock;
     }
 
     @GetMapping("/{vendorId}")
     @ApiOperation("Get vendor by ID")
-    public ResponseEntity<DetailedVendorDTO> getVendorById(@PathVariable(name = "vendorId") long id) {
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .body(detailedVendorsServiceMock.get(0));
+    public DetailedVendorDTO getVendorById(@PathVariable(name = "vendorId") long id) {
+        return detailedVendorsServiceMock.get(0);
     }
 
     @PostMapping
     @ApiOperation("Save new vendor")
-    public ResponseEntity<DetailedVendorDTO> saveNewVendor(@RequestBody CreateVendorDTO vendor) {
+    public DetailedVendorDTO saveNewVendor(@RequestBody CreateVendorDTO vendor) {
         detailedVendorsServiceMock.add(new DetailedVendorDTO(135463, vendor.getName(), vendor.getLocations(), vendor.getDescription()));
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .body(detailedVendorsServiceMock.get(0));
+        return detailedVendorsServiceMock.get(0);
     }
 
     @PutMapping("/{vendorId}")
     @ApiOperation("Update information about vendor")
-    public ResponseEntity<DetailedVendorDTO> updateVendor(@PathVariable(name = "vendorId") long vendorId, @RequestBody DetailedVendorDTO vendor) {
+    public DetailedVendorDTO updateVendor(@PathVariable(name = "vendorId") long vendorId, @RequestBody DetailedVendorDTO vendor) {
         detailedVendorsServiceMock.add(vendor);
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .body(detailedVendorsServiceMock.get(0));
+        return detailedVendorsServiceMock.get(0);
     }
 
     @DeleteMapping("/{vendorId}")
@@ -68,30 +61,24 @@ public class VendorController {
 
     @GetMapping("/{vendorId}/locations")
     @ApiOperation("Get list of all vendor locations")
-    public ResponseEntity<List<LocationInfoDTO>> getVendorLocations(@PathVariable(name = "vendorId") long vendorId) {
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .body(new ArrayList<>());
+    public List<LocationInfoDTO> getVendorLocations(@PathVariable(name = "vendorId") long vendorId) {
+        return new ArrayList<>();
     }
 
     @PostMapping("/{vendorId}/locations")
     @ApiOperation("Add new location of vendor")
-    public ResponseEntity<LocationInfoDTO> addNewLocation(@PathVariable(name = "vendorId") long vendorId, @RequestBody CreateLocationDTO location) {
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .body(new LocationInfoDTO(3142342, "Country", "City", "Some address", "Some contacts"));
+    public LocationInfoDTO addNewLocation(@PathVariable(name = "vendorId") long vendorId, @RequestBody CreateLocationDTO location) {
+        return new LocationInfoDTO(3142342, "Country", "City", "Some address", "Some contacts");
     }
 
     @PutMapping("/{vendorId}/locations/{locationId}")
     @ApiOperation("Update vendor's location")
-    public ResponseEntity<LocationInfoDTO> updateLocation(@PathVariable(name = "vendorId") long vendorId, @PathVariable(name = "locationId") long locationId, @RequestBody LocationInfoDTO location) {
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .body(location);
+    public LocationInfoDTO updateLocation(@PathVariable(name = "vendorId") long vendorId, @PathVariable(name = "locationId") long locationId, @RequestBody LocationInfoDTO location) {
+        return location;
     }
 
     @DeleteMapping("/{vendorId}/locations/{locationId}")
-    @ApiOperation("Update vendor's location")
+    @ApiOperation("Delete vendor's location")
     public void deleteLocation(@PathVariable(name = "vendorId") long id, @PathVariable(name = "locationId") long locationId) {
 
     }
