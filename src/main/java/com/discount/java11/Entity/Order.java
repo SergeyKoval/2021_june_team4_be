@@ -12,9 +12,8 @@ import javax.persistence.*;
 @Table(name = "orders")
 
 public class Order {
-    @Column(name = "id")
-    @SequenceGenerator(name = "ordersIdSeq", sequenceName = "orders_id_seq", allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ordersIdSeq")
+
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Id
     private Long id;
     private int price;
