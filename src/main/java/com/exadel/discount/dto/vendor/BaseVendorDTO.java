@@ -12,6 +12,6 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 public class BaseVendorDTO {
-    private UUID id;
+    private long id;
     private String name;
 }

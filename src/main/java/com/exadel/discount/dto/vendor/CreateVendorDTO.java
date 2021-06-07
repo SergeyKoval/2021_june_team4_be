@@ -6,7 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Set;
+import java.util.List;
 
 @Data
 @Builder
@@ -14,6 +14,6 @@ import java.util.Set;
 @NoArgsConstructor
 public class CreateVendorDTO {
     private String name;
-    private Set<LocationInfoDTO> locations;
+    private List<LocationInfoDTO> locations;
     private String description;
 }

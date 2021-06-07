@@ -6,16 +6,15 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Set;
-import java.util.UUID;
+import java.util.List;
 
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class DetailedVendorDTO {
-    private UUID id;
+    private long id;
     private String name;
-    private Set<LocationInfoDTO> locations;
+    private List<LocationInfoDTO> locations;
     private String description;
 }
