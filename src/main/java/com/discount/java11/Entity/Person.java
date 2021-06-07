@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "persons")
+@Table(name = "person")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @Data
 public class Person {
@@ -33,7 +33,7 @@ public class Person {
     private String Role;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinColumn(name = "id_person")
+    @JoinColumn(name = "person_id")
     private List<Order> orders = new ArrayList<>();
 
     public Person() {
@@ -57,5 +57,15 @@ public class Person {
         person.setPassword(personDto.getPassword());
         person.setRole(personDto.getRole());
         return person;
+    }
+
+    public Person(String firstName, String secondName, String telephone, String email, String login, String password, String role) {
+        this.firstName = firstName;
+        this.secondName = secondName;
+        this.telephone = telephone;
+        this.email = email;
+        this.login = login;
+        this.password = password;
+        Role = role;
     }
 }
