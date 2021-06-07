@@ -1,0 +1,12 @@
+version: "3.8"
+services:
+  postgres:
+    image: postgres
+    restart: always
+    environment:
+      - POSTGRES_USER=postgres   #имя бд
+      - POSTGRES_PASSWORD=asdqwe #пароль к локальной бд
+    ports:
+    - '5432'    #порт для бд, по умолчанию 5432
+    volumes:
+    - ./postgres-data:/var/lib/postgresql/data
