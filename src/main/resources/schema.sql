@@ -1,7 +1,7 @@
-DROP TABLE IF EXISTS persons;
+DROP TABLE IF EXISTS persons CASCADE;
 CREATE TABLE persons
 (
-    id           INT AUTO_INCREMENT PRIMARY KEY,
+    id           BIGSERIAL PRIMARY KEY ,
     first_name   VARCHAR(30) NOT NULL,
     second_name  VARCHAR(30) NOT NULL,
     number_phone VARCHAR(20) ,
@@ -14,8 +14,8 @@ CREATE TABLE persons
 DROP TABLE IF EXISTS orders;
 CREATE TABLE orders
 (
-    id    INT AUTO_INCREMENT PRIMARY KEY,
-    price INT(20),
+    id    BIGSERIAL PRIMARY KEY,
+    price INT,
     serialnumber VARCHAR(80),
-    id_person  INT NOT NULL REFERENCES persons(id) ON DELETE CASCADE
+    id_person INTEGER REFERENCES persons(id) ON DELETE CASCADE ON UPDATE CASCADE
 );
