@@ -4,8 +4,6 @@ services:
     build: .
     ports:
       - 8080:8080
-    environment:
-      - POSTRGRESS_DB=postgres
   db:
     container_name: db
     image: postgres:13.3
@@ -15,4 +13,4 @@ services:
       - POSTGRES_USER=postgres   #юзер бд
       - POSTGRES_PASSWORD=asdqwe #пароль к локальной бд
     ports:
-      - '5430:5430'    #порт для бд, по умолчанию 5432
+      - '5432:5432'    #порт для бд, по умолчанию 5432
