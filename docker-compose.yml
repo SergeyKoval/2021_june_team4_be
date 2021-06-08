@@ -4,13 +4,16 @@ services:
     build: .
     ports:
       - 8080:8080
+    restart: always    # при несанкционированных падениях апки, будет произведен рестарт
+    links:
+      - db   # загружает апку после полной загрузки бд, а не произвольно
   db:
     container_name: db
     image: postgres:13.3
     restart: always
     environment:
-      - POSTGRES_DB=postgres #имя моей бд
-      - POSTGRES_USER=postgres   #юзер бд
-      - POSTGRES_PASSWORD=asdqwe #пароль к локальной бд
+      - POSTGRES_DB=postgres # имя моей бд
+      - POSTGRES_USER=postgres   # юзер бд
+      - POSTGRES_PASSWORD=asdqwe # пароль к локальной бд
     ports:
-      - '5432:5432'    #порт для бд, по умолчанию 5432
+      - '5432:5432'    # порт для бд, по умолчанию 5432
