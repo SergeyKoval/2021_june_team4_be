@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "person")
+@Table(name = "persons")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @Data
 public class Person {
@@ -33,7 +33,7 @@ public class Person {
     private String Role;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinColumn(name = "person_id")
+    @JoinColumn(name = "id_person")
     private List<Order> orders = new ArrayList<>();
 
     public Person() {

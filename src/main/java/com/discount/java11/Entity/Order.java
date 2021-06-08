@@ -9,7 +9,7 @@ import javax.persistence.*;
 @Data
 @Entity
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-@Table(name = "order")
+@Table(name = "orders")
 
 public class Order {
 
@@ -20,10 +20,15 @@ public class Order {
     private String SerialNumber;
 
     @ManyToOne
-    @JoinColumn
     private Person person;
 
     public Order() {
+    }
+
+    public Order(int price, String serialNumber, Person person) {
+        this.price = price;
+        this.SerialNumber = serialNumber;
+        this.person = person;
     }
 
     public static Order from(OrderDto orderDto) {
@@ -31,5 +36,7 @@ public class Order {
         order.setPrice(orderDto.getPrice());
         order.setSerialNumber(orderDto.getSerialNumber());
         return order;
+
+
     }
 }

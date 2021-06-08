@@ -15,7 +15,7 @@ DROP TABLE IF EXISTS orders;
 CREATE TABLE orders
 (
     id    INT AUTO_INCREMENT PRIMARY KEY,
-    price INT,
+    price INT(20),
     serialnumber VARCHAR(80),
     id_person  INT NOT NULL REFERENCES persons(id) ON DELETE CASCADE
 );
