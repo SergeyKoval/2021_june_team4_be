@@ -23,7 +23,7 @@ public class PersonDto {
     @NotNull
     private String password;
     @NotNull
-    private String Role;
+    private String role;
     private List<OrderDto> ordersDto = new ArrayList<>();
 
     public static PersonDto from(Person person) {

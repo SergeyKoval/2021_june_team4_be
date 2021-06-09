@@ -4,7 +4,7 @@ CREATE TABLE persons
     id           BIGSERIAL PRIMARY KEY ,
     first_name   VARCHAR(30) NOT NULL,
     second_name  VARCHAR(30) NOT NULL,
-    number_phone VARCHAR(20) ,
+    telephone    VARCHAR(20) ,
     email        VARCHAR(40),
     login        VARCHAR(30) NOT NULL,
     password     VARCHAR(30) NOT NULL,

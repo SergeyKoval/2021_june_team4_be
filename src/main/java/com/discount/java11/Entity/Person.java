@@ -26,7 +26,7 @@ public class Person {
     private String email;
     @NotNull
     private String login;
-    @JsonIgnore
+    //@JsonIgnore
     @NotNull
     private String password;
     @NotNull
