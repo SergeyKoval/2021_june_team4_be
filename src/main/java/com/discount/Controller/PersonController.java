@@ -1,8 +1,8 @@
-package com.discount.java11.Controller;
+package com.discount.Controller;
 
-import com.discount.java11.Dto.PersonDto;
-import com.discount.java11.Entity.Person;
-import com.discount.java11.Service.PersonService;
+import com.discount.Dto.PersonDto;
+import com.discount.Entity.Person;
+import com.discount.Service.PersonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -49,26 +49,26 @@ public class PersonController {
 
     @PutMapping("{id}")
     public ResponseEntity<PersonDto> editPerson(@PathVariable final Long id,
-                                                @PathVariable final PersonDto personDto) {
+                                                @RequestBody final PersonDto personDto) {
         Person person = personService.editPerson(id, Person.from(personDto));
         return new ResponseEntity<>(PersonDto.from(person), HttpStatus.OK);
     }
 
     @GetMapping("/name/{name}")
-    public ResponseEntity<List<PersonDto>> getPeopleBySecondName(@PathVariable String name) {
+    public ResponseEntity<List<PersonDto>> getPeopleByName(@PathVariable String name) {
         List<Person> people = personService.findPersonByName(name);
         List<PersonDto> peopleDto = people.stream().map(PersonDto::from).collect(Collectors.toList());
         return new ResponseEntity<>(peopleDto, HttpStatus.OK);
     }
 
-    @PostMapping("{personId}/orders/{orderId}/add")
+    @PostMapping("{personId}/order/{orderId}/add")
     public ResponseEntity<PersonDto> addOrderToPerson(@PathVariable final Long personId,
                                                       @PathVariable final Long orderId) {
         Person person = personService.addOrderToPerson(personId, orderId);
         return new ResponseEntity<>(PersonDto.from(person), HttpStatus.OK);
     }
 
-    @DeleteMapping("{personId}/orders/{orderId}/remove")
+    @DeleteMapping("{personId}/order/{orderId}/remove")
     public ResponseEntity<PersonDto> removeOrderFromPerson(@PathVariable final Long personId,
                                                            @PathVariable final Long orderId) {
         Person person = personService.removeOrderFromPerson(personId, orderId);

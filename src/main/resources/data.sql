@@ -4,8 +4,8 @@ VALUES (1, 'Jon', 'Herring', '380675553311', 'Herring@gmail.com', 'Herring', 'pa
        (3, 'Jack', 'Jackson', '380683337799', 'Jackson@gmail.com', 'Jackson', 'admin', 'admin');
 
 INSERT INTO orders
-VALUES (1, 333, '12343er'),
-       (2, 999, '54383fd'),
-       (3, 2222, '56298rf'),
-       (4, 333, '53849gf'),
-       (5, 999, '24135fd');
+VALUES (1, 333, '12343er',1),
+       (2, 999, '54383fd',2),
+       (3, 2222, '56298rf',3),
+       (4, 333, '53849gf',1),
+       (5, 999, '24135fd',2);

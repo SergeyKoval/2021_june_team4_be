@@ -16,6 +16,6 @@ CREATE TABLE orders
 (
     id    BIGSERIAL PRIMARY KEY,
     price INT,
-    serialnumber VARCHAR(80),
-    id_person INTEGER REFERENCES persons(id) ON DELETE CASCADE ON UPDATE CASCADE
+    serial_number VARCHAR(80),
+    person_id INTEGER REFERENCES persons(id) ON DELETE CASCADE ON UPDATE CASCADE
 );

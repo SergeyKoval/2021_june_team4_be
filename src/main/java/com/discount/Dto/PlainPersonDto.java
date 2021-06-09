@@ -1,11 +1,10 @@
-package com.discount.java11.Dto;
+package com.discount.Dto;
 
-import com.discount.java11.Entity.Person;
+import com.discount.Entity.Person;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 import javax.validation.constraints.NotNull;
-import java.util.stream.Collectors;
 
 @Data
 public class PlainPersonDto {

@@ -1,15 +1,7 @@
-package com.discount.java11;
+package com.discount;
 
-import com.discount.java11.Entity.Order;
-import com.discount.java11.Entity.Person;
-import com.discount.java11.Repository.OrderRepository;
-import com.discount.java11.Repository.PersonRepository;
-import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.Bean;
-
-import java.time.LocalDate;
 
 @SpringBootApplication
 public class Application {

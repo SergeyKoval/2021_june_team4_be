@@ -1,4 +1,4 @@
-package com.discount.java11.Exception;
+package com.discount.Exception;
 
 import java.text.MessageFormat;
 

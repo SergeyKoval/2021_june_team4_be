@@ -1,11 +1,11 @@
-package com.discount.java11.Service;
+package com.discount.Service;
 
 
-import com.discount.java11.Entity.Order;
-import com.discount.java11.Entity.Person;
-import com.discount.java11.Exception.OrderIsAlreadyAssignedException;
-import com.discount.java11.Exception.PersonNotFoundException;
-import com.discount.java11.Repository.PersonRepository;
+import com.discount.Exception.PersonNotFoundException;
+import com.discount.Entity.Order;
+import com.discount.Entity.Person;
+import com.discount.Exception.OrderIsAlreadyAssignedException;
+import com.discount.Repository.PersonRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,13 +32,14 @@ public class PersonServiceImpl implements PersonService {
     }
 
     public Person deletePerson(Long id) {
+        Person personDeleted = null;
         try {
-            Person personDeleted = findPersonById(id);
-            personRepository.delete(personDeleted);
+            personDeleted = findPersonById(id);
         } catch (PersonNotFoundException e) {
             e.printStackTrace();
         }
-        return findPersonById(id);
+        personRepository.delete(personDeleted);
+        return personDeleted;
     }
 
     @Override
@@ -73,7 +74,7 @@ public class PersonServiceImpl implements PersonService {
     }
 
     @Transactional
-    public Person addOrderToPerson(Long orderId, Long personId) {
+    public Person addOrderToPerson(Long personId, Long orderId) {
         Person person = findPersonById(personId);
         Order order = orderService.findOrderById(orderId);
         if(Objects.nonNull(order.getPerson())){

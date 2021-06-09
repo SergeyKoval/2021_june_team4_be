@@ -1,7 +1,6 @@
-package com.discount.java11.Entity;
+package com.discount.Entity;
 
-import com.discount.java11.Dto.OrderDto;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.discount.Dto.OrderDto;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -17,7 +16,7 @@ public class Order {
     @Id
     private Long id;
     private int price;
-    private String SerialNumber;
+    private String serialNumber;
 
     @ManyToOne
     private Person person;
@@ -27,7 +26,7 @@ public class Order {
 
     public Order(int price, String serialNumber, Person person) {
         this.price = price;
-        this.SerialNumber = serialNumber;
+        this.serialNumber = serialNumber;
         this.person = person;
     }
 

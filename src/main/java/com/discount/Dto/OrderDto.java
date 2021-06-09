@@ -1,6 +1,6 @@
-package com.discount.java11.Dto;
+package com.discount.Dto;
 
-import com.discount.java11.Entity.Order;
+import com.discount.Entity.Order;
 import lombok.Data;
 
 import java.util.Objects;

@@ -1,8 +1,8 @@
-package com.discount.java11.Controller;
+package com.discount.Controller;
 
-import com.discount.java11.Dto.OrderDto;
-import com.discount.java11.Entity.Order;
-import com.discount.java11.Service.OrderService;
+import com.discount.Dto.OrderDto;
+import com.discount.Entity.Order;
+import com.discount.Service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -35,7 +35,7 @@ public class OrderController {
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<OrderDto> getOrder(@PathVariable final Long id) {
+    public ResponseEntity<OrderDto> getOrderById(@PathVariable final Long id) {
         Order order = orderService.findOrderById(id);
         return new ResponseEntity<>(OrderDto.from(order), HttpStatus.OK);
     }

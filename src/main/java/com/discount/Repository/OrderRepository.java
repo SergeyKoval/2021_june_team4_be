@@ -1,6 +1,6 @@
-package com.discount.java11.Repository;
+package com.discount.Repository;
 
-import com.discount.java11.Entity.Order;
+import com.discount.Entity.Order;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;

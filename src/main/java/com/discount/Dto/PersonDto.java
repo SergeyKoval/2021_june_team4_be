@@ -1,7 +1,6 @@
-package com.discount.java11.Dto;
+package com.discount.Dto;
 
-import com.discount.java11.Entity.Person;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.discount.Entity.Person;
 import lombok.Data;
 
 import javax.validation.constraints.NotNull;
@@ -15,11 +14,9 @@ public class PersonDto {
     private String firstName;
     private String secondName;
     private String telephone;
-    @NotNull
     private String email;
     @NotNull
     private String login;
-    @JsonIgnore
     @NotNull
     private String password;
     @NotNull

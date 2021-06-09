@@ -1,7 +1,6 @@
-package com.discount.java11.Entity;
+package com.discount.Entity;
 
-import com.discount.java11.Dto.PersonDto;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.discount.Dto.PersonDto;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 
@@ -22,18 +21,16 @@ public class Person {
     private String firstName;
     private String secondName;
     private String telephone;
-    @NotNull
     private String email;
     @NotNull
     private String login;
-    //@JsonIgnore
     @NotNull
     private String password;
     @NotNull
     private String Role;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinColumn(name = "id_person")
+    @JoinColumn(name = "person_id")
     private List<Order> orders = new ArrayList<>();
 
     public Person() {

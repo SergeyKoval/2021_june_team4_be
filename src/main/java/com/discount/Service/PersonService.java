@@ -1,6 +1,6 @@
-package com.discount.java11.Service;
+package com.discount.Service;
 
-import com.discount.java11.Entity.Person;
+import com.discount.Entity.Person;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

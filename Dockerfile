@@ -1,10 +1,10 @@
 FROM maven:3.8.1-jdk-11-slim AS MAVEN_BUILD
-
+WORKDIR /build/
 COPY pom.xml /build/
 COPY src /build/src
 
 WORKDIR /build/
-RUN mvn package
+RUN mvn clean package
 # нашел на https://hub.docker.com/
 FROM openjdk:11-jre-slim
 
