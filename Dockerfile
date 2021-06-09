@@ -9,7 +9,7 @@ RUN mvn clean package
 FROM openjdk:11-jre-slim
 
 WORKDIR /app
-
+EXPOSE 8080
 COPY --from=MAVEN_BUILD /build/target/discount-1.0-SNAPSHOT.jar /app/
 
-ENTRYPOINT ["java","-jar", "discount-1.0-SNAPSHOT.jar"]
+ENTRYPOINT ["java", "discount-1.0-SNAPSHOT.jar"]

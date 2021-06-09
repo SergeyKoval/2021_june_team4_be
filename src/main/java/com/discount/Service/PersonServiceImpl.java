@@ -1,15 +1,17 @@
 package com.discount.Service;
 
 
-import com.discount.Exception.PersonNotFoundException;
 import com.discount.Entity.Order;
 import com.discount.Entity.Person;
 import com.discount.Exception.OrderIsAlreadyAssignedException;
+import com.discount.Exception.OrderNotFoundAtSerialNumberException;
+import com.discount.Exception.PersonNotFoundException;
 import com.discount.Repository.PersonRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -38,7 +40,8 @@ public class PersonServiceImpl implements PersonService {
         } catch (PersonNotFoundException e) {
             e.printStackTrace();
         }
-        personRepository.delete(personDeleted);
+        if (personDeleted != null)
+            personRepository.delete(personDeleted);
         return personDeleted;
     }
 
@@ -56,8 +59,7 @@ public class PersonServiceImpl implements PersonService {
 
     @Override
     public List<Person> findPersonByName(String name) {
-        return StreamSupport.stream(personRepository.findPersonByName(name).spliterator(), false)
-                .collect(Collectors.toList());
+        return new ArrayList<>(personRepository.findPersonByName(name));
     }
 
     @Transactional
@@ -77,7 +79,7 @@ public class PersonServiceImpl implements PersonService {
     public Person addOrderToPerson(Long personId, Long orderId) {
         Person person = findPersonById(personId);
         Order order = orderService.findOrderById(orderId);
-        if(Objects.nonNull(order.getPerson())){
+        if (Objects.nonNull(order.getPerson())) {
             throw new OrderIsAlreadyAssignedException(orderId,
                     order.getPerson().getId());
         }
@@ -87,12 +89,23 @@ public class PersonServiceImpl implements PersonService {
     }
 
     @Transactional
-    public Person removeOrderFromPerson(Long orderId, Long personId) {
-        Person person = findPersonById(personId);
-        Order order = orderService.findOrderById(orderId);
-        person.removeOrder(order);
+    public Person removeOrderFromPerson(Long personId, Long orderId) {
+        Person person = null;
+        Order order = null;
+        try {
+            order = orderService.findOrderById(orderId);
+        } catch (OrderNotFoundAtSerialNumberException e) {
+            e.printStackTrace();
+        }
+        try {
+            person = findPersonById(personId);
+        } catch (PersonNotFoundException e) {
+            e.printStackTrace();
+        }
+        if (person != null) {
+            person.removeOrder(order);
+        }
         return person;
     }
-
 }
 

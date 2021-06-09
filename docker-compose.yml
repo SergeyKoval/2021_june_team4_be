@@ -4,14 +4,23 @@ services:
     container_name: springboot-postgresql
     image: springboot-postgresql
     build: ./
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgresqldb:5432/db_nura
+      - SPRING_DATASOURCE_USERNAME=nura
+      - SPRING_DATASOURCE_PASSWORD=nura
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
     ports:
-      - "8080:8080"
+      - 8080:8080
+    restart: always
     depends_on:
       - postgresqldb
+
   postgresqldb:
+    container_name: postgresqldb
     image: postgres
     ports:
-      - "5432:5432"
+      - 5432:5432
+    restart: always
     environment:
       - POSTGRES_PASSWORD=nura
       - POSTGRES_USER=nura
