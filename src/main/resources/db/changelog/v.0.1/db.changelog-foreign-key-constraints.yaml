@@ -35,7 +35,7 @@ databaseChangeLog:
       author: elizaveta_dubogryz
       changes:
         - addForeignKeyConstraint:
-            baseColumnNames: country_id
+            baseColumnNames: city_id
             baseTableName: vendor_locations
             constraintName: fk_vendor_locations_cities
             referencedColumnNames: id
@@ -77,7 +77,7 @@ databaseChangeLog:
       author: elizaveta_dubogryz
       changes:
         - addForeignKeyConstraint:
-            baseColumnNames: country_id
+            baseColumnNames: city_id
             baseTableName: users
             constraintName: fk_users_cities
             referencedColumnNames: id
