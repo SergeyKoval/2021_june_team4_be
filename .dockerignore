@@ -1,0 +1,11 @@
+.git
+.settings
+.idea
+/*.class
+*.md
+
+/target
+/build
+/bin
+*.text
+.settings
