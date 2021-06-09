@@ -1,9 +1,11 @@
 package com.discount.Service;
 
+import com.discount.Entity.Person;
 import com.discount.Exception.OrderNotFoundAtPriceException;
 import com.discount.Exception.OrderNotFoundAtSerialNumberException;
 import com.discount.Entity.Order;
 import com.discount.Exception.OrderNotFoundException;
+import com.discount.Exception.PersonNotFoundException;
 import com.discount.Repository.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,9 +29,14 @@ public class OrderServiceImpl implements OrderService {
     }
 
     public Order deleteOrder(Long id) {
-        Order order = findOrderById(id);
-        orderRepository.delete(order);
-        return order;
+        Order deletedOrder  = null;
+        try{
+            deletedOrder = findOrderById(id);
+        }catch (OrderNotFoundException e) {
+            e.printStackTrace();
+        }
+        orderRepository.delete(deletedOrder);
+        return deletedOrder;
     }
 
     @Override

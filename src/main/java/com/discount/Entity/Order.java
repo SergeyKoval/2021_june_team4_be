@@ -12,8 +12,10 @@ import javax.persistence.*;
 
 public class Order {
 
-    @GeneratedValue(strategy = GenerationType.AUTO)
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+//    @SequenceGenerator(name = "ordersIdSeq", sequenceName = "orders_id_seq", allocationSize = 1)
+//    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ordersIdSeq")
     private Long id;
     private int price;
     private String serialNumber;

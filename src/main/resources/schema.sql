@@ -11,6 +11,7 @@ CREATE TABLE persons
     role         VARCHAR(10) NOT NULL
 );
 
+
 DROP TABLE IF EXISTS orders;
 CREATE TABLE orders
 (
@@ -19,3 +20,7 @@ CREATE TABLE orders
     serial_number VARCHAR(80),
     person_id INTEGER REFERENCES persons(id) ON DELETE CASCADE ON UPDATE CASCADE
 );
+
+
+
+

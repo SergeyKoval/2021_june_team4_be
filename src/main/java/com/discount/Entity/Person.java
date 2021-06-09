@@ -11,12 +11,14 @@ import java.util.List;
 
 @Entity
 @Table(name = "persons")
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+//@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @Data
 public class Person {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+//    @SequenceGenerator(name = "personsIdSeq", sequenceName = "persons_id_seq", allocationSize = 1)
+//    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "personsIdSeq")
     private Long id;
     private String firstName;
     private String secondName;
