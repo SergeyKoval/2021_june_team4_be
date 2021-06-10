@@ -8,17 +8,16 @@ databaseChangeLog:
             columns:
               - column:
                   name: id
-                  type: bigint
-                  autoIncrement: true
+                  type: UUID
                   constraints:
                     primaryKey: true
               - column:
                   name: discount_id
-                  type: bigint
+                  type: UUID
                   constraints:
                     nullable: false
               - column:
                   name: tag_id
-                  type: int
+                  type: UUID
                   constraints:
                     nullable: false
