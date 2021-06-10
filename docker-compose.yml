@@ -12,7 +12,7 @@ services:
     image: postgres:13.3
     restart: always
     environment:
-      - POSTGRES_DB=postgres # имя моей бд
+      - POSTGRES_DB_URL=jdbc:postgresql://db:5432/discounts # имя моей бд
       - POSTGRES_USER=postgres   # юзер бд
       - POSTGRES_PASSWORD=asdqwe # пароль к локальной бд
     ports:
