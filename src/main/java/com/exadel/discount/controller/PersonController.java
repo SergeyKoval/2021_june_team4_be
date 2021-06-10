@@ -62,17 +62,17 @@ public class PersonController {
         return new ResponseEntity<>(peopleDto, HttpStatus.OK);
     }
 
-    @PostMapping("{personId}/order/{orderId}/add")
-    public ResponseEntity<PersonDto> addOrderToPerson(@PathVariable final UUID personId,
-                                                      @PathVariable final UUID orderId) {
-        Person person = personService.addOrderToPerson(personId, orderId);
+    @PostMapping("{personId}/order/{couponId}/add")
+    public ResponseEntity<PersonDto> addCouponToPerson(@PathVariable final UUID personId,
+                                                       @PathVariable final UUID couponId) {
+        Person person = personService.addCouponToPerson(personId, couponId);
         return new ResponseEntity<>(PersonDto.from(person), HttpStatus.OK);
     }
 
-    @DeleteMapping("{personId}/order/{orderId}/remove")
-    public ResponseEntity<PersonDto> removeOrderFromPerson(@PathVariable final UUID personId,
-                                                           @PathVariable final UUID orderId) {
-        Person person = personService.removeOrderFromPerson(personId, orderId);
+    @DeleteMapping("{personId}/coupon/{couponId}/remove")
+    public ResponseEntity<PersonDto> removeCouponFromPerson(@PathVariable final UUID personId,
+                                                            @PathVariable final UUID couponId) {
+        Person person = personService.removeCouponFromPerson(personId, couponId);
         return new ResponseEntity<>(PersonDto.from(person), HttpStatus.OK);
     }
 }

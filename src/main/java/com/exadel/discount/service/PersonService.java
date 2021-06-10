@@ -20,9 +20,9 @@ public interface PersonService {
 
     Person editPerson(UUID id, Person person);
 
-    Person addOrderToPerson(UUID orderId, UUID personId);
+    Person addCouponToPerson(UUID couponId, UUID personId);
 
-    Person removeOrderFromPerson(UUID orderId, UUID personId);
+    Person removeCouponFromPerson(UUID couponId, UUID personId);
 }
 
 

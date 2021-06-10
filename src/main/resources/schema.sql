@@ -13,13 +13,13 @@ CREATE TABLE persons
 );
 
 
-DROP TABLE IF EXISTS orders;
-CREATE TABLE orders
+DROP TABLE IF EXISTS coupons;
+CREATE TABLE coupons
 (
     id    uuid PRIMARY KEY DEFAULT uuid_generate_v4 (),
     price INT,
     serial_number VARCHAR(80),
-    person_id INTEGER REFERENCES persons(id) ON DELETE CASCADE ON UPDATE CASCADE
+    person_id uuid REFERENCES persons(id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 

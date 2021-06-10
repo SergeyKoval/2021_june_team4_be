@@ -1,9 +1,9 @@
 package com.exadel.discount.service;
 
-import com.exadel.discount.entity.Order;
+import com.exadel.discount.entity.Coupon;
 import com.exadel.discount.entity.Person;
-import com.exadel.discount.exception.OrderIsAlreadyAssignedException;
-import com.exadel.discount.exception.OrderNotFoundAtSerialNumberException;
+import com.exadel.discount.exception.CouponIsAlreadyAssignedException;
+import com.exadel.discount.exception.CouponNotFoundAtSerialNumberException;
 import com.exadel.discount.exception.PersonNotFoundException;
 import com.exadel.discount.repository.PersonRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,12 +21,12 @@ import java.util.stream.StreamSupport;
 public class PersonServiceImpl implements PersonService {
 
     private final PersonRepository personRepository;
-    private final OrderServiceImpl orderService;
+    private final CouponService couponService;
 
     @Autowired
-    public PersonServiceImpl(PersonRepository personRepository, OrderServiceImpl orderService) {
+    public PersonServiceImpl(PersonRepository personRepository, CouponService couponService) {
         this.personRepository = personRepository;
-        this.orderService = orderService;
+        this.couponService = couponService;
     }
 
     public Person addPerson(Person person) {
@@ -68,7 +68,7 @@ public class PersonServiceImpl implements PersonService {
         editedPerson.setFirstName(person.getFirstName());
         editedPerson.setSecondName(person.getSecondName());
         editedPerson.setEmail(person.getEmail());
-        editedPerson.setTelephone(person.getTelephone());
+        editedPerson.setPhone(person.getPhone());
         editedPerson.setRole(person.getRole());
         editedPerson.setLogin(person.getLogin());
         editedPerson.setPassword(person.getPassword());
@@ -76,34 +76,34 @@ public class PersonServiceImpl implements PersonService {
     }
 
     @Transactional
-    public Person addOrderToPerson(UUID personId, UUID orderId) {
-        Person person = findPersonById(personId);
-        Order order = orderService.findOrderById(orderId);
-        if (Objects.nonNull(order.getPerson())) {
-            throw new OrderIsAlreadyAssignedException(orderId,
-                    order.getPerson().getId());
+    public Person addCouponToPerson(UUID couponId, UUID orderId) {
+        Person person = findPersonById(couponId);
+        Coupon coupon = couponService.findCouponById(orderId);
+        if (Objects.nonNull(coupon.getPerson())) {
+            throw new CouponIsAlreadyAssignedException(orderId,
+                    coupon.getPerson().getId());
         }
-        person.addOrder(order);
-        order.setPerson(person);
+        person.addCoupon(coupon);
+        coupon.setPerson(person);
         return person;
     }
 
     @Transactional
-    public Person removeOrderFromPerson(UUID personId, UUID orderId) {
+    public Person removeCouponFromPerson(UUID personId, UUID couponId) {
         Person person = null;
-        Order order = null;
+        Coupon coupon = null;
         try {
-            order = orderService.findOrderById(orderId);
-        } catch (OrderNotFoundAtSerialNumberException e) {
+            coupon = couponService.findCouponById(couponId);
+        } catch (CouponNotFoundAtSerialNumberException e) {
             e.printStackTrace();
         }
         try {
-            person = findPersonById(personId);
+            person = findPersonById(couponId);
         } catch (PersonNotFoundException e) {
             e.printStackTrace();
         }
         if (person != null) {
-            person.removeOrder(order);
+            person.removeCoupon(coupon);
         }
         return person;
     }

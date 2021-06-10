@@ -1,6 +1,7 @@
 package com.exadel.discount.dto;
 
 import com.exadel.discount.entity.Person;
+import com.exadel.discount.entity.Role;
 import lombok.Data;
 
 import javax.validation.constraints.NotNull;
@@ -14,27 +15,26 @@ public class PersonDto {
     private UUID id;
     private String firstName;
     private String secondName;
-    private String telephone;
+    private String phone;
     private String email;
     @NotNull
     private String login;
     @NotNull
     private String password;
-    @NotNull
-    private String role;
-    private List<OrderDto> ordersDto = new ArrayList<>();
+    private Role role;
+    private List<CouponDto> ordersDto = new ArrayList<>();
 
     public static PersonDto from(Person person) {
         PersonDto personDto = new PersonDto();
         personDto.setId(person.getId());
         personDto.setFirstName(person.getFirstName());
         personDto.setSecondName(person.getSecondName());
-        personDto.setTelephone(person.getTelephone());
+        personDto.setPhone(person.getPhone());
         personDto.setEmail(person.getEmail());
         personDto.setLogin(person.getLogin());
         personDto.setPassword(person.getPassword());
         personDto.setRole(person.getRole());
-        personDto.setOrdersDto(person.getOrders().stream().map(OrderDto::from).collect(Collectors.toList()));
+        personDto.setOrdersDto(person.getCoupons().stream().map(CouponDto::from).collect(Collectors.toList()));
         return personDto;
     }
 }

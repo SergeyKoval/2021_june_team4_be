@@ -22,35 +22,35 @@ public class Person {
     private UUID id;
     private String firstName;
     private String secondName;
-    private String telephone;
+    private String phone;
     private String email;
     @NotNull
     private String login;
     @NotNull
     private String password;
     @NotNull
-    private String Role;
+    private Role role;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "person_id")
-    private List<Order> orders = new ArrayList<>();
+    private List<Coupon> coupons = new ArrayList<>();
 
     public Person() {
     }
 
-    public void addOrder(Order order) {
-        orders.add(order);
+    public void addCoupon(Coupon coupon) {
+        coupons.add(coupon);
     }
 
-    public void removeOrder(Order order) {
-        orders.remove(order);
+    public void removeCoupon(Coupon coupon) {
+        coupons.remove(coupon);
     }
 
     public static Person from(PersonDto personDto) {
         Person person = new Person();
         person.setFirstName(personDto.getFirstName());
         person.setSecondName(personDto.getSecondName());
-        person.setTelephone(personDto.getTelephone());
+        person.setPhone(personDto.getPhone());
         person.setEmail(personDto.getEmail());
         person.setLogin(personDto.getLogin());
         person.setPassword(personDto.getPassword());
@@ -58,13 +58,13 @@ public class Person {
         return person;
     }
 
-    public Person(String firstName, String secondName, String telephone, String email, String login, String password, String role) {
+    public Person(String firstName, String secondName, String phone, String email, String login, String password, com.exadel.discount.entity.Role role) {
         this.firstName = firstName;
         this.secondName = secondName;
-        this.telephone = telephone;
+        this.phone = phone;
         this.email = email;
         this.login = login;
         this.password = password;
-        Role = role;
+        this.role = role;
     }
 }

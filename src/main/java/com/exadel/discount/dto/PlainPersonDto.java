@@ -29,7 +29,7 @@ public class PlainPersonDto {
         plainPersonDto.setId(person.getId());
         plainPersonDto.setFirstName(person.getFirstName());
         plainPersonDto.setSecondName(person.getSecondName());
-        plainPersonDto.setTelephone(person.getTelephone());
+        plainPersonDto.setTelephone(person.getPhone());
         plainPersonDto.setEmail(person.getEmail());
         plainPersonDto.setLogin(person.getLogin());
         plainPersonDto.setPassword(person.getPassword());

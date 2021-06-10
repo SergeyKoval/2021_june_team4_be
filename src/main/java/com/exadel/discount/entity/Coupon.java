@@ -1,6 +1,6 @@
 package com.exadel.discount.entity;
 
-import com.exadel.discount.dto.OrderDto;
+import com.exadel.discount.dto.CouponDto;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -9,9 +9,9 @@ import java.util.UUID;
 @Data
 @Entity
 //@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-@Table(name = "orders")
+@Table(name = "coupons")
 
-public class Order {
+public class Coupon {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -24,20 +24,20 @@ public class Order {
     @ManyToOne
     private Person person;
 
-    public Order() {
+    public Coupon() {
     }
 
-    public Order(int price, String serialNumber, Person person) {
+    public Coupon(int price, String serialNumber, Person person) {
         this.price = price;
         this.serialNumber = serialNumber;
         this.person = person;
     }
 
-    public static Order from(OrderDto orderDto) {
-        Order order = new Order();
-        order.setPrice(orderDto.getPrice());
-        order.setSerialNumber(orderDto.getSerialNumber());
-        return order;
+    public static Coupon from(CouponDto couponDto) {
+        Coupon coupon = new Coupon();
+        coupon.setPrice(couponDto.getPrice());
+        coupon.setSerialNumber(couponDto.getSerialNumber());
+        return coupon;
 
 
     }
