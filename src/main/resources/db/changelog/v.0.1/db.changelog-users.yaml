@@ -13,8 +13,7 @@ databaseChangeLog:
             columns:
               - column:
                   name: id
-                  type: bigint
-                  autoIncrement: true
+                  type: UUID
                   constraints:
                     primaryKey: true
               - column:
@@ -53,12 +52,7 @@ databaseChangeLog:
                   constraints:
                     nullable: false
               - column:
-                  name: country_id
-                  type: int
-                  constraints:
-                    nullable: false
-              - column:
                   name: city_id
-                  type: int
+                  type: UUID
                   constraints:
                     nullable: false
