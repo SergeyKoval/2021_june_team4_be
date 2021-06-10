@@ -34,7 +34,6 @@ bin
 target
 target/
 build/
-.gradle
 node_modules/
 config/
 

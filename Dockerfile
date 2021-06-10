@@ -10,3 +10,4 @@ EXPOSE 8080
 COPY --from=MAVEN_BUILD /build/target/discount-1.0-SNAPSHOT.jar /app/
 
 ENTRYPOINT ["java", "discount-1.0-SNAPSHOT.jar"]
+
