@@ -1,0 +1,19 @@
+server.port=8080
+spring.datasource.url= jdbc:postgresql://localhost:5432/postgres
+spring.datasource.username=postgres
+spring.datasource.password=postgres
+spring.jpa.hibernate.ddl-auto=update
+
+spring.datasource.driver-class-name=org.postgresql.Driver
+spring.jpa.database=postgresql
+spring.jpa.database-platform=org.hibernate.dialect.PostgreSQL10Dialect
+
+
+
+  #https://www.youtube.com/watch?v=eQsXQBiXXsg
+  #https://github.com/codeforgeyt/one-to-many-web-service/blob/main/src/main/resources/application.properties
+
+spring.application.name=One To Many Web Service
+logging.file.name=one-to-many-web-service.log
+
+

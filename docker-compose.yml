@@ -1,27 +1,24 @@
-version: '3.1'
+version: "3.8"
 services:
-  app:
-    container_name: springboot-postgresql
-    image: springboot-postgresql
-    build: ./
+  backend:
+    build: .
     environment:
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgresqldb:5432/db_nura
-      - SPRING_DATASOURCE_USERNAME=nura
-      - SPRING_DATASOURCE_PASSWORD=nura
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/postgres
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=postgres
       - SPRING_JPA_HIBERNATE_DDL_AUTO=update
     ports:
       - 8080:8080
-    restart: always
+    restart: always    # при несанкционированных падениях апки, будет произведен рестарт
     depends_on:
-      - postgresqldb
-
-  postgresqldb:
-    container_name: postgresqldb
-    image: postgres
-    ports:
-      - 5432:5432
+      - db   # загружает апку после полной загрузки бд, а не произвольно
+  db:
+    container_name: db
+    image: postgres:13.3
     restart: always
     environment:
-      - POSTGRES_PASSWORD=nura
-      - POSTGRES_USER=nura
-      - POSTGRES_DB=db_nura
+      - POSTGRES_DB=postgres # имя моей бд
+      - POSTGRES_USER=postgres   # юзер бд
+      - POSTGRES_PASSWORD=postgres # пароль к локальной бд
+    ports:
+      - 5432:5432    # порт для бд, по умолчанию 5432
