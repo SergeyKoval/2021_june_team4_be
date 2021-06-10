@@ -1,14 +1,16 @@
-package com.exadel.discound.controller;
+package com.exadel.discount.controller;
 
-import com.exadel.discound.dto.OrderDto;
-import com.exadel.discound.entity.Order;
-import com.exadel.discound.service.OrderService;
+import com.exadel.discount.dto.OrderDto;
+import com.exadel.discount.entity.Order;
+
+import com.exadel.discount.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @RestController
@@ -35,19 +37,19 @@ public class OrderController {
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<OrderDto> getOrderById(@PathVariable final Long id) {
+    public ResponseEntity<OrderDto> getOrderById(@PathVariable final UUID id) {
         Order order = orderService.findOrderById(id);
         return new ResponseEntity<>(OrderDto.from(order), HttpStatus.OK);
     }
 
     @DeleteMapping(value = "{id}")
-    public ResponseEntity<OrderDto> deleteOrder(@PathVariable final Long id) {
+    public ResponseEntity<OrderDto> deleteOrder(@PathVariable final UUID id) {
         Order order = orderService.deleteOrder(id);
         return new ResponseEntity<>(OrderDto.from(order), HttpStatus.OK);
     }
 
     @PutMapping("{id}")
-    public ResponseEntity<OrderDto> editOrder(@PathVariable final long id,
+    public ResponseEntity<OrderDto> editOrder(@PathVariable final UUID id,
                                               @RequestBody final OrderDto orderDto) {
         Order editedOrder = orderService.editOrder(id, Order.from(orderDto));
         return new ResponseEntity<>(OrderDto.from(editedOrder), HttpStatus.OK);

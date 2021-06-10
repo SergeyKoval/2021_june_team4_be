@@ -1,15 +1,16 @@
-package com.discount.Repository;
+package com.exadel.discount.repository;
 
-import com.discount.Entity.Person;
+import com.exadel.discount.entity.Person;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.UUID;
 
 @Repository
-public interface PersonRepository extends CrudRepository<Person, Long> {
+public interface PersonRepository extends CrudRepository<Person, UUID> {
 //    @Query("select c from Persons c " +
 //            "where lower(c.firstName) like lower(concat('%', :searchTerm, '%')) " +
 //            "or lower(c.secondName) like lower(concat('%', :searchTerm, '%'))")

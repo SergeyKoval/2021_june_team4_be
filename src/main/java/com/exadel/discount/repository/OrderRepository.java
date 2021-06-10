@@ -1,15 +1,16 @@
-package com.discount.Repository;
+package com.exadel.discount.repository;
 
-import com.discount.Entity.Order;
+import com.exadel.discount.entity.Order;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.UUID;
 
 @Repository
-public interface OrderRepository extends CrudRepository<Order, Long> {
+public interface OrderRepository extends CrudRepository<Order, UUID> {
     List<Order> findByPrice(int price);
 //    @Query("select c from Orders c " +
 //            "where lower(c.serialNumber) like lower(concat('%', :searchTerm, '%'))")

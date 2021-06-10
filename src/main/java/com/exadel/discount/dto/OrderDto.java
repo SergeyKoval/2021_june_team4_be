@@ -1,13 +1,14 @@
-package com.exadel.discound.dto;
+package com.exadel.discount.dto;
 
-import com.exadel.discound.entity.Order;
+import com.exadel.discount.entity.Order;
 import lombok.Data;
 
 import java.util.Objects;
+import java.util.UUID;
 
 @Data
 public class OrderDto {
-    private Long id;
+    private UUID id;
     private int price;
     private String SerialNumber;
     private PlainPersonDto plainPersonDto;

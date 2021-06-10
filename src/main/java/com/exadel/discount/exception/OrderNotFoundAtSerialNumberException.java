@@ -1,4 +1,4 @@
-package com.exadel.discound.exception;
+package com.exadel.discount.exception;
 
 import java.text.MessageFormat;
 

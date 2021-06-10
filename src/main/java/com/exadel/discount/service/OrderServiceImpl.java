@@ -1,15 +1,16 @@
-package com.exadel.discound.service;
+package com.exadel.discount.service;
 
-import com.exadel.discound.exception.OrderNotFoundAtPriceException;
-import com.exadel.discound.exception.OrderNotFoundAtSerialNumberException;
-import com.exadel.discound.entity.Order;
-import com.exadel.discound.exception.OrderNotFoundException;
-import com.exadel.discound.repository.OrderRepository;
+import com.exadel.discount.entity.Order;
+import com.exadel.discount.exception.OrderNotFoundAtPriceException;
+import com.exadel.discount.exception.OrderNotFoundAtSerialNumberException;
+import com.exadel.discount.exception.OrderNotFoundException;
+import com.exadel.discount.repository.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -26,11 +27,11 @@ public class OrderServiceImpl implements OrderService {
         return orderRepository.save(order);
     }
 
-    public Order deleteOrder(Long id) {
-        Order deletedOrder  = null;
-        try{
+    public Order deleteOrder(UUID id) {
+        Order deletedOrder = null;
+        try {
             deletedOrder = findOrderById(id);
-        }catch (OrderNotFoundException e) {
+        } catch (OrderNotFoundException e) {
             e.printStackTrace();
         }
         orderRepository.delete(deletedOrder);
@@ -38,7 +39,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public Order findOrderById(Long id) {
+    public Order findOrderById(UUID id) {
         return orderRepository.findById(id).orElseThrow(() -> new OrderNotFoundException(id));
     }
 
@@ -62,7 +63,7 @@ public class OrderServiceImpl implements OrderService {
     public List<Order> findOrderBySerialNumber(String serialNumber) {
         List<Order> orders = StreamSupport
                 .stream(orderRepository.findBySerialNumber(serialNumber)
-                .spliterator(), false)
+                        .spliterator(), false)
                 .collect(Collectors.toList());
         if (orders.isEmpty()) throw new OrderNotFoundAtSerialNumberException(serialNumber);
         return orders;
@@ -70,7 +71,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Transactional
     @Override
-    public Order editOrder(Long id, Order order) {
+    public Order editOrder(UUID id, Order order) {
         Order orderUnderEdition = findOrderById(id);
         orderUnderEdition.setPrice(order.getPrice());
         orderUnderEdition.setSerialNumber(order.getSerialNumber());

@@ -1,13 +1,13 @@
-package com.discount.Entity;
+package com.exadel.discount.entity;
 
-import com.discount.Dto.PersonDto;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.exadel.discount.dto.PersonDto;
 import lombok.Data;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Entity
 @Table(name = "persons")
@@ -19,7 +19,7 @@ public class Person {
     @GeneratedValue(strategy = GenerationType.AUTO)
 //    @SequenceGenerator(name = "personsIdSeq", sequenceName = "persons_id_seq", allocationSize = 1)
 //    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "personsIdSeq")
-    private Long id;
+    private UUID id;
     private String firstName;
     private String secondName;
     private String telephone;

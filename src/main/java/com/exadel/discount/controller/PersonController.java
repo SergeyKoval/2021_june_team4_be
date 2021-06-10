@@ -1,14 +1,15 @@
-package com.exadel.discound.controller;
+package com.exadel.discount.controller;
 
-import com.exadel.discound.dto.PersonDto;
-import com.exadel.discound.entity.Person;
-import com.exadel.discound.service.PersonService;
+import com.exadel.discount.dto.PersonDto;
+import com.exadel.discount.entity.Person;
+import com.exadel.discount.service.PersonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @RestController
@@ -36,19 +37,19 @@ public class PersonController {
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<PersonDto> getPerson(@PathVariable final Long id) {
+    public ResponseEntity<PersonDto> getPerson(@PathVariable final UUID id) {
         Person person = personService.findPersonById(id);
         return new ResponseEntity<>(PersonDto.from(person), HttpStatus.OK);
     }
 
     @DeleteMapping("{id}")
-    public ResponseEntity<PersonDto> deletePerson(@PathVariable final Long id) {
+    public ResponseEntity<PersonDto> deletePerson(@PathVariable final UUID id) {
         Person person = personService.deletePerson(id);
         return new ResponseEntity<>(PersonDto.from(person), HttpStatus.OK);
     }
 
     @PutMapping("{id}")
-    public ResponseEntity<PersonDto> editPerson(@PathVariable final Long id,
+    public ResponseEntity<PersonDto> editPerson(@PathVariable final UUID id,
                                                 @RequestBody final PersonDto personDto) {
         Person person = personService.editPerson(id, Person.from(personDto));
         return new ResponseEntity<>(PersonDto.from(person), HttpStatus.OK);
@@ -62,15 +63,15 @@ public class PersonController {
     }
 
     @PostMapping("{personId}/order/{orderId}/add")
-    public ResponseEntity<PersonDto> addOrderToPerson(@PathVariable final Long personId,
-                                                      @PathVariable final Long orderId) {
+    public ResponseEntity<PersonDto> addOrderToPerson(@PathVariable final UUID personId,
+                                                      @PathVariable final UUID orderId) {
         Person person = personService.addOrderToPerson(personId, orderId);
         return new ResponseEntity<>(PersonDto.from(person), HttpStatus.OK);
     }
 
     @DeleteMapping("{personId}/order/{orderId}/remove")
-    public ResponseEntity<PersonDto> removeOrderFromPerson(@PathVariable final Long personId,
-                                                           @PathVariable final Long orderId) {
+    public ResponseEntity<PersonDto> removeOrderFromPerson(@PathVariable final UUID personId,
+                                                           @PathVariable final UUID orderId) {
         Person person = personService.removeOrderFromPerson(personId, orderId);
         return new ResponseEntity<>(PersonDto.from(person), HttpStatus.OK);
     }

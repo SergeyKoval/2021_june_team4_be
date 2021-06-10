@@ -1,16 +1,17 @@
-package com.exadel.discound.dto;
+package com.exadel.discount.dto;
 
-import com.exadel.discound.entity.Person;
+import com.exadel.discount.entity.Person;
 import lombok.Data;
 
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Data
 public class PersonDto {
-    private Long id;
+    private UUID id;
     private String firstName;
     private String secondName;
     private String telephone;

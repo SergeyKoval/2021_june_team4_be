@@ -1,9 +1,10 @@
-package com.discount.Entity;
+package com.exadel.discount.entity;
 
-import com.discount.Dto.OrderDto;
+import com.exadel.discount.dto.OrderDto;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.util.UUID;
 
 @Data
 @Entity
@@ -16,7 +17,7 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.AUTO)
 //    @SequenceGenerator(name = "ordersIdSeq", sequenceName = "orders_id_seq", allocationSize = 1)
 //    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ordersIdSeq")
-    private Long id;
+    private UUID id;
     private int price;
     private String serialNumber;
 

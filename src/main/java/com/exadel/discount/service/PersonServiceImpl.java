@@ -1,12 +1,11 @@
-package com.exadel.discound.service;
+package com.exadel.discount.service;
 
-
-import com.exadel.discound.entity.Order;
-import com.exadel.discound.entity.Person;
-import com.exadel.discound.exception.OrderIsAlreadyAssignedException;
-import com.exadel.discound.exception.OrderNotFoundAtSerialNumberException;
-import com.exadel.discound.exception.PersonNotFoundException;
-import com.exadel.discound.repository.PersonRepository;
+import com.exadel.discount.entity.Order;
+import com.exadel.discount.entity.Person;
+import com.exadel.discount.exception.OrderIsAlreadyAssignedException;
+import com.exadel.discount.exception.OrderNotFoundAtSerialNumberException;
+import com.exadel.discount.exception.PersonNotFoundException;
+import com.exadel.discount.repository.PersonRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -33,7 +33,7 @@ public class PersonServiceImpl implements PersonService {
         return personRepository.save(person);
     }
 
-    public Person deletePerson(Long id) {
+    public Person deletePerson(UUID id) {
         Person personDeleted = null;
         try {
             personDeleted = findPersonById(id);
@@ -46,7 +46,7 @@ public class PersonServiceImpl implements PersonService {
     }
 
     @Override
-    public Person findPersonById(Long id) {
+    public Person findPersonById(UUID id) {
         return personRepository.findById(id).orElseThrow(() -> new PersonNotFoundException(id));
     }
 
@@ -58,12 +58,12 @@ public class PersonServiceImpl implements PersonService {
     }
 
     @Override
-    public List<Person> findPersonByName(String name) {
+    public ArrayList findPersonByName(String name) {
         return new ArrayList<>(personRepository.findPersonByName(name));
     }
 
     @Transactional
-    public Person editPerson(Long id, Person person) {
+    public Person editPerson(UUID id, Person person) {
         Person editedPerson = findPersonById(id);
         editedPerson.setFirstName(person.getFirstName());
         editedPerson.setSecondName(person.getSecondName());
@@ -76,7 +76,7 @@ public class PersonServiceImpl implements PersonService {
     }
 
     @Transactional
-    public Person addOrderToPerson(Long personId, Long orderId) {
+    public Person addOrderToPerson(UUID personId, UUID orderId) {
         Person person = findPersonById(personId);
         Order order = orderService.findOrderById(orderId);
         if (Objects.nonNull(order.getPerson())) {
@@ -89,7 +89,7 @@ public class PersonServiceImpl implements PersonService {
     }
 
     @Transactional
-    public Person removeOrderFromPerson(Long personId, Long orderId) {
+    public Person removeOrderFromPerson(UUID personId, UUID orderId) {
         Person person = null;
         Order order = null;
         try {
