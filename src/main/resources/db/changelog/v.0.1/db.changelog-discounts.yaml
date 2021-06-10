@@ -8,13 +8,12 @@ databaseChangeLog:
             columns:
               - column:
                   name: id
-                  type: bigint
-                  autoIncrement: true
+                  type: UUID
                   constraints:
                     primaryKey: true
               - column:
                   name: category_id
-                  type: int
+                  type: UUID
               - column:
                   name: name
                   type: varchar(50)
@@ -34,8 +33,6 @@ databaseChangeLog:
               - column:
                   name: start_time
                   type: timestamp
-                  constraints:
-                    nullable: false
               - column:
                   name: end_time
                   type: timestamp
@@ -44,5 +41,6 @@ databaseChangeLog:
               - column:
                   name: active
                   type: boolean
+                  defaultValue: true
                   constraints:
                     nullable: false
