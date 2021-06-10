@@ -26,5 +26,5 @@ hs_err_pid*
 # IntelliJ idea
 .idea/
 *.iml
-/target
-
+/target/classes
+/target/
