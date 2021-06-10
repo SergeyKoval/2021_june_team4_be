@@ -17,10 +17,11 @@ databaseChangeLog:
                   constraints:
                     nullable: false
               - column:
+                  name: country_id
+                  type: UUID
+              - column:
                   name: city_id
                   type: UUID
-                  constraints:
-                    nullable: false
               - column:
                   name: contact
                   type: varchar(50)
