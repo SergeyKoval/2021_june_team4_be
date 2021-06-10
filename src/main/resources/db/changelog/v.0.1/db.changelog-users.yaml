@@ -42,7 +42,7 @@ databaseChangeLog:
                   constraints:
                     nullable: false
               - column:
-                  name: telephone
+                  name: phone
                   type: varchar(50)
                   constraints:
                     nullable: false
