@@ -23,6 +23,6 @@ databaseChangeLog:
                     nullable: false
               - column:
                   name: date
-                  type: date
+                  type: timestamp
                   constraints:
                     nullable: false
