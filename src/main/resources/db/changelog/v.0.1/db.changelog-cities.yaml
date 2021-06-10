@@ -8,12 +8,16 @@ databaseChangeLog:
             columns:
               - column:
                   name: id
-                  type: int
-                  autoIncrement: true
+                  type: UUID
                   constraints:
                     primaryKey: true
               - column:
                   name: name
                   type: varchar(50)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: country_id
+                  type: UUID
                   constraints:
                     nullable: false
