@@ -1,6 +1,6 @@
-package com.discount.Service;
+package com.exadel.discound.service;
 
-import com.discount.Entity.Order;
+import com.exadel.discound.entity.Order;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

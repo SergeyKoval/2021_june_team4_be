@@ -1,6 +1,6 @@
-package com.discount.Dto;
+package com.exadel.discound.dto;
 
-import com.discount.Entity.Person;
+import com.exadel.discound.entity.Person;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 

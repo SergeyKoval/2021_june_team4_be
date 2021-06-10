@@ -1,12 +1,12 @@
-package com.discount.Service;
+package com.exadel.discound.service;
 
 
-import com.discount.Entity.Order;
-import com.discount.Entity.Person;
-import com.discount.Exception.OrderIsAlreadyAssignedException;
-import com.discount.Exception.OrderNotFoundAtSerialNumberException;
-import com.discount.Exception.PersonNotFoundException;
-import com.discount.Repository.PersonRepository;
+import com.exadel.discound.entity.Order;
+import com.exadel.discound.entity.Person;
+import com.exadel.discound.exception.OrderIsAlreadyAssignedException;
+import com.exadel.discound.exception.OrderNotFoundAtSerialNumberException;
+import com.exadel.discound.exception.PersonNotFoundException;
+import com.exadel.discound.repository.PersonRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

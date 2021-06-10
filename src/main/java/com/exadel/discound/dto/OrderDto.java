@@ -1,6 +1,6 @@
-package com.discount.Dto;
+package com.exadel.discound.dto;
 
-import com.discount.Entity.Order;
+import com.exadel.discound.entity.Order;
 import lombok.Data;
 
 import java.util.Objects;

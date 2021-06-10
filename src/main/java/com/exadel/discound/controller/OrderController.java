@@ -1,8 +1,8 @@
-package com.discount.Controller;
+package com.exadel.discound.controller;
 
-import com.discount.Dto.OrderDto;
-import com.discount.Entity.Order;
-import com.discount.Service.OrderService;
+import com.exadel.discound.dto.OrderDto;
+import com.exadel.discound.entity.Order;
+import com.exadel.discound.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
