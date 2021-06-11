@@ -1,15 +1,10 @@
 databaseChangeLog:
   - changeSet:
-      id: 10-add-user-role-enum
-      author: elizaveta_dubogryz
-      dbms: postgresql
-      sql: CREATE TYPE USER_ROLE as ENUM ('USER', 'ADMIN');
-  - changeSet:
       id: 11-create-persons-table
       author: elizaveta_dubogryz
       changes:
         - createTable:
-            tableName: users
+            tableName: persons
             columns:
               - column:
                   name: id
@@ -48,11 +43,11 @@ databaseChangeLog:
                     nullable: false
               - column:
                   name: role
-                  type: USER_ROLE
+                  type: ROLE
                   constraints:
                     nullable: false
-              - column:
-                  name: city_id
-                  type: UUID
-                  constraints:
-                    nullable: false
+#              - column:
+#                  name: city_id
+#                  type: UUID
+#                  constraints:
+#                    nullable: false

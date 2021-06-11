@@ -1,14 +1,13 @@
 package com.exadel.discount.service;
 
 import com.exadel.discount.entity.Coupon;
-import com.exadel.discount.exception.CouponNotFoundAtPriceException;
-import com.exadel.discount.exception.CouponNotFoundAtSerialNumberException;
 import com.exadel.discount.exception.CuoponNotFoundException;
 import com.exadel.discount.repository.CouponRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.security.Timestamp;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -51,30 +50,15 @@ public class CouponServiceImpl implements CouponService {
     }
 
     @Override
-    public List<Coupon> findCouponByPrice(int price) {
-        List<Coupon> coupons = StreamSupport
-                .stream(couponRepository.findByPrice(price).spliterator(), false)
-                .collect(Collectors.toList());
-        if (coupons.isEmpty()) throw new CouponNotFoundAtPriceException(price);
-        return coupons;
-    }
-
-    @Override
-    public List<Coupon> findCouponBySerialNumber(String serialNumber) {
-        List<Coupon> coupons = StreamSupport
-                .stream(couponRepository.findBySerialNumber(serialNumber)
-                        .spliterator(), false)
-                .collect(Collectors.toList());
-        if (coupons.isEmpty()) throw new CouponNotFoundAtSerialNumberException(serialNumber);
-        return coupons;
+    public Coupon findCouponByDate(Timestamp date) {
+        return couponRepository.findCouponByDate(date);
     }
 
     @Transactional
     @Override
     public Coupon editCoupon(UUID id, Coupon coupon) {
         Coupon couponUnderEdition = findCouponById(id);
-        couponUnderEdition.setPrice(coupon.getPrice());
-        couponUnderEdition.setSerialNumber(coupon.getSerialNumber());
+        couponUnderEdition.setDate(coupon.getDate());
         return coupon;
     }
 

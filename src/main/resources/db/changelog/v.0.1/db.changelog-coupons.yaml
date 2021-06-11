@@ -12,17 +12,17 @@ databaseChangeLog:
                   constraints:
                     primaryKey: true
               - column:
-                  name: user_id
+                  name: person_id
                   type: UUID
                   constraints:
                     nullable: false
-              - column:
-                  name: discount_id
-                  type: UUID
-                  constraints:
-                    nullable: false
+#              - column:
+#                  name: discount_id
+#                  type: UUID
+#                  constraints:
+#                    nullable: false
               - column:
                   name: date
-                  type: timestamp
+                  type: timestamptype
                   constraints:
                     nullable: false

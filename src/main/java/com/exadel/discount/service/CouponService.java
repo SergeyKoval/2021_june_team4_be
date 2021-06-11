@@ -1,8 +1,10 @@
 package com.exadel.discount.service;
 
 import com.exadel.discount.entity.Coupon;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Component;
 
+import java.security.Timestamp;
 import java.util.List;
 import java.util.UUID;
 
@@ -16,8 +18,8 @@ public interface CouponService {
 
     Coupon addCoupon(Coupon coupon);
 
-    List<Coupon> findCouponByPrice(int price);
-    List<Coupon> findCouponBySerialNumber(String serialNumber);
+    Coupon findCouponByDate(Timestamp time);
+    //List<Coupon> findCouponBySerialNumber(String serialNumber);
     Coupon editCoupon(UUID id, Coupon coupon);
 
 }

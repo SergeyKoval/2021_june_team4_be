@@ -7,6 +7,7 @@ import com.exadel.discount.exception.CouponNotFoundAtSerialNumberException;
 import com.exadel.discount.exception.PersonNotFoundException;
 import com.exadel.discount.repository.PersonRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -57,8 +58,9 @@ public class PersonServiceImpl implements PersonService {
                 .collect(Collectors.toList());
     }
 
+   // List<Person> findPersonByName(@Param("searchTerm") String searchTerm);
     @Override
-    public ArrayList findPersonByName(String name) {
+    public List<Person> findPersonByName(String name) {
         return new ArrayList<>(personRepository.findPersonByName(name));
     }
 

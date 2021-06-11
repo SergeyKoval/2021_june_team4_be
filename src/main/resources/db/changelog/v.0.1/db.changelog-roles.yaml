@@ -1,0 +1,6 @@
+databaseChangeLog:
+  - changeSet:
+      id: 10-add-user-role-enum
+      author: elizaveta_dubogryz
+      dbms: postgresql
+      sql: CREATE TYPE ROLE as ENUM ('USER', 'ADMIN');

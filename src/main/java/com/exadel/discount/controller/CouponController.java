@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Timestamp;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -30,7 +31,7 @@ public class CouponController {
     }
 
     @GetMapping
-    public ResponseEntity<List<CouponDto>> getOrders() {
+    public ResponseEntity<List<CouponDto>> getAllCoupons() {
         List<Coupon> allCoupons = couponService.findAllCoupons();
         List<CouponDto> allCouponsDto = allCoupons.stream().map(CouponDto::from).collect(Collectors.toList());
         return new ResponseEntity<>(allCouponsDto, HttpStatus.OK);
@@ -39,6 +40,12 @@ public class CouponController {
     @GetMapping("{id}")
     public ResponseEntity<CouponDto> getCouponById(@PathVariable final UUID id) {
         Coupon coupon = couponService.findCouponById(id);
+        return new ResponseEntity<>(CouponDto.from(coupon), HttpStatus.OK);
+    }
+
+    @GetMapping("/date")
+    public ResponseEntity<CouponDto> getCouponByDate(@PathVariable final Timestamp date) {
+        Coupon coupon = couponService.findCouponByDate(date);
         return new ResponseEntity<>(CouponDto.from(coupon), HttpStatus.OK);
     }
 
