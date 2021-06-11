@@ -4,7 +4,4 @@ spring:
     hibernate:
       ddl-auto: update
     datasource:
-      driver-class-name: org.postgresql.Driver
-      url:${POSTGRES_DB_URL}
-      username: postgress
-      password: asdqwe
+      url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost/todolist}
