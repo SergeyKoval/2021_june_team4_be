@@ -4,7 +4,8 @@ import com.exadel.discount.dto.CouponDto;
 import lombok.Data;
 
 import javax.persistence.*;
-import java.security.Timestamp;
+
+import java.sql.Timestamp;
 import java.util.UUID;
 
 @Data

@@ -3,7 +3,7 @@ package com.exadel.discount.dto;
 import com.exadel.discount.entity.Coupon;
 import lombok.Data;
 
-import java.security.Timestamp;
+import java.sql.Timestamp;
 import java.util.Objects;
 import java.util.UUID;
 

@@ -1,7 +1,6 @@
 package com.exadel.discount.dto;
 
 import com.exadel.discount.entity.Person;
-import com.exadel.discount.entity.Role;
 import lombok.Data;
 
 import javax.validation.constraints.NotNull;
@@ -21,7 +20,8 @@ public class PersonDto {
     private String login;
     @NotNull
     private String password;
-    private Role role;
+    @NotNull
+    private Person.Role role;
     private List<CouponDto> ordersDto = new ArrayList<>();
 
     public static PersonDto from(Person person) {

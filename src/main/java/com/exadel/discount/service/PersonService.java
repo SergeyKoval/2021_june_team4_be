@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 import java.util.UUID;
 
-@Component
+
 public interface PersonService {
     Person findPersonById(UUID id);
 

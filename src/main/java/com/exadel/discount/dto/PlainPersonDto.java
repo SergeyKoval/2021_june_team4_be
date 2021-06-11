@@ -1,7 +1,6 @@
 package com.exadel.discount.dto;
 
 import com.exadel.discount.entity.Person;
-import com.exadel.discount.entity.Role;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
@@ -23,7 +22,7 @@ public class PlainPersonDto {
     @NotNull
     private String password;
     @NotNull
-    private Role role;
+    private Person.Role role;
 
     public static PlainPersonDto from(Person person) {
         PlainPersonDto plainPersonDto = new PlainPersonDto();

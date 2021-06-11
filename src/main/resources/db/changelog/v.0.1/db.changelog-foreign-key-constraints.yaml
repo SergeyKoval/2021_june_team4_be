@@ -1,11 +1,5 @@
 databaseChangeLog:
   - changeSet:
-      id: 10-add-user-role-enum
-      author: elizaveta_dubogryz
-      dbms: postgresql
-      sql: CREATE TYPE USER_ROLE as ENUM ('USER', 'ADMIN');
-
-  - changeSet:
       id: 24-foreignKeyConstraint-coupon-to-person
       author: elizaveta_dubogryz
       changes:

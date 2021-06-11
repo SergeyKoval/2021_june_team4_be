@@ -4,7 +4,7 @@ import com.exadel.discount.entity.Coupon;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
-import java.security.Timestamp;
+import java.sql.Timestamp;
 import java.util.UUID;
 
 @Repository

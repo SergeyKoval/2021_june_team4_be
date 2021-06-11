@@ -29,11 +29,14 @@ public class Person {
     @NotNull
     private String password;
     @NotNull
-    private Role role;
+    private Person.Role role;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "person_id")
     private List<Coupon> coupons = new ArrayList<>();
+
+    public enum Role{USER,ADMIN
+    }
 
     public Person() {
     }
@@ -58,7 +61,7 @@ public class Person {
         return person;
     }
 
-    public Person(String firstName, String secondName, String phone, String email, String login, String password, com.exadel.discount.entity.Role role) {
+    public Person(String firstName, String secondName, String phone, String email, String login, String password, com.exadel.discount.entity.Person.Role role) {
         this.firstName = firstName;
         this.secondName = secondName;
         this.phone = phone;
