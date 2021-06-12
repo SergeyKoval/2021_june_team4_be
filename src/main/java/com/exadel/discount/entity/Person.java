@@ -1,5 +1,6 @@
 package com.exadel.discount.entity;
 
+import com.exadel.discount.config.StringToEnumConverter;
 import com.exadel.discount.dto.PersonDto;
 import lombok.Data;
 import lombok.ToString;
@@ -32,8 +33,8 @@ public class Person implements Serializable {
     @NotNull
     private String password;
 
-    @Enumerated(EnumType.STRING)
-   // @Convert(converter = Person.Role.class)
+   // @Enumerated(EnumType.STRING)
+   @Convert(converter = StringToEnumConverter.class)
     private Role role;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
