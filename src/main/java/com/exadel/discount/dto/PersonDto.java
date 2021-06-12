@@ -1,13 +1,9 @@
 package com.exadel.discount.dto;
 
-import com.exadel.discount.config.StringToEnumConverter;
 import com.exadel.discount.entity.Person;
 import com.exadel.discount.entity.Role;
 import lombok.Data;
 
-import javax.persistence.Convert;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,7 +23,7 @@ public class PersonDto {
     private String password;
     @NotNull
     //@Enumerated(EnumType.ORDINAL)
-    @Convert(converter = StringToEnumConverter.class)
+    // @Convert(converter = StringToEnumConverter.class)
     private Role role;
     private List<CouponDto> ordersDto = new ArrayList<>();
 

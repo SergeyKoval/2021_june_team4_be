@@ -1,9 +1,10 @@
 package com.exadel.discount.entity;
 
-import com.exadel.discount.config.StringToEnumConverter;
+import com.exadel.discount.config.EnumPostgresSQLType;
 import com.exadel.discount.dto.PersonDto;
 import lombok.Data;
-import lombok.ToString;
+import org.hibernate.annotations.Type;
+import org.hibernate.annotations.TypeDef;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -16,7 +17,10 @@ import java.util.UUID;
 @Table(name = "persons")
 //@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @Data
-@ToString
+@TypeDef(
+        name = "user_role",
+        typeClass = EnumPostgresSQLType.class
+)
 public class Person implements Serializable {
 
     @Id
@@ -33,8 +37,11 @@ public class Person implements Serializable {
     @NotNull
     private String password;
 
-   // @Enumerated(EnumType.STRING)
-   @Convert(converter = StringToEnumConverter.class)
+    // @Enumerated(EnumType.STRING)
+    //@Convert(converter = StringToEnumConverter.class)
+    @Enumerated(EnumType.STRING)
+    @Column(columnDefinition = "role")
+    @Type(type = "user_role")
     private Role role;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
