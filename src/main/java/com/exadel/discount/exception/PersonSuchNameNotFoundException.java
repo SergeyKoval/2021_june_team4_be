@@ -1,9 +1,13 @@
 package com.exadel.discount.exception;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.ResponseStatus;
+
 import java.text.MessageFormat;
 
-public class PersonSuchNameNotFoundException {
-    public PersonSuchNameNotFoundException(String name){
+@ResponseStatus(value = HttpStatus.NOT_FOUND)
+public class PersonSuchNameNotFoundException extends RuntimeException{
+    public PersonSuchNameNotFoundException(String name) {
         MessageFormat.format("Could not found person with name:{0}", name);
     }
 }

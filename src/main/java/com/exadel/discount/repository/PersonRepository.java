@@ -11,6 +11,6 @@ import java.util.UUID;
 
 @Repository
 public interface PersonRepository extends CrudRepository<Person, UUID> {
-    @Query(value = "select a from persons a where a.first_name= :('%searchTerm%') or a.second_name= :('%searchTerm%')", nativeQuery = true)
+    @Query(value = "select a from persons a where a.first_name= :('%searchTerm%') or a.last_name= :('%searchTerm%')", nativeQuery = true)
     List<Person> findPersonByName(@Param("searchTerm") String searchTerm);
 }

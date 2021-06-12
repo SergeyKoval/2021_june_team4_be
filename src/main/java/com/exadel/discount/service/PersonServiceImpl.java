@@ -5,9 +5,9 @@ import com.exadel.discount.entity.Person;
 import com.exadel.discount.exception.CouponIsAlreadyAssignedException;
 import com.exadel.discount.exception.CouponNotFoundAtSerialNumberException;
 import com.exadel.discount.exception.PersonNotFoundException;
+import com.exadel.discount.exception.PersonSuchNameNotFoundException;
 import com.exadel.discount.repository.PersonRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -58,17 +58,18 @@ public class PersonServiceImpl implements PersonService {
                 .collect(Collectors.toList());
     }
 
-   // List<Person> findPersonByName(@Param("searchTerm") String searchTerm);
     @Override
     public List<Person> findPersonByName(String name) {
-        return new ArrayList<>(personRepository.findPersonByName(name));
+        List<Person> suchNameUserList = personRepository.findPersonByName(name);
+        if (suchNameUserList.size()==0) throw new PersonSuchNameNotFoundException(name);
+        return suchNameUserList;
     }
 
     @Transactional
     public Person editPerson(UUID id, Person person) {
         Person editedPerson = findPersonById(id);
         editedPerson.setFirstName(person.getFirstName());
-        editedPerson.setSecondName(person.getSecondName());
+        editedPerson.setLastName(person.getLastName());
         editedPerson.setEmail(person.getEmail());
         editedPerson.setPhone(person.getPhone());
         editedPerson.setRole(person.getRole());

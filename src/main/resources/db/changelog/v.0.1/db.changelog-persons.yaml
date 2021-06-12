@@ -3,7 +3,7 @@ databaseChangeLog:
       id: 10-add-person-role-enum
       author: elizaveta_dubogryz
       dbms: postgresql
-      sql: CREATE TYPE ROLE as ENUM ('USER', 'ADMIN');
+      sql: CREATE TYPE Role as ENUM ('USER', 'ADMIN');
   - changeSet:
       id: 11-create-persons-table
       author: elizaveta_dubogryz
@@ -48,7 +48,7 @@ databaseChangeLog:
                     nullable: true
               - column:
                   name: role
-                  type: ROLE
+                  type: varchar(50)
                   constraints:
                     nullable: false
 #              - column:

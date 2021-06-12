@@ -2,9 +2,11 @@ package com.exadel.discount.entity;
 
 import com.exadel.discount.dto.PersonDto;
 import lombok.Data;
+import lombok.ToString;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -13,7 +15,8 @@ import java.util.UUID;
 @Table(name = "persons")
 //@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @Data
-public class Person {
+@ToString
+public class Person implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -21,22 +24,21 @@ public class Person {
 //    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "personsIdSeq")
     private UUID id;
     private String firstName;
-    private String secondName;
+    private String lastName;
     private String phone;
     private String email;
     @NotNull
     private String login;
     @NotNull
     private String password;
-    @NotNull
-    private Person.Role role;
+
+    @Enumerated(EnumType.STRING)
+   // @Convert(converter = Person.Role.class)
+    private Role role;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "person_id")
     private List<Coupon> coupons = new ArrayList<>();
-
-    public enum Role{USER,ADMIN
-    }
 
     public Person() {
     }
@@ -52,7 +54,7 @@ public class Person {
     public static Person from(PersonDto personDto) {
         Person person = new Person();
         person.setFirstName(personDto.getFirstName());
-        person.setSecondName(personDto.getSecondName());
+        person.setLastName(personDto.getLastName());
         person.setPhone(personDto.getPhone());
         person.setEmail(personDto.getEmail());
         person.setLogin(personDto.getLogin());
@@ -61,9 +63,9 @@ public class Person {
         return person;
     }
 
-    public Person(String firstName, String secondName, String phone, String email, String login, String password, com.exadel.discount.entity.Person.Role role) {
+    public Person(String firstName, String lastName, String phone, String email, String login, String password, Role role) {
         this.firstName = firstName;
-        this.secondName = secondName;
+        this.lastName = lastName;
         this.phone = phone;
         this.email = email;
         this.login = login;

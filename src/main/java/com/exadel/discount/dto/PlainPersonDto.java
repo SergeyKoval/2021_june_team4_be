@@ -1,9 +1,12 @@
 package com.exadel.discount.dto;
 
 import com.exadel.discount.entity.Person;
+import com.exadel.discount.entity.Role;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.validation.constraints.NotNull;
 import java.util.UUID;
 
@@ -22,13 +25,14 @@ public class PlainPersonDto {
     @NotNull
     private String password;
     @NotNull
-    private Person.Role role;
+    @Enumerated(EnumType.ORDINAL)
+    private Role role;
 
     public static PlainPersonDto from(Person person) {
         PlainPersonDto plainPersonDto = new PlainPersonDto();
         plainPersonDto.setId(person.getId());
         plainPersonDto.setFirstName(person.getFirstName());
-        plainPersonDto.setSecondName(person.getSecondName());
+        plainPersonDto.setSecondName(person.getLastName());
         plainPersonDto.setTelephone(person.getPhone());
         plainPersonDto.setEmail(person.getEmail());
         plainPersonDto.setLogin(person.getLogin());
