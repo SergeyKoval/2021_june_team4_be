@@ -22,7 +22,7 @@ public class Coupon {
    // private UUID serialNumber;
 
     @ManyToOne
-    private Person person;
+    private User user;
 
     public Coupon() {
     }

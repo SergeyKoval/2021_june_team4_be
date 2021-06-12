@@ -1,7 +1,7 @@
 package com.exadel.discount.service;
 
 import com.exadel.discount.entity.Coupon;
-import com.exadel.discount.exception.CuoponNotFoundException;
+import com.exadel.discount.exception.CouponNotFoundException;
 import com.exadel.discount.repository.CouponRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,7 +30,7 @@ public class CouponServiceImpl implements CouponService {
         Coupon deletedCoupon = null;
         try {
             deletedCoupon = findCouponById(id);
-        } catch (CuoponNotFoundException e) {
+        } catch (CouponNotFoundException e) {
             e.printStackTrace();
         }
         couponRepository.delete(deletedCoupon);
@@ -39,7 +39,7 @@ public class CouponServiceImpl implements CouponService {
 
     @Override
     public Coupon findCouponById(UUID id) {
-        return couponRepository.findById(id).orElseThrow(() -> new CuoponNotFoundException(id));
+        return couponRepository.findById(id).orElseThrow(() -> new CouponNotFoundException(id));
     }
 
     @Override

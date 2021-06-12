@@ -1,7 +1,7 @@
 package com.exadel.discount.entity;
 
 import com.exadel.discount.config.EnumPostgresSQLType;
-import com.exadel.discount.dto.PersonDto;
+import com.exadel.discount.dto.UserDto;
 import lombok.Data;
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.TypeDef;
@@ -14,19 +14,16 @@ import java.util.List;
 import java.util.UUID;
 
 @Entity
-@Table(name = "persons")
-//@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+@Table(name = "users")
 @Data
 @TypeDef(
         name = "user_role",
         typeClass = EnumPostgresSQLType.class
 )
-public class Person implements Serializable {
+public class User implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-//    @SequenceGenerator(name = "personsIdSeq", sequenceName = "persons_id_seq", allocationSize = 1)
-//    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "personsIdSeq")
     private UUID id;
     private String firstName;
     private String lastName;
@@ -37,18 +34,16 @@ public class Person implements Serializable {
     @NotNull
     private String password;
 
-    // @Enumerated(EnumType.STRING)
-    //@Convert(converter = StringToEnumConverter.class)
     @Enumerated(EnumType.STRING)
     @Column(columnDefinition = "role")
     @Type(type = "user_role")
     private Role role;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinColumn(name = "person_id")
+    @JoinColumn(name = "user_id")
     private List<Coupon> coupons = new ArrayList<>();
 
-    public Person() {
+    public User() {
     }
 
     public void addCoupon(Coupon coupon) {
@@ -59,19 +54,19 @@ public class Person implements Serializable {
         coupons.remove(coupon);
     }
 
-    public static Person from(PersonDto personDto) {
-        Person person = new Person();
-        person.setFirstName(personDto.getFirstName());
-        person.setLastName(personDto.getLastName());
-        person.setPhone(personDto.getPhone());
-        person.setEmail(personDto.getEmail());
-        person.setLogin(personDto.getLogin());
-        person.setPassword(personDto.getPassword());
-        person.setRole(personDto.getRole());
-        return person;
+    public static User from(UserDto userDto) {
+        User user = new User();
+        user.setFirstName(userDto.getFirstName());
+        user.setLastName(userDto.getLastName());
+        user.setPhone(userDto.getPhone());
+        user.setEmail(userDto.getEmail());
+        user.setLogin(userDto.getLogin());
+        user.setPassword(userDto.getPassword());
+        user.setRole(userDto.getRole());
+        return user;
     }
 
-    public Person(String firstName, String lastName, String phone, String email, String login, String password, Role role) {
+    public User(String firstName, String lastName, String phone, String email, String login, String password, Role role) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.phone = phone;

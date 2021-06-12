@@ -27,7 +27,7 @@ databaseChangeLog:
 #      file: db.changelog-discounts-locations.yaml
 #      relativeToChangelogFile: true
   - include:
-      file: db.changelog-persons.yaml
+      file: db.changelog-users.yaml
       relativeToChangelogFile: true
 #  - include:
 #      file: db.changelog-favorites.yaml

@@ -1,12 +1,12 @@
 databaseChangeLog:
   - changeSet:
-      id: 24-foreignKeyConstraint-coupon-to-person
+      id: 24-foreignKeyConstraint-coupon-to-user
       author: elizaveta_dubogryz
       changes:
         - addForeignKeyConstraint:
-            baseColumnNames: person_id
+            baseColumnNames: user_id
             baseTableName: coupons
-            constraintName: fk_coupons_person
+            constraintName: fk_coupons_users
             referencedColumnNames: id
-            referencedTableName: persons
+            referencedTableName: users
             onDelete: CASCADE

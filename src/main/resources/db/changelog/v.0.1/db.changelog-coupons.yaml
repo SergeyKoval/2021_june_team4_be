@@ -12,7 +12,7 @@ databaseChangeLog:
                   constraints:
                     primaryKey: true
               - column:
-                  name: person_id
+                  name: user_id
                   type: UUID
                   constraints:
                     nullable: false
