@@ -6,6 +6,7 @@ import com.exadel.discount.dto.vendor.BaseVendorDTO;
 import com.exadel.discount.dto.vendor.CreateVendorDTO;
 import com.exadel.discount.dto.vendor.DetailedVendorDTO;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,24 +31,28 @@ public class VendorController {
     );
 
     @GetMapping
+    //@PreAuthorize("hasAuthority('vendors:privilegedUsers')")
     @ApiOperation("Get list of all vendors")
     public List<BaseVendorDTO> getVendorsList() {
         return baseVendorsServiceMock;
     }
 
     @GetMapping("/{vendorId}")
+    //@PreAuthorize("hasAuthority('vendors:privilegedUsers')")
     @ApiOperation("Get vendor by ID")
     public DetailedVendorDTO getVendorById(@PathVariable(name = "vendorId") @Min(value = 0) long id) {
         return detailedVendorsServiceMock.get(0);
     }
 
     @PostMapping
+    //@PreAuthorize("hasAuthority('vendors:privilegedUsers')")
     @ApiOperation("Save new vendor")
     public DetailedVendorDTO saveNewVendor(@RequestBody @Valid CreateVendorDTO vendor) {
         return detailedVendorsServiceMock.get(0);
     }
 
     @PutMapping("/{vendorId}")
+    //@PreAuthorize("hasAuthority('vendors:privilegedUsers')")
     @ApiOperation("Update information about vendor")
     public DetailedVendorDTO updateVendor(@PathVariable(name = "vendorId") @Min(value = 0) long vendorId,
                                           @RequestBody @Valid DetailedVendorDTO vendor) {
@@ -55,18 +60,21 @@ public class VendorController {
     }
 
     @DeleteMapping("/{vendorId}")
+    //@PreAuthorize("hasAuthority('vendors:privilegedUsers')")
     @ApiOperation("Delete vendor by ID")
     public void deleteVendor(@PathVariable(name = "vendorId") @Min(value = 0) long vendorId) {
 
     }
 
     @GetMapping("/{vendorId}/locations")
+    //@PreAuthorize("hasAuthority('vendors:privilegedUsers')")
     @ApiOperation("Get list of all vendor locations")
     public List<LocationInfoDTO> getVendorLocations(@PathVariable(name = "vendorId") @Min(value = 0) long vendorId) {
         return new ArrayList<>();
     }
 
     @PostMapping("/{vendorId}/locations")
+    //@PreAuthorize("hasAuthority('vendors:privilegedUsers')")
     @ApiOperation("Add new location of vendor")
     public LocationInfoDTO addNewLocation(@PathVariable(name = "vendorId") @Min(value = 0) long vendorId,
                                           @RequestBody @Valid CreateLocationDTO location) {
@@ -74,6 +82,7 @@ public class VendorController {
     }
 
     @PutMapping("/{vendorId}/locations/{locationId}")
+    //@PreAuthorize("hasAuthority('vendors:privilegedUsers')")
     @ApiOperation("Update vendor's location")
     public LocationInfoDTO updateLocation(@PathVariable(name = "vendorId") @Min(value = 0) long vendorId,
                                           @PathVariable(name = "locationId") @Min(value = 0) long locationId,
@@ -82,6 +91,7 @@ public class VendorController {
     }
 
     @DeleteMapping("/{vendorId}/locations/{locationId}")
+    //@PreAuthorize("hasAuthority('vendors:privilegedUsers')")
     @ApiOperation("Delete vendor's location")
     public void deleteLocation(@PathVariable(name = "vendorId") @Min(value = 0) long id,
                                @PathVariable(name = "locationId") @Min(value = 0) long locationId) {

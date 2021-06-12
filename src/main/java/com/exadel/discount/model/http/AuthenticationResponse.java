@@ -1,4 +1,4 @@
-package com.exadel.discount.model;
+package com.exadel.discount.model.http;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

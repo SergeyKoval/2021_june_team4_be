@@ -1,7 +1,7 @@
 package com.exadel.discount.controller;
 
-import com.exadel.discount.model.AuthenticationRequest;
-import com.exadel.discount.model.AuthenticationResponse;
+import com.exadel.discount.model.http.AuthenticationRequest;
+import com.exadel.discount.model.http.AuthenticationResponse;
 import com.exadel.discount.service.MyUserDetailsService;
 import com.exadel.discount.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,22 +13,20 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.http.ResponseEntity;
 
 @RestController
-public class HelloResource {
-
-    @Autowired
+@RequestMapping("/authenticate")
+public class AuthenticationController {
     private AuthenticationManager authenticationManager;
-    @Autowired
     private MyUserDetailsService userDetailsService;
-    @Autowired
     private JwtUtil jwtTokenUtil;
 
-
-    @RequestMapping("/hello")
-    public String hello() {
-        return "Hello world!!";
+    @Autowired
+    public AuthenticationController(AuthenticationManager authenticationManager, MyUserDetailsService userDetailsService, JwtUtil jwtTokenUtil) {
+        this.authenticationManager = authenticationManager;
+        this.userDetailsService = userDetailsService;
+        this.jwtTokenUtil = jwtTokenUtil;
     }
 
-    @RequestMapping(value = "/authenticate", method = RequestMethod.POST)
+    @PostMapping
     public ResponseEntity<?> createAuthenticationToken(@RequestBody AuthenticationRequest authenticationRequest) throws Exception {
         try {
             authenticationManager.authenticate(
