@@ -12,7 +12,7 @@ public interface UserService {
 
     User addUser(User user);
 
-    User deleteUser(UUID id);
+    List<User> deleteUser(UUID id);
 
     List<User> findAllUsers();
 
@@ -22,7 +22,7 @@ public interface UserService {
 
     User addNewCouponToUser(Coupon coupon, UUID userId);
 
-    User removeCouponFromUser(UUID userId, UUID couponId);
+    User removeCouponFromUser(UUID userId, Coupon coupon);
 }
 
 

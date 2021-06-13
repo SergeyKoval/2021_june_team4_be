@@ -10,14 +10,13 @@ import java.util.UUID;
 public interface CouponService {
     Coupon findCouponById(UUID id);
 
-    Coupon deleteCoupon(UUID id);
+    List<Coupon> deleteCoupon(UUID id);
 
     List<Coupon> findAllCoupons();
 
     Coupon addCoupon(Coupon coupon, UUID userId);
 
     Coupon findCouponByDate(Timestamp time);
-
 
     Coupon switchCouponToAnotherUser(UUID couponId, UUID anotherUserId);
 

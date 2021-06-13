@@ -1,12 +1,10 @@
 package com.exadel.discount.dto.user;
 
-import com.exadel.discount.entity.User;
 import com.exadel.discount.entity.Role;
+import com.exadel.discount.entity.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.validation.constraints.NotNull;
 import java.util.UUID;
 
@@ -25,7 +23,6 @@ public class BaseUserDto {
     @NotNull
     private String password;
     @NotNull
-    @Enumerated(EnumType.ORDINAL)
     private Role role;
 
     public static BaseUserDto from(User user) {

@@ -11,10 +11,12 @@ import java.util.UUID;
 
 @Repository
 public interface UserRepository extends CrudRepository<User, UUID> {
-    @Query(value="select a from users a where a.first_name/*'*/:=/*'*/('%searchTerm%') or a.last_name/*'*/:=/*'*/('%searchTerm%')", nativeQuery = true)
+    @Query(value = "select a from users a where a.first_name/*'*/:=/*'*/('%searchTerm%') or a.last_name/*'*/:=/*'*/('%searchTerm%')", nativeQuery = true)
     List<User> findUsersByName(@Param("searchTerm") String searchTerm);
 
-   default User findUserById(UUID userId){
+    void deleteById(UUID id);
+
+    default User findUserById(UUID userId) {
         return findById(userId).get();
     }
 }

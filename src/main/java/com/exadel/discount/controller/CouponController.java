@@ -2,7 +2,6 @@ package com.exadel.discount.controller;
 
 import com.exadel.discount.dto.coupon.CouponDto;
 import com.exadel.discount.entity.Coupon;
-
 import com.exadel.discount.service.CouponService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -33,7 +32,9 @@ public class CouponController {
     @GetMapping
     public ResponseEntity<List<CouponDto>> getAllCoupons() {
         List<Coupon> allCoupons = couponService.findAllCoupons();
-        List<CouponDto> allCouponsDto = allCoupons.stream().map(CouponDto::from).collect(Collectors.toList());
+        List<CouponDto> allCouponsDto = allCoupons.stream()
+                .map(CouponDto::from)
+                .collect(Collectors.toList());
         return new ResponseEntity<>(allCouponsDto, HttpStatus.OK);
     }
 
@@ -43,22 +44,33 @@ public class CouponController {
         return new ResponseEntity<>(CouponDto.from(coupon), HttpStatus.OK);
     }
 
-    @GetMapping("/date")
+    @GetMapping("/date/{date}")
     public ResponseEntity<CouponDto> getCouponByDate(@PathVariable final Timestamp date) {
         Coupon coupon = couponService.findCouponByDate(date);
         return new ResponseEntity<>(CouponDto.from(coupon), HttpStatus.OK);
     }
 
-    @DeleteMapping(value = "{id}")
-    public ResponseEntity<CouponDto> deleteOrder(@PathVariable final UUID id) {
-        Coupon coupon = couponService.deleteCoupon(id);
-        return new ResponseEntity<>(CouponDto.from(coupon), HttpStatus.OK);
+    @DeleteMapping("{id}")
+    public ResponseEntity <List<CouponDto>> deleteCoupon(@PathVariable final UUID id) {
+        List<Coupon> remaindedCoupons = couponService.deleteCoupon(id);
+        List<CouponDto> remaindedCouponsDto = remaindedCoupons.stream()
+                .map(CouponDto::from)
+                .collect(Collectors.toList());
+        return new ResponseEntity<>(remaindedCouponsDto, HttpStatus.OK);
     }
 
-    @PutMapping("{id}")
-    public ResponseEntity<CouponDto> editOrder(@PathVariable final UUID id,
-                                               @RequestBody final CouponDto couponDto) {
-        Coupon editedCoupon = couponService.editCoupon(id, Coupon.from(couponDto));
+    @PutMapping("{couponId}")
+    public ResponseEntity<CouponDto> editCouponDate(@PathVariable final UUID couponId,
+                                                    @RequestBody final CouponDto newCouponDto) {
+        Coupon editedCoupon = couponService.editCoupon(couponId, Coupon.from(newCouponDto));
         return new ResponseEntity<>(CouponDto.from(editedCoupon), HttpStatus.OK);
     }
+
+    @PutMapping("{couponId}/switchtouser/{anotherUserId}")
+    public ResponseEntity<CouponDto> switchCouponToUser(@PathVariable final UUID couponId,
+                                                        @PathVariable final UUID anotherUserId) {
+        Coupon switchedCoupon = couponService.switchCouponToAnotherUser(couponId, anotherUserId);
+        return new ResponseEntity<>(CouponDto.from(switchedCoupon), HttpStatus.OK);
+    }
 }
+

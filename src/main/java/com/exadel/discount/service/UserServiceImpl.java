@@ -2,6 +2,7 @@ package com.exadel.discount.service;
 
 import com.exadel.discount.entity.Coupon;
 import com.exadel.discount.entity.User;
+import com.exadel.discount.exception.CouponNotFoundException;
 import com.exadel.discount.exception.UserNotFoundException;
 import com.exadel.discount.exception.UserSuchNameNotFoundException;
 import com.exadel.discount.repository.CouponRepository;
@@ -27,14 +28,18 @@ public class UserServiceImpl implements UserService {
         this.couponRepository = couponRepository;
     }
 
+    @Transactional
+    @Override
     public User addUser(User user) {
         return userRepository.save(user);
     }
 
-    public User deleteUser(UUID id) {
-        User userDeleted = findUserById(id);
-        userRepository.delete(userDeleted);
-        return userDeleted;
+    @Transactional
+    @Override
+    public List<User> deleteUser(UUID id) {
+        User deletedUser = findUserById(id);
+        userRepository.delete(deletedUser);
+        return findAllUsers();
     }
 
     @Override
@@ -57,6 +62,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Transactional
+    @Override
     public User editUser(UUID id, User user) {
         User editedUser = findUserById(id);
         editedUser.setFirstName(user.getFirstName());
@@ -70,26 +76,21 @@ public class UserServiceImpl implements UserService {
     }
 
     @Transactional
+    @Override
     public User addNewCouponToUser(Coupon coupon, UUID userId) {
-        User user = null;
-        try {
-            user = findUserById(userId);
-            coupon.setUser(user);
-            couponRepository.save(coupon);
-            user.addCoupon(coupon);
-        } catch (UserNotFoundException e) {
-            e.printStackTrace();
-        }
+        User user = findUserById(userId);
+        couponRepository.save(coupon);
+        user.addCoupon(coupon);
+        coupon.setUser(user);
         return user;
     }
 
     @Transactional
-    public User removeCouponFromUser(UUID userId, UUID couponId) {
-
-        Coupon coupon = couponRepository.findCouponById(couponId);
-        User user = findUserById(couponId);
-        user.removeCoupon(coupon);
-        return user;
+    @Override
+    public User removeCouponFromUser(UUID userId, Coupon coupon) {
+        couponRepository.delete(coupon);
+        findUserById(userId).removeCoupon(coupon);
+        return findUserById(userId);
     }
 }
 

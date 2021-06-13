@@ -12,7 +12,7 @@ import java.util.UUID;
 public class CouponDto {
     private UUID id;
     private Timestamp date;
-    private UserDto userDto;
+   // private UserDto userDto;
     private BaseUserDto baseUserDto;
 
 

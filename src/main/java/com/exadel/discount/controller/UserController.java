@@ -45,9 +45,10 @@ public class UserController {
     }
 
     @DeleteMapping("{id}")
-    public ResponseEntity<UserDto> deleteUser(@PathVariable final UUID id) {
-        User user = userService.deleteUser(id);
-        return new ResponseEntity<>(UserDto.from(user), HttpStatus.OK);
+    public ResponseEntity<List<UserDto>> deleteUser(@PathVariable final UUID id) {
+        List<User> remaindedUsers = userService.deleteUser(id);
+        List<UserDto> remaindedUsersDto = remaindedUsers.stream().map(UserDto::from).collect(Collectors.toList());
+        return new ResponseEntity<>(remaindedUsersDto, HttpStatus.OK);
     }
 
     @PutMapping("{id}")
@@ -64,17 +65,17 @@ public class UserController {
         return new ResponseEntity<>(usersDto, HttpStatus.OK);
     }
 
-    @PostMapping("addcoupon/{userId}")
+    @PostMapping("userid/{userId}")
     public ResponseEntity<UserDto> addCouponToUser(@RequestBody final CouponDto couponDto,
                                                    @PathVariable final UUID userId) {
         User user = userService.addNewCouponToUser(Coupon.from(couponDto), userId);
         return new ResponseEntity<>(UserDto.from(user), HttpStatus.OK);
     }
 
-    @DeleteMapping("{userId}/removecoupon/{couponId}")
+    @DeleteMapping("{userId}/couponout")
     public ResponseEntity<UserDto> removeCouponFromUser(@PathVariable final UUID userId,
-                                                        @PathVariable final UUID couponId) {
-        User user = userService.removeCouponFromUser(userId, couponId);
+                                                        @RequestBody final Coupon coupon) {
+        User user = userService.removeCouponFromUser(userId, coupon);
         return new ResponseEntity<>(UserDto.from(user), HttpStatus.OK);
     }
 }
