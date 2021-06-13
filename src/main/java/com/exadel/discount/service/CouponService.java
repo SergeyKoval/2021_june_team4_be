@@ -14,11 +14,13 @@ public interface CouponService {
 
     List<Coupon> findAllCoupons();
 
-    Coupon addCoupon(Coupon coupon);
+    Coupon addCoupon(Coupon coupon, UUID userId);
 
     Coupon findCouponByDate(Timestamp time);
 
-    //List<Coupon> findCouponBySerialNumber(String serialNumber);
+
+    Coupon switchCouponToAnotherUser(UUID couponId, UUID anotherUserId);
+
     Coupon editCoupon(UUID id, Coupon coupon);
 
 }

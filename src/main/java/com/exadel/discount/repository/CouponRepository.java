@@ -10,4 +10,7 @@ import java.util.UUID;
 @Repository
 public interface CouponRepository extends CrudRepository<Coupon, UUID> {
     Coupon findCouponByDate(Timestamp date);
+    default Coupon findCouponById(UUID couponId){
+       return findById(couponId).get();
+    }
 }

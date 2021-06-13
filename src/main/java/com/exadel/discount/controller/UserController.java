@@ -1,6 +1,8 @@
 package com.exadel.discount.controller;
 
-import com.exadel.discount.dto.UserDto;
+import com.exadel.discount.dto.coupon.CouponDto;
+import com.exadel.discount.dto.user.UserDto;
+import com.exadel.discount.entity.Coupon;
 import com.exadel.discount.entity.User;
 import com.exadel.discount.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,7 +52,7 @@ public class UserController {
 
     @PutMapping("{id}")
     public ResponseEntity<UserDto> editUser(@PathVariable final UUID id,
-                                                @RequestBody final UserDto userDto) {
+                                            @RequestBody final UserDto userDto) {
         User user = userService.editUser(id, User.from(userDto));
         return new ResponseEntity<>(UserDto.from(user), HttpStatus.OK);
     }
@@ -62,16 +64,16 @@ public class UserController {
         return new ResponseEntity<>(usersDto, HttpStatus.OK);
     }
 
-    @PostMapping("{personId}/order/{couponId}/add")
-    public ResponseEntity<UserDto> addCouponToUser(@PathVariable final UUID userId,
-                                                       @PathVariable final UUID couponId) {
-        User user = userService.addCouponToUser(userId, couponId);
+    @PostMapping("addcoupon/{userId}")
+    public ResponseEntity<UserDto> addCouponToUser(@RequestBody final CouponDto couponDto,
+                                                   @PathVariable final UUID userId) {
+        User user = userService.addNewCouponToUser(Coupon.from(couponDto), userId);
         return new ResponseEntity<>(UserDto.from(user), HttpStatus.OK);
     }
 
-    @DeleteMapping("{userId}/coupon/{couponId}/remove")
+    @DeleteMapping("{userId}/removecoupon/{couponId}")
     public ResponseEntity<UserDto> removeCouponFromUser(@PathVariable final UUID userId,
-                                                            @PathVariable final UUID couponId) {
+                                                        @PathVariable final UUID couponId) {
         User user = userService.removeCouponFromUser(userId, couponId);
         return new ResponseEntity<>(UserDto.from(user), HttpStatus.OK);
     }

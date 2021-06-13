@@ -2,17 +2,15 @@ package com.exadel.discount.service;
 
 import com.exadel.discount.entity.Coupon;
 import com.exadel.discount.entity.User;
-import com.exadel.discount.exception.CouponIsAlreadyAssignedException;
-import com.exadel.discount.exception.CouponNotFoundAtSerialNumberException;
 import com.exadel.discount.exception.UserNotFoundException;
 import com.exadel.discount.exception.UserSuchNameNotFoundException;
+import com.exadel.discount.repository.CouponRepository;
 import com.exadel.discount.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -21,12 +19,12 @@ import java.util.stream.StreamSupport;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
-    private final CouponService couponService;
+    private final CouponRepository couponRepository;
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository, CouponService couponService) {
+    public UserServiceImpl(UserRepository userRepository, CouponRepository couponRepository) {
         this.userRepository = userRepository;
-        this.couponService = couponService;
+        this.couponRepository = couponRepository;
     }
 
     public User addUser(User user) {
@@ -34,14 +32,8 @@ public class UserServiceImpl implements UserService {
     }
 
     public User deleteUser(UUID id) {
-        User userDeleted = null;
-        try {
-            userDeleted = findUserById(id);
-        } catch (UserNotFoundException e) {
-            e.printStackTrace();
-        }
-        if (userDeleted != null)
-            userRepository.delete(userDeleted);
+        User userDeleted = findUserById(id);
+        userRepository.delete(userDeleted);
         return userDeleted;
     }
 
@@ -60,7 +52,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<User> findUsersByName(String name) {
         List<User> suchNameUserList = userRepository.findUsersByName(name);
-        if (suchNameUserList.size()==0) throw new UserSuchNameNotFoundException(name);
+        if (suchNameUserList.size() == 0) throw new UserSuchNameNotFoundException(name);
         return suchNameUserList;
     }
 
@@ -78,35 +70,25 @@ public class UserServiceImpl implements UserService {
     }
 
     @Transactional
-    public User addCouponToUser(UUID couponId, UUID orderId) {
-        User user = findUserById(couponId);
-        Coupon coupon = couponService.findCouponById(orderId);
-        if (Objects.nonNull(coupon.getUser())) {
-            throw new CouponIsAlreadyAssignedException(orderId,
-                    coupon.getUser().getId());
+    public User addNewCouponToUser(Coupon coupon, UUID userId) {
+        User user = null;
+        try {
+            user = findUserById(userId);
+            coupon.setUser(user);
+            couponRepository.save(coupon);
+            user.addCoupon(coupon);
+        } catch (UserNotFoundException e) {
+            e.printStackTrace();
         }
-        user.addCoupon(coupon);
-        coupon.setUser(user);
         return user;
     }
 
     @Transactional
     public User removeCouponFromUser(UUID userId, UUID couponId) {
-        User user = null;
-        Coupon coupon = null;
-        try {
-            coupon = couponService.findCouponById(couponId);
-        } catch (CouponNotFoundAtSerialNumberException e) {
-            e.printStackTrace();
-        }
-        try {
-            user = findUserById(couponId);
-        } catch (UserNotFoundException e) {
-            e.printStackTrace();
-        }
-        if (user != null) {
-            user.removeCoupon(coupon);
-        }
+
+        Coupon coupon = couponRepository.findCouponById(couponId);
+        User user = findUserById(couponId);
+        user.removeCoupon(coupon);
         return user;
     }
 }

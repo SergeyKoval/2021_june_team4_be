@@ -1,7 +1,7 @@
 package com.exadel.discount.entity;
 
 import com.exadel.discount.config.EnumPostgresSQLType;
-import com.exadel.discount.dto.UserDto;
+import com.exadel.discount.dto.user.UserDto;
 import lombok.Data;
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.TypeDef;

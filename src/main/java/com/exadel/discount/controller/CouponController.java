@@ -1,6 +1,6 @@
 package com.exadel.discount.controller;
 
-import com.exadel.discount.dto.CouponDto;
+import com.exadel.discount.dto.coupon.CouponDto;
 import com.exadel.discount.entity.Coupon;
 
 import com.exadel.discount.service.CouponService;
@@ -24,9 +24,9 @@ public class CouponController {
         this.couponService = couponService;
     }
 
-    @PostMapping
-    public ResponseEntity<CouponDto> addCoupon(@RequestBody CouponDto couponDto) {
-        Coupon coupon = couponService.addCoupon(Coupon.from(couponDto));
+    @PostMapping("{userId}")
+    public ResponseEntity<CouponDto> addCoupon(@RequestBody CouponDto couponDto, @PathVariable final UUID userId) {
+        Coupon coupon = couponService.addCoupon(Coupon.from(couponDto), userId);
         return new ResponseEntity<>(CouponDto.from(coupon), HttpStatus.OK);
     }
 

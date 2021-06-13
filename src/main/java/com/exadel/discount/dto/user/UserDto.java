@@ -1,5 +1,6 @@
-package com.exadel.discount.dto;
+package com.exadel.discount.dto.user;
 
+import com.exadel.discount.dto.coupon.CouponDto;
 import com.exadel.discount.entity.User;
 import com.exadel.discount.entity.Role;
 import lombok.Data;
@@ -22,10 +23,8 @@ public class UserDto {
     @NotNull
     private String password;
     @NotNull
-    //@Enumerated(EnumType.ORDINAL)
-    // @Convert(converter = StringToEnumConverter.class)
     private Role role;
-    private List<CouponDto> ordersDto = new ArrayList<>();
+    private List<CouponDto> couponDtos = new ArrayList<>();
 
     public static UserDto from(User user) {
         UserDto userDto = new UserDto();
@@ -37,7 +36,8 @@ public class UserDto {
         userDto.setLogin(user.getLogin());
         userDto.setPassword(user.getPassword());
         userDto.setRole(user.getRole());
-        userDto.setOrdersDto(user.getCoupons().stream().map(CouponDto::from).collect(Collectors.toList()));
+        userDto.setCouponDtos(user.getCoupons().stream().map(CouponDto::from).collect(Collectors.toList()));
         return userDto;
     }
+
 }
