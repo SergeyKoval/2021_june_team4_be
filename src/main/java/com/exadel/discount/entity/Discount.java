@@ -1,16 +1,13 @@
 package com.exadel.discount.entity;
 
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.Date;
 import java.util.UUID;
 
-@Getter @Setter
-@EqualsAndHashCode
+@Data
 @NoArgsConstructor
 @Entity
 @Table(name = "discounts")
@@ -42,18 +39,4 @@ public class Discount {
         this.active = active;
     }
 
-    @Override
-    public String toString() {
-        return "Discount{" +
-                "id=" + id +
-                ", category=" + category.toString() +
-                ", name='" + name + '\'' +
-                ", description='" + description + '\'' +
-                ", promo='" + promo + '\'' +
-                ", percent=" + percent +
-                ", start_time=" + start_time +
-                ", end_time=" + end_time +
-                ", active=" + active +
-                '}';
-    }
 }

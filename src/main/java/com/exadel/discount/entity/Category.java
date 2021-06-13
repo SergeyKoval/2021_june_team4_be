@@ -1,22 +1,22 @@
 package com.exadel.discount.entity;
 
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.util.List;
 import java.util.UUID;
 
-@Getter @Setter
-@EqualsAndHashCode
+@Data
 @NoArgsConstructor
 @Entity
 @Table(name = "categories")
 public class Category {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(generator = "UUID")
+    @GenericGenerator(name = "UUID",
+            strategy = "org.hibernate.id.UUIDGenerator"
+    )
     private UUID id;
 
     private String name;
@@ -24,17 +24,11 @@ public class Category {
     @OneToMany(cascade = CascadeType.ALL,
     fetch = FetchType.EAGER,
     mappedBy = "category")
-    private List<Discount> discount;
+    @ToString.Exclude
+    private List<Discount> discounts;
 
     public Category(String name) {
         this.name = name;
     }
 
-    @Override
-    public String toString() {
-        return "Category{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                '}';
-    }
 }

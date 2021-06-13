@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class DiscountServiceImpl implements DiscountService {
@@ -20,7 +21,7 @@ public class DiscountServiceImpl implements DiscountService {
     }
 
     @Override
-    public Discount get(long id) {
+    public Discount get(UUID id) {
         return discountRepository.getOne(id);
     }
 

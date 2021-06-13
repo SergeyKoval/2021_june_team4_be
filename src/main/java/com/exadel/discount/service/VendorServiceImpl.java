@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class VendorServiceImpl implements VendorService {
@@ -20,7 +21,7 @@ public class VendorServiceImpl implements VendorService {
     }
 
     @Override
-    public Vendor get(Long id) {
+    public Vendor get(UUID id) {
         return vendorRepository.getOne(id);
     }
 

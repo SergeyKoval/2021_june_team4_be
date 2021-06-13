@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class VendoLocationrServiceImpl implements VendorLocationService {
@@ -15,16 +16,13 @@ public class VendoLocationrServiceImpl implements VendorLocationService {
     @Autowired
     private VendoLocationrRepository vendoLocationrRepository;
 
-    @Autowired
-    private VendorRepository vendorRepository;
-
     @Override
     public VendorLocation create(VendorLocation locationVendor) {
         return vendoLocationrRepository.save(locationVendor);
     }
 
     @Override
-    public VendorLocation get(Long id) {
+    public VendorLocation get(UUID id) {
         return vendoLocationrRepository.getOne(id);
     }
 
