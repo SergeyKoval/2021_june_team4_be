@@ -19,7 +19,7 @@ describes the configuration of service components. All samples can be run in
 a local environment by going into the root directory of each one and executing:
 
 ```console
-docker-compose up -d
+docker-compose up -d --build
 ```
 
 
