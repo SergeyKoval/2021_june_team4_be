@@ -2,7 +2,6 @@ package com.exadel.discount.service;
 
 import com.exadel.discount.entity.Coupon;
 import com.exadel.discount.entity.User;
-import com.exadel.discount.exception.CouponNotFoundException;
 import com.exadel.discount.exception.UserNotFoundException;
 import com.exadel.discount.exception.UserSuchNameNotFoundException;
 import com.exadel.discount.repository.CouponRepository;
@@ -73,17 +72,6 @@ public class UserServiceImpl implements UserService {
         editedUser.setLogin(user.getLogin());
         editedUser.setPassword(user.getPassword());
         return editedUser;
-    }
-
-    @Transactional
-    @Override
-    public User addNewCouponToUser(Coupon coupon, UUID userId) {
-        User user = findUserById(userId);
-        coupon.setUser(user);
-        couponRepository.save(coupon);
-        user.addCoupon(coupon);
-        coupon.setUser(user);
-        return user;
     }
 
     @Transactional

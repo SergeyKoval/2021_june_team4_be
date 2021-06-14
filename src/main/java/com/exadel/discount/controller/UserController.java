@@ -66,13 +66,6 @@ public class UserController {
         return new ResponseEntity<>(usersDto, HttpStatus.OK);
     }
 
-    @PostMapping("userid/{userId}")
-    public ResponseEntity<UserDto> addCouponToUser(@RequestBody final CouponDto couponDto,
-                                                   @PathVariable final UUID userId) {
-        User user = userService.addNewCouponToUser(Coupon.from(couponDto), userId);
-        return new ResponseEntity<>(UserDto.from(user), HttpStatus.OK);
-    }
-
     @DeleteMapping("{userId}/couponout")
     public ResponseEntity<UserDto> removeCouponFromUser(@PathVariable final UUID userId,
                                                         @RequestBody final Coupon coupon) {

@@ -20,8 +20,6 @@ public interface UserService {
 
     User editUser(UUID id, User user);
 
-    User addNewCouponToUser(Coupon coupon, UUID userId);
-
     User removeCouponFromUser(UUID userId, Coupon coupon);
 }
 
