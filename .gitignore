@@ -22,20 +22,26 @@
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
 
+# IntelliJ idea
+.idea/
+*.iml
+*.ipr
+*.iws
+*.idea
+
+#Build
+
+target
+bin
+target/
+build/
+node_modules/
+config/
 # Operating System Files
 
 *.DS_Store
 .DS_Store
 Thumbs.db
-
-# Build Files #
-
-bin
-target
-target/
-build/
-node_modules/
-config/
 
 
 package.json
@@ -50,14 +56,6 @@ vscrudate.iml
 .project
 .settings
 .springBeans
-
-# IntelliJ IDEA Files #
-
-*.iml
-*.ipr
-*.iws
-*.idea
-.idea/
 
 # Test files
 
