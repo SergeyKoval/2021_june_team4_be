@@ -1,0 +1,23 @@
+databaseChangeLog:
+  - changeSet:
+      id: 4-create-tags-discounts-table
+      author: elizaveta_dubogryz
+      changes:
+        - createTable:
+            tableName: tags_discounts
+            columns:
+              - column:
+                  name: id
+                  type: UUID
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: discount_id
+                  type: UUID
+                  constraints:
+                    nullable: false
+              - column:
+                  name: tag_id
+                  type: UUID
+                  constraints:
+                    nullable: false
