@@ -1,5 +1,6 @@
 package com.exadel.discount.entity;
 
+import com.exadel.discount.dto.coupon.BaseCouponDto;
 import com.exadel.discount.dto.coupon.CouponDto;
 import lombok.Data;
 
@@ -9,7 +10,6 @@ import java.util.UUID;
 
 @Data
 @Entity
-//@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @Table(name = "coupons")
 
 public class Coupon {
@@ -20,6 +20,7 @@ public class Coupon {
     private Timestamp date;
 
     @ManyToOne
+    @JoinColumn(name = "user_id")
     private User user;
 
     public Coupon() {
@@ -30,5 +31,12 @@ public class Coupon {
         coupon.setDate(couponDto.getDate());
         return coupon;
     }
+
+    public static Coupon from(BaseCouponDto baseCouponDto) {
+        Coupon coupon = new Coupon();
+        coupon.setDate(baseCouponDto.getDate());
+        return coupon;
+    }
+
 
 }

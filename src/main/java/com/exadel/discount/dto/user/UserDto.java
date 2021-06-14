@@ -22,13 +22,8 @@ public class UserDto {
     private String lastName;
     private String phone;
     private String email;
-    @NotNull
     private String login;
-    @NotNull
     private String password;
-//    @Enumerated(EnumType.STRING)
-//    @Column(columnDefinition = "role")
-//    @Type(type = "user_role")
     private Role role;
     private List<CouponDto> couponDtos = new ArrayList<>();
 

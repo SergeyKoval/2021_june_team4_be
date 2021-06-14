@@ -1,6 +1,7 @@
 package com.exadel.discount.entity;
 
 import com.exadel.discount.config.EnumPostgresSQLType;
+import com.exadel.discount.dto.user.BaseUserDto;
 import com.exadel.discount.dto.user.UserDto;
 import lombok.Data;
 import org.hibernate.annotations.Type;
@@ -39,8 +40,9 @@ public class User implements Serializable {
     @Type(type = "user_role")
     private Role role;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinColumn(name = "user_id")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+//    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+//    @JoinColumn(name = "user_id")
     private List<Coupon> coupons = new ArrayList<>();
 
     public User() {
@@ -66,6 +68,17 @@ public class User implements Serializable {
         return user;
     }
 
+    public static User from(BaseUserDto baseUserDto) {
+        User user = new User();
+        user.setFirstName(baseUserDto.getFirstName());
+        user.setLastName(baseUserDto.getLastName());
+        user.setPhone(baseUserDto.getPhone());
+        user.setEmail(baseUserDto.getEmail());
+        user.setLogin(baseUserDto.getLogin());
+        user.setPassword(baseUserDto.getPassword());
+        user.setRole(baseUserDto.getRole());
+        return user;
+    }
     public User(String firstName, String lastName, String phone, String email, String login, String password, Role role) {
         this.firstName = firstName;
         this.lastName = lastName;

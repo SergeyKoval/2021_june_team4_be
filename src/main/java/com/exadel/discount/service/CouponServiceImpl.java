@@ -9,6 +9,7 @@ import com.exadel.discount.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.servlet.handler.UserRoleAuthorizationInterceptor;
 
 import java.sql.Timestamp;
 import java.util.List;
@@ -29,9 +30,10 @@ public class CouponServiceImpl implements CouponService {
 
     @Transactional
     @Override
-    public Coupon addCoupon(Coupon coupon) {
+    public Coupon addCoupon( UUID userId, Coupon coupon) {
+        User user = userRepository.findUserById(userId);
+        coupon.setUser(user);
         couponRepository.save(coupon);
-        //coupon.setUser(coupon.getUser());
         return coupon;
     }
 
@@ -47,9 +49,9 @@ public class CouponServiceImpl implements CouponService {
 
     @Transactional
     @Override
-    public List<Coupon> deleteCoupon(Coupon coupon) {
-        couponRepository.delete(coupon);
-
+    public List<Coupon> deleteCoupon(UUID id) {
+        Coupon cuopon = couponRepository.findCouponById(id);
+        couponRepository.delete(cuopon);
         return findAllCoupons();
     }
 

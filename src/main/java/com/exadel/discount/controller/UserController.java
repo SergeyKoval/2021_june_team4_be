@@ -1,6 +1,7 @@
 package com.exadel.discount.controller;
 
 import com.exadel.discount.dto.coupon.CouponDto;
+import com.exadel.discount.dto.user.BaseUserDto;
 import com.exadel.discount.dto.user.UserDto;
 import com.exadel.discount.entity.Coupon;
 import com.exadel.discount.entity.User;
@@ -26,8 +27,8 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<UserDto> addUser(@RequestBody final UserDto userDto) {
-        User user = userService.addUser(User.from(userDto));
+    public ResponseEntity<UserDto> addUser(@RequestBody final BaseUserDto baseUserDto) {
+        User user = userService.addUser(User.from(baseUserDto));
         return new ResponseEntity<>(UserDto.from(user), HttpStatus.OK);
     }
 

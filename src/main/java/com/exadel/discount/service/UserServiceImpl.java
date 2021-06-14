@@ -79,6 +79,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public User addNewCouponToUser(Coupon coupon, UUID userId) {
         User user = findUserById(userId);
+        coupon.setUser(user);
         couponRepository.save(coupon);
         user.addCoupon(coupon);
         coupon.setUser(user);

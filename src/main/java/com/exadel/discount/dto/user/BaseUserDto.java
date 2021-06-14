@@ -14,15 +14,9 @@ public class BaseUserDto {
     private String firstName;
     private String lastName;
     private String phone;
-    @NotNull
     private String email;
-    @NotNull
     private String login;
-    @NotNull
     private String password;
-    //    @Enumerated(EnumType.STRING)
-//    @Column(columnDefinition = "role")
-//    @Type(type = "user_role")
     private Role role;
 
     public static BaseUserDto from(User user) {

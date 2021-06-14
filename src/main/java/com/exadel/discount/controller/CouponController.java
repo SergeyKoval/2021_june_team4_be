@@ -1,5 +1,6 @@
 package com.exadel.discount.controller;
 
+import com.exadel.discount.dto.coupon.BaseCouponDto;
 import com.exadel.discount.dto.coupon.CouponDto;
 import com.exadel.discount.entity.Coupon;
 import com.exadel.discount.service.CouponService;
@@ -23,9 +24,10 @@ public class CouponController {
         this.couponService = couponService;
     }
 
-    @PostMapping
-    public ResponseEntity<CouponDto> addCoupon(@RequestBody CouponDto couponDto) {
-        Coupon coupon = couponService.addCoupon(Coupon.from(couponDto));
+    @PostMapping("{userId}")
+    public ResponseEntity<CouponDto> addCoupon(@PathVariable final UUID userId,
+                                               @RequestBody final BaseCouponDto baseCouponDto) {
+        Coupon coupon = couponService.addCoupon(userId, Coupon.from(baseCouponDto));
         return new ResponseEntity<>(CouponDto.from(coupon), HttpStatus.OK);
     }
 
@@ -50,19 +52,19 @@ public class CouponController {
         return new ResponseEntity<>(CouponDto.from(coupon), HttpStatus.OK);
     }
 
-    @DeleteMapping
-    public ResponseEntity <List<CouponDto>> deleteCoupon(@PathVariable final CouponDto couponDto) {
-        List<Coupon> remaindedCoupons = couponService.deleteCoupon(Coupon.from(couponDto));
+    @DeleteMapping("{Id}")
+    public ResponseEntity <List<CouponDto>> deleteCoupon(@PathVariable final UUID id) {
+        List<Coupon> remaindedCoupons = couponService.deleteCoupon(id);
         List<CouponDto> remaindedCouponsDto = remaindedCoupons.stream()
                 .map(CouponDto::from)
                 .collect(Collectors.toList());
         return new ResponseEntity<>(remaindedCouponsDto, HttpStatus.OK);
     }
 
-    @PutMapping("{couponId}")
-    public ResponseEntity<CouponDto> editCouponDate(@PathVariable final UUID couponId,
+    @PutMapping("{Id}")
+    public ResponseEntity<CouponDto> editCouponDate(@PathVariable final UUID Id,
                                                     @RequestBody final CouponDto newCouponDto) {
-        Coupon editedCoupon = couponService.editCoupon(couponId, Coupon.from(newCouponDto));
+        Coupon editedCoupon = couponService.editCoupon(Id, Coupon.from(newCouponDto));
         return new ResponseEntity<>(CouponDto.from(editedCoupon), HttpStatus.OK);
     }
 
