@@ -1,14 +1,25 @@
 version: "3.8"
 services:
   postgres:
-    image: postgres:13.3
+    container_name: postgres
+    image: postgres:12-alpine
     restart: always
     environment:
-      - POSTGRES_DB=postgres #имя моей бд
-      - POSTGRES_USER=postgres   #юзер бд
-      - POSTGRES_PASSWORD=asdqwe #пароль к локальной бд
+      - POSTGRES_PASSWORD=asdqwe
+      - POSTGRES_USER=postgres
+      - POSTGRES_DB=discounts # пароль к локальной бд
+
     ports:
-    - '5432:5432'    #порт для бд, по умолчанию 5432
-    volumes:
-    - ./postgres-data:/var/lib/postgresql/data
-    - ./sql/create_tables.sql:/docker-entrypoint-initdb.d/create_tables.sql
+      - "5432:5432"    # порт для бд, по умолчанию 5432
+  backend:
+    build: .
+    container_name: backend
+    environment:
+        SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/discounts
+        SPRING_DATASOURCE_USERNAME: postgres
+        SPRING_DATASOURCE_PASSWORD: asdqwe
+    ports:
+      - "8080:8080"
+    restart: always    # при несанкционированных падениях апки, будет произведен рестарт
+    depends_on:
+      - postgres  # загружает апку после полной загрузки бд, а не произвольно
