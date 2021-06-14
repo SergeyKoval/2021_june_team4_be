@@ -23,9 +23,9 @@ public class CouponController {
         this.couponService = couponService;
     }
 
-    @PostMapping("{userId}")
-    public ResponseEntity<CouponDto> addCoupon(@RequestBody CouponDto couponDto, @PathVariable final UUID userId) {
-        Coupon coupon = couponService.addCoupon(Coupon.from(couponDto), userId);
+    @PostMapping
+    public ResponseEntity<CouponDto> addCoupon(@RequestBody CouponDto couponDto) {
+        Coupon coupon = couponService.addCoupon(Coupon.from(couponDto));
         return new ResponseEntity<>(CouponDto.from(coupon), HttpStatus.OK);
     }
 
@@ -50,9 +50,9 @@ public class CouponController {
         return new ResponseEntity<>(CouponDto.from(coupon), HttpStatus.OK);
     }
 
-    @DeleteMapping("{id}")
-    public ResponseEntity <List<CouponDto>> deleteCoupon(@PathVariable final UUID id) {
-        List<Coupon> remaindedCoupons = couponService.deleteCoupon(id);
+    @DeleteMapping
+    public ResponseEntity <List<CouponDto>> deleteCoupon(@PathVariable final CouponDto couponDto) {
+        List<Coupon> remaindedCoupons = couponService.deleteCoupon(Coupon.from(couponDto));
         List<CouponDto> remaindedCouponsDto = remaindedCoupons.stream()
                 .map(CouponDto::from)
                 .collect(Collectors.toList());

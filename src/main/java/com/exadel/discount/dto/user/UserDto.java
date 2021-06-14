@@ -4,7 +4,11 @@ import com.exadel.discount.dto.coupon.CouponDto;
 import com.exadel.discount.entity.User;
 import com.exadel.discount.entity.Role;
 import lombok.Data;
+import org.hibernate.annotations.Type;
 
+import javax.persistence.Column;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +26,9 @@ public class UserDto {
     private String login;
     @NotNull
     private String password;
-    @NotNull
+//    @Enumerated(EnumType.STRING)
+//    @Column(columnDefinition = "role")
+//    @Type(type = "user_role")
     private Role role;
     private List<CouponDto> couponDtos = new ArrayList<>();
 

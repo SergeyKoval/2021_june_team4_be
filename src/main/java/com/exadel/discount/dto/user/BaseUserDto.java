@@ -2,7 +2,6 @@ package com.exadel.discount.dto.user;
 
 import com.exadel.discount.entity.Role;
 import com.exadel.discount.entity.User;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 import javax.validation.constraints.NotNull;
@@ -19,10 +18,11 @@ public class BaseUserDto {
     private String email;
     @NotNull
     private String login;
-    @JsonIgnore
     @NotNull
     private String password;
-    @NotNull
+    //    @Enumerated(EnumType.STRING)
+//    @Column(columnDefinition = "role")
+//    @Type(type = "user_role")
     private Role role;
 
     public static BaseUserDto from(User user) {

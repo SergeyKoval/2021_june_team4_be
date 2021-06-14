@@ -29,11 +29,9 @@ public class CouponServiceImpl implements CouponService {
 
     @Transactional
     @Override
-    public Coupon addCoupon(Coupon coupon, UUID userId) {
-//        User user = userRepository.findUserById(userId);
-//        coupon.setUser(user);
-//        user.addCoupon(coupon);
+    public Coupon addCoupon(Coupon coupon) {
         couponRepository.save(coupon);
+        //coupon.setUser(coupon.getUser());
         return coupon;
     }
 
@@ -49,9 +47,9 @@ public class CouponServiceImpl implements CouponService {
 
     @Transactional
     @Override
-    public List<Coupon> deleteCoupon(UUID id) {
-        Coupon deletedCoupon = findCouponById(id);
-        couponRepository.delete(deletedCoupon);
+    public List<Coupon> deleteCoupon(Coupon coupon) {
+        couponRepository.delete(coupon);
+
         return findAllCoupons();
     }
 
