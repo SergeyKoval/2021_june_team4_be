@@ -16,11 +16,11 @@ databaseChangeLog:
                   type: UUID
                   constraints:
                     nullable: false
-#              - column:
-#                  name: discount_id
-#                  type: UUID
-#                  constraints:
-#                    nullable: false
+              - column:
+                  name: discount_id
+                  type: UUID
+                  constraints:
+                    nullable: false
               - column:
                   name: date
                   type: timestamp

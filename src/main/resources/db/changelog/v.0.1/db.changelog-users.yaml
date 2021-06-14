@@ -51,8 +51,8 @@ databaseChangeLog:
                   type: USER_ROLE
                   constraints:
                     nullable: false
-#              - column:
-#                  name: city_id
-#                  type: UUID
-#                  constraints:
-#                    nullable: false
+              - column:
+                  name: city_id
+                  type: UUID
+                  constraints:
+                    nullable: false
