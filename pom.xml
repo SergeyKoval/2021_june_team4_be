@@ -20,6 +20,8 @@
         <junit.version>4.13.2</junit.version>
         <springfox.version>3.0.0</springfox.version>
         <spring.version>2.5.0</spring.version>
+        <jjwt.version>0.9.1</jjwt.version>
+        <jaxb-api.version>2.3.1</jaxb-api.version>
     </properties>
 
     <dependencies>
@@ -58,20 +60,14 @@
         <dependency>
             <groupId>io.jsonwebtoken</groupId>
             <artifactId>jjwt</artifactId>
-            <version>0.9.1</version>
+            <version>${jjwt.version}</version>
         </dependency>
-
-<!--        <dependency>-->
-<!--            <groupId>com.auth0</groupId>-->
-<!--            <artifactId>java-jwt</artifactId>-->
-<!--            <version>3.16.0</version>-->
-<!--        </dependency>-->
 
         <!-- Rest -->
         <dependency>
             <groupId>javax.xml.bind</groupId>
             <artifactId>jaxb-api</artifactId>
-            <version>2.3.1</version>
+            <version>${jaxb-api.version}</version>
         </dependency>
 
         <!-- Lombok -->
@@ -111,11 +107,6 @@
         </dependency>
 
         <!-- SQL -->
-<!--        <dependency>-->
-<!--            <groupId>mysql</groupId>-->
-<!--            <artifactId>mysql-connector-java</artifactId>-->
-<!--            <version>8.0.25</version>-->
-<!--        </dependency>-->
     </dependencies>
 
     <build>

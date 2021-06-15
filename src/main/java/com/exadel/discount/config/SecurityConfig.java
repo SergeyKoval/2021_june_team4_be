@@ -20,13 +20,13 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
-public class SecurityConfigurer extends WebSecurityConfigurerAdapter {
+public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private UserDetailsServiceImpl userDetailsServiceImpl;
     private AccessTokenRequestFilter accessTokenRequestFilter;
 
     @Autowired
-    public SecurityConfigurer(@Qualifier("userDetailsServiceImpl") UserDetailsServiceImpl userDetailsServiceImpl,
-                              AccessTokenRequestFilter accessTokenRequestFilter) {
+    public SecurityConfig(@Qualifier("userDetailsServiceImpl") UserDetailsServiceImpl userDetailsServiceImpl,
+                          AccessTokenRequestFilter accessTokenRequestFilter) {
         this.userDetailsServiceImpl = userDetailsServiceImpl;
         this.accessTokenRequestFilter = accessTokenRequestFilter;
     }
