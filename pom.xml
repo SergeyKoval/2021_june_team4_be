@@ -18,6 +18,8 @@
         <java.version>11</java.version>
         <lombok.version>1.18.20</lombok.version>
         <junit.version>4.13.2</junit.version>
+        <liquibase.version>4.3.5</liquibase.version>
+        <postgresql.version>42.2.20</postgresql.version>
         <springfox.version>3.0.0</springfox.version>
         <spring.version>2.5.0</spring.version>
         <jjwt.version>0.9.1</jjwt.version>
@@ -106,7 +108,18 @@
             <version>${springfox.version}</version>
         </dependency>
 
-        <!-- SQL -->
+        <!-- Database -->
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>${postgresql.version}</version>
+        </dependency>
+      
+        <dependency>
+            <groupId>org.liquibase</groupId>
+            <artifactId>liquibase-core</artifactId>
+            <version>${liquibase.version}</version>
+        </dependency>
     </dependencies>
 
     <build>
