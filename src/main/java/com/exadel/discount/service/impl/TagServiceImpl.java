@@ -1,7 +1,7 @@
 package com.exadel.discount.service.impl;
 
-import com.exadel.discount.dto.tag.CreateTagDTO;
-import com.exadel.discount.dto.tag.TagDTO;
+import com.exadel.discount.dto.TagDTO;
+import com.exadel.discount.entity.Tag;
 import com.exadel.discount.mapper.TagMapper;
 import com.exadel.discount.repository.TagRepository;
 import com.exadel.discount.service.TagService;
@@ -20,7 +20,7 @@ public class TagServiceImpl implements TagService {
 
     @Override
     public List<TagDTO> getAllTags() {
-        var allTags = tagRepository.findAll();
+        List<Tag> allTags = tagRepository.findAll();
         return tagMapper.toTagDtoList(allTags);
     }
 
@@ -29,12 +29,12 @@ public class TagServiceImpl implements TagService {
         return tagRepository
                 .findById(id)
                 .map(tag -> tagMapper.toTagDto(tag))
-                .orElseThrow();
+                .get();
     }
 
     @Override
-    public TagDTO saveTag(CreateTagDTO createTagDTO) {
-        var newTag = tagRepository.save(tagMapper.toTag(createTagDTO));
+    public TagDTO saveTag(TagDTO tagDTO) {
+        Tag newTag = tagRepository.save(tagMapper.toTag(tagDTO));
         return tagMapper.toTagDto(newTag);
     }
 
