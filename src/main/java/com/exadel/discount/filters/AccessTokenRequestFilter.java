@@ -35,14 +35,6 @@ public class AccessTokenRequestFilter extends OncePerRequestFilter {
                                     HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
         final String authorizationHeader = request.getHeader("Authorization");
-        // =====================
-        if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
-            final String jwtHeader = request.getHeader("Authorization").substring(7);
-            System.out.println(Jwts.parser().setSigningKey("accessSecret").parseClaimsJws(jwtHeader).getHeader());
-            System.out.println(Jwts.parser().setSigningKey("accessSecret").parseClaimsJws(jwtHeader).getBody());
-            System.out.println(Jwts.parser().setSigningKey("accessSecret").parseClaimsJws(jwtHeader).getSignature());
-        }
-        // =====================
 
         String username = null;
         String accessToken = null;
