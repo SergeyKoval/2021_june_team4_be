@@ -28,7 +28,7 @@ public class TagServiceImpl implements TagService {
     public TagDTO getById(UUID id) {
         return tagRepository
                 .findById(id)
-                .map(tag -> tagMapper.toTagDto(tag))
+                .map(tagMapper::toTagDto)
                 .get();
     }
 
