@@ -1,7 +1,7 @@
 package com.exadel.discount.config;
 
-import com.exadel.discount.filters.JwtRequestFilter;
-import com.exadel.discount.service.MyUserDetailsService;
+import com.exadel.discount.filters.AccessTokenRequestFilter;
+import com.exadel.discount.service.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
@@ -21,14 +21,14 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfigurer extends WebSecurityConfigurerAdapter {
-    private MyUserDetailsService myUserDetailsService;
-    private JwtRequestFilter jwtRequestFilter;
+    private UserDetailsServiceImpl userDetailsServiceImpl;
+    private AccessTokenRequestFilter accessTokenRequestFilter;
 
     @Autowired
-    public SecurityConfigurer(@Qualifier("myUserDetailsService") MyUserDetailsService myUserDetailsService,
-                              JwtRequestFilter jwtRequestFilter) {
-        this.myUserDetailsService = myUserDetailsService;
-        this.jwtRequestFilter = jwtRequestFilter;
+    public SecurityConfigurer(@Qualifier("userDetailsServiceImpl") UserDetailsServiceImpl userDetailsServiceImpl,
+                              AccessTokenRequestFilter accessTokenRequestFilter) {
+        this.userDetailsServiceImpl = userDetailsServiceImpl;
+        this.accessTokenRequestFilter = accessTokenRequestFilter;
     }
 
     @Override
@@ -41,12 +41,12 @@ public class SecurityConfigurer extends WebSecurityConfigurerAdapter {
         http
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/authenticate").permitAll()
+                .antMatchers("/authenticate/**").permitAll()
                 .anyRequest().authenticated()
                 .and().sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         http
-                .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(accessTokenRequestFilter, UsernamePasswordAuthenticationFilter.class);
     }
 
     @Override
@@ -64,7 +64,7 @@ public class SecurityConfigurer extends WebSecurityConfigurerAdapter {
     protected DaoAuthenticationProvider daoAuthenticationProvider() {
         DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
         daoAuthenticationProvider.setPasswordEncoder(passwordEncoder());
-        daoAuthenticationProvider.setUserDetailsService(myUserDetailsService);
+        daoAuthenticationProvider.setUserDetailsService(userDetailsServiceImpl);
         return daoAuthenticationProvider;
     }
 }

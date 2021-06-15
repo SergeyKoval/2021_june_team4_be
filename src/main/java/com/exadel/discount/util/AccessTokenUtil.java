@@ -1,5 +1,6 @@
 package com.exadel.discount.util;
 
+import com.exadel.discount.model.token.TokenPayload;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -12,9 +13,9 @@ import java.util.Map;
 import java.util.function.Function;
 
 @Service
-public class JwtUtil {
+public class AccessTokenUtil {
 
-    private String SECRET_KEY = "secret";
+    private String SECRET_KEY = "accessSecret";
 
     public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);
@@ -28,6 +29,7 @@ public class JwtUtil {
         final Claims claims = extractAllClaims(token);
         return claimsResolver.apply(claims);
     }
+
     private Claims extractAllClaims(String token) {
         return Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token).getBody();
     }
@@ -36,14 +38,20 @@ public class JwtUtil {
         return extractExpiration(token).before(new Date());
     }
 
-    public String generateToken(UserDetails userDetails) {
+    public String generateToken(TokenPayload payload) {
         Map<String, Object> claims = new HashMap<>();
-        return createToken(claims, userDetails.getUsername());
+        Map<String, Object> roleClaim = new HashMap<>();
+        roleClaim.put("role", payload.getRole());
+
+        return createToken(claims, roleClaim, payload.getEmail());
     }
 
-    private String createToken(Map<String, Object> claims, String subject) {
-
-        return Jwts.builder().setClaims(claims).setSubject(subject).setIssuedAt(new Date(System.currentTimeMillis())) // TODO: setHeader(role)
+    private String createToken(Map<String, Object> claims, Map<String, Object> roleClaim, String subject) {
+        return Jwts.builder()
+                .setClaims(claims)
+                .addClaims(roleClaim)
+                .setSubject(subject)
+                .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60)) // 1 hour
                 .signWith(SignatureAlgorithm.HS256, SECRET_KEY).compact();
     }
