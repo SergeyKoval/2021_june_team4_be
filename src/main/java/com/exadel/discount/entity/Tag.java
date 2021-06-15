@@ -1,9 +1,6 @@
 package com.exadel.discount.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
@@ -16,6 +13,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(exclude = {"discounts"})
+@ToString(exclude = {"discounts"})
 public class Tag {
     @Id
     @Column(name = "id")
@@ -26,7 +24,7 @@ public class Tag {
     )
     private UUID id;
 
-    @Column(name = "name", nullable = false)
+    @Column(name = "name", nullable = false, length = 50)
     private String name;
 
     @ManyToMany(mappedBy = "tags", fetch = FetchType.LAZY)
