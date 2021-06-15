@@ -1,0 +1,8 @@
+databaseChangeLog:
+  - changeSet:
+      id: 29-drop-nullable-true-in-discounts-end-time
+      author: elizaveta_dubogryz
+      changes:
+        - dropNotNullConstraint:
+            columnName: end_time
+            tableName: discounts
