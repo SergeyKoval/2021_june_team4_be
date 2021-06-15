@@ -35,3 +35,8 @@ target
 .project
 .settings
 .springBeans
+
+#Operating system files
+*.DS_Store
+.DS_Store
+Thumbs.db
