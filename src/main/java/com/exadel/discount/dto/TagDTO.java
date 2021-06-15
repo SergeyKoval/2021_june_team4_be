@@ -1,5 +1,6 @@
 package com.exadel.discount.dto;
 
+import com.exadel.discount.dto.validation.Create;
 import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
@@ -9,11 +10,9 @@ import java.util.UUID;
 
 @Data
 public class TagDTO {
-    public interface New {
-    }
-    @Null(groups = New.class)
+    @Null(groups = Create.class)
     private UUID id;
-    @NotBlank(groups = New.class)
-    @Size(max = 50, groups = New.class)
+    @NotBlank(groups = Create.class)
+    @Size(max = 50, groups = Create.class)
     private String name;
 }

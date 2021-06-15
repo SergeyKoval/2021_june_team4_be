@@ -1,13 +1,13 @@
 package com.exadel.discount.controller;
 
-import com.exadel.discount.dto.tag.CreateTagDTO;
-import com.exadel.discount.dto.tag.TagDTO;
+import com.exadel.discount.dto.TagDTO;
+import com.exadel.discount.dto.validation.Create;
 import com.exadel.discount.service.TagService;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import java.util.List;
 import java.util.UUID;
 
@@ -26,7 +26,7 @@ public class TagController {
 
     @PostMapping
     @ApiOperation("Save new tag")
-    public TagDTO saveTag(@Valid @RequestBody CreateTagDTO tag) {
+    public TagDTO saveTag(@Validated({Create.class}) @RequestBody TagDTO tag) {
         return tagService.saveTag(tag);
     }
 
