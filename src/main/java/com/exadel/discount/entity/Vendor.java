@@ -3,6 +3,7 @@ package com.exadel.discount.entity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
@@ -14,6 +15,7 @@ import java.util.UUID;
 @Data
 @NoArgsConstructor
 @EqualsAndHashCode(exclude = {"vendorLocations"})
+@ToString(exclude = {"vendorLocations"})
 @Entity
 @Table(name = "vendors")
 public class Vendor {
@@ -27,7 +29,7 @@ public class Vendor {
 
     @Column(name = "name", length = 50, nullable = false)
     private String name;
-    @Column(name = "description", length = 255)
+    @Column(name = "description")
     private String description;
 
     @OneToMany(cascade = CascadeType.REMOVE,

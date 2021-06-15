@@ -7,5 +7,5 @@ import org.springframework.stereotype.Repository;
 import java.util.UUID;
 
 @Repository
-public interface VendoLocationrRepository extends JpaRepository<VendorLocation, UUID> {
+public interface VendorLocationRepository extends JpaRepository<VendorLocation, UUID> {
 }

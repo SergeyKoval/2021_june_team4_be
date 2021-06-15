@@ -7,7 +7,7 @@ import java.util.UUID;
 
 public interface VendorLocationService {
 
-    VendorLocation create(VendorLocation locationVendor);
+    VendorLocation create(VendorLocation vendorLocation);
     VendorLocation get(UUID id);
     List<VendorLocation> getAll();
     long count();

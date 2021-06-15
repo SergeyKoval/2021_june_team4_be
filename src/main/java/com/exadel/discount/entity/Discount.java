@@ -5,6 +5,7 @@ import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.sql.Timestamp;
 import java.time.ZonedDateTime;
 import java.util.Date;
 import java.util.UUID;
@@ -28,16 +29,16 @@ public class Discount {
 
     @Column(name = "name", length = 50, nullable = false)
     private String name;
-    @Column(name = "description", length = 255, nullable = false)
+    @Column(name = "description")
     private String description;
     @Column(name = "promo", length = 50, nullable = false)
     private String promo;
     @Column(name = "percent")
     private int percent;
-    @Column(name = "start_time", nullable = false)
-    private ZonedDateTime start_time;
+    @Column(name = "start_time")
+    private Timestamp startTime;
     @Column(name = "end_time", nullable = false)
-    private ZonedDateTime end_time;
+    private Timestamp endTime;
     @Column(name = "active", nullable = false)
     private boolean active;
 

@@ -30,12 +30,12 @@ public class VendorLocation {
     private Vendor vendor;
 
     @Column(name = "country_id")
-    private UUID country_id;
+    private UUID countryId;
     @Column(name = "city_id")
-    private UUID city_id;
+    private UUID cityId;
     @Column(name = "contact", length = 50)
     private String contact;
-    @Column(name = "coordinates", length = 255)
+    @Column(name = "coordinates")
     private String coordinates;
 
 
