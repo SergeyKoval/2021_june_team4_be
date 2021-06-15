@@ -25,7 +25,13 @@ hs_err_pid*
 # IntelliJ idea
 .idea/
 *.iml
+*.mvn
 
 #Build
-
 target
+
+#Eclipse
+.classpath
+.project
+.settings
+.springBeans
