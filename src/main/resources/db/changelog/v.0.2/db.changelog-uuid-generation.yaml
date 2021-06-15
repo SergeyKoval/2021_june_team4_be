@@ -1,0 +1,11 @@
+databaseChangeLog:
+  - changeSet:
+      id: 28-uuid-generation-tags-discounts
+      author: elizaveta_dubogryz
+      changes:
+        - sql:
+            sql: CREATE EXTENSION IF NOT EXISTS "uuid-ossp"
+        - addDefaultValue:
+            tableName: tags_discounts
+            columnName: id
+            defaultValueComputed: uuid_generate_v4()
