@@ -37,7 +37,7 @@ public class Discount {
     private int percent;
     @Column(name = "start_time")
     private Timestamp startTime;
-    @Column(name = "end_time", nullable = false)
+    @Column(name = "end_time")
     private Timestamp endTime;
     @Column(name = "active", nullable = false)
     private boolean active;
