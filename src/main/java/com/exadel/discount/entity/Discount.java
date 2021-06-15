@@ -6,6 +6,7 @@ import org.hibernate.annotations.GenericGenerator;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.util.Date;
 import java.util.UUID;
@@ -36,9 +37,9 @@ public class Discount {
     @Column(name = "percent")
     private int percent;
     @Column(name = "start_time")
-    private Timestamp startTime;
+    private LocalDateTime startTime;
     @Column(name = "end_time")
-    private Timestamp endTime;
+    private LocalDateTime endTime;
     @Column(name = "active", nullable = false)
     private boolean active;
 
