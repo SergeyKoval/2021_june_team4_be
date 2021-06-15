@@ -1,9 +1,11 @@
 package com.exadel.discount.entity;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import java.io.Serializable;
+import java.time.ZonedDateTime;
 import java.util.Date;
 import java.util.UUID;
 
@@ -13,30 +15,30 @@ import java.util.UUID;
 @Table(name = "discounts")
 public class Discount {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(generator = "UUID")
+    @GenericGenerator(name = "UUID",
+            strategy = "org.hibernate.id.UUIDGenerator"
+    )
+    @Column(name = "id")
     private UUID id;
 
-    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "category_id")
     private Category category;
 
+    @Column(name = "name", length = 50, nullable = false)
     private String name;
+    @Column(name = "description", length = 255, nullable = false)
     private String description;
+    @Column(name = "promo", length = 50, nullable = false)
     private String promo;
+    @Column(name = "percent")
     private int percent;
-    private Date start_time;
-    private Date end_time;
+    @Column(name = "start_time", nullable = false)
+    private ZonedDateTime start_time;
+    @Column(name = "end_time", nullable = false)
+    private ZonedDateTime end_time;
+    @Column(name = "active", nullable = false)
     private boolean active;
-
-    public Discount(Category category, String name, String description, String promo, int percent, Date start_time, Date end_time, boolean active) {
-        this.category = category;
-        this.name = name;
-        this.description = description;
-        this.promo = promo;
-        this.percent = percent;
-        this.start_time = start_time;
-        this.end_time = end_time;
-        this.active = active;
-    }
 
 }

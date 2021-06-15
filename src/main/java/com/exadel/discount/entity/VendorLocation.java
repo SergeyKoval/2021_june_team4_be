@@ -1,12 +1,15 @@
 package com.exadel.discount.entity;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.UUID;
 
 @Data
@@ -15,27 +18,25 @@ import java.util.UUID;
 @Table(name = "vendor_locations")
 public class VendorLocation {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(generator = "UUID")
+    @GenericGenerator(name = "UUID",
+            strategy = "org.hibernate.id.UUIDGenerator"
+    )
+    @Column(name = "id")
     private UUID id;
 
-    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "vendor_id", nullable = false)
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    @ToString.Exclude
     private Vendor vendor;
 
+    @Column(name = "country_id")
     private UUID country_id;
+    @Column(name = "city_id")
     private UUID city_id;
+    @Column(name = "contact", length = 50)
     private String contact;
+    @Column(name = "coordinates", length = 255)
     private String coordinates;
 
-
-    public VendorLocation(Vendor vendor, UUID country_id, UUID city_id, String contact, String coordinates) {
-        this.vendor = vendor;
-        this.country_id = country_id;
-        this.city_id = city_id;
-        this.contact = contact;
-        this.coordinates = coordinates;
-    }
 
 }

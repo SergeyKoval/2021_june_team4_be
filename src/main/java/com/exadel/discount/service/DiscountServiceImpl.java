@@ -3,17 +3,18 @@ package com.exadel.discount.service;
 import com.exadel.discount.entity.Discount;
 import com.exadel.discount.repository.DiscountRepository;
 import com.exadel.discount.service.interfaces.DiscountService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.UUID;
 
+@RequiredArgsConstructor
 @Service
 public class DiscountServiceImpl implements DiscountService {
 
-    @Autowired
-    private DiscountRepository discountRepository;
+    private final DiscountRepository discountRepository;
 
     @Override
     public Discount create(Discount discount) {
