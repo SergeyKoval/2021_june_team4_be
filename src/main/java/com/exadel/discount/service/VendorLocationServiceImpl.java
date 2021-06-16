@@ -1,6 +1,7 @@
 package com.exadel.discount.service;
 
-import com.exadel.discount.entity.VendorLocation;
+import com.exadel.discount.dto.VendorLocationDTO;
+import com.exadel.discount.mapper.VendorLocationMapper;
 import com.exadel.discount.repository.VendorLocationRepository;
 import com.exadel.discount.service.interfaces.VendorLocationService;
 import lombok.RequiredArgsConstructor;
@@ -14,20 +15,21 @@ import java.util.UUID;
 public class VendorLocationServiceImpl implements VendorLocationService {
 
     private final VendorLocationRepository vendorLocationRepository;
+    private final VendorLocationMapper vendorLocationMapper;
 
     @Override
-    public VendorLocation create(VendorLocation vendorLocation) {
-        return vendorLocationRepository.save(vendorLocation);
+    public VendorLocationDTO create(VendorLocationDTO vendorLocationDTO) {
+        return vendorLocationMapper.getDTO(vendorLocationRepository.save(vendorLocationMapper.parseDTO(vendorLocationDTO)));
     }
 
     @Override
-    public VendorLocation get(UUID id) {
-        return vendorLocationRepository.getOne(id);
+    public VendorLocationDTO get(UUID id) {
+        return vendorLocationMapper.getDTO(vendorLocationRepository.findById(id).orElse(null));
     }
 
     @Override
-    public List<VendorLocation> getAll() {
-        return vendorLocationRepository.findAll();
+    public List<VendorLocationDTO> getAll() {
+        return vendorLocationMapper.getListDTO(vendorLocationRepository.findAll());
     }
 
     @Override
