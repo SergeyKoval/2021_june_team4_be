@@ -9,8 +9,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
-
 @Service("userDetailsServiceImpl")
 public class UserDetailsServiceImpl implements UserDetailsService {
 
@@ -23,19 +21,19 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        Optional<com.exadel.discount.model.security.User> user = repository.findByEmail(email);
+        com.exadel.discount.entity.User user = repository.findByEmail(email);
         return new User(
-                user.get().getEmail(),
-                user.get().getPassword(),
-                user.get().getRole().getAuthorities()
+                user.getEmail(),
+                user.getPassword(),
+                user.getRole().getAuthorities()
         );
     }
 
     public TokenPayload loadUserRoleByUsername(String email) throws UsernameNotFoundException {
-        Optional<com.exadel.discount.model.security.User> user = repository.findByEmail(email);
+        com.exadel.discount.entity.User user = repository.findByEmail(email);
         return new TokenPayload(
-                user.get().getEmail(),
-                user.get().getRole()
+                user.getEmail(),
+                user.getRole()
         );
     }
 }
