@@ -2,6 +2,7 @@ package com.exadel.discount.service.impl;
 
 import com.exadel.discount.dto.TagDTO;
 import com.exadel.discount.entity.Tag;
+import com.exadel.discount.exception.NotFoundException;
 import com.exadel.discount.mapper.TagMapper;
 import com.exadel.discount.repository.TagRepository;
 import com.exadel.discount.service.TagService;
@@ -29,7 +30,7 @@ public class TagServiceImpl implements TagService {
         return tagRepository
                 .findById(id)
                 .map(tagMapper::toTagDto)
-                .get();
+                .orElseThrow(() -> new NotFoundException("Tag with id = " + id + " not found", "id.code"));
     }
 
     @Override
