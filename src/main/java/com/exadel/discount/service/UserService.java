@@ -19,6 +19,8 @@ public interface UserService {
 
     User editUser(UUID id, User user);
 
+    User findByEmail(String email);
+
 }
 
 

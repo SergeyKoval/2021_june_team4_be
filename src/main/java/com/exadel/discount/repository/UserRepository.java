@@ -13,6 +13,8 @@ public interface UserRepository extends JpaRepository<User, UUID> {
 
     void deleteById(UUID id);
 
+    User findByEmail(String email);
+
     default User findUserById(UUID userId) {
         return findById(userId).get();
     }

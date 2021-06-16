@@ -2,6 +2,7 @@ package com.exadel.discount.service;
 
 import com.exadel.discount.entity.User;
 import com.exadel.discount.exception.UserNotFoundException;
+import com.exadel.discount.exception.UserSuchEmailNotFoundException;
 import com.exadel.discount.exception.UserSuchNameNotFoundException;
 import com.exadel.discount.repository.CouponRepository;
 import com.exadel.discount.repository.UserRepository;
@@ -53,6 +54,14 @@ public class UserServiceImpl implements UserService {
         return suchNameUserList;
     }
 
+    @Override
+    public User findByEmail(String email) {
+        User suchEmailUser = new User();
+        if (userRepository.findByEmail(email)==null)
+            throw new UserSuchEmailNotFoundException(email);
+        return suchEmailUser;
+    }
+
     @Transactional
     @Override
     public User editUser(UUID id, User user) {
@@ -74,6 +83,5 @@ public class UserServiceImpl implements UserService {
         userRepository.delete(deletedUser);
         return findAllUsers();
     }
-
 }
 
