@@ -38,13 +38,13 @@ public class TagController {
 
     @GetMapping("/{id}")
     @ApiOperation("Get tag by ID")
-    public TagDTO getTagById(@PathVariable(name = "id") UUID id) {
+    public TagDTO getTagById(@PathVariable UUID id) {
         return tagService.getById(id);
     }
 
     @DeleteMapping("/{id}")
     @ApiOperation("Delete tag by ID")
-    public void deleteTag(@PathVariable(name = "id") UUID id) {
+    public void deleteTag(@PathVariable UUID id) {
         tagService.deleteTagById(id);
     }
 
