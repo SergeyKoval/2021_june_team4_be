@@ -25,7 +25,7 @@ public class FavoriteServiceImpl implements FavoriteService {
     @Transactional
     @Override
     public FavoriteDto addFavoriteToUser(UUID userId, FavoriteDto favoriteDto) {
-        User user = userRepository.findById(userId).orElseThrow(()->new UserNotFoundException(userId));
+        User user = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException(userId));
         Favorite favorite = favoriteMapper.toFavorite(favoriteDto);
         user.addFavorite(favoriteMapper.toFavorite(favoriteDto));
         favorite.setUser(user);
@@ -50,12 +50,15 @@ public class FavoriteServiceImpl implements FavoriteService {
     @Transactional
     @Override
     public void deleteFavorite(UUID id) {
+        Favorite favorite = favoriteRepository.findById(id)
+                .orElseThrow(() -> new FavoriteNotFoundException(id));
+        favorite.getUser().removeFavorite(favorite);
         favoriteRepository.deleteById(id);
     }
 
     @Override
     public List<FavoriteDto> getFavoritesOfUser(UUID userId) {
-        List<Favorite> favoriteList = userRepository.findById(userId).orElseThrow(()->new UserNotFoundException(userId)).getFavorites();
+        List<Favorite> favoriteList = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException(userId)).getFavorites();
         return favoriteMapper.toFavoriteDtoList(favoriteList);
     }
 }

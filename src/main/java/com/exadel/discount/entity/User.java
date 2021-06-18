@@ -1,7 +1,6 @@
 package com.exadel.discount.entity;
 
 import com.exadel.discount.config.EnumPostgresSQLType;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
@@ -9,7 +8,6 @@ import org.hibernate.annotations.Type;
 import org.hibernate.annotations.TypeDef;
 
 import javax.persistence.*;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -22,8 +20,7 @@ import java.util.UUID;
         name = "user_role",
         typeClass = EnumPostgresSQLType.class
 )
-public class User implements Serializable {
-
+public class User {
     @Id
     @Column(name = "id")
     @GeneratedValue(generator = "UUID")
@@ -60,7 +57,15 @@ public class User implements Serializable {
         coupons.add(coupon);
     }
 
+    public void removeCoupon(Coupon coupon) {
+        coupons.remove(coupon);
+    }
+
     public void addFavorite(Favorite favorite) {
         favorites.add(favorite);
+    }
+
+    public void removeFavorite(Favorite favorite) {
+        favorites.remove(favorite);
     }
 }

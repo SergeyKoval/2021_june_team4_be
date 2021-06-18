@@ -23,4 +23,8 @@ public class Coupon {
     @JoinColumn(name = "user_id", nullable = false)
     @NotNull
     private User user;
+
+    @ManyToOne
+    @JoinColumn(name="discount_id", nullable=false)
+    private Discount discount;
 }

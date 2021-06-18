@@ -26,4 +26,8 @@ public class Favorite {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
+
+    @ManyToOne
+    @JoinColumn(name="discount_id", nullable=false)
+    private Discount discount;
 }
