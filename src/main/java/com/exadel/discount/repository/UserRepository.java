@@ -12,10 +12,4 @@ public interface UserRepository extends JpaRepository<User, UUID> {
     List<User> findDistinctByLastNameAndFirstName(String lastName, String firstName);
 
     void deleteById(UUID id);
-
-    User findByEmail(String email);
-
-    default User findUserById(UUID userId) {
-        return findById(userId).get();
-    }
 }
