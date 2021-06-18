@@ -27,7 +27,7 @@ public class CouponServiceImpl implements CouponService {
     @Transactional
     @Override
     public CouponDto addCouponToUser(UUID userId, CouponDto couponDto) {
-        User user = userRepository.findById(userId).orElseThrow(()->new UserNotFoundException(userId));
+        User user = userRepository.findById(userId);
         Coupon coupon = couponMapper.toCoupon(couponDto);
         user.addCoupon(coupon);
         coupon.setUser(user);
@@ -39,8 +39,7 @@ public class CouponServiceImpl implements CouponService {
     public CouponDto findCouponById(UUID id) {
         return couponRepository
                 .findById(id)
-                .map(couponMapper::toCouponDto)
-                .orElseThrow(() -> new CouponNotFoundException(id));
+                .map(couponMapper::toCouponDto);
     }
 
     @Override
@@ -51,9 +50,7 @@ public class CouponServiceImpl implements CouponService {
 
     @Override
     public CouponDto findCouponByDate(LocalDateTime date) {
-        if (couponRepository.findCouponByDate(date) == null) throw new CouponNotFoundAtSuchDateException(date);
         Coupon coupon = couponRepository.findCouponByDate(date);
-        if (coupon == null) throw new CouponNotFoundAtSuchDateException(date);
         coupon.setUser(null);
         return couponMapper.toCouponDto(coupon);
     }
@@ -61,9 +58,7 @@ public class CouponServiceImpl implements CouponService {
     @Transactional
     @Override
     public CouponDto editCouponDate(UUID id, LocalDateTime newDate) {
-        Coupon couponUnderEdition = couponRepository
-                .findById(id)
-                .orElseThrow(() -> new CouponNotFoundException(id));
+        Coupon couponUnderEdition = couponRepository.findById(id);
         couponUnderEdition.setDate(newDate);
         return couponMapper.toCouponDto(couponUnderEdition);
     }
@@ -71,15 +66,15 @@ public class CouponServiceImpl implements CouponService {
     @Transactional
     @Override
     public void deleteCoupon(UUID id) {
-        Coupon coupon = couponRepository.findById(id)
-                .orElseThrow(() -> new CouponNotFoundException(id));
+        Coupon coupon = couponRepository.findById(id);
         coupon.getUser().removeCoupon(coupon);
         couponRepository.deleteById(id);
     }
 
     @Override
     public List<CouponDto> getCouponsOfUser(UUID userId) {
-        List<Coupon> coupons = userRepository.findById(userId).orElseThrow(()->new UserNotFoundException(userId)).getCoupons();
+        User user  = userRepository.findById(userId);
+        List<Coupon> coupons = user.getCoupons();
         return couponMapper.toCouponDtoList(coupons);
     }
 }
