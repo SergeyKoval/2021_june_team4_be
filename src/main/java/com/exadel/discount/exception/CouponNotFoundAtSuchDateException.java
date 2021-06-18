@@ -3,6 +3,7 @@ package com.exadel.discount.exception;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+import java.sql.Timestamp;
 import java.text.MessageFormat;
 import java.time.LocalDateTime;
 
@@ -12,3 +13,4 @@ public class CouponNotFoundAtSuchDateException extends RuntimeException {
         super(MessageFormat.format("Could not find order at Date:{0} ", date));
     }
 }
+
