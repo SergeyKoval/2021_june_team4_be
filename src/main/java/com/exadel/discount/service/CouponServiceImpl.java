@@ -1,83 +1,77 @@
 package com.exadel.discount.service;
 
+import com.exadel.discount.dto.coupon.CouponDto;
 import com.exadel.discount.entity.Coupon;
 import com.exadel.discount.entity.User;
-import com.exadel.discount.exception.CouponNotFoundAtSuchDateException;
-import com.exadel.discount.exception.CouponNotFoundException;
+import com.exadel.discount.mapper.CouponMapper;
 import com.exadel.discount.repository.CouponRepository;
 import com.exadel.discount.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 @Service
+@AllArgsConstructor
 public class CouponServiceImpl implements CouponService {
     private final CouponRepository couponRepository;
     private final UserRepository userRepository;
-
-    @Autowired
-    public CouponServiceImpl(CouponRepository couponRepository, UserRepository userRepository) {
-        this.couponRepository = couponRepository;
-        this.userRepository = userRepository;
-    }
+    private final CouponMapper couponMapper;
 
     @Transactional
     @Override
-    public Coupon addCouponToUser(UUID userId, Coupon coupon) {
-        User user = userRepository.findUserById(userId);
+    public CouponDto addCouponToUser(UUID userId, CouponDto couponDto) {
+        User user = userRepository.findById(userId);
+        Coupon coupon = couponMapper.toCoupon(couponDto);
         user.addCoupon(coupon);
         coupon.setUser(user);
         couponRepository.save(coupon);
-        return coupon;
+        return couponMapper.toCouponDto(coupon);
     }
 
     @Override
-    public Coupon findCouponById(UUID id) {
+    public CouponDto findCouponById(UUID id) {
         return couponRepository
                 .findById(id)
-                .orElseThrow(() -> new CouponNotFoundException(id));
+                .map(couponMapper::toCouponDto);
     }
 
     @Override
-    public List<Coupon> findAllCoupons() {
-        return StreamSupport
-                .stream(couponRepository.findAll().spliterator(), false)
-                .collect(Collectors.toList());
+    public List<CouponDto> findAllCoupons() {
+        List<Coupon> coupons = couponRepository.findAll();
+        return couponMapper.toCouponDtoList(coupons);
     }
 
     @Override
-    public Coupon findCouponByDate(LocalDateTime date) {
+    public CouponDto findCouponByDate(LocalDateTime date) {
         Coupon coupon = couponRepository.findCouponByDate(date);
-        if (coupon == null) throw new CouponNotFoundAtSuchDateException(date);
-        return coupon;
+        coupon.setUser(null);
+        return couponMapper.toCouponDto(coupon);
     }
 
     @Transactional
     @Override
-    public Coupon editCouponDate(UUID id, Coupon newDateCoupon) {
-        Coupon couponUnderEdition = findCouponById(id);
-        couponUnderEdition.setDate(newDateCoupon.getDate());
-        return couponUnderEdition;
+    public CouponDto editCouponDate(UUID id, LocalDateTime newDate) {
+        Coupon couponUnderEdition = couponRepository.findById(id);
+        couponUnderEdition.setDate(newDate);
+        return couponMapper.toCouponDto(couponUnderEdition);
     }
 
     @Transactional
     @Override
-    public List<Coupon> deleteCoupon(UUID id) {
-        Coupon coupon = findCouponById(id);
+    public void deleteCoupon(UUID id) {
+        Coupon coupon = couponRepository.findById(id);
         coupon.getUser().removeCoupon(coupon);
-        couponRepository.delete(coupon);
-        return findAllCoupons();
+        couponRepository.deleteById(id);
     }
 
     @Override
-    public List<Coupon> getCouponsOfUser(UUID userId) {
-        return userRepository.findUserById(userId).getCoupons();
-
+    public List<CouponDto> getCouponsOfUser(UUID userId) {
+        User user = userRepository.findById(userId);
+        List<Coupon> coupons = user.getCoupons();
+        return couponMapper.toCouponDtoList(coupons);
     }
 }

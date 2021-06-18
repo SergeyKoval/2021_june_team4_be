@@ -24,4 +24,3 @@ public class EnumPostgresSQLType extends org.hibernate.type.EnumType {
         );
     }
 }
-

@@ -1,24 +1,23 @@
 package com.exadel.discount.dto.coupon;
 
-import com.exadel.discount.dto.user.BaseUserDto;
-import com.exadel.discount.entity.Coupon;
+import com.exadel.discount.dto.user.UserDto;
+import com.exadel.discount.dto.validation.Create;
+import com.exadel.discount.entity.User;
+import com.sun.istack.NotNull;
 import lombok.Data;
 
+
+import javax.persistence.JoinColumn;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Null;
+import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Data
 public class CouponDto {
+    @Null(groups = Create.class, message = "Coupon id should be null")
     private UUID id;
+    @NotNull
     private LocalDateTime date;
-    private BaseUserDto baseUserDto;
-
-
-    public static CouponDto from(Coupon coupon) {
-        CouponDto couponDto = new CouponDto();
-        couponDto.setId(coupon.getId());
-        couponDto.setDate(coupon.getDate());
-        couponDto.setBaseUserDto(BaseUserDto.from(coupon.getUser()));
-        return couponDto;
-    }
 }
