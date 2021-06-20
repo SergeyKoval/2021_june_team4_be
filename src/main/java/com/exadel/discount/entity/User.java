@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.TypeDef;
+import com.exadel.discount.model.security.Role;
 
 import javax.persistence.*;
 import java.util.ArrayList;
