@@ -1,15 +1,14 @@
 package com.exadel.discount.model.http;
 
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.experimental.FieldDefaults;
 
 @Getter
-@Setter
+@FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
 @AllArgsConstructor
-@NoArgsConstructor
 public class AuthenticationRequest {
-    private String username;
-    private String password;
+    String username;
+    String password;
 }

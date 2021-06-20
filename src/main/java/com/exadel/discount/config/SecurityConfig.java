@@ -2,8 +2,10 @@ package com.exadel.discount.config;
 
 import com.exadel.discount.filters.AccessTokenRequestFilter;
 import com.exadel.discount.service.UserDetailsServiceImpl;
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -20,16 +22,11 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
+@FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
+@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
-    private UserDetailsServiceImpl userDetailsServiceImpl;
-    private AccessTokenRequestFilter accessTokenRequestFilter;
-
-    @Autowired
-    public SecurityConfig(@Qualifier("userDetailsServiceImpl") UserDetailsServiceImpl userDetailsServiceImpl,
-                          AccessTokenRequestFilter accessTokenRequestFilter) {
-        this.userDetailsServiceImpl = userDetailsServiceImpl;
-        this.accessTokenRequestFilter = accessTokenRequestFilter;
-    }
+    UserDetailsServiceImpl userDetailsServiceImpl;
+    AccessTokenRequestFilter accessTokenRequestFilter;
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
@@ -41,7 +38,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/authenticate/**").permitAll()
+                .antMatchers("/authenticate/login").permitAll()
                 .anyRequest().authenticated()
                 .and().sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
