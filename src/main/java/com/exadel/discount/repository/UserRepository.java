@@ -11,5 +11,7 @@ import java.util.UUID;
 public interface UserRepository extends JpaRepository<User, UUID> {
     List<User> findDistinctByLastNameAndFirstName(String lastName, String firstName);
 
+    User findByEmail(String email);
+
     void deleteById(UUID id);
 }
