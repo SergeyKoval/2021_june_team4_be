@@ -36,14 +36,10 @@ public class GlobalExceptionHandler {
                 .getBindingResult()
                 .getAllErrors()
                 .stream()
-                .map(error -> {
-                    String message = error.getDefaultMessage();
-
-                    log.error("{}: {}", error.getClass().getSimpleName(), message);
-
-                    return new ExceptionDetails(message);
-                })
+                .map(error -> new ExceptionDetails(error.getDefaultMessage()))
                 .collect(Collectors.toList());
+
+        log.error("{}: {}", notValidException.getClass().getSimpleName(), notValidException.getMessage());
 
         return exceptionDetailsList;
     }
