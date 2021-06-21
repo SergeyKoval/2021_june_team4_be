@@ -12,7 +12,7 @@ import java.util.HashSet;
 import static com.exadel.discount.config.JwtVariablesConfig.REFRESH_TOKEN_EXPIRATION_TIME;
 import static com.exadel.discount.config.JwtVariablesConfig.REFRESH_ROLE;
 
-@Service("refreshJwtUtil")
+@Service
 public class RefreshJwtUtil extends JwtUtil{
     @Override
     protected Collection<? extends GrantedAuthority> initRoleClaim(UserDetails userDetails) {

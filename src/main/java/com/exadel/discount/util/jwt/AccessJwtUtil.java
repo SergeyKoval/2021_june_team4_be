@@ -9,7 +9,7 @@ import java.util.Collection;
 
 import static com.exadel.discount.config.JwtVariablesConfig.ACCESS_TOKEN_EXPIRATION_TIME;
 
-@Service("accessJwtUtil")
+@Service
 public class AccessJwtUtil extends JwtUtil {
     @Override
     protected Collection<? extends GrantedAuthority> initRoleClaim(UserDetails userDetails) {
