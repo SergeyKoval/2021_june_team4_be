@@ -2,10 +2,11 @@ package com.exadel.discount.exception;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -13,31 +14,50 @@ import java.util.stream.Collectors;
 @ControllerAdvice
 @Slf4j
 public class GlobalExceptionHandler {
+
     @ExceptionHandler(NotFoundException.class)
-    public ResponseEntity<ExceptionDetails> handleException(NotFoundException notFoundException) {
-        ExceptionDetails exceptionDetails = new ExceptionDetails(notFoundException.getMessage());
-        log.error(notFoundException.getMessage());
-        return new ResponseEntity<>(exceptionDetails, HttpStatus.NOT_FOUND);
+    @ResponseBody
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ExceptionDetails handleException(NotFoundException notFoundException) {
+        String message = notFoundException.getMessage();
+        ExceptionDetails exceptionDetails = new ExceptionDetails(message);
+
+        log.error("{}: {}", notFoundException.getClass().getSimpleName(), message);
+
+        return exceptionDetails;
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<List<ExceptionDetails>> handleException(
+    @ResponseBody
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public List<ExceptionDetails> handleException(
             MethodArgumentNotValidException notValidException) {
         List<ExceptionDetails> exceptionDetailsList = notValidException
                 .getBindingResult()
                 .getAllErrors()
                 .stream()
-                .map(error -> new ExceptionDetails(error.getDefaultMessage()))
+                .map(error -> {
+                    String message = error.getDefaultMessage();
+
+                    log.error("{}: {}", error.getClass().getSimpleName(), message);
+
+                    return new ExceptionDetails(message);
+                })
                 .collect(Collectors.toList());
-        log.error(notValidException.getMessage());
-        return new ResponseEntity<>(exceptionDetailsList, HttpStatus.BAD_REQUEST);
+
+        return exceptionDetailsList;
     }
 
     @ExceptionHandler
-    public ResponseEntity<ExceptionDetails> handleException(
+    @ResponseBody
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ExceptionDetails handleException(
             Exception exception) {
-        ExceptionDetails exceptionDetails = new ExceptionDetails(exception.getMessage());
-        log.error(exception.getMessage());
-        return new ResponseEntity<>(exceptionDetails, HttpStatus.BAD_REQUEST);
+        String message = exception.getMessage();
+        ExceptionDetails exceptionDetails = new ExceptionDetails(message);
+
+        log.error("{}: {}", exception.getClass().getSimpleName(), message);
+
+        return exceptionDetails;
     }
 }
