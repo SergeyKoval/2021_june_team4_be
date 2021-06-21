@@ -19,12 +19,9 @@ public class GlobalExceptionHandler {
     @ResponseBody
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ExceptionDetails handleException(NotFoundException notFoundException) {
-        String message = notFoundException.getMessage();
-        ExceptionDetails exceptionDetails = new ExceptionDetails(message);
+        log.error("Exception stack trace: ", notFoundException);
 
-        log.error("", notFoundException);
-
-        return exceptionDetails;
+        return new ExceptionDetails(notFoundException.getMessage());
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
@@ -39,7 +36,7 @@ public class GlobalExceptionHandler {
                 .map(error -> new ExceptionDetails(error.getDefaultMessage()))
                 .collect(Collectors.toList());
 
-        log.error("", notValidException);
+        log.error("Exception stack trace: ", notValidException);
 
         return exceptionDetailsList;
     }
@@ -48,11 +45,8 @@ public class GlobalExceptionHandler {
     @ResponseBody
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ExceptionDetails handleException(Exception exception) {
-        String message = exception.getMessage();
-        ExceptionDetails exceptionDetails = new ExceptionDetails(message);
+        log.error("Exception stack trace: ", exception);
 
-        log.error("", exception);
-
-        return exceptionDetails;
+        return new ExceptionDetails(exception.getMessage());
     }
 }
