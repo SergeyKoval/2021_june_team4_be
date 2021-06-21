@@ -10,7 +10,6 @@ import lombok.Setter;
 import lombok.experimental.FieldDefaults;
 import lombok.experimental.NonFinal;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -31,7 +30,7 @@ import static com.exadel.discount.config.JwtVariablesConfig.REFRESH_ROLE;
 @Component
 @Setter
 @FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
-@RequiredArgsConstructor(onConstructor = @__(@Autowired))
+@RequiredArgsConstructor
 public class AccessTokenRequestFilter extends OncePerRequestFilter {
     String AUTHORIZATION_HEADER = "Authorization";
     String BEARER_TYPE_OF_AUTHORIZATION_HEADER = "Bearer ";
@@ -64,11 +63,10 @@ public class AccessTokenRequestFilter extends OncePerRequestFilter {
                         this.authentication = new PreAuthenticatedAuthenticationToken(
                                 userDetails, null, RefreshJwtUtil.getRefreshAuthority());
                     }
-                } else {
-                    if (JwtUtil.validateToken(token, userDetails)) {
-                        this.authentication = new UsernamePasswordAuthenticationToken(
-                                userDetails, null, userDetails.getAuthorities());
-                    }
+                } else if (JwtUtil.validateToken(token, userDetails)) {
+                    this.authentication = new UsernamePasswordAuthenticationToken(
+                            userDetails, null, userDetails.getAuthorities());
+
                 }
                 setSecurityContextAuthentication(request, authentication);
             }
