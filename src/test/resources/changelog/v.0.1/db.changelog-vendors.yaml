@@ -1,0 +1,21 @@
+databaseChangeLog:
+  - changeSet:
+      id: 5-create-vendors-table
+      author: elizaveta_dubogryz
+      changes:
+        - createTable:
+            tableName: vendors
+            columns:
+              - column:
+                  name: id
+                  type: UUID
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: name
+                  type: varchar(50)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: description
+                  type: varchar(255)

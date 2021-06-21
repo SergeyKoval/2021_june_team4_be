@@ -1,0 +1,23 @@
+databaseChangeLog:
+  - changeSet:
+      id: 7-create-cities-table
+      author: elizaveta_dubogryz
+      changes:
+        - createTable:
+            tableName: cities
+            columns:
+              - column:
+                  name: id
+                  type: UUID
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: name
+                  type: varchar(50)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: country_id
+                  type: UUID
+                  constraints:
+                    nullable: false

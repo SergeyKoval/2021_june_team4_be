@@ -1,0 +1,23 @@
+databaseChangeLog:
+  - changeSet:
+      id: 9-create-discounts-locations-table
+      author: elizaveta_dubogryz
+      changes:
+        - createTable:
+            tableName: discounts_locations
+            columns:
+              - column:
+                  name: id
+                  type: UUID
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: discount_id
+                  type: UUID
+                  constraints:
+                    nullable: false
+              - column:
+                  name: location_id
+                  type: UUID
+                  constraints:
+                    nullable: false
