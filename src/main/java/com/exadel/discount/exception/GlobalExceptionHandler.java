@@ -50,7 +50,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler
     @ResponseBody
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ExceptionDetails handleException(Exception exception) {
         String message = exception.getMessage();
         ExceptionDetails exceptionDetails = new ExceptionDetails(message);
