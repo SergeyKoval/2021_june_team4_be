@@ -31,7 +31,7 @@ import static com.exadel.discount.config.JwtVariablesConfig.REFRESH_ROLE;
 @Setter
 @FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
 @RequiredArgsConstructor
-public class AccessTokenRequestFilter extends OncePerRequestFilter {
+public class JwtFilter extends OncePerRequestFilter {
     String AUTHORIZATION_HEADER = "Authorization";
     String BEARER_TYPE_OF_AUTHORIZATION_HEADER = "Bearer ";
 
