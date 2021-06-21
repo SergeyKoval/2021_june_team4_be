@@ -22,7 +22,7 @@ public class GlobalExceptionHandler {
         String message = notFoundException.getMessage();
         ExceptionDetails exceptionDetails = new ExceptionDetails(message);
 
-        log.error("{}: {}", notFoundException.getClass().getSimpleName(), message);
+        log.error("{}: {}", notFoundException.getClass().getSimpleName(), message, notFoundException);
 
         return exceptionDetails;
     }
@@ -39,7 +39,7 @@ public class GlobalExceptionHandler {
                 .map(error -> new ExceptionDetails(error.getDefaultMessage()))
                 .collect(Collectors.toList());
 
-        log.error("{}: {}", notValidException.getClass().getSimpleName(), notValidException.getMessage());
+        log.error("{}: {}", notValidException.getClass().getSimpleName(), notValidException.getMessage(), notValidException);
 
         return exceptionDetailsList;
     }
@@ -51,7 +51,7 @@ public class GlobalExceptionHandler {
         String message = exception.getMessage();
         ExceptionDetails exceptionDetails = new ExceptionDetails(message);
 
-        log.error("{}: {}", exception.getClass().getSimpleName(), message);
+        log.error("{}: {}", exception.getClass().getSimpleName(), message, exception);
 
         return exceptionDetails;
     }
