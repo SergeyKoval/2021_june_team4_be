@@ -6,13 +6,13 @@
 
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
         <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
-            <pattern>%black(%d{ISO8601}) %highlight(%-5level) [%blue(%t)] %yellow(%logger): %msg%n</pattern>
+            <pattern>%black(%d{ISO8601}) %highlight(%-5level) [%blue(%t)] %yellow(%logger{36}): %msg%n</pattern>
         </encoder>
     </appender>
 
     <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
-            <pattern>%d{ISO8601} %-5level [%t] %logger - %msg - className: %X{className}%n</pattern>
+            <pattern>%d{ISO8601} %-5level [%t] %logger{36} - requestId: %X{requestId} - %msg%n</pattern>
         </encoder>
 
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
