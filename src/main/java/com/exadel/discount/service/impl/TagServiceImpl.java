@@ -23,42 +23,42 @@ public class TagServiceImpl implements TagService {
 
     @Override
     public List<TagDTO> getAllTags() {
-        log.info("Getting list of all Tags");
+        log.debug("Getting list of all Tags");
 
         List<Tag> allTags = tagRepository.findAll();
-        log.info("Successfully got list of all Tags");
+        log.debug("Successfully got list of all Tags");
 
         return tagMapper.toTagDtoList(allTags);
     }
 
     @Override
     public TagDTO getById(UUID id) {
-        log.info("Finding Tag by ID");
+        log.debug("Finding Tag by ID");
 
         Tag tag = tagRepository
                 .findById(id)
                 .orElseThrow(() -> new NotFoundException(String.format("Tag with id %s not found", id)));
-        log.info("Successfully found Tag by ID");
+        log.debug("Successfully found Tag by ID");
 
         return tagMapper.toTagDto(tag);
     }
 
     @Override
     public TagDTO saveTag(TagDTO tagDTO) {
-        log.info("Saving new Tag");
+        log.debug("Saving new Tag");
 
         Tag newTag = tagRepository.save(tagMapper.toTag(tagDTO));
-        log.info("Successfully saved new Tag");
+        log.debug("Successfully saved new Tag");
 
         return tagMapper.toTagDto(newTag);
     }
 
     @Override
     public void deleteTagById(UUID id) {
-        log.info("Deleting Tag");
+        log.debug("Deleting Tag");
 
         tagRepository.deleteById(id);
-        log.info("Successfully deleted Tag");
+        log.debug("Successfully deleted Tag");
     }
 
 }
