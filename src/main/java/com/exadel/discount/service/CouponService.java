@@ -10,7 +10,7 @@ import java.util.UUID;
 public interface CouponService {
     CouponDto findCouponById(UUID id);
 
-    void deleteCoupon(UUID id);
+    void deleteCouponById(UUID id);
 
     List<CouponDto> findAllCoupons();
 
