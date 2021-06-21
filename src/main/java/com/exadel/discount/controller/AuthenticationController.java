@@ -4,9 +4,7 @@ import com.exadel.discount.model.http.AuthenticationRequest;
 import com.exadel.discount.model.http.AuthenticationResponse;
 import com.exadel.discount.service.UserDetailsServiceImpl;
 import com.exadel.discount.util.jwt.JwtUtil;
-import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
-import lombok.experimental.FieldDefaults;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -20,13 +18,12 @@ import org.springframework.http.ResponseEntity;
 
 @RestController
 @RequestMapping("/authenticate")
-@FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
 @RequiredArgsConstructor
 public class AuthenticationController {
-    AuthenticationManager authenticationManager;
-    UserDetailsServiceImpl userDetailsService;
-    JwtUtil accessJwtUtil;
-    JwtUtil refreshJwtUtil;
+    private final AuthenticationManager authenticationManager;
+    private final UserDetailsServiceImpl userDetailsService;
+    private final JwtUtil accessJwtUtil;
+    private final JwtUtil refreshJwtUtil;
 
     @PostMapping("/login")
     public ResponseEntity<?> createAuthenticationToken(@RequestBody AuthenticationRequest request) throws Exception {

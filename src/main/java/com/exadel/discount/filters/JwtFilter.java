@@ -4,11 +4,8 @@ import com.exadel.discount.config.JwtVariablesConfig;
 import com.exadel.discount.service.UserDetailsServiceImpl;
 import com.exadel.discount.util.jwt.JwtUtil;
 import com.exadel.discount.util.jwt.RefreshJwtUtil;
-import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
-import lombok.experimental.FieldDefaults;
-import lombok.experimental.NonFinal;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -29,22 +26,17 @@ import static com.exadel.discount.config.JwtVariablesConfig.REFRESH_ROLE;
 
 @Component
 @Setter
-@FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
 @RequiredArgsConstructor
 public class JwtFilter extends OncePerRequestFilter {
-    String AUTHORIZATION_HEADER = "Authorization";
-    String BEARER_TYPE_OF_AUTHORIZATION_HEADER = "Bearer ";
+    private final String AUTHORIZATION_HEADER = "Authorization";
+    private final String BEARER_TYPE_OF_AUTHORIZATION_HEADER = "Bearer ";
 
-    UserDetailsServiceImpl userDetailsService;
+    private final UserDetailsServiceImpl userDetailsService;
 
-    @NonFinal
-    AbstractAuthenticationToken authentication;
-    @NonFinal
-    String token;
-    @NonFinal
-    String username;
-    @NonFinal
-    String role;
+    private AbstractAuthenticationToken authentication;
+    private String token;
+    private String username;
+    private String role;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request,

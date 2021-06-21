@@ -2,9 +2,7 @@ package com.exadel.discount.config;
 
 import com.exadel.discount.filters.JwtFilter;
 import com.exadel.discount.service.UserDetailsServiceImpl;
-import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
-import lombok.experimental.FieldDefaults;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -20,11 +18,10 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
-@FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
 @RequiredArgsConstructor
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
-    UserDetailsServiceImpl userDetailsServiceImpl;
-    JwtFilter jwtFilter;
+    private final UserDetailsServiceImpl userDetailsServiceImpl;
+    private final JwtFilter jwtFilter;
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
