@@ -27,8 +27,10 @@ public class FavoriteServiceImpl implements FavoriteService {
     @Override
     public List<FavoriteDto> findAllFavorites() {
         log.debug("Getting list of all Favorites");
+
         List<Favorite> favoriteList = favoriteRepository.findAll();
         log.debug("Successfully got list of all Favorites");
+
         return favoriteMapper.toFavoriteDtoList(favoriteList);
     }
 
@@ -66,16 +68,6 @@ public class FavoriteServiceImpl implements FavoriteService {
         return favoriteMapper.toFavoriteDto(favorite);
     }
 
-    @Override
-    public List<FavoriteDto> findAllFavorites() {
-        log.debug("Getting list of all Favorites");
-
-        List<Favorite> favoriteList = favoriteRepository.findAll();
-        log.debug("The list of all Favorites is successfully got");
-
-        return favoriteMapper.toFavoriteDtoList(favoriteList);
-    }
-
     @Transactional
     @Override
     public void deleteFavoriteByID(UUID id) {
@@ -87,7 +79,7 @@ public class FavoriteServiceImpl implements FavoriteService {
 
         favorite.getUser().removeFavorite(favorite);
         favoriteRepository.deleteById(id);
-        log.debug("Favorite is deleted successfully by ID");
+        log.debug("Successfully Favorite is deleted  by ID");
     }
 
     @Override
