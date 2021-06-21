@@ -1,5 +1,6 @@
 package com.exadel.discount.exception;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -10,10 +11,12 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @ControllerAdvice
+@Slf4j
 public class GlobalExceptionHandler {
     @ExceptionHandler(NotFoundException.class)
     public ResponseEntity<ExceptionDetails> handleException(NotFoundException notFoundException) {
         ExceptionDetails exceptionDetails = new ExceptionDetails(notFoundException.getMessage());
+        log.error(notFoundException.getMessage());
         return new ResponseEntity<>(exceptionDetails, HttpStatus.NOT_FOUND);
     }
 
@@ -26,6 +29,7 @@ public class GlobalExceptionHandler {
                 .stream()
                 .map(error -> new ExceptionDetails(error.getDefaultMessage()))
                 .collect(Collectors.toList());
+        log.error(notValidException.getMessage());
         return new ResponseEntity<>(exceptionDetailsList, HttpStatus.BAD_REQUEST);
     }
 
@@ -33,6 +37,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ExceptionDetails> handleException(
             Exception exception) {
         ExceptionDetails exceptionDetails = new ExceptionDetails(exception.getMessage());
+        log.error(exception.getMessage());
         return new ResponseEntity<>(exceptionDetails, HttpStatus.BAD_REQUEST);
     }
 }
