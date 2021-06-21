@@ -51,8 +51,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler
     @ResponseBody
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ExceptionDetails handleException(
-            Exception exception) {
+    public ExceptionDetails handleException(Exception exception) {
         String message = exception.getMessage();
         ExceptionDetails exceptionDetails = new ExceptionDetails(message);
 
