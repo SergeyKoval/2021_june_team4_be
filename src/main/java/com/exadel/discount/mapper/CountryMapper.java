@@ -9,7 +9,6 @@ import java.util.List;
 @Mapper(componentModel = "spring")
 public interface CountryMapper {
 
-
     Country parseDTO(CountryDTO countryDTO);
 
     CountryDTO getDTO(Country country);
