@@ -6,11 +6,13 @@ import java.util.List;
 import java.util.UUID;
 
 public interface CityService {
-    List<CityDTO> findAll();
+    List<CityDTO> findAllCities();
 
-    CityDTO findOneById(UUID id);
+    List<CityDTO> findAllCitiesByCountryId(UUID id);
 
-    CityDTO findByName(String name);
+    CityDTO findCityById(UUID id);
+
+    CityDTO findCityByName(String name);
 
     CityDTO save(CityDTO cityDTO);
 

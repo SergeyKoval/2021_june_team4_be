@@ -7,11 +7,11 @@ import java.util.List;
 import java.util.UUID;
 
 public interface CountryService {
-    List<CountryDTO> findAll();
+    List<CountryDTO> findAllCountries();
 
-    CountryDTO findOneById(UUID id);
+    CountryDTO findCountryById(UUID id);
 
-    CountryDTO findByName(String name);
+    CountryDTO findCountryByName(String name);
 
     CountryDTO save(CountryDTO countryDTO);
 

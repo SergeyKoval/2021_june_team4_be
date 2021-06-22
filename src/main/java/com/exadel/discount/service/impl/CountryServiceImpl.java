@@ -1,16 +1,19 @@
 package com.exadel.discount.service.impl;
 
 import com.exadel.discount.dto.CountryDTO;
+import com.exadel.discount.entity.Country;
 import com.exadel.discount.exception.NotFoundException;
 import com.exadel.discount.mapper.CountryMapper;
 import com.exadel.discount.repository.CountryRepository;
 import com.exadel.discount.service.CountryService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.UUID;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class CountryServiceImpl implements CountryService {
@@ -18,36 +21,56 @@ public class CountryServiceImpl implements CountryService {
     private final CountryMapper countryMapper;
 
     @Override
-    public List<CountryDTO> findAll() {
-        return countryMapper.getListDTO(countryRepository.findAll());
+    public List<CountryDTO> findAllCountries() {
+        log.debug("Getting list of all Countries");
+
+        List<CountryDTO> countryDTOList = countryMapper.getListDTO(countryRepository.findAll());
+
+        log.debug("Successfully got list of all Countries");
+        return countryDTOList;
     }
 
     @Override
-    public CountryDTO findOneById(UUID id) {
+    public CountryDTO findCountryById(UUID id) {
+        log.debug("Finding Country by Id");
 
-        return countryMapper.getDTO(countryRepository.findById(id)
+        CountryDTO countryDTO = countryMapper.getDTO(countryRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException(String.format("Country with id %s not found", id))));
+
+        log.debug("Country successfully found by Id");
+        return countryDTO;
     }
 
     @Override
-    public CountryDTO findByName(String name) {
+    public CountryDTO findCountryByName(String name) {
+        log.debug("Finding Country by Name");
 
-        return countryMapper.getDTO(countryRepository.findAll()
+        CountryDTO countryDTO = countryMapper.getDTO(countryRepository.findAll()
                 .stream()
                 .filter(s -> s.getName().equals(name))
                 .findFirst()
                 .orElseThrow(() -> new NotFoundException(String.format("Country with name %s not found", name))));
+
+        log.debug("Country successfully found by Name");
+        return countryDTO;
     }
 
     @Override
     public CountryDTO save(CountryDTO countryDTO) {
+        log.debug("Saving new Country");
 
-        return countryMapper.getDTO(countryRepository.save(countryMapper.parseDTO(countryDTO)));
+        Country newCountry = countryRepository.save(countryMapper.parseDTO(countryDTO));
+
+        log.debug("Successfully saved new Country");
+        return countryMapper.getDTO(newCountry);
     }
 
     @Override
     public void deleteById(UUID id) {
+        log.debug("Deleting Country");
 
         countryRepository.deleteById(id);
+
+        log.debug("Country successfully deleted");
     }
 }
