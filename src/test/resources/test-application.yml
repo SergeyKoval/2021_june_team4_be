@@ -8,4 +8,3 @@ spring:
     data-username:
     password:
     driver-class-name: org.postgresql.Driver
-

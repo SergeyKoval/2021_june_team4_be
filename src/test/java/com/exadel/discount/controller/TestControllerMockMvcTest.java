@@ -12,11 +12,17 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.util.TestPropertyValues;
 import org.springframework.context.ApplicationContextInitializer;
 import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
+import org.testcontainers.containers.DockerComposeContainer;
+import org.testcontainers.containers.GenericContainer;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
+import org.testcontainers.utility.DockerImageName;
+
+import java.io.File;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -29,10 +35,11 @@ public class TestControllerMockMvcTest {
             .withUsername("myuser")
             .withPassword("mypass");
 
+
     static class Initializer implements ApplicationContextInitializer<ConfigurableApplicationContext>{
         public void initialize(ConfigurableApplicationContext context){
             TestPropertyValues.of(
-                "spring.datasource.url=" + postgreSQLContainer.getJdbcUrl(),
+                        "spring.datasource.url=" + postgreSQLContainer.getJdbcUrl(),
                         "spring.datasource.username=" + postgreSQLContainer.getUsername(),
                         "spring.datasource.password=" + postgreSQLContainer.getPassword()
                        // "spring.liquibase.enabled=true"
