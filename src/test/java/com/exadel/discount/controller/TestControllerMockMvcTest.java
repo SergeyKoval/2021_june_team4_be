@@ -34,8 +34,8 @@ public class TestControllerMockMvcTest {
             TestPropertyValues.of(
                 "spring.datasource.url=" + postgreSQLContainer.getJdbcUrl(),
                         "spring.datasource.username=" + postgreSQLContainer.getUsername(),
-                        "spring.datasource.password=" + postgreSQLContainer.getPassword(),
-                        "spring.liquibase.enabled=true"
+                        "spring.datasource.password=" + postgreSQLContainer.getPassword()
+                       // "spring.liquibase.enabled=true"
             ).applyTo(context.getEnvironment());
         }
     }
