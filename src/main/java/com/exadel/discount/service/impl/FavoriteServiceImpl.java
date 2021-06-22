@@ -53,7 +53,7 @@ public class FavoriteServiceImpl implements FavoriteService {
 
         User user = userRepository
                 .findById(userId)
-                .orElseThrow(() -> new NotFoundException(String.format("User with id %s not found", id)));
+                .orElseThrow(() -> new NotFoundException(String.format("User with id %s not found", userId)));
 
         log.debug("Successfully user is found by ID");
 
@@ -88,7 +88,7 @@ public class FavoriteServiceImpl implements FavoriteService {
 
         User user = userRepository
                 .findById(userId)
-                .orElseThrow(() -> new NotFoundException(String.format("User with id %s not found", id)));
+                .orElseThrow(() -> new NotFoundException(String.format("User with id %s not found", userId)));
 
         log.debug("Successfully user is found by ID");
 

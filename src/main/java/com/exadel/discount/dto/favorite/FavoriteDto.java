@@ -1,8 +1,6 @@
 package com.exadel.discount.dto.favorite;
 
-import com.exadel.discount.dto.user.UserDto;
 import com.exadel.discount.dto.validation.Create;
-import com.sun.istack.NotNull;
 import lombok.Data;
 
 import javax.validation.constraints.Null;

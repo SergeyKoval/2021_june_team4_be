@@ -54,7 +54,7 @@ public class CouponServiceImpl implements CouponService {
 
         User user = userRepository
                 .findById(userId)
-                .orElseThrow(() -> new NotFoundException(String.format("User with id %s not found", id)));
+                .orElseThrow(() -> new NotFoundException(String.format("User with id %s not found", userId)));
         log.debug("Successfully certain user is found by ID");
 
         Coupon coupon = couponMapper.toCoupon(couponDto);
@@ -117,7 +117,7 @@ public class CouponServiceImpl implements CouponService {
 
         User user = userRepository
                 .findById(userId)
-                .orElseThrow(() -> new NotFoundException(String.format("User with id %s not found", id)));
+                .orElseThrow(() -> new NotFoundException(String.format("User with id %s not found", userId)));
         log.debug("Successfully user is found by ID");
 
         log.debug("Getting list of user's Coupons");
