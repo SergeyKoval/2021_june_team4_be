@@ -3,6 +3,8 @@
 
 # Log file
 *.log
+*.gz
+logs
 
 # BlueJ files
 *.ctxt
@@ -25,7 +27,18 @@ hs_err_pid*
 # IntelliJ idea
 .idea/
 *.iml
+*.mvn
 
 #Build
-
 target
+
+#Eclipse
+.classpath
+.project
+.settings
+.springBeans
+
+#Operating system files
+*.DS_Store
+.DS_Store
+Thumbs.db
