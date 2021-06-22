@@ -1,9 +1,11 @@
 package com.exadel.discount.repository;
 
 import com.exadel.discount.model.security.Role;
+import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 
+@Repository
 public class TestUserRepository {
     public static com.exadel.discount.repository.User findByEmail(String email) {
         ArrayList<com.exadel.discount.repository.User> list = new ArrayList<>();
