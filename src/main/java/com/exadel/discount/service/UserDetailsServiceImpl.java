@@ -1,7 +1,7 @@
 package com.exadel.discount.service;
 
 import com.exadel.discount.repository.TestUserRepository;
-import com.exadel.discount.repository.UserRepository;
+//import com.exadel.discount.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class UserDetailsServiceImpl implements UserDetailsService {
-    private final UserRepository repository;
+    private final TestUserRepository repository;
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
