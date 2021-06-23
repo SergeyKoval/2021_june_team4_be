@@ -1,34 +1,39 @@
 package com.exadel.discount.util.jwt;
 
-import com.exadel.discount.config.JwtVariablesConfig;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashSet;
+import java.util.List;
 
-import static com.exadel.discount.config.JwtVariablesConfig.REFRESH_TOKEN_EXPIRATION_TIME;
-import static com.exadel.discount.config.JwtVariablesConfig.REFRESH_ROLE;
-
-@Service
+@Component
 public class RefreshJwtUtil extends JwtUtil{
-    @Override
-    protected Collection<? extends GrantedAuthority> initRoleClaim(UserDetails userDetails) {
-        HashSet<SimpleGrantedAuthority> set = new HashSet<>();
-        set.add(new SimpleGrantedAuthority(JwtVariablesConfig.getProperty(REFRESH_ROLE)));
-        return set;
+    @Value("${jwt.refresh.expiration}")
+    private long REFRESH_TOKEN_EXPIRATION_TIME;
+    private static String REFRESH_ROLE;
+
+    @Value("${jwt.refresh.role}")
+    public void setRefreshRole(String refreshRole) {
+        RefreshJwtUtil.REFRESH_ROLE = refreshRole;
     }
 
     @Override
-    protected long initExpirationTimeClaim() {
-        return Long.parseLong(JwtVariablesConfig.getProperty(REFRESH_TOKEN_EXPIRATION_TIME));
+    protected String getRole(UserDetails userDetails) {
+        return REFRESH_ROLE;
+    }
+
+    @Override
+    protected long getTokenDuration() {
+        return REFRESH_TOKEN_EXPIRATION_TIME;
     }
 
     public static Collection<? extends GrantedAuthority> getRefreshAuthority() {
-        HashSet<SimpleGrantedAuthority> authority = new HashSet<>();
-        authority.add(new SimpleGrantedAuthority(JwtVariablesConfig.getProperty(REFRESH_ROLE)));
+        List<SimpleGrantedAuthority> authority = new ArrayList<>();
+        authority.add(new SimpleGrantedAuthority(REFRESH_ROLE));
         return authority;
     }
 }

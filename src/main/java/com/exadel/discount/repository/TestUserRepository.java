@@ -1,6 +1,6 @@
 package com.exadel.discount.repository;
 
-import com.exadel.discount.model.security.Role;
+import com.exadel.discount.entity.Role;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;

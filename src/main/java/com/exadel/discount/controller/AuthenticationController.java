@@ -1,7 +1,7 @@
 package com.exadel.discount.controller;
 
-import com.exadel.discount.model.http.AuthenticationRequest;
-import com.exadel.discount.model.http.AuthenticationResponse;
+import com.exadel.discount.dto.authentication.AuthenticationRequest;
+import com.exadel.discount.dto.authentication.AuthenticationResponse;
 import com.exadel.discount.service.UserDetailsServiceImpl;
 import com.exadel.discount.util.jwt.JwtUtil;
 import lombok.RequiredArgsConstructor;

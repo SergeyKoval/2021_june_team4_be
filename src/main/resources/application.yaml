@@ -5,3 +5,12 @@ spring:
       ddl-auto: update
   datasource:
     driver-class-name: org.postgresql.Driver
+
+jwt:
+  access:
+    expiration: 120
+  refresh:
+    expiration: 3600
+    role: ROLE_REFRESH
+  encryption:
+    key: encryptionSecret

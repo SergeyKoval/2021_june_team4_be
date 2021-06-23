@@ -1,12 +1,12 @@
 package com.exadel.discount.filters;
 
-import com.exadel.discount.config.JwtVariablesConfig;
 import com.exadel.discount.service.UserDetailsServiceImpl;
 import com.exadel.discount.util.jwt.JwtUtil;
 import com.exadel.discount.util.jwt.RefreshJwtUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -22,8 +22,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-import static com.exadel.discount.config.JwtVariablesConfig.REFRESH_ROLE;
-
 @Component
 @Setter
 @RequiredArgsConstructor
@@ -31,34 +29,34 @@ public class JwtFilter extends OncePerRequestFilter {
     private final String AUTHORIZATION_HEADER = "Authorization";
     private final String BEARER_TYPE_OF_AUTHORIZATION_HEADER = "Bearer ";
 
-    private final UserDetailsServiceImpl userDetailsService;
+    @Value("${jwt.refresh.role}")
+    private String REFRESH_ROLE;
 
-    private AbstractAuthenticationToken authentication;
-    private String token;
-    private String username;
-    private String role;
+    private final UserDetailsServiceImpl userDetailsService;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request,
                                     HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
         final String authorizationHeader = request.getHeader(AUTHORIZATION_HEADER);
+        AbstractAuthenticationToken authentication = null;
 
-        if (isNotAuthorized() && hasSuitableAuthorizationHeader(authorizationHeader)) {
-            extractPayload(authorizationHeader);
+        if (isNotAuthorized() && isAuthorizationHeaderSuitable(authorizationHeader)) {
+            final String token = StringUtils.substring(authorizationHeader, 7);
+            final String username = JwtUtil.extractUsername(token);
+            String role = JwtUtil.extractRole(token);
 
-            if (hasValidSearchKeyForStorage()) {
-                UserDetails userDetails = loadUserDataFromStorageThroughSearchKey();
+            if (isSearchKeyForStorageValid(username)) {
+                UserDetails userDetails = this.userDetailsService.loadUserByUsername(username);
 
-                if (StringUtils.equals(role, JwtVariablesConfig.getProperty(REFRESH_ROLE))) {
+                if (StringUtils.equals(role, REFRESH_ROLE)) {
                     if (JwtUtil.validateToken(token, userDetails)) {
-                        this.authentication = new PreAuthenticatedAuthenticationToken(
+                        authentication = new PreAuthenticatedAuthenticationToken(
                                 userDetails, null, RefreshJwtUtil.getRefreshAuthority());
                     }
                 } else if (JwtUtil.validateToken(token, userDetails)) {
-                    this.authentication = new UsernamePasswordAuthenticationToken(
+                    authentication = new UsernamePasswordAuthenticationToken(
                             userDetails, null, userDetails.getAuthorities());
-
                 }
                 setSecurityContextAuthentication(request, authentication);
             }
@@ -70,36 +68,16 @@ public class JwtFilter extends OncePerRequestFilter {
         return SecurityContextHolder.getContext().getAuthentication() == null;
     }
 
-    private boolean hasSuitableAuthorizationHeader(String authorizationHeader) {
-        return
-                StringUtils.isNoneEmpty(authorizationHeader) &&
-                        StringUtils.startsWith(authorizationHeader, BEARER_TYPE_OF_AUTHORIZATION_HEADER);
+    private boolean isAuthorizationHeaderSuitable(String authorizationHeader) {
+        return StringUtils.startsWith(authorizationHeader, BEARER_TYPE_OF_AUTHORIZATION_HEADER);
     }
 
-    private UserDetails loadUserDataFromStorageThroughSearchKey() {
-        return this.userDetailsService.loadUserByUsername(username);
-    }
-
-    private boolean hasValidSearchKeyForStorage() {
-        return StringUtils.isNoneEmpty(username);
+    private boolean isSearchKeyForStorageValid(String key) {
+        return StringUtils.isNoneEmpty(key);
     }
 
     private void setSecurityContextAuthentication(HttpServletRequest request, AbstractAuthenticationToken authentication) {
         authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
         SecurityContextHolder.getContext().setAuthentication(authentication);
-    }
-
-    private void extractPayload(String authorizationHeader) {
-        setToken(authorizationHeader.substring(7));
-        setUsername(JwtUtil.extractUsername(token));
-        setRole(JwtUtil.extractRole(token));
-        extractRoleKeyWordFromClaim();
-    }
-
-    private void extractRoleKeyWordFromClaim() {
-        final String preSyntax = "[{authority=";
-        final String postSyntax = "}]";
-        setRole(StringUtils.stripStart(role, preSyntax));
-        setRole(StringUtils.stripEnd(role, postSyntax));
     }
 }

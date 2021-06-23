@@ -1,6 +1,6 @@
 package com.exadel.discount.repository;
 
-import com.exadel.discount.model.security.Role;
+import com.exadel.discount.entity.Role;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

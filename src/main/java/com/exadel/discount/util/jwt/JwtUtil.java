@@ -1,35 +1,37 @@
 package com.exadel.discount.util.jwt;
 
-import com.exadel.discount.config.JwtVariablesConfig;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import org.springframework.security.core.GrantedAuthority;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 import java.time.Instant;
 import java.util.*;
 import java.util.function.Function;
 
-import static com.exadel.discount.config.JwtVariablesConfig.TOKEN_ENCRYPTION_KEY;
-
-@Service
+@Component
 public abstract class JwtUtil {
     protected final static String ROLE_CLAIM_NAME = "role";
-    protected final static String INITIALISATION_TIME_CLAIM_NAME = "initTime";
-    protected final static String EXPIRATION_TIME_CLAIM_NAME = "expTime";
+
+    private static String TOKEN_ENCRYPTION_KEY;
+
+    @Value("${jwt.encryption.key}")
+    public void setTOKEN_ENCRYPTION_KEY(String TOKEN_ENCRYPTION_KEY) {
+        JwtUtil.TOKEN_ENCRYPTION_KEY = TOKEN_ENCRYPTION_KEY;
+    }
 
     public static String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);
     }
 
-    public static Long extractExpiration(String token) {
-        return Long.valueOf(extractAllClaims(token).get(EXPIRATION_TIME_CLAIM_NAME).toString());
+    public static Date extractExpiration(String token) {
+        return extractClaim(token, Claims::getExpiration);
     }
 
     public static String extractRole(String token) {
-        return extractAllClaims(token).get(ROLE_CLAIM_NAME).toString();
+        return extractAllClaims(token).get(ROLE_CLAIM_NAME, String.class);
     }
 
     public static <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
@@ -38,42 +40,40 @@ public abstract class JwtUtil {
     }
 
     private static Claims extractAllClaims(String token) {
-        return Jwts.parser().setSigningKey(JwtVariablesConfig.getProperty(TOKEN_ENCRYPTION_KEY)).parseClaimsJws(token).getBody();
+        return Jwts.parser().setSigningKey(TOKEN_ENCRYPTION_KEY).parseClaimsJws(token).getBody();
     }
 
     private static Boolean isTokenExpired(String token) {
-        return extractExpiration(token) < Instant.now().getEpochSecond();
+        return extractExpiration(token).toInstant().isBefore(Instant.now());
     }
 
     public String generateToken(UserDetails userDetails) {
         Map<String, Object> claims = new HashMap<>();
         Map<String, Object> roleClaim = new HashMap<>();
-        Map<String, Object> initialTimeClaim = new HashMap<>();
-        Map<String, Object> expirationTimeClaim = new HashMap<>();
 
-        roleClaim.put(ROLE_CLAIM_NAME, initRoleClaim(userDetails));
-        initialTimeClaim.put(INITIALISATION_TIME_CLAIM_NAME, Instant.now().getEpochSecond());
-        expirationTimeClaim.put(EXPIRATION_TIME_CLAIM_NAME, Instant.now().plusSeconds(initExpirationTimeClaim()).getEpochSecond());
+        roleClaim.put(ROLE_CLAIM_NAME, getRole(userDetails));
 
-        return buildToken(claims, roleClaim, initialTimeClaim, expirationTimeClaim, userDetails.getUsername());
+        return buildToken(
+                claims,
+                roleClaim,
+                userDetails.getUsername());
     }
 
-    protected abstract Collection<? extends GrantedAuthority> initRoleClaim(UserDetails userDetails);
+    protected abstract String getRole(UserDetails userDetails);
 
-    protected abstract long initExpirationTimeClaim();
+    protected abstract long getTokenDuration();
 
     protected String buildToken(Map<String, Object> claims,
                                 Map<String, Object> roleClaim,
-                                Map<String, Object> initialTimeClaim,
-                                Map<String, Object> expirationTimeClaim,
                                 String subject) {
+        Instant currentTime = Instant.now();
         return Jwts.builder()
                 .setClaims(claims)
                 .addClaims(roleClaim)
                 .setSubject(subject)
-                .addClaims(initialTimeClaim)
-                .addClaims(expirationTimeClaim)
-                .signWith(SignatureAlgorithm.HS256, JwtVariablesConfig.getProperty(TOKEN_ENCRYPTION_KEY))
+                .setIssuedAt(Date.from(currentTime))
+                .setExpiration(Date.from(currentTime.plusSeconds(getTokenDuration())))
+                .signWith(SignatureAlgorithm.HS256, TOKEN_ENCRYPTION_KEY)
                 .compact();
     }
 
