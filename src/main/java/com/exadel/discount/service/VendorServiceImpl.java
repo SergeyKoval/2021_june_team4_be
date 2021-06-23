@@ -1,12 +1,16 @@
 package com.exadel.discount.service;
 
 import com.exadel.discount.dto.VendorDTO;
+import com.exadel.discount.entity.Vendor;
+import com.exadel.discount.entity.VendorLocation;
 import com.exadel.discount.mapper.VendorMapper;
+import com.exadel.discount.repository.VendorLocationRepository;
 import com.exadel.discount.repository.VendorRepository;
 import com.exadel.discount.service.interfaces.VendorService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -16,9 +20,10 @@ public class VendorServiceImpl implements VendorService {
 
     private final VendorRepository vendorRepository;
     private final VendorMapper vendorMapper;
+    private final VendorLocationRepository vendorLocationRepository;
 
     @Override
-    public VendorDTO create(VendorDTO vendorDTO) {
+    public VendorDTO save(VendorDTO vendorDTO) {
         return vendorMapper.getDTO(vendorRepository.save(vendorMapper.parseDTO(vendorDTO)));
     }
 
@@ -30,6 +35,11 @@ public class VendorServiceImpl implements VendorService {
     @Override
     public List<VendorDTO> getAll() {
         return vendorMapper.getListDTO(vendorRepository.findAll());
+    }
+
+    @Override
+    public void delete(UUID id) {
+        vendorRepository.deleteById(id);
     }
 
     @Override

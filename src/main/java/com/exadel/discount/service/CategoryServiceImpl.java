@@ -18,13 +18,18 @@ public class CategoryServiceImpl implements CategoryService {
     private final CategoryMapper categoryMapper;
 
     @Override
-    public CategoryDTO create(CategoryDTO categoryDTO) {
+    public CategoryDTO save(CategoryDTO categoryDTO) {
         return categoryMapper.getDTO(categoryRepository.save(categoryMapper.parseDTO(categoryDTO)));
     }
 
     @Override
     public CategoryDTO get(UUID id) {
         return categoryMapper.getDTO(categoryRepository.findById(id).orElse(null));
+    }
+
+    @Override
+    public void delete(UUID id) {
+        categoryRepository.deleteById(id);
     }
 
     @Override

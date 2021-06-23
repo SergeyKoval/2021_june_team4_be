@@ -43,7 +43,7 @@ public class Discount {
     private LocalDateTime startTime;
     @Column(name = "end_time")
     private LocalDateTime endTime;
-    @Column(name = "active", nullable = false)
+    @Column(name = "active")
     private boolean active;
 
 }

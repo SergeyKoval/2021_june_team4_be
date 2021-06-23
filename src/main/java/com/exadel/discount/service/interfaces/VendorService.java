@@ -7,9 +7,10 @@ import java.util.UUID;
 
 public interface VendorService {
 
-    VendorDTO create(VendorDTO vendor);
+    VendorDTO save(VendorDTO vendor);
     VendorDTO get(UUID id);
     List<VendorDTO> getAll();
+    void delete(UUID id);
     long count();
 
 }

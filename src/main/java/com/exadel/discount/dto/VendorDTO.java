@@ -1,7 +1,6 @@
 package com.exadel.discount.dto;
 
 import com.exadel.discount.dto.validation.Create;
-import com.exadel.discount.entity.VendorLocation;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
@@ -16,15 +15,13 @@ import java.util.UUID;
 @EqualsAndHashCode(exclude = {"vendorLocations"})
 @ToString(exclude = {"vendorLocations"})
 public class VendorDTO {
-
     @Null(groups = Create.class)
     private UUID id;
     @NotBlank(groups = Create.class)
     @Size(max = 50, groups = Create.class)
     private String name;
-    @Null(groups = Create.class)
     private String description;
     @Null(groups = Create.class)
-    private List<VendorLocation> vendorLocations;
+    private List<VendorLocationDTO> vendorLocations;
 
 }

@@ -7,9 +7,9 @@ import java.util.UUID;
 
 public interface VendorLocationService {
 
-    VendorLocationDTO create(VendorLocationDTO vendorLocationDTO);
+    VendorLocationDTO save(VendorLocationDTO vendorLocationDTO, UUID vendorId);
     VendorLocationDTO get(UUID id);
     List<VendorLocationDTO> getAll();
+    void delete(UUID vendorId, UUID locationId) throws Exception;
     long count();
-
 }

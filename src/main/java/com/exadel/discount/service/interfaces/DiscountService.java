@@ -7,7 +7,7 @@ import java.util.UUID;
 
 public interface DiscountService {
 
-    DiscountDTO create(DiscountDTO discountDTO);
+    DiscountDTO save(DiscountDTO discountDTO);
     DiscountDTO get(UUID id);
     List<DiscountDTO> getAll();
     long count();

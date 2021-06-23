@@ -7,8 +7,9 @@ import java.util.UUID;
 
 public interface CategoryService {
 
-    CategoryDTO create(CategoryDTO categoryDTO);
+    CategoryDTO save(CategoryDTO categoryDTO);
     CategoryDTO get(UUID id);
+    void delete(UUID id);
     List<CategoryDTO> getAll();
     long count();
 

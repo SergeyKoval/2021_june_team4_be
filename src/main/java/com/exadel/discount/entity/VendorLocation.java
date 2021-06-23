@@ -28,7 +28,7 @@ public class VendorLocation {
     private UUID id;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "vendor_id", nullable = false)
+    @JoinColumn(name = "vendor_id")
     private Vendor vendor;
 
     @Column(name = "country_id")

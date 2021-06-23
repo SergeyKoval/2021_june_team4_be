@@ -18,7 +18,7 @@ public class DiscountServiceImpl implements DiscountService {
     private final DiscountMapper discountMapper;
 
     @Override
-    public DiscountDTO create(DiscountDTO discountDTO) {
+    public DiscountDTO save(DiscountDTO discountDTO) {
         return discountMapper.getDTO(discountRepository.save(discountMapper.parseDTO(discountDTO)));
     }
 
