@@ -14,7 +14,7 @@ public interface CouponService {
 
     List<CouponDto> findAllCoupons();
 
-    CouponDto addCouponToUser(UUID userId, CouponDto couponDto);
+    CouponDto assignCouponToUser(UUID userId, UUID discountId);
 
     CouponDto findCouponByDate(LocalDateTime time);
 

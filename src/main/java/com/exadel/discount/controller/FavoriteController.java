@@ -1,12 +1,16 @@
 package com.exadel.discount.controller;
 
 import com.exadel.discount.dto.favorite.FavoriteDto;
-import com.exadel.discount.dto.validation.Create;
 import com.exadel.discount.service.FavoriteService;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
-import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 import java.util.UUID;
@@ -29,16 +33,16 @@ public class FavoriteController {
         return favoriteService.findFavoriteById(id);
     }
 
-    @PostMapping("{userId}")
+    @PostMapping
     @ApiOperation("Save new favorite")
-    public FavoriteDto addFavorite(@Validated(Create.class)@PathVariable final UUID userId,
-                                   @RequestBody FavoriteDto favoriteDto) {
-        return favoriteService.addFavoriteToUser(userId, favoriteDto);
+    public FavoriteDto addFavorite(@RequestParam("userId") final UUID userId,
+                                   @RequestParam("discountId") final UUID discountId) {
+        return favoriteService.assingFavoriteToUser(userId, discountId);
     }
 
-    @GetMapping("ofuser/{userId}")
+    @GetMapping("/ofuser")
     @ApiOperation("Get favorites of certain user")
-    public List<FavoriteDto> getFavoritesOfUser(@PathVariable final UUID userId) {
+    public List<FavoriteDto> getFavoritesOfUser(@RequestParam("userId") final UUID userId) {
         return favoriteService.getFavoritesOfUser(userId);
     }
 
