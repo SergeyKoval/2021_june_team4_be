@@ -1,20 +1,15 @@
 package com.exadel.discount.controller;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+@CrossOrigin
 @RequestMapping("/test")
 public class TestController {
-    private static String yml;
-
-    @Value("${jwt.encryption.key}")
-    public void setYml(String yml) {
-        TestController.yml = yml;
-    }
 
     @GetMapping("/a")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
@@ -32,11 +27,5 @@ public class TestController {
     @PreAuthorize("hasRole('ROLE_USER')")
     public String getUser() {
         return "Hello user";
-    }
-
-    @GetMapping("/yml")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public String getYml() {
-        return yml;
     }
 }
