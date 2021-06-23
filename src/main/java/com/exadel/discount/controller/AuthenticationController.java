@@ -13,8 +13,12 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.web.bind.annotation.*;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 @RestController
 @RequestMapping("/authenticate")
@@ -25,6 +29,7 @@ public class AuthenticationController {
     private final JwtUtil accessJwtUtil;
     private final JwtUtil refreshJwtUtil;
 
+    @CrossOrigin
     @PostMapping("/login")
     public ResponseEntity<?> createAuthenticationToken(@RequestBody AuthenticationRequest request) throws Exception {
         try {
@@ -46,6 +51,7 @@ public class AuthenticationController {
         return ResponseEntity.ok(new AuthenticationResponse(accessToken, refreshToken));
     }
 
+    @CrossOrigin
     @PostMapping("/refresh")
     @PreAuthorize("hasRole('ROLE_REFRESH')")
     public ResponseEntity<?> refreshToken() throws Exception {

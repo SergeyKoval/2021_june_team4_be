@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -26,7 +27,6 @@ import java.io.IOException;
 @Setter
 @RequiredArgsConstructor
 public class JwtFilter extends OncePerRequestFilter {
-    private final String AUTHORIZATION_HEADER = "Authorization";
     private final String BEARER_TYPE_OF_AUTHORIZATION_HEADER = "Bearer ";
 
     @Value("${jwt.refresh.role}")
@@ -38,7 +38,7 @@ public class JwtFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request,
                                     HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
-        final String authorizationHeader = request.getHeader(AUTHORIZATION_HEADER);
+        final String authorizationHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
         AbstractAuthenticationToken authentication = null;
 
         if (isNotAuthorized() && isAuthorizationHeaderSuitable(authorizationHeader)) {
