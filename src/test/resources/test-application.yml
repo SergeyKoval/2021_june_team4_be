@@ -5,6 +5,6 @@ spring:
       ddl-auto: update
   datasource:
     url:
-    data-username:
+    username:
     password:
     driver-class-name: org.postgresql.Driver

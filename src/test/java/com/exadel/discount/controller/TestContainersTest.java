@@ -52,5 +52,9 @@ public class TestContainersTest {
         }
     }
 
+    @Test
+    public void loadContext(){
+
+    }
 
 }
