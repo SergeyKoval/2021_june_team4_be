@@ -18,7 +18,7 @@ public class Country {
     @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
     private UUID id;
 
-    @Column(name = "name", nullable = false)
+    @Column(name = "name", length = 50, nullable = false)
     private String name;
 
     @OneToMany(mappedBy = "country")

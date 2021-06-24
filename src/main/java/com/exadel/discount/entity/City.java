@@ -15,18 +15,19 @@ public class City {
     @Id
     @GeneratedValue(generator = "UUID")
     @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
+    @Column(name = "id")
     private UUID id;
 
-    @Column(name = "name", nullable = false)
+    @Column(name = "name", length = 50, nullable = false)
     private String name;
 
-    @ManyToOne
-    @JoinColumn(name = "country_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "country_id", nullable=false)
     private Country country;
 
-//    @OneToMany
-//    private List<User> users;
-//
-//    @OneToMany
-//    private List<VendorLocation> vendorLocations;
+    @OneToMany(mappedBy = "city", fetch = FetchType.LAZY)
+    private List<User> users;
+
+    @OneToMany(mappedBy = "city", fetch = FetchType.LAZY)
+    private List<VendorLocation> vendorLocations;
 }

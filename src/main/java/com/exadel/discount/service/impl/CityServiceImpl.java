@@ -83,8 +83,11 @@ public class CityServiceImpl implements CityService {
     @Override
     public void deleteById(UUID id) {
         log.debug("Deleting City");
-
-        cityRepository.deleteById(id);
+        try {
+            cityRepository.deleteById(id);
+        } catch (Exception e) {
+            throw new NotFoundException(String.format("Cannot delete. City with Id %s not found", id));
+        }
 
         log.debug("City successfully deleted");
     }
