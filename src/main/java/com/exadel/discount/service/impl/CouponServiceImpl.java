@@ -34,7 +34,7 @@ public class CouponServiceImpl implements CouponService {
         log.debug("Getting list of all Coupons");
 
         List<Coupon> coupons = couponRepository.findAll();
-        log.debug(" Successfully list of all Coupons is got");
+        log.debug("Successfully list of all Coupons is got");
 
         return couponMapper.toCouponDtoList(coupons);
     }
@@ -87,33 +87,17 @@ public class CouponServiceImpl implements CouponService {
         return couponMapper.toCouponDto(coupon);
     }
 
-    @Transactional
     @Override
-    public CouponDto editCouponDate(UUID id, LocalDateTime newDate) {
-        log.debug("Getting Coupon by ID");
+    public List<CouponDto> findCouponsBetweenDates(LocalDateTime startDate, LocalDateTime endDate) {
+        log.debug("Finding coupon by date scope");
+        List<CouponDto> CouponDtoList = couponMapper.toCouponDtoList(couponRepository.findAll()
+                .stream()
+                .filter(s -> s.getDate().isAfter(startDate))
+                .filter(s -> s.getDate().isBefore(endDate))
+                .collect(Collectors.toList()));
+        log.debug("Successfully coupon is found by date scope");
 
-        Coupon couponUnderEdition = couponRepository
-                .findById(id)
-                .orElseThrow(() -> new NotFoundException(String.format("Coupon with id %s not found", id)));
-        log.debug("Coupon by ID is successfully got and date edition&saving is starting");
-
-        couponUnderEdition.setDate(newDate);
-        couponRepository.save(couponUnderEdition);
-        log.debug("Successfully Coupon date is edited&saved");
-
-        return couponMapper.toCouponDto(couponUnderEdition);
-    }
-
-    @Transactional
-    @Override
-    public void deleteCouponById(UUID id) {
-        log.debug("Deleting Coupon by ID");
-
-        couponRepository
-                .findById(id)
-                .orElseThrow(() -> new NotFoundException(String.format("Coupon with id %s not found", id)));
-        couponRepository.deleteById(id);
-        log.debug("Successfully Coupon is deleted by ID");
+        return CouponDtoList;
     }
 
     @Override
