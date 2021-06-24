@@ -8,10 +8,8 @@ import java.util.UUID;
 public interface CategoryService {
 
     CategoryDTO save(CategoryDTO categoryDTO);
-    CategoryDTO get(UUID id);
-    void delete(UUID id);
+    CategoryDTO getById(UUID id);
+    void deleteById(UUID id);
     List<CategoryDTO> getAll();
-    long count();
-
 
 }

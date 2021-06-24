@@ -4,14 +4,15 @@ import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Id;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Column;
 import javax.persistence.ManyToOne;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import java.time.LocalDateTime;
+import java.util.Set;
 import java.util.UUID;
 
 @Data
@@ -45,5 +46,27 @@ public class Discount {
     private LocalDateTime endTime;
     @Column(name = "active")
     private boolean active;
+
+    /*@ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "discount_locations",
+            joinColumns = @JoinColumn(name = "discount_id"),
+            inverseJoinColumns = @JoinColumn(name = "location_id")
+    )
+    private Set<VendorLocation> vendorLocations;*/
+
+    /*@ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "tags_discounts",
+            joinColumns = @JoinColumn(name = "discount_id"),
+            inverseJoinColumns = @JoinColumn(name = "tag_id")
+    )
+    private Set<Tag> tags;
+
+    @OneToMany(mappedBy = "discount", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    private Set<Coupon> coupons;
+
+    @OneToMany(mappedBy = "discount", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    private Set<Favorite> favorites;*/
 
 }

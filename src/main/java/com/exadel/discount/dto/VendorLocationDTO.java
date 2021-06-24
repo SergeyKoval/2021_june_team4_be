@@ -11,7 +11,6 @@ import java.util.UUID;
 public class VendorLocationDTO {
     @Null(groups = Create.class)
     private UUID id;
-    private UUID vendor_id;
     private UUID countryId;
     private UUID cityId;
     private String contact;

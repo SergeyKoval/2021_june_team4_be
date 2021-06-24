@@ -11,13 +11,10 @@ import java.util.List;
 import java.util.UUID;
 
 @Data
-/*@EqualsAndHashCode(exclude = {"discounts"})
-@ToString(exclude = {"discounts"})*/
 public class CategoryDTO {
     @Null(groups = Create.class)
     private UUID id;
-    @NotBlank(groups = Create.class)
+    @NotBlank(groups = Create.class, message = "Category name should be not blank")
     private String name;
-    //private List<DiscountDTO> discounts;
 
 }

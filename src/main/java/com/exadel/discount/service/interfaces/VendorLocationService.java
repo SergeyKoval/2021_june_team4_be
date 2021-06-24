@@ -8,8 +8,7 @@ import java.util.UUID;
 public interface VendorLocationService {
 
     VendorLocationDTO save(VendorLocationDTO vendorLocationDTO, UUID vendorId);
-    VendorLocationDTO get(UUID id);
+    VendorLocationDTO getById(UUID id);
     List<VendorLocationDTO> getAll();
-    void delete(UUID vendorId, UUID locationId) throws Exception;
-    long count();
+    void deleteById(UUID vendorId, UUID locationId);
 }

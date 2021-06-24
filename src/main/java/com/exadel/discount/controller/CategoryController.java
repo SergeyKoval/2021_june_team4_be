@@ -1,13 +1,13 @@
 package com.exadel.discount.controller;
 
 import com.exadel.discount.dto.CategoryDTO;
+import com.exadel.discount.dto.validation.Create;
 import com.exadel.discount.service.interfaces.CategoryService;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 import java.util.UUID;
@@ -28,20 +28,23 @@ public class CategoryController {
 
     @GetMapping("/{categoryId}")
     @ApiOperation("Get information about category by Id")
-    public CategoryDTO getById(@PathVariable(name = "categoryId") @NotNull UUID id) {
-        return categoryService.get(id);
+    public CategoryDTO getById(
+            @PathVariable(name = "categoryId") @NotNull UUID id) {
+        return categoryService.getById(id);
     }
 
     @PostMapping
     @ApiOperation("Add new category")
-    public CategoryDTO addCategory(@RequestBody @Valid CategoryDTO categoryDTO) {
+    public CategoryDTO addCategory(
+            @RequestBody @Validated(Create.class) CategoryDTO categoryDTO) {
         return categoryService.save(categoryDTO);
     }
 
     @DeleteMapping("/{categoryId}")
     @ApiOperation("Delete category by Id")
-    public void deleteCategory(@PathVariable(name = "categoryId") @Valid @NotNull UUID id) {
-        categoryService.delete(id);
+    public void deleteCategory(
+            @PathVariable(name = "categoryId") @NotNull UUID id) {
+        categoryService.deleteById(id);
     }
 
 }

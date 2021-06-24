@@ -8,8 +8,8 @@ import java.util.UUID;
 public interface DiscountService {
 
     DiscountDTO save(DiscountDTO discountDTO);
-    DiscountDTO get(UUID id);
+    DiscountDTO getById(UUID id);
     List<DiscountDTO> getAll();
-    long count();
+    void deleteById(UUID id);
 
 }

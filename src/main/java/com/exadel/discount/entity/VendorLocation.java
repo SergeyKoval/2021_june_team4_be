@@ -1,23 +1,21 @@
 package com.exadel.discount.entity;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import org.hibernate.annotations.GenericGenerator;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.persistence.Column;
-import javax.persistence.ManyToOne;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
+import javax.persistence.*;
+import java.util.Set;
 import java.util.UUID;
 
 @Data
 @NoArgsConstructor
 @Entity
 @Table(name = "vendor_locations")
+/*@EqualsAndHashCode(exclude = {"discounts"})
+@ToString(exclude = {"discounts"})*/
 public class VendorLocation {
     @Id
     @GeneratedValue(generator = "UUID")
@@ -39,6 +37,9 @@ public class VendorLocation {
     private String contact;
     @Column(name = "coordinates")
     private String coordinates;
+
+    /*@ManyToMany(mappedBy = "vendorLocations", fetch = FetchType.LAZY)
+    private Set<Discount> discounts;*/
 
 
 }
