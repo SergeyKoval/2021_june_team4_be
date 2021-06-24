@@ -38,14 +38,7 @@ public class CategoryController {
             categories.add(categoryService.getById(id));
             return categories;
         }
-
     }
-
-    /*@GetMapping("/{categoryId}")
-    @ApiOperation("Get information about category by Id")
-    public CategoryDTO getById(@PathVariable(name = "categoryId") @NotNull UUID id) {
-        return categoryService.getById(id);
-    }*/
 
     @PostMapping
     @ApiOperation("Add new category")
@@ -53,9 +46,9 @@ public class CategoryController {
         return categoryService.save(categoryDTO);
     }
 
-    @DeleteMapping()
+    @DeleteMapping
     @ApiOperation("Delete category by Id")
-    public void deleteCategory(@RequestParam(name = "categoryId", required = true) @NotNull UUID id) {
+    public void deleteCategory(@RequestParam(name = "Id", required = true) @NotNull UUID id) {
         categoryService.deleteById(id);
     }
 

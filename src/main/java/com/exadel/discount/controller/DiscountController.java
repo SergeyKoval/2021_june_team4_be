@@ -27,13 +27,7 @@ public class DiscountController {
 
     private final DiscountService discountService;
 
-    /*@GetMapping
-    @ApiOperation("Get all discounts")
-    public List<DiscountDTO> getAllDiscount() {
-        return discountService.getAll();
-    }*/
-
-    @GetMapping()
+    @GetMapping
     @ApiOperation("Get discount by ID or all discounts")
     public List<DiscountDTO> getDiscountById(@RequestParam (name = "id", required = false) UUID id) {
         if (id == null) {

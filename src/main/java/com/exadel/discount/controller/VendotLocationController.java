@@ -30,7 +30,7 @@ public class VendotLocationController {
     private final VendorService vendorService;
     private final VendorLocationService vendorLocationService;
 
-    @GetMapping()
+    @GetMapping
     @ApiOperation("Get list of all vendor locations")
     public List<VendorLocationDTO> getVendorLocations(
             @RequestParam(name = "vendorId", required = true) @NotNull UUID vendorId,
@@ -44,7 +44,7 @@ public class VendotLocationController {
         }
     }
 
-    @PostMapping()
+    @PostMapping
     @ApiOperation("Add new location of vendor")
     public VendorLocationDTO addVendorLocation(
             @RequestParam(name = "vendorId", required = true) @NotNull UUID vendorId,
@@ -52,7 +52,7 @@ public class VendotLocationController {
         return vendorLocationService.save(location, vendorId);
     }
 
-    @DeleteMapping()
+    @DeleteMapping
     @ApiOperation("Delete vendor's location")
     public void deleteLocation(
             @RequestParam(name = "vendorId", required = true) @NotNull UUID vendorId,

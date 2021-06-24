@@ -43,21 +43,15 @@ public class VendorController {
 
     }
 
-    /*@GetMapping("/{vendorId}")
-    @ApiOperation("Get vendor by ID")
-    public VendorDTO getVendorById(@PathVariable(name = "vendorId") @NotNull UUID id) {
-        return vendorService.getById(id);
-    }*/
-
     @PostMapping
     @ApiOperation("Add new vendor")
     public VendorDTO saveNewVendor(@RequestBody @Validated(Create.class) VendorDTO vendor) {
         return vendorService.save(vendor);
     }
 
-    @DeleteMapping()
+    @DeleteMapping
     @ApiOperation("Delete vendor by ID")
-    public void deleteVendor(@RequestParam(name = "vendorId", required = true) @NotNull UUID id) {
+    public void deleteVendor(@RequestParam(name = "id", required = true) @NotNull UUID id) {
         vendorService.deleteById(id);
     }
 
