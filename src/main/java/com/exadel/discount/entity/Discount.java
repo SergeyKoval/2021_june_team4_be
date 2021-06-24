@@ -1,6 +1,9 @@
 package com.exadel.discount.entity;
 
-import lombok.*;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.Entity;
@@ -21,6 +24,8 @@ import java.util.UUID;
 @NoArgsConstructor
 @Entity
 @Table(name = "discounts")
+@EqualsAndHashCode(exclude = {"tags"})
+@ToString(exclude = {"tags"})
 public class Discount {
     @Id
     @GeneratedValue(generator = "UUID")

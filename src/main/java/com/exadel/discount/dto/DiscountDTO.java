@@ -22,7 +22,6 @@ public class DiscountDTO {
     @NotBlank(groups = Create.class, message = "Discount promo should be not blank")
     @Size(max = 50, groups = Create.class, message = "Discount promo should be shorted than {max}")
     private String promo;
-    @NotNull(groups = Create.class)
     private int percent;
     private LocalDateTime startTime;
     private LocalDateTime endTime;

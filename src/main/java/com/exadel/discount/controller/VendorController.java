@@ -8,9 +8,17 @@ import com.exadel.discount.service.interfaces.VendorService;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -21,56 +29,37 @@ import java.util.UUID;
 public class VendorController {
 
     private final VendorService vendorService;
-    private final VendorLocationService vendorLocationService;
 
     @GetMapping
     @ApiOperation("Get list of all vendors")
-    public List<VendorDTO> getVendorsList() {
-        return vendorService.getAll();
+    public List<VendorDTO> getVendorsList(@RequestParam(name = "id", required = false) UUID id) {
+        if (id == null) {
+            return vendorService.getAll();
+        } else {
+            List<VendorDTO> vendors = new ArrayList<>();
+            vendors.add(vendorService.getById(id));
+            return vendors;
+        }
+
     }
 
-    @GetMapping("/{vendorId}")
+    /*@GetMapping("/{vendorId}")
     @ApiOperation("Get vendor by ID")
-    public VendorDTO getVendorById(
-            @PathVariable(name = "vendorId") @NotNull UUID id) {
+    public VendorDTO getVendorById(@PathVariable(name = "vendorId") @NotNull UUID id) {
         return vendorService.getById(id);
-    }
+    }*/
 
     @PostMapping
     @ApiOperation("Add new vendor")
-    public VendorDTO saveNewVendor(
-            @RequestBody @Validated(Create.class) VendorDTO vendor) {
+    public VendorDTO saveNewVendor(@RequestBody @Validated(Create.class) VendorDTO vendor) {
         return vendorService.save(vendor);
     }
 
-    @DeleteMapping("/{vendorId}")
+    @DeleteMapping()
     @ApiOperation("Delete vendor by ID")
-    public void deleteVendor(
-            @PathVariable(name = "vendorId") @NotNull UUID id) {
+    public void deleteVendor(@RequestParam(name = "vendorId", required = true) @NotNull UUID id) {
         vendorService.deleteById(id);
     }
 
-    @GetMapping("/{vendorId}/locations")
-    @ApiOperation("Get list of all vendor locations")
-    public List<VendorLocationDTO> getVendorLocations(
-            @PathVariable(name = "vendorId") @NotNull UUID id) {
-        return vendorService.getById(id).getVendorLocations();
-    }
 
-    @PostMapping("/{vendorId}/locations")
-    @ApiOperation("Add new location of vendor")
-    public VendorLocationDTO addVendorLocation(
-            @PathVariable(name = "vendorId") @NotNull UUID vendorId,
-            @RequestBody @Validated(Create.class) VendorLocationDTO location) throws Exception {
-        VendorLocationDTO vendorLocationDTO = vendorLocationService.save(location, vendorId);
-        return vendorLocationDTO;
-    }
-
-    @DeleteMapping("/{vendorId}/locations/{locationId}")
-    @ApiOperation("Delete vendor's location")
-    public void deleteLocation(
-            @PathVariable(name = "vendorId") @NotNull UUID vendorId,
-            @PathVariable(name = "locationId") @NotNull UUID locationId) throws Exception {
-        vendorLocationService.deleteById(vendorId, locationId);
-    }
 }
