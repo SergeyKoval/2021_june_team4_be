@@ -9,6 +9,8 @@ import javax.persistence.Id;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Column;
 import javax.persistence.ManyToOne;
+import javax.persistence.ManyToMany;
+import javax.persistence.JoinTable;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import java.time.LocalDateTime;
@@ -55,7 +57,7 @@ public class Discount {
     )
     private Set<VendorLocation> vendorLocations;*/
 
-    /*@ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "tags_discounts",
             joinColumns = @JoinColumn(name = "discount_id"),
@@ -63,7 +65,7 @@ public class Discount {
     )
     private Set<Tag> tags;
 
-    @OneToMany(mappedBy = "discount", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    /*@OneToMany(mappedBy = "discount", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private Set<Coupon> coupons;
 
     @OneToMany(mappedBy = "discount", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
