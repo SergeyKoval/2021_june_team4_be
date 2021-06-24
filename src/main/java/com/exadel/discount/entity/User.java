@@ -1,12 +1,14 @@
 package com.exadel.discount.entity;
 
 import com.exadel.discount.config.EnumPostgresSQLType;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.TypeDef;
-import com.exadel.discount.model.security.Role;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -27,6 +29,9 @@ import java.util.UUID;
 @Table(name = "users")
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
+@EqualsAndHashCode(exclude = {"coupons","favorites"})
+@ToString(exclude = {"coupons","favorites"})
 @TypeDef(
         name = "user_role",
         typeClass = EnumPostgresSQLType.class

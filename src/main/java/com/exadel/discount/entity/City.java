@@ -1,7 +1,9 @@
 package com.exadel.discount.entity;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.Column;
@@ -19,6 +21,8 @@ import java.util.UUID;
 @Table(name = "cities")
 @Data
 @NoArgsConstructor
+@EqualsAndHashCode(exclude = {"users"})
+@ToString(exclude = {"users"})
 public class City {
     @Id
     @Column(name = "id")
