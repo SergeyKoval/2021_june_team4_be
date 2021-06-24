@@ -25,9 +25,11 @@ public class City {
     @JoinColumn(name = "country_id", nullable=false)
     private Country country;
 
-    @OneToMany(mappedBy = "city", fetch = FetchType.LAZY)
-    private List<User> users;
+    //Check and uncomment after adding User and VendorLocation entities
 
-    @OneToMany(mappedBy = "city", fetch = FetchType.LAZY)
-    private List<VendorLocation> vendorLocations;
+//    @OneToMany(mappedBy = "city", fetch = FetchType.LAZY)
+//    private List<User> users;
+//
+//    @OneToMany(mappedBy = "city", fetch = FetchType.LAZY)
+//    private List<VendorLocation> vendorLocations;
 }
