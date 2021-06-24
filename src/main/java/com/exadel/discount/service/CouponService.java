@@ -18,5 +18,5 @@ public interface CouponService {
 
     List<CouponDto> findCouponsBetweenDates(LocalDateTime startDate, LocalDateTime endDate);
 
-    List<CouponDto> getCouponsOfUser (UUID userId);
+    List<CouponDto> getCouponsOfUser(UUID userId);
 }
