@@ -20,8 +20,8 @@ import java.util.UUID;
 @Table(name = "countries")
 @Data
 @NoArgsConstructor
-@EqualsAndHashCode(exclude = {"cities"})
-@ToString(exclude = {"cities"})
+@EqualsAndHashCode(exclude = {"cities", "vendorLocations"})
+@ToString(exclude = {"cities", "vendorLocations"})
 public class Country {
     @Id
     @Column(name = "id")
@@ -37,4 +37,7 @@ public class Country {
 
     @OneToMany(mappedBy = "country", fetch = FetchType.LAZY)
     private List<City> cities;
+
+    @OneToMany(mappedBy = "country", fetch = FetchType.LAZY)
+    private List<VendorLocation> vendorLocations;
 }

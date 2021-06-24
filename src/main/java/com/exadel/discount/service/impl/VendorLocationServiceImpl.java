@@ -1,4 +1,4 @@
-package com.exadel.discount.service;
+package com.exadel.discount.service.impl;
 
 import com.exadel.discount.dto.VendorLocationDTO;
 import com.exadel.discount.entity.Vendor;

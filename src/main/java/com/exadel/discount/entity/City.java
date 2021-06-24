@@ -21,8 +21,8 @@ import java.util.UUID;
 @Table(name = "cities")
 @Data
 @NoArgsConstructor
-@EqualsAndHashCode(exclude = {"users"})
-@ToString(exclude = {"users"})
+@EqualsAndHashCode(exclude = {"users", "vendorLocations"})
+@ToString(exclude = {"users", "vendorLocations"})
 public class City {
     @Id
     @Column(name = "id")

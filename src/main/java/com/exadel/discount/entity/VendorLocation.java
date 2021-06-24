@@ -14,8 +14,8 @@ import java.util.UUID;
 @NoArgsConstructor
 @Entity
 @Table(name = "vendor_locations")
-/*@EqualsAndHashCode(exclude = {"discounts"})
-@ToString(exclude = {"discounts"})*/
+@EqualsAndHashCode
+@ToString
 public class VendorLocation {
     @Id
     @GeneratedValue(generator = "UUID")
@@ -25,21 +25,24 @@ public class VendorLocation {
     @Column(name = "id")
     private UUID id;
 
+    @Column(name = "contact", length = 50)
+    private String contact;
+
+    @Column(name = "coordinates")
+    private String coordinates;
+
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "vendor_id")
     private Vendor vendor;
 
-    @Column(name = "country_id")
-    private UUID countryId;
-    @Column(name = "city_id")
-    private UUID cityId;
-    @Column(name = "contact", length = 50)
-    private String contact;
-    @Column(name = "coordinates")
-    private String coordinates;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="city_id", nullable=false)
+    private City city;
 
-    /*@ManyToMany(mappedBy = "vendorLocations", fetch = FetchType.LAZY)
-    private Set<Discount> discounts;*/
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="country_id", nullable=false)
+    private Country country;
 
-
+    @ManyToMany(mappedBy = "vendorLocations", fetch = FetchType.LAZY)
+    private Set<Discount> discounts;
 }
