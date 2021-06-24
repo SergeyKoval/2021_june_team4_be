@@ -15,7 +15,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import java.util.Set;
+import java.util.List;
 import java.util.UUID;
 @Entity
 @Table(name = "cities")
@@ -41,5 +41,8 @@ public class City {
     private Country country;
 
     @OneToMany(mappedBy = "city", fetch = FetchType.LAZY)
-    private Set<User> users;
+    private List<User> users;
+
+    @OneToMany(mappedBy = "city", fetch = FetchType.LAZY)
+    private List<VendorLocation> vendorLocations;
 }
