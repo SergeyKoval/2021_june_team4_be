@@ -32,10 +32,10 @@ public class UserController {
         return userService.findUserById(id);
     }
 
-    @GetMapping("/{name}")
+    @GetMapping("/name")
     @ApiOperation("Get user by lastname and firstname")
-    public List<UserDto> getUsersByName(@RequestParam String lastName,
-                                        @RequestParam String firstName) {
+    public List<UserDto> getUsersByName(@RequestParam("lastname") String lastName,
+                                        @RequestParam("firstame") String firstName) {
         return userService.findUsersByName(lastName, firstName);
     }
 }

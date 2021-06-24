@@ -1,6 +1,7 @@
 package com.exadel.discount.service;
 
 import com.exadel.discount.dto.coupon.CouponDto;
+import com.exadel.discount.dto.coupon.CreateCouponDto;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -12,11 +13,11 @@ public interface CouponService {
 
     List<CouponDto> findAllCoupons();
 
-    CouponDto assignCouponToUser(UUID userId, UUID discountId);
+    CouponDto assignCouponToUser(CreateCouponDto createCouponDto);
 
     CouponDto findCouponByDate(LocalDateTime time);
 
     List<CouponDto> findCouponsBetweenDates(LocalDateTime startDate, LocalDateTime endDate);
 
-    List<CouponDto> getCouponsOfUser (UUID userId);
+    List<CouponDto> getCouponsOfUser(UUID userId);
 }

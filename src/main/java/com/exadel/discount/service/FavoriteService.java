@@ -13,7 +13,7 @@ public interface FavoriteService {
 
     List<FavoriteDto> findAllFavorites();
 
-    FavoriteDto assingFavoriteToUser(UUID userId, UUID discountId);
+    FavoriteDto assignFavoriteToUser(UUID userId, UUID discountId);
 
     List<FavoriteDto> getFavoritesOfUser(UUID userId);
 }

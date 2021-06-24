@@ -52,7 +52,7 @@ public class FavoriteServiceImpl implements FavoriteService {
 
     @Transactional
     @Override
-    public FavoriteDto assingFavoriteToUser(UUID userId, UUID discountId) {
+    public FavoriteDto assignFavoriteToUser(UUID userId, UUID discountId) {
         log.debug("Finding of certain user by ID");
 
         User user = userRepository

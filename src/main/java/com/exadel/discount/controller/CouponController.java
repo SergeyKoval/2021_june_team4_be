@@ -1,16 +1,12 @@
 package com.exadel.discount.controller;
 
 import com.exadel.discount.dto.coupon.CouponDto;
+import com.exadel.discount.dto.coupon.CreateCouponDto;
 import com.exadel.discount.service.CouponService;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -36,9 +32,8 @@ public class CouponController {
 
     @PostMapping
     @ApiOperation("Save new coupon")
-    public CouponDto addCoupon(@RequestParam("userId") final UUID userId,
-                               @RequestParam("discountId") final UUID discountId) {
-        return couponService.assignCouponToUser(userId, discountId);
+    public CouponDto addCoupon(@RequestBody final CreateCouponDto createCouponDto) {
+        return couponService.assignCouponToUser(createCouponDto);
     }
 
     @GetMapping("/ofuser")
@@ -57,8 +52,8 @@ public class CouponController {
 
     @GetMapping("/date/between")
     @ApiOperation("Get coupon by date scope")
-    public List<CouponDto> getCouponAtDateScope(@DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) final LocalDateTime startDate,
-                                                @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) final LocalDateTime endDate) {
+    public List<CouponDto> getCouponAtDateScope(@RequestParam("startdate")@DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) final LocalDateTime startDate,
+                                                @RequestParam("enddate")@DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) final LocalDateTime endDate) {
         return couponService.findCouponsBetweenDates(startDate, endDate);
     }
 }

@@ -43,8 +43,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<UserDto> findUsersByName(@RequestParam String lastName,
-                                         @RequestParam String firstName) {
+    public List<UserDto> findUsersByName(String lastName, String firstName) {
         log.debug("Finding User by lastname and firstname");
 
         List<User> suchNameUserList = userRepository.findDistinctByLastNameAndFirstName(lastName, firstName);

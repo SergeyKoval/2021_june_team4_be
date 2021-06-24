@@ -35,8 +35,8 @@ public class UserDto {
     private String password;
     @NotNull
     private Role role;
-    private List<CouponDto> couponDtos = new ArrayList<>();
-    private List<FavoriteDto> favoriteDtos = new ArrayList<>();
+
+    //TODO convert to CityDto
     @NotNull
     private City city;
 }

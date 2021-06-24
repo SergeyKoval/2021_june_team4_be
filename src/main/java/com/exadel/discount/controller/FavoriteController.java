@@ -37,7 +37,7 @@ public class FavoriteController {
     @ApiOperation("Save new favorite")
     public FavoriteDto addFavorite(@RequestParam("userId") final UUID userId,
                                    @RequestParam("discountId") final UUID discountId) {
-        return favoriteService.assingFavoriteToUser(userId, discountId);
+        return favoriteService.assignFavoriteToUser(userId, discountId);
     }
 
     @GetMapping("/ofuser")

@@ -1,6 +1,7 @@
 package com.exadel.discount.service.impl;
 
 import com.exadel.discount.dto.coupon.CouponDto;
+import com.exadel.discount.dto.coupon.CreateCouponDto;
 import com.exadel.discount.entity.Coupon;
 import com.exadel.discount.entity.Discount;
 import com.exadel.discount.entity.User;
@@ -53,16 +54,16 @@ public class CouponServiceImpl implements CouponService {
 
     @Transactional
     @Override
-    public CouponDto assignCouponToUser(UUID userId, UUID discountId) {
+    public CouponDto assignCouponToUser(CreateCouponDto createCouponDto) {
         log.debug("Finding of certain User and Discount by ID");
 
         User user = userRepository
-                .findById(userId)
-                .orElseThrow(() -> new NotFoundException(String.format("User with id %s not found", userId)));
+                .findById(createCouponDto.getUserId())
+                .orElseThrow(() -> new NotFoundException(String.format("User with id %s not found", createCouponDto.getUserId())));
 
         Discount discount = discountRepository
-                .findById(discountId)
-                .orElseThrow(() -> new NotFoundException(String.format("Discount with id %s not found", discountId)));
+                .findById(createCouponDto.getDiscountId())
+                .orElseThrow(() -> new NotFoundException(String.format("Discount with id %s not found", createCouponDto.getDiscountId())));
 
         log.debug("Successfully certain User and Discount are found by ID. Starting Coupon creation/saving.");
 
