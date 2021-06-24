@@ -16,6 +16,7 @@ public class Country {
     @Id
     @GeneratedValue(generator = "UUID")
     @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
+    @Column(name = "id")
     private UUID id;
 
     @Column(name = "name", length = 50, nullable = false)
