@@ -8,6 +8,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 @Data
@@ -27,5 +28,5 @@ public class DiscountDTO {
     private LocalDateTime startTime;
     private LocalDateTime endTime;
     private boolean active;
-
+    private List<TagDTO> tags;
 }

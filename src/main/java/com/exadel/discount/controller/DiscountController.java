@@ -6,6 +6,7 @@ import com.exadel.discount.service.interfaces.DiscountService;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -43,6 +44,12 @@ public class DiscountController {
     public DiscountDTO addDiscount(
             @RequestBody @Validated(Create.class) DiscountDTO discountDTO) {
         return discountService.save(discountDTO);
+    }
+
+    @DeleteMapping("/{id}")
+    @ApiOperation("Delete Discount")
+    public void deleteDiscount(@PathVariable UUID id) {
+        discountService.deleteById(id);
     }
 
 
