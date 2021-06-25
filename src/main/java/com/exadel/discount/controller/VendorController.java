@@ -13,13 +13,10 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.validation.Valid;
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 import java.util.UUID;
@@ -34,14 +31,12 @@ public class VendorController {
     private final VendorLocationService vendorLocationService;
 
     @GetMapping
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @ApiOperation("Get list of all vendors")
     public List<VendorDTO> getVendorsList() {
         return vendorService.getAll();
     }
 
     @GetMapping("/{vendorId}")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @ApiOperation("Get vendor by ID")
     public VendorDTO getVendorById(
             @PathVariable(name = "vendorId") @NotNull UUID id) {
@@ -63,7 +58,6 @@ public class VendorController {
 //    }
 
     @DeleteMapping("/{vendorId}")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @ApiOperation("Delete vendor by ID")
     public void deleteVendor(
             @PathVariable(name = "vendorId") @NotNull UUID id) {
@@ -79,7 +73,6 @@ public class VendorController {
 //    }
 
     @PostMapping("/{vendorId}/locations")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @ApiOperation("Add new location of vendor")
     public VendorLocationDTO addVendorLocation(
             @PathVariable(name = "vendorId") @NotNull UUID vendorId,

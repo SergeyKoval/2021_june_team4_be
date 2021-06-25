@@ -1,6 +1,6 @@
 package com.exadel.discount.filters;
 
-import com.exadel.discount.service.UserDetailsServiceImpl;
+import com.exadel.discount.service.impl.UserDetailsServiceImpl;
 import com.exadel.discount.util.jwt.JwtUtil;
 import com.exadel.discount.util.jwt.RefreshJwtUtil;
 import lombok.RequiredArgsConstructor;

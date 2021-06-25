@@ -2,17 +2,14 @@ package com.exadel.discount.service.impl;
 
 import com.exadel.discount.dto.VendorDTO;
 import com.exadel.discount.entity.Vendor;
-import com.exadel.discount.entity.VendorLocation;
 import com.exadel.discount.exception.NotFoundException;
 import com.exadel.discount.mapper.VendorMapper;
-import com.exadel.discount.repository.VendorLocationRepository;
 import com.exadel.discount.repository.VendorRepository;
 import com.exadel.discount.service.interfaces.VendorService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 

@@ -1,12 +1,21 @@
 package com.exadel.discount.entity;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import org.hibernate.annotations.GenericGenerator;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 import java.util.Set;
 import java.util.UUID;
 
@@ -16,6 +25,7 @@ import java.util.UUID;
 @Table(name = "vendor_locations")
 @EqualsAndHashCode
 @ToString
+@AllArgsConstructor
 public class VendorLocation {
     @Id
     @GeneratedValue(generator = "UUID")
@@ -36,11 +46,11 @@ public class VendorLocation {
     private Vendor vendor;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="city_id", nullable=false)
+    @JoinColumn(name = "city_id")
     private City city;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="country_id", nullable=false)
+    @JoinColumn(name = "country_id")
     private Country country;
 
     @ManyToMany(mappedBy = "vendorLocations", fetch = FetchType.LAZY)

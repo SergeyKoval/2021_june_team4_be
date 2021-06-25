@@ -8,3 +8,15 @@ databaseChangeLog:
   - include:
       file: db.changelog-add-users-data.yaml
       relativeToChangelogFile: true
+  - include:
+      file: db.changelog-add-categories-data.yaml
+      relativeToChangelogFile: true
+  - include:
+      file: db.changelog-add-tags-data.yaml
+      relativeToChangelogFile: true
+  - include:
+      file: db.changelog-add-vendors-data.yaml
+      relativeToChangelogFile: true
+  - include:
+      file: db.changelog-add-vendor-locations-data.yaml
+      relativeToChangelogFile: true
