@@ -1,0 +1,10 @@
+databaseChangeLog:
+  - include:
+      file: db.changelog-add-countries-data.yaml
+      relativeToChangelogFile: true
+  - include:
+      file: db.changelog-add-cities-data.yaml
+      relativeToChangelogFile: true
+  - include:
+      file: db.changelog-add-users-data.yaml
+      relativeToChangelogFile: true

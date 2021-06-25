@@ -2,6 +2,7 @@ package com.exadel.discount.exception;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -39,6 +40,15 @@ public class GlobalExceptionHandler {
         log.error("Exception stack trace: ", notValidException);
 
         return exceptionDetailsList;
+    }
+
+    @ExceptionHandler(AuthenticationException.class)
+    @ResponseBody
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    public ExceptionDetails handleException(AuthenticationException authenticationException) {
+        log.error("Exception stack trace: ", authenticationException);
+
+        return new ExceptionDetails("Incorrect email or password");
     }
 
     @ExceptionHandler
