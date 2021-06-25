@@ -17,6 +17,6 @@ public class CityDTO {
     @NotBlank(groups = Create.class)
     private String name;
 
-    @NotNull(groups = Create.class)
-    private Country country;
+    /*@NotNull(groups = Create.class)
+    private Country country;*/
 }
