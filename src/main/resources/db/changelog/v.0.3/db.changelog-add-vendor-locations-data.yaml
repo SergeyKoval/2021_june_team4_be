@@ -1,6 +1,6 @@
 databaseChangeLog:
   - changeSet:
-      id: 36-add-vendor-locations-data
+      id: 37-add-vendor-locations-data
       author: elizaveta_dubogryz
       changes:
         - insert:

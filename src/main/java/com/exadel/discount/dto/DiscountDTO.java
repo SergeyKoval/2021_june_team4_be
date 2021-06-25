@@ -29,4 +29,5 @@ public class DiscountDTO {
     private LocalDateTime endTime;
     private boolean active;
     private List<TagDTO> tags;
+    private List<VendorLocationDTO> locations;
 }
