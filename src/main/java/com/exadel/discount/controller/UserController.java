@@ -1,20 +1,17 @@
 package com.exadel.discount.controller;
 
+import com.exadel.discount.dto.user.UserCityDto;
 import com.exadel.discount.dto.user.UserDto;
 import com.exadel.discount.service.UserService;
 import io.swagger.annotations.ApiOperation;
-import lombok.AllArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.UUID;
 
 @RestController
-@AllArgsConstructor
+@RequiredArgsConstructor
 @RequestMapping("/users")
 public class UserController {
 
@@ -28,7 +25,7 @@ public class UserController {
 
     @GetMapping("{id}")
     @ApiOperation("Get user by ID")
-    public UserDto getUserById(@PathVariable final UUID id) {
+    public UserCityDto getUserById(@PathVariable final UUID id) {
         return userService.findUserById(id);
     }
 

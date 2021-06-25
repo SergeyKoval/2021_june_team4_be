@@ -1,5 +1,6 @@
 package com.exadel.discount.dto.user;
 
+import com.exadel.discount.entity.Country;
 import com.exadel.discount.entity.Role;
 import com.sun.istack.NotNull;
 import lombok.AllArgsConstructor;
@@ -8,6 +9,7 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+import javax.validation.constraints.NotBlank;
 import java.util.UUID;
 
 
@@ -16,7 +18,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @EqualsAndHashCode
 @ToString
-public class UserDto {
+public class UserCityDto {
     @NotNull
     private UUID id;
     @NotNull
@@ -33,4 +35,8 @@ public class UserDto {
     private String password;
     @NotNull
     private Role role;
+    @NotBlank
+    private String cityName;
+    @NotNull
+    private String country;
 }

@@ -1,16 +1,20 @@
 package com.exadel.discount.service.impl;
 
+import com.exadel.discount.dto.CityDTO;
+import com.exadel.discount.dto.CountryDTO;
+import com.exadel.discount.dto.user.UserCityDto;
 import com.exadel.discount.dto.user.UserDto;
 import com.exadel.discount.entity.User;
 import com.exadel.discount.exception.NotFoundException;
+import com.exadel.discount.mapper.CityMapper;
+import com.exadel.discount.mapper.CountryMapper;
+import com.exadel.discount.mapper.UserCityMapper;
 import com.exadel.discount.mapper.UserMapper;
 import com.exadel.discount.repository.UserRepository;
 import com.exadel.discount.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestParam;
 import lombok.extern.slf4j.Slf4j;
-
 
 import java.util.List;
 import java.util.UUID;
@@ -22,16 +26,24 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final UserMapper userMapper;
+    private final CityMapper cityMapper;
+    private final UserCityMapper userCityMapper;
+    private final CountryMapper countryMapper;
 
     @Override
-    public UserDto findUserById(UUID id) {
+    public UserCityDto findUserById(UUID id) {
         log.debug("Finding User by ID");
 
          User user = userRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException(String.format("User with id %s not found", id)));
-        log.debug("Successfully User is found by ID");
+        log.debug("Successfully User is found by ID and startig userCityDto creation");
 
-        return userMapper.toUserDto(user);
+        UserDto userDto= userMapper.toUserDto(user);
+        CityDTO cityDTO = cityMapper.getDTO(user.getCity());
+        CountryDTO countryDTO = countryMapper.getDTO(user.getCity().getCountry());
+        log.debug("Successfully created userCityDto");
+
+        return userCityMapper.toUserCityDto(userDto, cityDTO, countryDTO);
     }
 
     @Override

@@ -1,48 +1,60 @@
 package com.exadel.discount.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.Set;
 import java.util.UUID;
 
-@Entity
-@Table(name = "discounts")
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
-@EqualsAndHashCode(exclude = {"tags", "coupons", "favorites"})
-@ToString(exclude = {"tags", "coupons", "favorites"})
+@Entity
+@Table(name = "discounts")
+@EqualsAndHashCode(exclude = {"tags", "coupons", "favorites", "vendorLocations"})
+@ToString(exclude = {"tags", "coupons", "favorites", "vendorLocations"})
 public class Discount {
     @Id
-    @Column(name = "id")
     @GeneratedValue(generator = "UUID")
-    @GenericGenerator(
-            name = "UUID",
+    @GenericGenerator(name = "UUID",
             strategy = "org.hibernate.id.UUIDGenerator"
     )
+    @Column(name = "id")
     private UUID id;
 
-    @Column(name = "name", nullable = false, length = 50)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "category_id")
+    private Category category;
+
+    @Column(name = "name", length = 50, nullable = false)
     private String name;
 
-    @Column(name = "promo", nullable = false, length = 50)
+    @Column(name = "promo", length = 50, nullable = false)
     private String promo;
+
+    @Column(name = "description")
+    private String description;
+
+    @Column(name = "percent")
+    private int percent;
+
+    @Column(name = "start_time")
+    private LocalDateTime startTime;
+
+    @Column(name = "end_time", nullable = false)
+    private LocalDateTime endTime;
+
+    @Column(name = "active", columnDefinition = "boolean default true", nullable = false)
+    private boolean active;
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "discount_locations",
+            joinColumns = @JoinColumn(name = "discount_id"),
+            inverseJoinColumns = @JoinColumn(name = "location_id")
+    )
+    private Set<VendorLocation> vendorLocations;
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
@@ -57,4 +69,5 @@ public class Discount {
 
     @OneToMany(mappedBy = "discount", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private Set<Favorite> favorites;
+
 }

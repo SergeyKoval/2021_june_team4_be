@@ -15,14 +15,14 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import java.util.Set;
+import java.util.List;
 import java.util.UUID;
 @Entity
 @Table(name = "cities")
 @Data
 @NoArgsConstructor
-@EqualsAndHashCode(exclude = {"users"})
-@ToString(exclude = {"users"})
+@EqualsAndHashCode(exclude = {"users", "vendorLocations"})
+@ToString(exclude = {"users", "vendorLocations"})
 public class City {
     @Id
     @Column(name = "id")
@@ -34,12 +34,15 @@ public class City {
     private UUID id;
 
     @Column(name = "name", length = 50, nullable = false)
-    String name;
+    private String name;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="country_id", nullable=false)
     private Country country;
 
     @OneToMany(mappedBy = "city", fetch = FetchType.LAZY)
-    private Set<User> users;
+    private List<User> users;
+
+    @OneToMany(mappedBy = "city", fetch = FetchType.LAZY)
+    private List<VendorLocation> vendorLocations;
 }
