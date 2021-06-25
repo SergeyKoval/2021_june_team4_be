@@ -54,6 +54,19 @@ public class VendorServiceImpl implements VendorService {
     public List<VendorDTO> getAll() {
         log.debug("Getting list of all Vendors");
         List<Vendor> vendorList = vendorRepository.findAll();
+
+        for (int i=0; i<vendorList.size(); i++) {
+            List<VendorLocation> vendorLocations = new ArrayList<>();
+            for (VendorLocation v : vendorList.get(i).getVendorLocations()) {
+                v.setCountry(countryRepository.findById(v.getCity().getCountry().getId()).orElse(null));
+                vendorLocations.add(v);
+            }
+            Vendor vendor = vendorList.get(i);
+            vendor.setVendorLocations(vendorLocations);
+            vendorList.set(i, vendor);
+        }
+
+
         log.debug("Successfully got list of all Vendors");
         return vendorMapper.getListDTO(vendorList);
     }
