@@ -26,10 +26,12 @@ public class DiscountApplication {
     @Bean
     public CommandLineRunner run(UserRepository userRepository, CountryRepository countryRepository, CityRepository cityRepository, DiscountRepository discountRepository){
         return (String[] args) -> {
+            // Users 2 creation and discount in DB
+            User user = new User();
+            User admin = new User();
             City kiev = new City();
             List<City> cities = new ArrayList<>();
             Country ukraina = new Country();
-            User user1 = new User();
             Discount discount = new Discount();
 
             kiev.setCountry(ukraina);
@@ -37,15 +39,22 @@ public class DiscountApplication {
             cities.add(kiev);
             ukraina.setName("Ukraine");
             ukraina.setCities(cities);
-            //"Jon", "Herring", "380675553311", "Herring@gmail.com", "user", "password", Role.USER, kiev);
-            user1.setFirstName("Jon");
-            user1.setLastName("Herring");
-            user1.setPhone("380675553311");
-            user1.setEmail("Herring@gmail.com");
-            user1.setLogin("user");
-            user1.setPassword("password");
-            user1.setRole(Role.USER);
-            user1.setCity(kiev);
+            user.setFirstName("Jon");
+            user.setLastName("Herring");
+            user.setPhone("380675553311");
+            user.setEmail("Herring@gmail.com");
+            user.setLogin("user");
+            user.setPassword("password");
+            user.setRole(Role.USER);
+            user.setCity(kiev);
+            admin.setFirstName("Andrey");
+            admin.setLastName("Adam");
+            admin.setPhone("380673337779");
+            admin.setEmail("Adam@gmail.com");
+            admin.setLogin("admin");
+            admin.setPassword("adminpassword");
+            admin.setRole(Role.ADMIN);
+            admin.setCity(kiev);
 
             discount.setName("SuperDiscount");
             discount.setPromo("AlmostFree");
@@ -53,7 +62,8 @@ public class DiscountApplication {
             discountRepository.save(discount);
             countryRepository.save(ukraina);
             cityRepository.save(kiev);
-            userRepository.save(user1);
+            userRepository.save(user);
+            userRepository.save(admin);
         };
     }
 }

@@ -34,7 +34,7 @@ public class City {
     private UUID id;
 
     @Column(name = "name", length = 50, nullable = false)
-    String name;
+    private String name;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="country_id", nullable=false)

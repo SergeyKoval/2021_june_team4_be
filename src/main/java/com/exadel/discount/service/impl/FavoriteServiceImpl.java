@@ -1,5 +1,6 @@
 package com.exadel.discount.service.impl;
 
+import com.exadel.discount.dto.favorite.CreateFavoriteDto;
 import com.exadel.discount.dto.favorite.FavoriteDto;
 import com.exadel.discount.entity.Discount;
 import com.exadel.discount.entity.Favorite;
@@ -52,16 +53,16 @@ public class FavoriteServiceImpl implements FavoriteService {
 
     @Transactional
     @Override
-    public FavoriteDto assignFavoriteToUser(UUID userId, UUID discountId) {
+    public FavoriteDto assignFavoriteToUser(CreateFavoriteDto createFavoriteDto) {
         log.debug("Finding of certain user by ID");
 
         User user = userRepository
-                .findById(userId)
-                .orElseThrow(() -> new NotFoundException(String.format("User with id %s not found", userId)));
+                .findById(createFavoriteDto.getUserId())
+                .orElseThrow(() -> new NotFoundException(String.format("User with id %s not found", createFavoriteDto.getUserId())));
 
         Discount discount = discountRepository
-                .findById(discountId)
-                .orElseThrow(() -> new NotFoundException(String.format("Discount with id %s not found", discountId)));
+                .findById(createFavoriteDto.getDiscountId())
+                .orElseThrow(() -> new NotFoundException(String.format("Discount with id %s not found", createFavoriteDto.getDiscountId())));
 
         log.debug("Successfully certain User and Discount are found by ID. Starting Favorite creation/saving.");
 

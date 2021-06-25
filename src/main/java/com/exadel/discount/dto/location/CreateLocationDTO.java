@@ -1,16 +1,19 @@
 package com.exadel.discount.dto.location;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import javax.validation.constraints.NotBlank;
 
 @Data
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@EqualsAndHashCode
+@ToString
+
 public class CreateLocationDTO {
     @NotBlank
     private String country;

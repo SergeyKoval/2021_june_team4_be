@@ -1,5 +1,6 @@
 package com.exadel.discount.service;
 
+import com.exadel.discount.dto.favorite.CreateFavoriteDto;
 import com.exadel.discount.dto.favorite.FavoriteDto;
 import com.exadel.discount.entity.Favorite;
 
@@ -13,7 +14,7 @@ public interface FavoriteService {
 
     List<FavoriteDto> findAllFavorites();
 
-    FavoriteDto assignFavoriteToUser(UUID userId, UUID discountId);
+    FavoriteDto assignFavoriteToUser(CreateFavoriteDto createFavoriteDto);
 
     List<FavoriteDto> getFavoritesOfUser(UUID userId);
 }

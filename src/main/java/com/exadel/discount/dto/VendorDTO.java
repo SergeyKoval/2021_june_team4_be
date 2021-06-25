@@ -1,9 +1,7 @@
 package com.exadel.discount.dto;
 
 import com.exadel.discount.dto.validation.Create;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
+import lombok.*;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Null;
@@ -12,6 +10,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Data
+@NoArgsConstructor
 @EqualsAndHashCode(exclude = {"vendorLocations"})
 @ToString(exclude = {"vendorLocations"})
 public class VendorDTO {
@@ -23,5 +22,4 @@ public class VendorDTO {
     private String description;
     @Null(groups = Create.class)
     private List<VendorLocationDTO> vendorLocations;
-
 }
