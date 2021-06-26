@@ -44,7 +44,7 @@ public class JwtFilter extends OncePerRequestFilter {
         if (isNotAuthorized() && isAuthorizationHeaderSuitable(authorizationHeader)) {
             final String token = StringUtils.substring(authorizationHeader, 7);
             final String username = JwtUtil.extractUsername(token);
-            String role = JwtUtil.extractRole(token);
+            String role = JwtUtil.extractRoles(token);
 
             if (isSearchKeyForStorageValid(username)) {
                 UserDetails userDetails = this.userDetailsService.loadUserByUsername(username);

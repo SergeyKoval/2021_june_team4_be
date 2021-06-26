@@ -32,8 +32,8 @@ public abstract class JwtUtil {
         return extractClaim(token, Claims::getExpiration);
     }
 
-    public static String extractRole(String token) {
-        return extractAllClaims(token).get(ROLE_CLAIM_NAME, String.class);
+    public static String extractRoles(String token) {
+        return extractClaim(token, claims -> claims.get(ROLE_CLAIM_NAME, String.class));
     }
 
     public static <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
@@ -81,6 +81,7 @@ public abstract class JwtUtil {
 
     public static Boolean validateToken(String token, UserDetails userDetails) {
         final String username = extractUsername(token);
-        return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
+        return (username.equals(userDetails.getUsername()) &&
+                !isTokenExpired(token));
     }
 }
