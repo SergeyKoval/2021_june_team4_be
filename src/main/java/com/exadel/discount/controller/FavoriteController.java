@@ -1,11 +1,12 @@
 package com.exadel.discount.controller;
 
+import com.exadel.discount.dto.coupon.CouponDto;
+import com.exadel.discount.dto.favorite.CreateFavoriteDto;
 import com.exadel.discount.dto.favorite.FavoriteDto;
-import com.exadel.discount.dto.validation.Create;
 import com.exadel.discount.service.FavoriteService;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
-import org.springframework.validation.annotation.Validated;
+import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,9 +19,17 @@ public class FavoriteController {
     private final FavoriteService favoriteService;
 
     @GetMapping
-    @ApiOperation("Get list of all favorites")
-    public List<FavoriteDto> getAllFavorites() {
-        return favoriteService.findAllFavorites();
+    @ApiOperation("Get list of all favorites with sorting")
+    /**  Get list of all users with sorting by params
+     sortDirection - ASC or DSC (unsorted - by default) ;
+     sortField - name of sorted field by (id - by default) **/
+    public List<FavoriteDto> getAllCoupons(@RequestParam(value = "sortDirection", defaultValue = "") String sortDirection,
+                                         @RequestParam(value = "sortField", defaultValue = "id") String sortField){
+        Sort sort = Sort.unsorted();
+        if(!sortDirection.equals("")) {
+            sort = Sort.by(Sort.Direction.valueOf(sortDirection.toUpperCase()), sortField);
+        }
+        return favoriteService.findAllFavorites(sort);
     }
 
     @GetMapping("{id}")
@@ -29,16 +38,15 @@ public class FavoriteController {
         return favoriteService.findFavoriteById(id);
     }
 
-    @PostMapping("{userId}")
+    @PostMapping
     @ApiOperation("Save new favorite")
-    public FavoriteDto addFavorite(@Validated(Create.class)@PathVariable final UUID userId,
-                                   @RequestBody FavoriteDto favoriteDto) {
-        return favoriteService.addFavoriteToUser(userId, favoriteDto);
+    public FavoriteDto addFavorite(@RequestBody final CreateFavoriteDto createFavoriteDto) {
+        return favoriteService.assignFavoriteToUser(createFavoriteDto);
     }
 
-    @GetMapping("ofuser/{userId}")
+    @GetMapping("/ofuser")
     @ApiOperation("Get favorites of certain user")
-    public List<FavoriteDto> getFavoritesOfUser(@PathVariable final UUID userId) {
+    public List<FavoriteDto> getFavoritesOfUser(@RequestParam("userId") final UUID userId) {
         return favoriteService.getFavoritesOfUser(userId);
     }
 

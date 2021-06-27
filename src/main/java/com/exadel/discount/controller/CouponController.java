@@ -1,12 +1,12 @@
 package com.exadel.discount.controller;
 
 import com.exadel.discount.dto.coupon.CouponDto;
-import com.exadel.discount.dto.validation.Create;
+import com.exadel.discount.dto.coupon.CreateCouponDto;
 import com.exadel.discount.service.CouponService;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Sort;
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
@@ -20,9 +20,17 @@ public class CouponController {
     private final CouponService couponService;
 
     @GetMapping
-    @ApiOperation("Get list of all coupons")
-    public List<CouponDto> getAllCoupons() {
-        return couponService.findAllCoupons();
+    @ApiOperation("Get list of all coupons with sorting")
+    /**  Get list of all users with sorting by params
+     sortDirection - ASC or DSC (unsorted - by default) ;
+     sortField - name of sorted field by (id - by default)- date **/
+    public List<CouponDto> getAllCoupons(@RequestParam(value = "sortDirection", defaultValue = "") String sortDirection,
+                                         @RequestParam(value = "sortField", defaultValue = "id") String sortField){
+        Sort sort = Sort.unsorted();
+        if(!sortDirection.equals("")) {
+            sort = Sort.by(Sort.Direction.valueOf(sortDirection.toUpperCase()), sortField);
+        }
+        return couponService.findAllCoupons(sort);
     }
 
     @GetMapping("{id}")
@@ -31,38 +39,30 @@ public class CouponController {
         return couponService.findCouponById(id);
     }
 
-    @PostMapping("{userId}")
+    @PostMapping
     @ApiOperation("Save new coupon")
-    public CouponDto addCoupon(@Validated(Create.class) @PathVariable final UUID userId,
-                               @RequestBody CouponDto couponDto) {
-        return couponService.addCouponToUser(userId, couponDto);
+    public CouponDto addCoupon(@RequestBody final CreateCouponDto createCouponDto) {
+        return couponService.assignCouponToUser(createCouponDto);
     }
 
-    @DeleteMapping("{id}")
-    @ApiOperation("Delete coupon by ID")
-    public void deleteCouponById(@PathVariable final UUID id) {
-        couponService.deleteCouponById(id);
-    }
-
-    @GetMapping("ofuser/{userId}")
+    @GetMapping("/ofuser")
     @ApiOperation("Get coupons of certain user")
-    public List<CouponDto> getCouponsOfUser(@PathVariable final UUID userId) {
+    public List<CouponDto> getCouponsOfUser(@RequestParam("userId") final UUID userId) {
         return couponService.getCouponsOfUser(userId);
     }
 
     //Time example : 2021-06-15T11:58:11
-    @PutMapping("{id/newDate}")
-    @ApiOperation("Edit coupon date")
-    public CouponDto editCouponDate(@PathVariable final UUID id,
-                                    @PathVariable
-                                    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) final LocalDateTime newDate) {
-        return couponService.editCouponDate(id, newDate);
-    }
-
-    @GetMapping("date/{date}")
+    @GetMapping("/date")
     @ApiOperation("Get coupon by date")
-    public CouponDto getCouponByDate(@PathVariable
+    public CouponDto getCouponByDate(@RequestParam("date")
                                      @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) final LocalDateTime date) {
         return couponService.findCouponByDate(date);
+    }
+
+    @GetMapping("/date/between")
+    @ApiOperation("Get coupon by date scope")
+    public List<CouponDto> getCouponAtDateScope(@RequestParam("startdate")@DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) final LocalDateTime startDate,
+                                                @RequestParam("enddate")@DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) final LocalDateTime endDate) {
+        return couponService.findCouponsBetweenDates(startDate, endDate);
     }
 }

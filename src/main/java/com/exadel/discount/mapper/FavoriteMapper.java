@@ -13,6 +13,4 @@ public interface FavoriteMapper {
     FavoriteDto toFavoriteDto(Favorite favorite);
 
     List<FavoriteDto> toFavoriteDtoList(List<Favorite> favorites);
-
-    List<Favorite> toFavoriteList(List<FavoriteDto> favoriteDtos);
 }

@@ -1,34 +1,40 @@
 package com.exadel.discount.service.impl;
 
+import com.exadel.discount.dto.favorite.CreateFavoriteDto;
 import com.exadel.discount.dto.favorite.FavoriteDto;
+import com.exadel.discount.entity.Discount;
 import com.exadel.discount.entity.Favorite;
 import com.exadel.discount.entity.User;
 import com.exadel.discount.exception.NotFoundException;
 import com.exadel.discount.mapper.FavoriteMapper;
+import com.exadel.discount.repository.DiscountRepository;
 import com.exadel.discount.repository.FavoriteRepository;
 import com.exadel.discount.repository.UserRepository;
 import com.exadel.discount.service.FavoriteService;
-import lombok.RequiredArgsConstructor;
+import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import lombok.extern.slf4j.Slf4j;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
-@RequiredArgsConstructor
+@AllArgsConstructor
 public class FavoriteServiceImpl implements FavoriteService {
     private final FavoriteRepository favoriteRepository;
     private final UserRepository userRepository;
     private final FavoriteMapper favoriteMapper;
+    private final DiscountRepository discountRepository;
 
     @Override
-    public List<FavoriteDto> findAllFavorites() {
+    public List<FavoriteDto> findAllFavorites(Sort sort) {
         log.debug("Getting list of all Favorites");
 
-        List<Favorite> favoriteList = favoriteRepository.findAll();
+        List<Favorite> favoriteList = favoriteRepository.findAll(sort);
         log.debug("Successfully got list of all Favorites");
 
         return favoriteMapper.toFavoriteDtoList(favoriteList);
@@ -48,20 +54,23 @@ public class FavoriteServiceImpl implements FavoriteService {
 
     @Transactional
     @Override
-    public FavoriteDto addFavoriteToUser(UUID userId, FavoriteDto favoriteDto) {
+    public FavoriteDto assignFavoriteToUser(CreateFavoriteDto createFavoriteDto) {
         log.debug("Finding of certain user by ID");
 
         User user = userRepository
-                .findById(userId)
-                .orElseThrow(() -> new NotFoundException(String.format("User with id %s not found", id)));
+                .findById(createFavoriteDto.getUserId())
+                .orElseThrow(() -> new NotFoundException(String.format("User with id %s not found", createFavoriteDto.getUserId())));
 
-        log.debug("Successfully user is found by ID");
+        Discount discount = discountRepository
+                .findById(createFavoriteDto.getDiscountId())
+                .orElseThrow(() -> new NotFoundException(String.format("Discount with id %s not found", createFavoriteDto.getDiscountId())));
 
-        Favorite favorite = favoriteMapper.toFavorite(favoriteDto);
-        log.debug("Saving new Favorite to certain user");
+        log.debug("Successfully certain User and Discount are found by ID. Starting Favorite creation/saving.");
 
-        user.addFavorite(favoriteMapper.toFavorite(favoriteDto));
+        Favorite favorite = new Favorite();
         favorite.setUser(user);
+        favorite.setDiscount(discount);
+
         favoriteRepository.save(favorite);
         log.debug("Successfully new Favorite is saved to certain user");
 
@@ -71,32 +80,26 @@ public class FavoriteServiceImpl implements FavoriteService {
     @Transactional
     @Override
     public void deleteFavoriteByID(UUID id) {
-        log.debug("Deleting Favorite by ID");
+        log.debug("Finding & deleting Favorite by ID");
 
-        Favorite favorite = favoriteRepository
+        favoriteRepository
                 .findById(id)
                 .orElseThrow(() -> new NotFoundException(String.format("Favorite with id %s not found", id)));
-
-        favorite.getUser().removeFavorite(favorite);
         favoriteRepository.deleteById(id);
         log.debug("Successfully Favorite is deleted  by ID");
     }
 
     @Override
     public List<FavoriteDto> getFavoritesOfUser(UUID userId) {
-        log.debug("Finding of certain user by ID");
+        log.debug("Finding Favorites of certain user");
 
-        User user = userRepository
-                .findById(userId)
-                .orElseThrow(() -> new NotFoundException(String.format("User with id %s not found", id)));
+        List<FavoriteDto> FavoriteDtoList = favoriteMapper.toFavoriteDtoList(favoriteRepository.findAll()
+                .stream()
+                .filter(s -> s.getUser().getId().equals(userId))
+                .collect(Collectors.toList()));
 
-        log.debug("Successfully user is found by ID");
-
-        log.debug("Getting list of user's Favorites");
-
-        List<Favorite> favoriteList = user.getFavorites();
         log.debug("Successfully list of user's Favorites is got");
 
-        return favoriteMapper.toFavoriteDtoList(favoriteList);
+        return FavoriteDtoList;
     }
 }

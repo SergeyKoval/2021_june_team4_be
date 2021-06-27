@@ -1,14 +1,18 @@
 package com.exadel.discount.service.impl;
 
 import com.exadel.discount.dto.coupon.CouponDto;
+import com.exadel.discount.dto.coupon.CreateCouponDto;
 import com.exadel.discount.entity.Coupon;
+import com.exadel.discount.entity.Discount;
 import com.exadel.discount.entity.User;
 import com.exadel.discount.exception.NotFoundException;
 import com.exadel.discount.mapper.CouponMapper;
 import com.exadel.discount.repository.CouponRepository;
+import com.exadel.discount.repository.DiscountRepository;
 import com.exadel.discount.repository.UserRepository;
 import com.exadel.discount.service.CouponService;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import lombok.extern.slf4j.Slf4j;
@@ -16,6 +20,7 @@ import lombok.extern.slf4j.Slf4j;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -24,13 +29,14 @@ public class CouponServiceImpl implements CouponService {
     private final CouponRepository couponRepository;
     private final UserRepository userRepository;
     private final CouponMapper couponMapper;
+    private final DiscountRepository discountRepository;
 
     @Override
-    public List<CouponDto> findAllCoupons() {
+    public List<CouponDto> findAllCoupons(Sort sort) {
         log.debug("Getting list of all Coupons");
 
-        List<Coupon> coupons = couponRepository.findAll();
-        log.debug(" Successfully list of all Coupons is got");
+        List<Coupon> coupons = couponRepository.findAll(sort);
+        log.debug("Successfully list of all Coupons is got");
 
         return couponMapper.toCouponDtoList(coupons);
     }
@@ -49,21 +55,25 @@ public class CouponServiceImpl implements CouponService {
 
     @Transactional
     @Override
-    public CouponDto addCouponToUser(UUID userId, CouponDto couponDto) {
-        log.debug("Finding of certain user by ID");
+    public CouponDto assignCouponToUser(CreateCouponDto createCouponDto) {
+        log.debug("Finding of certain User and Discount by ID");
 
         User user = userRepository
-                .findById(userId)
-                .orElseThrow(() -> new NotFoundException(String.format("User with id %s not found", id)));
-        log.debug("Successfully certain user is found by ID");
+                .findById(createCouponDto.getUserId())
+                .orElseThrow(() -> new NotFoundException(String.format("User with id %s not found", createCouponDto.getUserId())));
 
-        Coupon coupon = couponMapper.toCoupon(couponDto);
-        log.debug("Saving new Coupon to certain user");
+        Discount discount = discountRepository
+                .findById(createCouponDto.getDiscountId())
+                .orElseThrow(() -> new NotFoundException(String.format("Discount with id %s not found", createCouponDto.getDiscountId())));
 
-        user.addCoupon(coupon);
+        log.debug("Successfully certain User and Discount are found by ID. Starting Coupon creation/saving.");
+
+        Coupon coupon = new Coupon();
+        coupon.setDate(LocalDateTime.now());
         coupon.setUser(user);
+        coupon.setDiscount(discount);
         couponRepository.save(coupon);
-        log.debug("Successfully new Coupon is saved to certain user");
+        log.debug("Successfully new Coupon is saved");
 
         return couponMapper.toCouponDto(coupon);
     }
@@ -73,58 +83,36 @@ public class CouponServiceImpl implements CouponService {
         log.debug("Finding coupon by date");
 
         Coupon coupon = couponRepository.findCouponByDate(date);
+        if(coupon==null) throw new NotFoundException(String.format("Coupon with date %s not found", date));
         log.debug("Successfully coupon is found by date");
 
         return couponMapper.toCouponDto(coupon);
     }
 
-    @Transactional
     @Override
-    public CouponDto editCouponDate(UUID id, LocalDateTime newDate) {
-        log.debug("Getting Coupon by ID");
+    public List<CouponDto> findCouponsBetweenDates(LocalDateTime startDate, LocalDateTime endDate) {
+        log.debug("Finding coupon by date scope");
+        List<CouponDto> CouponDtoList = couponMapper.toCouponDtoList(couponRepository.findAll()
+                .stream()
+                .filter(s -> s.getDate().isAfter(startDate))
+                .filter(s -> s.getDate().isBefore(endDate))
+                .collect(Collectors.toList()));
+        log.debug("Successfully coupon is found by date scope");
 
-        Coupon couponUnderEdition = couponRepository
-                .findById(id)
-                .orElseThrow(() -> new NotFoundException(String.format("Coupon with id %s not found", id)));
-        log.debug("Coupon by ID is successfully got");
-
-        log.debug("Editing of Coupon date");
-
-        couponUnderEdition.setDate(newDate);
-        log.debug("Successfully Coupon date is edited");
-
-        return couponMapper.toCouponDto(couponUnderEdition);
-    }
-
-    @Transactional
-    @Override
-    public void deleteCouponById(UUID id) {
-        log.debug("Deleting Coupon by ID");
-
-        Coupon coupon = couponRepository
-                .findById(id)
-                .orElseThrow(() -> new NotFoundException(String.format("Coupon with id %s not found", id)));
-
-        coupon.getUser().removeCoupon(coupon);
-        couponRepository.deleteById(id);
-        log.debug("Successfully Coupon is deleted by ID");
-
+        return CouponDtoList;
     }
 
     @Override
     public List<CouponDto> getCouponsOfUser(UUID userId) {
-        log.debug("Finding of certain user by ID");
+        log.debug("Finding Coupons of certain user");
 
-        User user = userRepository
-                .findById(userId)
-                .orElseThrow(() -> new NotFoundException(String.format("User with id %s not found", id)));
-        log.debug("Successfully user is found by ID");
+        List<CouponDto> CouponDtoList = couponMapper.toCouponDtoList(couponRepository.findAll()
+                .stream()
+                .filter(s -> s.getUser().getId().equals(userId))
+                .collect(Collectors.toList()));
 
-        log.debug("Getting list of user's Coupons");
-
-        List<Coupon> coupons = user.getCoupons();
         log.debug("Successfully list of user's Coupons is got");
 
-        return couponMapper.toCouponDtoList(coupons);
+        return CouponDtoList;
     }
 }
