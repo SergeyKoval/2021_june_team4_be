@@ -9,18 +9,8 @@ import java.sql.Types;
 
 public class EnumPostgresSQLType extends org.hibernate.type.EnumType {
 
-    public void nullSafeSet(
-            PreparedStatement st,
-            Object value,
-            int index,
-            SharedSessionContractImplementor session)
+    public void nullSafeSet(PreparedStatement st, Object value, int index, SharedSessionContractImplementor session)
             throws HibernateException, SQLException {
-        st.setObject(
-                index,
-                value != null ?
-                        ((Enum) value).name() :
-                        null,
-                Types.OTHER
-        );
+        st.setObject(index, value != null ? ((Enum) value).name() : null, Types.OTHER);
     }
 }

@@ -13,6 +13,4 @@ public interface CouponMapper {
     CouponDto toCouponDto(Coupon coupon);
 
     List<CouponDto> toCouponDtoList(List<Coupon> coupons);
-
-    List<Coupon> toCouponList(List<CouponDto> couponDtos);
 }
