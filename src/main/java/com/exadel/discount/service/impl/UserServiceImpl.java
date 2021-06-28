@@ -1,13 +1,9 @@
 package com.exadel.discount.service.impl;
 
-import com.exadel.discount.dto.CityDTO;
-import com.exadel.discount.dto.CountryDTO;
 import com.exadel.discount.dto.user.UserCityDto;
 import com.exadel.discount.dto.user.UserDto;
 import com.exadel.discount.entity.User;
 import com.exadel.discount.exception.NotFoundException;
-import com.exadel.discount.mapper.CityMapper;
-import com.exadel.discount.mapper.CountryMapper;
 import com.exadel.discount.mapper.UserCityMapper;
 import com.exadel.discount.mapper.UserMapper;
 import com.exadel.discount.repository.UserRepository;
@@ -30,9 +26,7 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final UserMapper userMapper;
-    private final CityMapper cityMapper;
     private final UserCityMapper userCityMapper;
-    private final CountryMapper countryMapper;
 
     @Override
     public UserCityDto findUserById(UUID id) {
@@ -60,15 +54,17 @@ public class UserServiceImpl implements UserService {
         log.debug("Getting sorted page-list of Users is got and filtering is starting");
         List<User> PageUserList = userList.toList();
         List<UserCityDto> filteredUserList = PageUserList.stream()
-                .filter(e -> e.getCity().toString().equals(cityFilter))
-                .filter(e -> e.getCity().getCountry().toString().equals(countryFilter))
+              //  .filter(e -> e.getCity().toString().equals(cityFilter))
+                .filter(e -> cityFilter.equals("") || e.getCity().getName().contains(cityFilter))
+                .filter(e -> countryFilter.equals("") || e.getCity().getCountry().getName().contains(countryFilter))
+                .filter(e -> roleFilter.equals("") || e.getRole().toString().equals(roleFilter.toUpperCase()))
                 .map(e -> userCityMapper.toUserCityDto(e, e.getCity(), e.getCity().getCountry()))
                 .collect(Collectors.toList());
 
-        if (roleFilter.toUpperCase().equals("ADMIN") || roleFilter.toUpperCase().equals("ROLE")) {
-            filteredUserList = filteredUserList.stream().filter(e -> e.getRole().toString().equals(roleFilter.toUpperCase()))
-                    .collect(Collectors.toList());
-        }
+//        if (roleFilter.toUpperCase().equals("ADMIN") || roleFilter.toUpperCase().equals("ROLE")) {
+//            filteredUserList = filteredUserList.stream().filter(e -> e.getRole().toString().equals(roleFilter.toUpperCase()))
+//                    .collect(Collectors.toList());
+//        }
 
         log.debug("Successfully filtered list of all Users is got");
         return filteredUserList;
