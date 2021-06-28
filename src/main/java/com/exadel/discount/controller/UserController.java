@@ -25,16 +25,21 @@ public class UserController {
     @GetMapping
     @ApiOperation("Get list of all users with sorting")
     /**  Get list of all users with sorting by params
-        sortDirection - ASC or DSC (unsorted - by default) ;
-        sortField - name of sorted field by (id - by default)-firstName/lastName/phone/email/login/role/password **/
-    public List<UserDto> getUsers(@RequestParam(name = "sortDirection", defaultValue = "") String sortDirection,
-                                  @RequestParam(name = "sortField", defaultValue = "id") String sortField) {
+     sortDirection - ASC or DSC (unsorted - by default) ;
+     sortField - name of sorted field by (id - by default)-firstName/lastName/phone/email/login/role/password **/
+    public List<UserCityDto> getUsers(@RequestParam(name = "pageNumber", defaultValue = "0") int pageNumber,
+                                      @RequestParam(name = "pageSize", defaultValue = "10") int pageSize,
+                                      @RequestParam(name = "sortDirection", defaultValue = "") String sortDirection,
+                                      @RequestParam(name = "sortField", defaultValue = "id") String sortField,
+                                      @RequestParam(name = "cityFilter", defaultValue = "") String cityFilter,
+                                      @RequestParam(name = "countryFilter", defaultValue = "") String countryFilter,
+                                      @RequestParam(name = "roleFilter", defaultValue = "") String roleFilter) {
         Sort sort = Sort.unsorted();
 
         if (!sortDirection.equals("")) {
             sort = Sort.by(Sort.Direction.valueOf(sortDirection.toUpperCase()), sortField);
         }
-        return userService.findAllUsers(sort);
+        return userService.findAllUsers(pageNumber, pageSize, sort, cityFilter, countryFilter, roleFilter);
     }
 
     @GetMapping("{id}")
