@@ -53,7 +53,6 @@ public class CouponServiceImpl implements CouponService {
         return couponMapper.toCouponDto(coupon);
     }
 
-    @Transactional
     @Override
     public CouponDto assignCouponToUser(CreateCouponDto createCouponDto) {
         log.debug("Finding of certain User and Discount by ID");
@@ -78,7 +77,6 @@ public class CouponServiceImpl implements CouponService {
         return couponMapper.toCouponDto(coupon);
     }
 
-    @Override
     public CouponDto findCouponByDate(LocalDateTime date) {
         log.debug("Finding coupon by date");
 
