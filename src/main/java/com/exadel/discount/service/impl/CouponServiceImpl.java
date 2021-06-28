@@ -80,7 +80,7 @@ public class CouponServiceImpl implements CouponService {
     public CouponDto findCouponByDate(LocalDateTime date) {
         log.debug("Finding coupon by date");
 
-        Coupon coupon = couponRepository.findCouponByDate(date);
+        Coupon coupon = (Coupon)couponRepository.findCouponByDate(date);
         if(coupon==null) throw new NotFoundException(String.format("Coupon with date %s not found", date));
         log.debug("Successfully coupon is found by date");
 
