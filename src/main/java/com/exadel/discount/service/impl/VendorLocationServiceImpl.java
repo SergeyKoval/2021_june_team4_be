@@ -37,9 +37,9 @@ public class VendorLocationServiceImpl implements VendorLocationService {
                 orElseThrow(() -> new NotFoundException(String.format("Vendor %s not found", vendorId)));
         VendorLocation vendorLocation = vendorLocationMapper.parseDTO(vendorLocationDTO);
         vendorLocation.setVendor(vendor);
-        VendorLocation vendorLocation1 = vendorLocationRepository.save(vendorLocation);
+        VendorLocation savedVendorLocation = vendorLocationRepository.save(vendorLocation);
         log.debug("Successfully saved new VendorLocation");
-        return vendorLocationMapper.getDTO(vendorLocation1);
+        return vendorLocationMapper.getDTO(savedVendorLocation);
     }
 
     @Override
