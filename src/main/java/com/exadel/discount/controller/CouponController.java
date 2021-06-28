@@ -34,8 +34,8 @@ public class CouponController {
                                          @RequestParam(name = "pageSize", defaultValue = "10") int pageSize,
                                          @RequestParam(value = "sortDirection", defaultValue = "") String sortDirection,
                                          @RequestParam(value = "sortField", defaultValue = "id") String sortField,
-                                         @RequestParam(value = "startDate", defaultValue = "2000-01-101T00:00:00")@DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) final LocalDateTime startDate,
-                                         @RequestParam(value = "endDate", defaultValue = "9999-01-101T00:00:00")@DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) final LocalDateTime endDate){
+                                         @RequestParam(value = "startDate", defaultValue = "2000-01-10T00:00:00")@DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) final LocalDateTime startDate,
+                                         @RequestParam(value = "endDate", defaultValue = "9999-01-10T00:00:00")@DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) final LocalDateTime endDate){
         return couponService.findAllCoupons(pageNumber, pageSize, sortDirection, sortField, startDate, endDate);
     }
 
