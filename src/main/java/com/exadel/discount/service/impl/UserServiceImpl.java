@@ -49,7 +49,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<UserCityDto> findAllUsers(int pageNumber, int pageSize, Sort sort, String cityFilter, String countryFilter, String roleFilter) {
+    public List<UserCityDto> findAllUsers(int pageNumber, int pageSize, String sortDirection, String sortField, String cityFilter, String countryFilter, String roleFilter) {
+        Sort sort = Sort.unsorted();
+
+        if (!sortDirection.equals("")) {
+            sort = Sort.by(Sort.Direction.valueOf(sortDirection.toUpperCase()), sortField);
+        }
         log.debug("Getting sorted page-list of  Users");
         Page<User> userList = userRepository.findAll(PageRequest.of(pageNumber, pageSize, sort));
         log.debug("Getting sorted page-list of Users is got and filtering is starting");
