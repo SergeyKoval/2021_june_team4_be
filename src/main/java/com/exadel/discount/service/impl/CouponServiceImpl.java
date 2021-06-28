@@ -14,11 +14,11 @@ import com.exadel.discount.service.CouponService;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import lombok.extern.slf4j.Slf4j;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -80,11 +80,13 @@ public class CouponServiceImpl implements CouponService {
     public CouponDto findCouponByDate(LocalDateTime date) {
         log.debug("Finding coupon by date");
 
-        Coupon coupon = (Coupon)couponRepository.findCouponByDate(date);
-        if(coupon==null) throw new NotFoundException(String.format("Coupon with date %s not found", date));
+        Optional<Coupon> coupon = couponRepository.findCouponByDate(date);
+        Coupon foundedCoupon;
+        if (coupon.isPresent()) foundedCoupon = coupon.get();
+        else throw new NotFoundException(String.format("Coupon with date %s not found", date));
         log.debug("Successfully coupon is found by date");
 
-        return couponMapper.toCouponDto(coupon);
+        return couponMapper.toCouponDto(foundedCoupon);
     }
 
     @Override
@@ -104,10 +106,8 @@ public class CouponServiceImpl implements CouponService {
     public List<CouponDto> getCouponsOfUser(UUID userId) {
         log.debug("Finding Coupons of certain user");
 
-        List<CouponDto> CouponDtoList = couponMapper.toCouponDtoList(couponRepository.findAll()
-                .stream()
-                .filter(s -> s.getUser().getId().equals(userId))
-                .collect(Collectors.toList()));
+        List<CouponDto> CouponDtoList = couponMapper
+                .toCouponDtoList(couponRepository.findByUser(userId));
 
         log.debug("Successfully list of user's Coupons is got");
 
