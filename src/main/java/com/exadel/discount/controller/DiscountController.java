@@ -2,11 +2,12 @@ package com.exadel.discount.controller;
 
 import com.exadel.discount.dto.DiscountDTO;
 import com.exadel.discount.dto.validation.Create;
-import com.exadel.discount.service.interfaces.DiscountService;
+import com.exadel.discount.service.DiscountService;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,15 +29,16 @@ public class DiscountController {
     private final DiscountService discountService;
 
     @GetMapping
-    @ApiOperation("Get discount by ID or all discounts")
-    public List<DiscountDTO> getDiscountById(@RequestParam (name = "id", required = false) UUID id) {
-        if (id == null) {
-            return discountService.getAll();
-        } else {
-            List<DiscountDTO> discounts = new ArrayList<>();
-            discounts.add(discountService.getById(id));
-            return discounts;
-        }
+    @ApiOperation("Get all discounts")
+    public List<DiscountDTO> getAllDiscount() {
+        return discountService.getAll();
+    }
+
+    @GetMapping("/{discountId}")
+    @ApiOperation("Get discount by ID")
+    public DiscountDTO getDiscountById(
+            @PathVariable(name = "discountId") @NotNull UUID id) {
+        return discountService.getById(id);
     }
 
     @PostMapping

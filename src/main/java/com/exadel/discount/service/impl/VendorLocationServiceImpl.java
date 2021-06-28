@@ -1,17 +1,20 @@
-package com.exadel.discount.service;
+package com.exadel.discount.service.impl;
 
+import com.exadel.discount.dto.DiscountDTO;
 import com.exadel.discount.dto.VendorLocationDTO;
 import com.exadel.discount.entity.Vendor;
 import com.exadel.discount.entity.VendorLocation;
 import com.exadel.discount.exception.NotFoundException;
 import com.exadel.discount.mapper.VendorLocationMapper;
+import com.exadel.discount.repository.CountryRepository;
 import com.exadel.discount.repository.VendorLocationRepository;
 import com.exadel.discount.repository.VendorRepository;
-import com.exadel.discount.service.interfaces.VendorLocationService;
+import com.exadel.discount.service.VendorLocationService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -23,6 +26,7 @@ public class VendorLocationServiceImpl implements VendorLocationService {
     private final VendorLocationRepository vendorLocationRepository;
     private final VendorLocationMapper vendorLocationMapper;
     private final VendorRepository vendorRepository;
+    private final CountryRepository countryRepository;
 
     @Override
     public VendorLocationDTO save(VendorLocationDTO vendorLocationDTO, UUID vendorId)  {
@@ -42,6 +46,7 @@ public class VendorLocationServiceImpl implements VendorLocationService {
         log.debug(String.format("Finding VendorLocation with ID %s", id));
         VendorLocation vendorLocation = vendorLocationRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException(String.format("VendorLocation with id %s not found",id)));
+        vendorLocation.setCountry(countryRepository.findById(vendorLocation.getCity().getCountry().getId()).orElse(null));
         log.debug(String.format("Successfully found VendorLocation with ID %s", id));
         return vendorLocationMapper.getDTO(vendorLocation);
     }

@@ -2,7 +2,7 @@ package com.exadel.discount.controller;
 
 import com.exadel.discount.dto.CategoryDTO;
 import com.exadel.discount.dto.validation.Create;
-import com.exadel.discount.service.interfaces.CategoryService;
+import com.exadel.discount.service.CategoryService;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
@@ -29,15 +29,16 @@ public class CategoryController {
     private final CategoryService categoryService;
 
     @GetMapping
-    @ApiOperation("Get all categories or category by id")
-    public List<CategoryDTO> getAll(@RequestParam(name = "id", required = false) UUID id) {
-        if (id == null) {
-            return categoryService.getAll();
-        } else {
-            List<CategoryDTO> categories = new ArrayList<>();
-            categories.add(categoryService.getById(id));
-            return categories;
-        }
+    @ApiOperation("Get all categories")
+    public List<CategoryDTO> getAll() {
+        return categoryService.getAll();
+    }
+
+    @GetMapping("/{categoryId}")
+    @ApiOperation("Get information about category by Id")
+    public CategoryDTO getById(
+            @PathVariable(name = "categoryId") @NotNull UUID id) {
+        return categoryService.getById(id);
     }
 
     @PostMapping

@@ -1,11 +1,11 @@
-package com.exadel.discount.service;
+package com.exadel.discount.service.impl;
 
 import com.exadel.discount.dto.CategoryDTO;
 import com.exadel.discount.entity.Category;
 import com.exadel.discount.exception.NotFoundException;
 import com.exadel.discount.mapper.CategoryMapper;
 import com.exadel.discount.repository.CategoryRepository;
-import com.exadel.discount.service.interfaces.CategoryService;
+import com.exadel.discount.service.CategoryService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
