@@ -27,16 +27,16 @@ public class CouponController {
 
     @GetMapping
     @ApiOperation("Get list of all coupons with sorting")
-    /**  Get list of all users with sorting by params
+    /**  Get list of all coupons with sorting by params
      sortDirection - ASC or DSC (unsorted - by default) ;
      sortField - name of sorted field by (id - by default)- date **/
-    public List<CouponDto> getAllCoupons(@RequestParam(value = "sortDirection", defaultValue = "") String sortDirection,
-                                         @RequestParam(value = "sortField", defaultValue = "id") String sortField){
-        Sort sort = Sort.unsorted();
-        if(!sortDirection.equals("")) {
-            sort = Sort.by(Sort.Direction.valueOf(sortDirection.toUpperCase()), sortField);
-        }
-        return couponService.findAllCoupons(sort);
+    public List<CouponDto> getAllCoupons(@RequestParam(name = "pageNumber", defaultValue = "0") int pageNumber,
+                                         @RequestParam(name = "pageSize", defaultValue = "10") int pageSize,
+                                         @RequestParam(value = "sortDirection", defaultValue = "") String sortDirection,
+                                         @RequestParam(value = "sortField", defaultValue = "id") String sortField,
+                                         @RequestParam(value = "startDate", defaultValue = "2000-01-101T00:00:00")@DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) final LocalDateTime startDate,
+                                         @RequestParam(value = "endDate", defaultValue = "9999-01-101T00:00:00")@DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) final LocalDateTime endDate){
+        return couponService.findAllCoupons(pageNumber, pageSize, sortDirection, sortField, startDate, endDate);
     }
 
     @GetMapping("{id}")
