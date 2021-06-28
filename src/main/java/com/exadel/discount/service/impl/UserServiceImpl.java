@@ -60,8 +60,8 @@ public class UserServiceImpl implements UserService {
         log.debug("Getting sorted page-list of Users is got and filtering is starting");
         List<User> PageUserList = userList.toList();
         List<UserCityDto> filteredUserList = PageUserList.stream()
-                .filter(e -> e.getCity().toString().equalsIgnoreCase(cityFilter))
-                .filter(e -> e.getCity().getCountry().toString().equalsIgnoreCase(countryFilter))
+                .filter(e -> e.getCity().toString().equals(cityFilter))
+                .filter(e -> e.getCity().getCountry().toString().equals(countryFilter))
                 .map(e -> userCityMapper.toUserCityDto(e, e.getCity(), e.getCity().getCountry()))
                 .collect(Collectors.toList());
 

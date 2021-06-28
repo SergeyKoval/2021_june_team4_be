@@ -9,5 +9,5 @@ import java.util.UUID;
 
 @Repository
 public interface CouponRepository extends JpaRepository<Coupon, UUID> {
-    <Optional>Coupon findCouponByDate(LocalDateTime date);
+    Coupon findCouponByDate(LocalDateTime date);
 }
