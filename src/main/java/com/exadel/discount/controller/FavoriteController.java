@@ -23,7 +23,7 @@ public class FavoriteController {
     /**  Get list of all users with sorting by params
      sortDirection - ASC or DSC (unsorted - by default) ;
      sortField - name of sorted field by (id - by default) **/
-    public List<FavoriteDto> getAllCoupons(@RequestParam(value = "sortDirection", defaultValue = "") String sortDirection,
+    public List<FavoriteDto> getAllFavorites(@RequestParam(value = "sortDirection", defaultValue = "") String sortDirection,
                                          @RequestParam(value = "sortField", defaultValue = "id") String sortField){
         Sort sort = Sort.unsorted();
         if(!sortDirection.equals("")) {

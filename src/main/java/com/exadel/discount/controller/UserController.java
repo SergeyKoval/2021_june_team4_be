@@ -34,12 +34,7 @@ public class UserController {
                                       @RequestParam(name = "cityFilter", defaultValue = "") String cityFilter,
                                       @RequestParam(name = "countryFilter", defaultValue = "") String countryFilter,
                                       @RequestParam(name = "roleFilter", defaultValue = "") String roleFilter) {
-        Sort sort = Sort.unsorted();
-
-        if (!sortDirection.equals("")) {
-            sort = Sort.by(Sort.Direction.valueOf(sortDirection.toUpperCase()), sortField);
-        }
-        return userService.findAllUsers(pageNumber, pageSize, sort, cityFilter, countryFilter, roleFilter);
+        return userService.findAllUsers(pageNumber, pageSize,sortDirection, sortField, cityFilter, countryFilter, roleFilter);
     }
 
     @GetMapping("{id}")

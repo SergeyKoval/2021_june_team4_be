@@ -11,7 +11,7 @@ import java.util.UUID;
 public interface UserService {
     UserCityDto findUserById(UUID id);
 
-    List<UserCityDto> findAllUsers(int pageNumber, int pageSize, Sort sort, String cityFilter, String countryFilter, String roleFilter);
+    List<UserCityDto> findAllUsers(int pageNumber, int pageSize, String sortDirection, String sortField, String cityFilter, String countryFilter, String roleFilter);
 
     List<UserDto> findUsersByName(String lastName, String firstName);
 }
