@@ -1,13 +1,16 @@
 package com.exadel.discount.service.impl;
 
 import com.exadel.discount.dto.DiscountDTO;
+import com.exadel.discount.dto.VendorDTO;
 import com.exadel.discount.entity.Discount;
 import com.exadel.discount.entity.Vendor;
 import com.exadel.discount.entity.VendorLocation;
 import com.exadel.discount.exception.NotFoundException;
 import com.exadel.discount.mapper.DiscountMapper;
+import com.exadel.discount.mapper.VendorMapper;
 import com.exadel.discount.repository.CountryRepository;
 import com.exadel.discount.repository.DiscountRepository;
+import com.exadel.discount.repository.VendorRepository;
 import com.exadel.discount.service.interfaces.DiscountService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -27,6 +30,9 @@ public class DiscountServiceImpl implements DiscountService {
     private final DiscountRepository discountRepository;
     private final DiscountMapper discountMapper;
     private final CountryRepository countryRepository;
+    private final VendorRepository vendorRepository;
+    private final VendorMapper vendorMapper;
+
 
     @Override
     public DiscountDTO save(DiscountDTO discountDTO) {
@@ -44,13 +50,18 @@ public class DiscountServiceImpl implements DiscountService {
                 .orElseThrow(() -> new NotFoundException(String.format("Discount with id %s not found",id)));
         log.debug(String.format("Successfully found Discount with ID %s", id));
 
-        Set<VendorLocation> vendorLocations = new HashSet<>();
+        List<VendorLocation> vendorLocations = new ArrayList<>();
         for (VendorLocation v : discount.getVendorLocations()) {
             v.setCountry(countryRepository.findById(v.getCity().getCountry().getId()).orElse(null));
             vendorLocations.add(v);
         }
         discount.setVendorLocations(vendorLocations);
-        return discountMapper.getDTO(discount);
+        DiscountDTO discountDTO = discountMapper.getDTO(discount);
+        if (discount.getVendorLocations().get(0) != null) {
+            Vendor vendor = vendorRepository.findById(discount.getVendorLocations().get(0).getVendor().getId()).orElse(null);
+            discountDTO.setVendor(vendorMapper.getDTO(vendor));
+        }
+        return discountDTO;
     }
 
     @Override
@@ -59,7 +70,7 @@ public class DiscountServiceImpl implements DiscountService {
         List<Discount> discounts = discountRepository.findAll();
 
         for (int i=0; i<discounts.size(); i++) {
-            Set<VendorLocation> vendorLocations = new HashSet<>();
+            List<VendorLocation> vendorLocations = new ArrayList<>();
             for (VendorLocation v : discounts.get(i).getVendorLocations()) {
                 v.setCountry(countryRepository.findById(v.getCity().getCountry().getId()).orElse(null));
                 vendorLocations.add(v);
@@ -68,9 +79,9 @@ public class DiscountServiceImpl implements DiscountService {
             discount.setVendorLocations(vendorLocations);
             discounts.set(i, discount);
         }
-
+        List<DiscountDTO> discountDTOS = discountMapper.getListDTO(discounts);
         log.debug("Successfully got list of all Discounts");
-        return discountMapper.getListDTO(discounts);
+        return discountDTOS;
     }
 
     @Override

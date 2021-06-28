@@ -30,4 +30,5 @@ public class DiscountDTO {
     private boolean active;
     private List<TagDTO> tags;
     private List<VendorLocationDTO> vendorLocations;
+    private VendorDTO vendor;
 }

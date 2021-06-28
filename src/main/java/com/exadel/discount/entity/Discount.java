@@ -19,6 +19,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
@@ -68,7 +69,7 @@ public class Discount {
             joinColumns = @JoinColumn(name = "discount_id"),
             inverseJoinColumns = @JoinColumn(name = "location_id")
     )
-    private Set<VendorLocation> vendorLocations;
+    private List<VendorLocation> vendorLocations;
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
