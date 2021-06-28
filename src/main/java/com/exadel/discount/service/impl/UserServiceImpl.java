@@ -61,11 +61,6 @@ public class UserServiceImpl implements UserService {
                 .map(e -> userCityMapper.toUserCityDto(e, e.getCity(), e.getCity().getCountry()))
                 .collect(Collectors.toList());
 
-//        if (roleFilter.toUpperCase().equals("ADMIN") || roleFilter.toUpperCase().equals("ROLE")) {
-//            filteredUserList = filteredUserList.stream().filter(e -> e.getRole().toString().equals(roleFilter.toUpperCase()))
-//                    .collect(Collectors.toList());
-//        }
-
         log.debug("Successfully filtered list of all Users is got");
         return filteredUserList;
     }

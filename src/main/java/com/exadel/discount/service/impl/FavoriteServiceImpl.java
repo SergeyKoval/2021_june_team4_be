@@ -15,11 +15,9 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -91,10 +89,8 @@ public class FavoriteServiceImpl implements FavoriteService {
     public List<FavoriteDto> getFavoritesOfUser(UUID userId) {
         log.debug("Finding Favorites of certain user");
 
-        List<FavoriteDto> FavoriteDtoList = favoriteMapper.toFavoriteDtoList(favoriteRepository.findAll()
-                .stream()
-                .filter(s -> s.getUser().getId().equals(userId))
-                .collect(Collectors.toList()));
+        List<FavoriteDto> FavoriteDtoList = favoriteMapper
+                .toFavoriteDtoList(favoriteRepository.findByUser(userId));
 
         log.debug("Successfully list of user's Favorites is got");
 
