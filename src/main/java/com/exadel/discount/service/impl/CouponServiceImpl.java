@@ -12,6 +12,8 @@ import com.exadel.discount.repository.DiscountRepository;
 import com.exadel.discount.repository.UserRepository;
 import com.exadel.discount.service.CouponService;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import lombok.extern.slf4j.Slf4j;
@@ -32,13 +34,25 @@ public class CouponServiceImpl implements CouponService {
     private final DiscountRepository discountRepository;
 
     @Override
-    public List<CouponDto> findAllCoupons(Sort sort) {
-        log.debug("Getting list of all Coupons");
+    public List<CouponDto> findAllCoupons(int pageNumber, int pageSize, String sortDirection, String sortField, LocalDateTime startDate, LocalDateTime endDate) {
+        Sort sort = Sort.unsorted();
+        if (!sortDirection.equals("")) {
+            sort = Sort.by(Sort.Direction.valueOf(sortDirection.toUpperCase()), sortField);
+        }
+        log.debug("Getting sorted page-list of all Coupons");
 
-        List<Coupon> coupons = couponRepository.findAll(sort);
-        log.debug("Successfully list of all Coupons is got");
+        Page<Coupon> PageCouponList = couponRepository.findAll(PageRequest.of(pageNumber, pageSize, sort));
+        log.debug("Successfully sorted page-list of all Coupons is got and filtering is starting");
 
-        return couponMapper.toCouponDtoList(coupons);
+        List<Coupon> couponList =PageCouponList.toList();
+        List<Coupon> filteredCouponList = couponList.stream()
+                .filter(e -> e.getDate().isAfter(startDate))
+                .filter(e -> e.getDate().isBefore(endDate))
+            .collect(Collectors.toList());
+
+        log.debug("Successfully filtered list of Coupons is got");
+
+        return couponMapper.toCouponDtoList(filteredCouponList);
     }
 
     @Override

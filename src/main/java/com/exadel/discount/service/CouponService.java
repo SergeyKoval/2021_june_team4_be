@@ -12,7 +12,7 @@ import java.util.UUID;
 public interface CouponService {
     CouponDto findCouponById(UUID id);
 
-    List<CouponDto> findAllCoupons(Sort sort);
+    List<CouponDto> findAllCoupons(int pageNumber, int pageSize, String sortDirection, String sortField, LocalDateTime startDate, LocalDateTime endDate);
 
     CouponDto assignCouponToUser(CreateCouponDto createCouponDto);
 

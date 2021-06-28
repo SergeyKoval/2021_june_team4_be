@@ -51,17 +51,16 @@ public class UserServiceImpl implements UserService {
         }
         log.debug("Getting sorted page-list of  Users");
         Page<User> userList = userRepository.findAll(PageRequest.of(pageNumber, pageSize, sort));
-        log.debug("Getting sorted page-list of Users is got and filtering is starting");
+        log.debug("Successfully sorted page-list of Users is got and filtering is starting");
         List<User> PageUserList = userList.toList();
         List<UserCityDto> filteredUserList = PageUserList.stream()
-              //  .filter(e -> e.getCity().toString().equals(cityFilter))
                 .filter(e -> cityFilter.equals("") || e.getCity().getName().contains(cityFilter))
                 .filter(e -> countryFilter.equals("") || e.getCity().getCountry().getName().contains(countryFilter))
                 .filter(e -> roleFilter.equals("") || e.getRole().toString().equals(roleFilter.toUpperCase()))
                 .map(e -> userCityMapper.toUserCityDto(e, e.getCity(), e.getCity().getCountry()))
                 .collect(Collectors.toList());
 
-        log.debug("Successfully filtered list of all Users is got");
+        log.debug("Successfully filtered list of Users is got");
         return filteredUserList;
     }
 
