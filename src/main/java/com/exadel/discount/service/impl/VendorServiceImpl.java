@@ -76,6 +76,7 @@ public class VendorServiceImpl implements VendorService {
     @Override
     public void deleteById(UUID id) {
         log.debug(String.format("Deleting Vendor with ID %s", id));
+        vendorRepository.findById(id).orElseThrow(() -> new NotFoundException(String.format("Vendor with ID %s not found",id)));
         vendorRepository.deleteById(id);
         log.debug(String.format("Successfully deleted Vendor with ID %s", id));
     }

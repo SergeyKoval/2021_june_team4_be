@@ -87,6 +87,7 @@ public class DiscountServiceImpl implements DiscountService {
     @Override
     public void deleteById(UUID id) {
         log.debug(String.format("Deleting Discount with ID %s", id));
+        discountRepository.findById(id).orElseThrow(() -> new NotFoundException(String.format("Discount with ID %s not found",id)));
         discountRepository.deleteById(id);
         log.debug(String.format("Successfully deleted Discount with ID %s", id));
     }

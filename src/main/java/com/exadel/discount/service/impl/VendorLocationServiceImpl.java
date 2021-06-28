@@ -64,15 +64,15 @@ public class VendorLocationServiceImpl implements VendorLocationService {
     @Override
     public void deleteById(UUID vendorId, UUID locationId)  {
         log.debug(String.format("Deleting VendorLocations with ID %s", locationId));
-        Vendor vendor = vendorRepository
+        vendorRepository
                 .findById(vendorId)
                 .orElseThrow(() -> new NotFoundException(String.format("Vendor %s not found", vendorId)));
-        if (vendorLocationRepository
+        VendorLocation vendorLocation = vendorLocationRepository
                 .findById(locationId)
-                .orElseThrow(() -> new NotFoundException(String.format("VendorLocation %s not found", locationId)))
-                .getVendor()
-                .getId()
-                .equals(vendorId)) {
+                .orElseThrow(() -> new NotFoundException(String.format("VendorLocation %s not found", locationId)));
+        if (vendorLocation.getVendor()
+                                    .getId()
+                                    .equals(vendorId)) {
             vendorLocationRepository.deleteById(locationId);
             log.debug(String.format("Successfully deleted VendorLocations with ID %s", locationId));
         } else {
