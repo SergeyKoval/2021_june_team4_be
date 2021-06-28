@@ -45,13 +45,14 @@ public class VendorLocation {
     @JoinColumn(name = "vendor_id")
     private Vendor vendor;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    //TODO
+    /*@ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "city_id")
     private City city;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "country_id")
-    private Country country;
+    private Country country;*/
 
     @ManyToMany(mappedBy = "vendorLocations", fetch = FetchType.LAZY)
     private Set<Discount> discounts;

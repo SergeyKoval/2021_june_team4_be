@@ -73,10 +73,11 @@ public class Discount {
     )
     private List<Tag> tags;
 
-    @OneToMany(mappedBy = "discount", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    //TODO
+    /*@OneToMany(mappedBy = "discount", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private List<Coupon> coupons;
 
     @OneToMany(mappedBy = "discount", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
-    private List<Favorite> favorites;
+    private List<Favorite> favorites;*/
 
 }

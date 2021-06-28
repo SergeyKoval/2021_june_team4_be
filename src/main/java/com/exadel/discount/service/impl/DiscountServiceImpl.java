@@ -29,7 +29,7 @@ public class DiscountServiceImpl implements DiscountService {
 
     private final DiscountRepository discountRepository;
     private final DiscountMapper discountMapper;
-    private final CountryRepository countryRepository;
+    //private final CountryRepository countryRepository;
     private final VendorRepository vendorRepository;
     private final VendorMapper vendorMapper;
 
@@ -49,13 +49,13 @@ public class DiscountServiceImpl implements DiscountService {
                 .findById(id)
                 .orElseThrow(() -> new NotFoundException(String.format("Discount with id %s not found",id)));
         log.debug(String.format("Successfully found Discount with ID %s", id));
-
-        List<VendorLocation> vendorLocations = new ArrayList<>();
+        //TODO
+        /*List<VendorLocation> vendorLocations = new ArrayList<>();
         for (VendorLocation v : discount.getVendorLocations()) {
             v.setCountry(countryRepository.findById(v.getCity().getCountry().getId()).orElse(null));
             vendorLocations.add(v);
         }
-        discount.setVendorLocations(vendorLocations);
+        discount.setVendorLocations(vendorLocations);*/
         DiscountDTO discountDTO = discountMapper.getDTO(discount);
         if (discount.getVendorLocations().get(0) != null) {
             Vendor vendor = vendorRepository.findById(discount.getVendorLocations().get(0).getVendor().getId()).orElse(null);
@@ -68,8 +68,8 @@ public class DiscountServiceImpl implements DiscountService {
     public List<DiscountDTO> getAll() {
         log.debug("Getting list of all Discounts");
         List<Discount> discounts = discountRepository.findAll();
-
-        for (int i=0; i<discounts.size(); i++) {
+        //TODO
+        /*for (int i=0; i<discounts.size(); i++) {
             List<VendorLocation> vendorLocations = new ArrayList<>();
             for (VendorLocation v : discounts.get(i).getVendorLocations()) {
                 v.setCountry(countryRepository.findById(v.getCity().getCountry().getId()).orElse(null));
@@ -78,7 +78,7 @@ public class DiscountServiceImpl implements DiscountService {
             Discount discount = discounts.get(i);
             discount.setVendorLocations(vendorLocations);
             discounts.set(i, discount);
-        }
+        }*/
         List<DiscountDTO> discountDTOS = discountMapper.getListDTO(discounts);
         log.debug("Successfully got list of all Discounts");
         return discountDTOS;

@@ -1,4 +1,4 @@
-databaseChangeLog:
+atabaseChangeLog:
   - changeSet:
       id: 36-uuid-generation-discounts-locations
       author: nikolay_chornyi

@@ -24,7 +24,8 @@ public class VendorServiceImpl implements VendorService {
 
     private final VendorRepository vendorRepository;
     private final VendorMapper vendorMapper;
-    private final CountryRepository countryRepository;
+    //TODO
+    //private final CountryRepository countryRepository;
 
     @Override
     public VendorDTO save(VendorDTO vendorDTO) {
@@ -41,12 +42,13 @@ public class VendorServiceImpl implements VendorService {
                 .findById(id)
                 .orElseThrow(() -> new NotFoundException(String.format("Vendor with ID %s not found",id)));
         log.debug(String.format("Successfully found Vendor with ID %s", id));
-        List<VendorLocation> vendorLocations = new ArrayList<>();
+        //TODO
+        /*List<VendorLocation> vendorLocations = new ArrayList<>();
         for (VendorLocation v : vendor.getVendorLocations()) {
             v.setCountry(countryRepository.findById(v.getCity().getCountry().getId()).orElse(null));
             vendorLocations.add(v);
         }
-        vendor.setVendorLocations(vendorLocations);
+        vendor.setVendorLocations(vendorLocations);*/
         return vendorMapper.getDTO(vendor);
     }
 
@@ -54,8 +56,8 @@ public class VendorServiceImpl implements VendorService {
     public List<VendorDTO> getAll() {
         log.debug("Getting list of all Vendors");
         List<Vendor> vendorList = vendorRepository.findAll();
-
-        for (int i=0; i<vendorList.size(); i++) {
+        //TODO
+        /*for (int i=0; i<vendorList.size(); i++) {
             List<VendorLocation> vendorLocations = new ArrayList<>();
             for (VendorLocation v : vendorList.get(i).getVendorLocations()) {
                 v.setCountry(countryRepository.findById(v.getCity().getCountry().getId()).orElse(null));
@@ -64,7 +66,7 @@ public class VendorServiceImpl implements VendorService {
             Vendor vendor = vendorList.get(i);
             vendor.setVendorLocations(vendorLocations);
             vendorList.set(i, vendor);
-        }
+        }*/
 
 
         log.debug("Successfully got list of all Vendors");

@@ -30,7 +30,7 @@ public class DiscountController {
 
     @GetMapping
     @ApiOperation("Get all discounts")
-    public List<DiscountDTO> getAllDiscount() {
+    public List<DiscountDTO> getAllDiscounts() {
         return discountService.getAll();
     }
 

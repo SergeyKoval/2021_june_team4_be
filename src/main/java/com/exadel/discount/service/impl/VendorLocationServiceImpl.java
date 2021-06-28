@@ -26,7 +26,8 @@ public class VendorLocationServiceImpl implements VendorLocationService {
     private final VendorLocationRepository vendorLocationRepository;
     private final VendorLocationMapper vendorLocationMapper;
     private final VendorRepository vendorRepository;
-    private final CountryRepository countryRepository;
+    //TODO
+    //private final CountryRepository countryRepository;
 
     @Override
     public VendorLocationDTO save(VendorLocationDTO vendorLocationDTO, UUID vendorId)  {
@@ -46,7 +47,8 @@ public class VendorLocationServiceImpl implements VendorLocationService {
         log.debug(String.format("Finding VendorLocation with ID %s", id));
         VendorLocation vendorLocation = vendorLocationRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException(String.format("VendorLocation with id %s not found",id)));
-        vendorLocation.setCountry(countryRepository.findById(vendorLocation.getCity().getCountry().getId()).orElse(null));
+        //TODO
+        //vendorLocation.setCountry(countryRepository.findById(vendorLocation.getCity().getCountry().getId()).orElse(null));
         log.debug(String.format("Successfully found VendorLocation with ID %s", id));
         return vendorLocationMapper.getDTO(vendorLocation);
     }
