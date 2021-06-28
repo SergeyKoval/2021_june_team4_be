@@ -52,7 +52,6 @@ public class FavoriteServiceImpl implements FavoriteService {
         return favoriteMapper.toFavoriteDto(favorite);
     }
 
-    @Transactional
     @Override
     public FavoriteDto assignFavoriteToUser(CreateFavoriteDto createFavoriteDto) {
         log.debug("Finding of certain user by ID");
@@ -77,7 +76,6 @@ public class FavoriteServiceImpl implements FavoriteService {
         return favoriteMapper.toFavoriteDto(favorite);
     }
 
-    @Transactional
     @Override
     public void deleteFavoriteByID(UUID id) {
         log.debug("Finding & deleting Favorite by ID");
