@@ -65,11 +65,4 @@ public class CouponController {
                                      @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) @NotNull final LocalDateTime date) {
         return couponService.findCouponByDate(date);
     }
-
-    @GetMapping("/date/between")
-    @ApiOperation("Get coupon by date scope")
-    public List<CouponDto> getCouponAtDateScope(@RequestParam("startdate")@DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) final LocalDateTime startDate,
-                                                @RequestParam("enddate")@DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) final LocalDateTime endDate) {
-        return couponService.findCouponsBetweenDates(startDate, endDate);
-    }
 }
