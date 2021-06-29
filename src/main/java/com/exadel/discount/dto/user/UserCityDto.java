@@ -1,6 +1,5 @@
 package com.exadel.discount.dto.user;
 
-import com.exadel.discount.entity.Country;
 import com.exadel.discount.entity.Role;
 import com.sun.istack.NotNull;
 import lombok.AllArgsConstructor;
@@ -16,8 +15,6 @@ import java.util.UUID;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode
-@ToString
 public class UserCityDto {
     @NotNull
     private UUID id;
