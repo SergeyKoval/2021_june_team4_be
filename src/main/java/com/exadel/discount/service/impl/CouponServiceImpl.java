@@ -105,20 +105,6 @@ public class CouponServiceImpl implements CouponService {
     }
 
     @Override
-    public List<CouponDto> findCouponsBetweenDates(LocalDateTime startDate, LocalDateTime endDate) {
-        log.debug("Finding coupon by date scope");
-        List<CouponDto> CouponDtoList = couponMapper.toCouponDtoList(couponRepository.findAll()
-                .stream()
-                .filter(s -> s.getDate().isAfter(startDate))
-                .filter(s -> s.getDate().isBefore(endDate))
-                .collect(Collectors.toList()));
-        log.debug("Successfully coupon is found by date scope");
-        if(CouponDtoList.isEmpty()) throw new NotFoundException(String.format("No Coupons are found between dates %s and %s", startDate, endDate));
-
-        return CouponDtoList;
-    }
-
-    @Override
     public List<CouponDto> getCouponsOfUser(UUID userId) {
         log.debug("Finding Coupons of certain user");
 
