@@ -29,10 +29,16 @@ public class FavoriteServiceImpl implements FavoriteService {
     private final DiscountRepository discountRepository;
 
     @Override
-    public List<FavoriteDto> findAllFavorites(Sort sort) {
+    public List<FavoriteDto> findAllFavorites(String sortDirection, String sortField) {
+        Sort sort = Sort.unsorted();
+        if(!sortDirection.equals("")) {
+            sort = Sort.by(Sort.Direction.valueOf(sortDirection.toUpperCase()), sortField);
+        }
         log.debug("Getting list of all Favorites");
 
         List<Favorite> favoriteList = favoriteRepository.findAll(sort);
+        if(favoriteList.isEmpty()) throw new NotFoundException(String.format("No favorites are found"));
+
         log.debug("Successfully got list of all Favorites");
 
         return favoriteMapper.toFavoriteDtoList(favoriteList);
@@ -45,6 +51,7 @@ public class FavoriteServiceImpl implements FavoriteService {
         Favorite favorite = favoriteRepository
                 .findById(id)
                 .orElseThrow(() -> new NotFoundException(String.format("Favorite with id %s not found", id)));
+
         log.debug("Successfully Favorite is found by ID");
 
         return favoriteMapper.toFavoriteDto(favorite);
@@ -91,6 +98,7 @@ public class FavoriteServiceImpl implements FavoriteService {
 
         List<FavoriteDto> FavoriteDtoList = favoriteMapper
                 .toFavoriteDtoList(favoriteRepository.findByUser(userId));
+        if(FavoriteDtoList.isEmpty()) throw new NotFoundException(String.format("No Favorites are found at user with Id %s ", userId));
 
         log.debug("Successfully list of user's Favorites is got");
 

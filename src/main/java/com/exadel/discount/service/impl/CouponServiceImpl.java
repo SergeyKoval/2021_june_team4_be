@@ -44,11 +44,12 @@ public class CouponServiceImpl implements CouponService {
         Page<Coupon> PageCouponList = couponRepository.findAll(PageRequest.of(pageNumber, pageSize, sort));
         log.debug("Successfully sorted page-list of all Coupons is got and filtering is starting");
 
-        List<Coupon> couponList =PageCouponList.toList();
+        List<Coupon> couponList = PageCouponList.toList();
         List<Coupon> filteredCouponList = couponList.stream()
                 .filter(e -> e.getDate().isAfter(startDate))
                 .filter(e -> e.getDate().isBefore(endDate))
             .collect(Collectors.toList());
+        if(filteredCouponList.isEmpty()) throw new NotFoundException(String.format("No Coupons are found between dates %s and %s", startDate, endDate));
 
         log.debug("Successfully filtered list of Coupons is got");
 
@@ -112,6 +113,7 @@ public class CouponServiceImpl implements CouponService {
                 .filter(s -> s.getDate().isBefore(endDate))
                 .collect(Collectors.toList()));
         log.debug("Successfully coupon is found by date scope");
+        if(CouponDtoList.isEmpty()) throw new NotFoundException(String.format("No Coupons are found between dates %s and %s", startDate, endDate));
 
         return CouponDtoList;
     }
@@ -124,6 +126,7 @@ public class CouponServiceImpl implements CouponService {
                 .toCouponDtoList(couponRepository.findByUser(userId));
 
         log.debug("Successfully list of user's Coupons is got");
+        if(CouponDtoList.isEmpty()) throw new NotFoundException(String.format("No Coupons are found at user with Id %s ", userId));
 
         return CouponDtoList;
     }

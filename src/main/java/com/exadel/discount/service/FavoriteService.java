@@ -13,7 +13,7 @@ public interface FavoriteService {
 
     void deleteFavoriteByID(UUID id);
 
-    List<FavoriteDto> findAllFavorites(Sort sort);
+    List<FavoriteDto> findAllFavorites(String sortDirection, String sortField);
 
     FavoriteDto assignFavoriteToUser(CreateFavoriteDto createFavoriteDto);
 

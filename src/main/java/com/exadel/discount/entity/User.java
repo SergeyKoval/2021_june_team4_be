@@ -59,7 +59,7 @@ public class User {
     private String password;
 
     @Enumerated(EnumType.STRING)
-    @Column(columnDefinition = "role")
+    @Column(columnDefinition = "role", nullable = false)
     @Type(type = "user_role")
     private Role role;
 

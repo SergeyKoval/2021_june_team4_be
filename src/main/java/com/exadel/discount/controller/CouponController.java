@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
@@ -26,7 +27,7 @@ public class CouponController {
     private final CouponService couponService;
 
     @GetMapping
-    @ApiOperation("Get list of all coupons with sorting")
+    @ApiOperation("Get list of all coupons with sorting and filtering")
     /**  Get list of all coupons with sorting by params
      sortDirection - ASC or DSC (unsorted - by default) ;
      sortField - name of sorted field by (id - by default)- date **/
@@ -41,19 +42,19 @@ public class CouponController {
 
     @GetMapping("{id}")
     @ApiOperation("Get coupon by ID")
-    public CouponDto getCouponById(@PathVariable final UUID id) {
+    public CouponDto getCouponById(@PathVariable @NotNull final UUID id) {
         return couponService.findCouponById(id);
     }
 
     @PostMapping
     @ApiOperation("Save new coupon")
-    public CouponDto addCoupon(@RequestBody final CreateCouponDto createCouponDto) {
+    public CouponDto addCoupon(@RequestBody @NotNull final CreateCouponDto createCouponDto) {
         return couponService.assignCouponToUser(createCouponDto);
     }
 
     @GetMapping("/ofuser")
     @ApiOperation("Get coupons of certain user")
-    public List<CouponDto> getCouponsOfUser(@RequestParam("userId") final UUID userId) {
+    public List<CouponDto> getCouponsOfUser(@RequestParam("userId") @NotNull final UUID userId) {
         return couponService.getCouponsOfUser(userId);
     }
 
@@ -61,7 +62,7 @@ public class CouponController {
     @GetMapping("/date")
     @ApiOperation("Get coupon by date")
     public CouponDto getCouponByDate(@RequestParam("date")
-                                     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) final LocalDateTime date) {
+                                     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) @NotNull final LocalDateTime date) {
         return couponService.findCouponByDate(date);
     }
 
