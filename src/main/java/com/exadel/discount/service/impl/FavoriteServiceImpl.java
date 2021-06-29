@@ -2,6 +2,7 @@ package com.exadel.discount.service.impl;
 
 import com.exadel.discount.dto.favorite.CreateFavoriteDto;
 import com.exadel.discount.dto.favorite.FavoriteDto;
+import com.exadel.discount.entity.Coupon;
 import com.exadel.discount.entity.Discount;
 import com.exadel.discount.entity.Favorite;
 import com.exadel.discount.entity.User;
@@ -13,6 +14,8 @@ import com.exadel.discount.repository.UserRepository;
 import com.exadel.discount.service.FavoriteService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
@@ -29,19 +32,19 @@ public class FavoriteServiceImpl implements FavoriteService {
     private final DiscountRepository discountRepository;
 
     @Override
-    public List<FavoriteDto> findAllFavorites(String sortDirection, String sortField) {
+    public List<FavoriteDto> findAllFavorites( int pageNumber, int pageSize,String sortDirection, String sortField) {
         Sort sort = Sort.unsorted();
         if(!sortDirection.equals("")) {
             sort = Sort.by(Sort.Direction.valueOf(sortDirection.toUpperCase()), sortField);
         }
         log.debug("Getting list of all Favorites");
 
-        List<Favorite> favoriteList = favoriteRepository.findAll(sort);
+        Page<Favorite> favoriteList = favoriteRepository.findAll(PageRequest.of(pageNumber, pageSize, sort));
         if(favoriteList.isEmpty()) throw new NotFoundException(String.format("No favorites are found"));
 
         log.debug("Successfully got list of all Favorites");
 
-        return favoriteMapper.toFavoriteDtoList(favoriteList);
+        return favoriteMapper.toFavoriteDtoList(favoriteList.toList());
     }
 
     @Override

@@ -30,9 +30,11 @@ public class FavoriteController {
     /**  Get list of all users with sorting by params
      sortDirection - ASC or DSC (unsorted - by default) ;
      sortField - name of sorted field by (id - by default) **/
-    public List<FavoriteDto> getAllFavorites(@RequestParam(value = "sortDirection", defaultValue = "") String sortDirection,
+    public List<FavoriteDto> getAllFavorites(@RequestParam(name = "pageNumber", defaultValue = "0") int pageNumber,
+                                             @RequestParam(name = "pageSize", defaultValue = "10") int pageSize,
+                                             @RequestParam(value = "sortDirection", defaultValue = "") String sortDirection,
                                          @RequestParam(value = "sortField", defaultValue = "id") String sortField){
-        return favoriteService.findAllFavorites(sortDirection, sortField);
+        return favoriteService.findAllFavorites(pageNumber, pageSize, sortDirection, sortField);
     }
 
     @GetMapping("{id}")
