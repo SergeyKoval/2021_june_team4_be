@@ -2,7 +2,6 @@ package com.exadel.discount.service.impl;
 
 import com.exadel.discount.dto.favorite.CreateFavoriteDto;
 import com.exadel.discount.dto.favorite.FavoriteDto;
-import com.exadel.discount.entity.Coupon;
 import com.exadel.discount.entity.Discount;
 import com.exadel.discount.entity.Favorite;
 import com.exadel.discount.entity.User;
@@ -40,7 +39,7 @@ public class FavoriteServiceImpl implements FavoriteService {
         log.debug("Getting list of all Favorites");
 
         Page<Favorite> favoriteList = favoriteRepository.findAll(PageRequest.of(pageNumber, pageSize, sort));
-        if(favoriteList.isEmpty()) throw new NotFoundException(String.format("No favorites are found"));
+        if(favoriteList.isEmpty()) throw new NotFoundException("No favorites are found");
 
         log.debug("Successfully got list of all Favorites");
 
