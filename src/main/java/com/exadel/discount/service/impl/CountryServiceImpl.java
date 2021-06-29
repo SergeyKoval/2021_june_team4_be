@@ -68,12 +68,10 @@ public class CountryServiceImpl implements CountryService {
     @Override
     public void deleteById(UUID id) {
         log.debug("Deleting Country");
+        countryRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException(String.format("Cannot delete. Country with Id %s not found", id)));
+        countryRepository.deleteById(id);
 
-        try {
-            countryRepository.deleteById(id);
-        } catch (Exception e) {
-            throw new NotFoundException(String.format("Cannot delete. Country with Id %s not found", id));
-        }
         log.debug("Country successfully deleted");
     }
 }
