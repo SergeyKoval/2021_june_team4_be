@@ -1,15 +1,14 @@
 package com.exadel.discount.filters;
 
-import com.exadel.discount.service.UserDetailsServiceImpl;
-import com.exadel.discount.util.jwt.JwtUtil;
-import com.exadel.discount.util.jwt.RefreshJwtUtil;
+import com.exadel.discount.service.JwtExtractionService;
+import com.exadel.discount.service.JwtValidationService;
+import com.exadel.discount.service.impl.UserDetailsServiceImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
@@ -22,61 +21,59 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+import static org.apache.commons.lang3.StringUtils.startsWith;
+import static org.apache.commons.lang3.StringUtils.substring;
+import static org.apache.commons.lang3.StringUtils.isNoneEmpty;
 
 @Component
 @Setter
 @RequiredArgsConstructor
 public class JwtFilter extends OncePerRequestFilter {
-    private final String BEARER_TYPE_OF_AUTHORIZATION_HEADER = "Bearer ";
-
-    @Value("${jwt.refresh.role}")
-    private String REFRESH_ROLE;
-
     private final UserDetailsServiceImpl userDetailsService;
+    private final JwtExtractionService extractionService;
+    private final JwtValidationService validationService;
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request,
-                                    HttpServletResponse response,
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
         final String authorizationHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
-        AbstractAuthenticationToken authentication = null;
+        final String AUTHORIZATION_HEADER_TYPE = "Bearer ";
 
-        if (isNotAuthorized() && isAuthorizationHeaderSuitable(authorizationHeader)) {
-            final String token = StringUtils.substring(authorizationHeader, 7);
-            final String username = JwtUtil.extractUsername(token);
-            String role = JwtUtil.extractRoles(token);
+        if (SecurityContextHolder.getContext().getAuthentication() == null
+                && startsWith(authorizationHeader, AUTHORIZATION_HEADER_TYPE)) {
+            final String token = substring(authorizationHeader, 7);
 
-            if (isSearchKeyForStorageValid(username)) {
-                UserDetails userDetails = this.userDetailsService.loadUserByUsername(username);
+            if (validationService.validateToken(token)) {
+                final String givenUsername = extractionService.getSubject(token);
+                final String givenRole = extractionService.getRole(token);
 
-                if (StringUtils.equals(role, REFRESH_ROLE)) {
-                    if (JwtUtil.validateToken(token, userDetails)) {
-                        authentication = new PreAuthenticatedAuthenticationToken(
-                                userDetails, null, RefreshJwtUtil.getRefreshAuthority());
+                if (isNoneEmpty(givenUsername)) {
+                    final UserDetails userDetails = userDetailsService.loadUserByUsername(givenUsername);
+
+                    if (validationService.isTokenRefreshOne(givenRole)) {
+                        setAuthentication(
+                                new PreAuthenticatedAuthenticationToken(
+                                        userDetails,
+                                        null,
+                                        Stream.of(givenRole)
+                                                .map(SimpleGrantedAuthority::new)
+                                                .collect(Collectors.toList())), request);
+
+                    } else if (validationService.isTokenAccessOne(givenRole)) {
+                        setAuthentication(new UsernamePasswordAuthenticationToken(
+                                userDetails, null, userDetails.getAuthorities()), request);
+
                     }
-                } else if (JwtUtil.validateToken(token, userDetails)) {
-                    authentication = new UsernamePasswordAuthenticationToken(
-                            userDetails, null, userDetails.getAuthorities());
                 }
-                setSecurityContextAuthentication(request, authentication);
             }
         }
         filterChain.doFilter(request, response);
     }
 
-    private boolean isNotAuthorized() {
-        return SecurityContextHolder.getContext().getAuthentication() == null;
-    }
-
-    private boolean isAuthorizationHeaderSuitable(String authorizationHeader) {
-        return StringUtils.startsWith(authorizationHeader, BEARER_TYPE_OF_AUTHORIZATION_HEADER);
-    }
-
-    private boolean isSearchKeyForStorageValid(String key) {
-        return StringUtils.isNoneEmpty(key);
-    }
-
-    private void setSecurityContextAuthentication(HttpServletRequest request, AbstractAuthenticationToken authentication) {
+    private void setAuthentication(AbstractAuthenticationToken authentication, HttpServletRequest request) {
         authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
         SecurityContextHolder.getContext().setAuthentication(authentication);
     }

@@ -37,28 +37,24 @@ public class VendorController {
     );
 
     @GetMapping
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @ApiOperation("Get list of all vendors")
     public List<BaseVendorDTO> getVendorsList() {
         return baseVendorsServiceMock;
     }
 
     @GetMapping("/{vendorId}")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @ApiOperation("Get vendor by ID")
     public DetailedVendorDTO getVendorById(@PathVariable(name = "vendorId") @Min(value = 0) long id) {
         return detailedVendorsServiceMock.get(0);
     }
 
     @PostMapping
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @ApiOperation("Save new vendor")
     public DetailedVendorDTO saveNewVendor(@RequestBody @Valid CreateVendorDTO vendor) {
         return detailedVendorsServiceMock.get(0);
     }
 
     @PutMapping("/{vendorId}")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @ApiOperation("Update information about vendor")
     public DetailedVendorDTO updateVendor(@PathVariable(name = "vendorId") @Min(value = 0) long vendorId,
                                           @RequestBody @Valid DetailedVendorDTO vendor) {
@@ -66,21 +62,18 @@ public class VendorController {
     }
 
     @DeleteMapping("/{vendorId}")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @ApiOperation("Delete vendor by ID")
     public void deleteVendor(@PathVariable(name = "vendorId") @Min(value = 0) long vendorId) {
 
     }
 
     @GetMapping("/{vendorId}/locations")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @ApiOperation("Get list of all vendor locations")
     public List<LocationInfoDTO> getVendorLocations(@PathVariable(name = "vendorId") @Min(value = 0) long vendorId) {
         return new ArrayList<>();
     }
 
     @PostMapping("/{vendorId}/locations")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @ApiOperation("Add new location of vendor")
     public LocationInfoDTO addNewLocation(@PathVariable(name = "vendorId") @Min(value = 0) long vendorId,
                                           @RequestBody @Valid CreateLocationDTO location) {
@@ -88,7 +81,6 @@ public class VendorController {
     }
 
     @PutMapping("/{vendorId}/locations/{locationId}")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @ApiOperation("Update vendor's location")
     public LocationInfoDTO updateLocation(@PathVariable(name = "vendorId") @Min(value = 0) long vendorId,
                                           @PathVariable(name = "locationId") @Min(value = 0) long locationId,
@@ -97,7 +89,6 @@ public class VendorController {
     }
 
     @DeleteMapping("/{vendorId}/locations/{locationId}")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @ApiOperation("Delete vendor's location")
     public void deleteLocation(@PathVariable(name = "vendorId") @Min(value = 0) long id,
                                @PathVariable(name = "locationId") @Min(value = 0) long locationId) {

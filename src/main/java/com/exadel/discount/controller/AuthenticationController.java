@@ -1,14 +1,12 @@
 package com.exadel.discount.controller;
 
+import com.exadel.discount.annotation.RefreshAccess;
 import com.exadel.discount.dto.authentication.AuthenticationRequest;
 import com.exadel.discount.dto.authentication.AuthenticationResponse;
-import com.exadel.discount.service.UserDetailsServiceImpl;
-import com.exadel.discount.util.jwt.JwtUtil;
+import com.exadel.discount.service.JwtGenerationService;
+import com.exadel.discount.service.impl.UserDetailsServiceImpl;
 import lombok.RequiredArgsConstructor;
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -25,8 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthenticationController {
     private final AuthenticationManager authenticationManager;
     private final UserDetailsServiceImpl userDetailsService;
-    private final JwtUtil accessJwtUtil;
-    private final JwtUtil refreshJwtUtil;
+    private final JwtGenerationService jwtGenerationService;
 
     @CrossOrigin
     @PostMapping("/login")
@@ -38,23 +35,20 @@ public class AuthenticationController {
                 ));
 
         final UserDetails userDetails = userDetailsService.loadUserByUsername(request.getUsername());
-        final String accessToken = accessJwtUtil.generateToken(userDetails);
-        final String refreshToken = refreshJwtUtil.generateToken(userDetails);
+        final String accessToken = jwtGenerationService.generateAccessToken(userDetails);
+        final String refreshToken = jwtGenerationService.generateRefreshToken(userDetails);
 
         return ResponseEntity.ok(new AuthenticationResponse(accessToken, refreshToken));
     }
 
     @CrossOrigin
+    @RefreshAccess
     @PostMapping("/refresh")
-    @PreAuthorize("hasRole('ROLE_REFRESH')")
-    public ResponseEntity<?> refreshToken() throws Exception {
+    public ResponseEntity<?> refreshToken() {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        UserDetails userDetails = this.userDetailsService.loadUserByUsername(username);
+        final String newAccessToken = jwtGenerationService.generateAccessToken(userDetails);
 
-        if (StringUtils.isNoneEmpty(username)) {
-            UserDetails userDetails = this.userDetailsService.loadUserByUsername(username);
-            final String newAccessToken = accessJwtUtil.generateToken(userDetails);
-            return ResponseEntity.status(HttpStatus.OK).body(newAccessToken);
-        } else
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Your session was ended. Please, log in.");
+        return ResponseEntity.ok(newAccessToken);
     }
 }
