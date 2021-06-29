@@ -1,9 +1,8 @@
 package com.exadel.discount.dto;
 
 import com.exadel.discount.dto.validation.Create;
-import lombok.*;
+import lombok.Data;
 
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
 import java.util.UUID;
 

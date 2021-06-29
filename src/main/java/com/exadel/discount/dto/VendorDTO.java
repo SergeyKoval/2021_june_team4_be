@@ -8,7 +8,7 @@ import lombok.ToString;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Null;
 import javax.validation.constraints.Size;
-import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 @Data
@@ -22,6 +22,6 @@ public class VendorDTO {
     private String name;
     private String description;
     @Null(groups = Create.class)
-    private List<VendorLocationDTO> vendorLocations;
+    private Set<VendorLocationDTO> vendorLocations;
 
 }

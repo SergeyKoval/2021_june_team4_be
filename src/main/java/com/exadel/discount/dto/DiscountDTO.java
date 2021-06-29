@@ -8,7 +8,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
-import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 @Data
@@ -23,12 +23,11 @@ public class DiscountDTO {
     @NotBlank(groups = Create.class, message = "Discount promo should be not blank")
     @Size(max = 50, groups = Create.class, message = "Discount promo should be shorted than {max}")
     private String promo;
-    @NotNull(groups = Create.class)
     private int percent;
     private LocalDateTime startTime;
     private LocalDateTime endTime;
     private boolean active;
-    private List<TagDTO> tags;
-    private List<VendorLocationDTO> vendorLocations;
+    private Set<TagDTO> tags;
+    private Set<VendorLocationDTO> vendorLocations;
     private VendorDTO vendor;
 }
