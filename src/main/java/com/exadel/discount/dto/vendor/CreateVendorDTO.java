@@ -4,12 +4,13 @@ import com.exadel.discount.dto.validation.Create;
 import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 @Data
 public class CreateVendorDTO {
-    @NotBlank(groups = Create.class, message = "Vendor name should be not blank")
-    @Size(max = 50, groups = Create.class, message = "Vendor name should be shorted than {max}")
+    @NotBlank
+    @Size(max = 50)
     private String name;
     private String description;
 }
