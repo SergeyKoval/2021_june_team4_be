@@ -88,7 +88,7 @@ public class UserServiceImpl implements UserService {
             throw new NotFoundException(String.format("No User from city %s is found", cityFilter));
 
 
-        log.debug("Successfully got filtered page-list of Users by role is got");
+        log.debug("Successfully got filtered page-list of Users by city is got");
         return toUserCityDtoList(userList);
     }
 
