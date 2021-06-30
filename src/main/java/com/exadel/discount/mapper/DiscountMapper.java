@@ -2,9 +2,7 @@ package com.exadel.discount.mapper;
 
 import com.exadel.discount.dto.discount.CreateDiscountDTO;
 import com.exadel.discount.dto.discount.DiscountDTO;
-import com.exadel.discount.dto.vendor.BaseVendorDTO;
 import com.exadel.discount.entity.Discount;
-import com.exadel.discount.entity.Vendor;
 import org.mapstruct.Mapper;
 
 import java.util.List;
@@ -19,5 +17,4 @@ public interface DiscountMapper {
 
     Discount parseDTO(CreateDiscountDTO discounts);
 
-    BaseVendorDTO getDTO(Vendor vendor);
 }

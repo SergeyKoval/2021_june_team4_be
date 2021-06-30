@@ -38,15 +38,15 @@ public class DiscountServiceImpl implements DiscountService {
     private final DiscountMapper discountMapper;
 
     @Override
-    public DiscountDTO save(CreateDiscountDTO discountDTO) {
+    public DiscountDTO save(CreateDiscountDTO createDiscountDTO) {
         log.debug("Saving new Discount");
 
-        Discount discount = discountMapper.parseDTO(discountDTO);
-        discount.setCategory(findCategory(discountDTO.getCategoryId()));
-        discount.setTags(findTags(discountDTO.getTagIds()));
-        discount.setVendor(findVendor(discountDTO.getVendorId()));
-        discount.setVendorLocations(findVendorLocations(discountDTO.getVendorId(),
-                discountDTO.getVendorLocationsIds()));
+        Discount discount = discountMapper.parseDTO(createDiscountDTO);
+        discount.setCategory(findCategory(createDiscountDTO.getCategoryId()));
+        discount.setTags(findTags(createDiscountDTO.getTagIds()));
+        discount.setVendor(findVendor(createDiscountDTO.getVendorId()));
+        discount.setVendorLocations(findVendorLocations(createDiscountDTO.getVendorId(),
+                createDiscountDTO.getVendorLocationsIds()));
 
         Discount savedDiscount = discountRepository.save(discount);
         log.debug("Successfully saved new Discount");
@@ -93,8 +93,6 @@ public class DiscountServiceImpl implements DiscountService {
     }
 
     private Set<VendorLocation> findVendorLocations(UUID vendorId, List<UUID> locationIds) {
-        /*vendorRepository.findById(vendorId)
-                .orElseThrow(() -> new NotFoundException(String.format("Vendor with ID %s doesn't exist", vendorId)));*/
 
         List<VendorLocation> existingLocations = locationRepository.findAllById(locationIds);
         existingLocations

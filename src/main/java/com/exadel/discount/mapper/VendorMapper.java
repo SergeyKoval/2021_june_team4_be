@@ -14,7 +14,6 @@ public interface VendorMapper {
     Vendor parseDTO(CreateVendorDTO vendorDTO);
 
     VendorDTO getDTO(Vendor vendor);
-    CreateVendorDTO getCreateDTO(Vendor vendor);
 
     List<VendorDTO> getListDTO(List<Vendor> vendors);
 }
