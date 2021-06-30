@@ -15,11 +15,13 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 @RequiredArgsConstructor
-public class SecurityConfig extends WebSecurityConfigurerAdapter {
+public class SecurityConfig extends WebSecurityConfigurerAdapter implements WebMvcConfigurer {
     private final UserDetailsServiceImpl userDetailsServiceImpl;
     private final JwtFilter jwtFilter;
 
@@ -59,5 +61,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         daoAuthenticationProvider.setPasswordEncoder(passwordEncoder());
         daoAuthenticationProvider.setUserDetailsService(userDetailsServiceImpl);
         return daoAuthenticationProvider;
+    }
+
+    @Override                                             //В методе мы говорим, каким сайтам по каким url и
+    public void addCorsMappings(CorsRegistry registry) {  //какими методами можно делать запросы к нашему приложению, запущенному на 8080.
+        registry.addMapping("/**")              //обращаться к нашему приложению можно по любому внутреннему url – addMapping(“/**”)
+                .allowedOrigins("http://localhost:4200")  //только сайт http://localhost:4200 может делать запросы
+                .allowedMethods("*");                     //запрос можно делать абсолютно всеми методами (GET, POST, PUT и т.д.)
     }
 }
