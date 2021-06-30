@@ -1,6 +1,6 @@
 databaseChangeLog:
   - changeSet:
-      id: 37-add-vendor-to-dixount
+      id: 37-add-vendor-to-discount
       author: nikolay_chornyi
       changes:
          - addColumn:
