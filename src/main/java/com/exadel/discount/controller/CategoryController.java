@@ -2,10 +2,6 @@ package com.exadel.discount.controller;
 
 import com.exadel.discount.dto.CategoryDTO;
 import com.exadel.discount.dto.validation.Create;
-import com.exadel.discount.entity.Category;
-import com.exadel.discount.exception.NotFoundException;
-import com.exadel.discount.mapper.CategoryMapper;
-import com.exadel.discount.repository.CategoryRepository;
 import com.exadel.discount.service.CategoryService;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
@@ -17,7 +13,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.constraints.NotNull;
@@ -43,7 +38,7 @@ public class CategoryController {
     @ApiOperation("Get information about category by Id")
     public CategoryDTO getById(
             @PathVariable(name = "categoryId") @NotNull UUID id) {
-            return categoryService.getById(id);
+        return categoryService.getById(id);
     }
 
     @PostMapping

@@ -6,7 +6,6 @@ import com.exadel.discount.entity.Vendor;
 import com.exadel.discount.entity.VendorLocation;
 import com.exadel.discount.exception.NotFoundException;
 import com.exadel.discount.mapper.VendorLocationMapper;
-import com.exadel.discount.mapper.VendorMapper;
 import com.exadel.discount.repository.VendorLocationRepository;
 import com.exadel.discount.repository.VendorRepository;
 import com.exadel.discount.service.VendorLocationService;
@@ -64,7 +63,7 @@ public class VendorLocationServiceImpl implements VendorLocationService {
     }
 
     @Override
-    public void deleteById(UUID id)  {
+    public void deleteById(UUID id) {
         log.debug(String.format("Deleting VendorLocation with ID %s", id));
         vendorLocationRepository
                 .findById(id)

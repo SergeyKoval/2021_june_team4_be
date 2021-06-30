@@ -30,15 +30,15 @@ public class VendorLocationController {
 
     private final VendorLocationService vendorLocationService;
 
-    @GetMapping("/{vendorId}")
-    @ApiOperation("Get all VendorLocations vendor's")
-    List<LocationDTO> getAll(@PathVariable("vendorId") @NotNull UUID id) {
-        return vendorLocationService.getAll(id);
+    @GetMapping
+    @ApiOperation("Get all locations by Vendor's ID")
+    List<LocationDTO> getAll(@RequestParam @NotNull UUID vendorId) {
+        return vendorLocationService.getAll(vendorId);
     }
 
-    @GetMapping
+    @GetMapping("/{id}")
     @ApiOperation("Get location by ID")
-    LocationDTO getById(@RequestParam(value = "id", required = true) @NotNull UUID id) {
+    LocationDTO getById(@PathVariable(name = "id") @NotNull UUID id) {
         return vendorLocationService.getById(id);
     }
 

@@ -8,7 +8,7 @@ import java.util.UUID;
 
 public interface VendorService {
 
-    CreateVendorDTO save(CreateVendorDTO vendor);
+    VendorDTO save(CreateVendorDTO vendor);
 
     VendorDTO getById(UUID id);
 

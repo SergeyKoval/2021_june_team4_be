@@ -4,6 +4,8 @@ import com.exadel.discount.dto.CategoryDTO;
 import com.exadel.discount.dto.TagDTO;
 import com.exadel.discount.dto.location.LocationDTO;
 import com.exadel.discount.dto.validation.Create;
+import com.exadel.discount.dto.vendor.BaseVendorDTO;
+import com.exadel.discount.dto.vendor.VendorDTO;
 import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
@@ -26,10 +28,11 @@ public class DiscountDTO {
     @NotBlank(groups = Create.class, message = "Discount promo should be not blank")
     @Size(max = 50, groups = Create.class, message = "Discount promo should be shorted than {max}")
     private String promo;
-    private int percent;
+    private Integer percent;
     private LocalDateTime startTime;
     private LocalDateTime endTime;
     private boolean active;
     private Set<TagDTO> tags;
     private Set<LocationDTO> vendorLocations;
+    private BaseVendorDTO vendor;
 }

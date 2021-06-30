@@ -10,6 +10,5 @@ import java.util.UUID;
 
 @Repository
 public interface VendorLocationRepository extends JpaRepository<VendorLocation, UUID> {
-
     List<VendorLocation> findByVendor(Vendor vendor);
 }

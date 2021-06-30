@@ -23,11 +23,11 @@ public class VendorServiceImpl implements VendorService {
     private final VendorMapper vendorMapper;
 
     @Override
-    public CreateVendorDTO save(CreateVendorDTO vendorDTO) {
+    public VendorDTO save(CreateVendorDTO vendorDTO) {
         log.debug("Saving new Vendor");
         Vendor savedVendor = vendorRepository.save(vendorMapper.parseDTO(vendorDTO));
         log.debug("Successfully saved new Vendor");
-        return vendorMapper.getCreateDTO(savedVendor);
+        return vendorMapper.getDTO(savedVendor);
     }
 
     @Override
@@ -35,7 +35,7 @@ public class VendorServiceImpl implements VendorService {
         log.debug(String.format("Finding Vendor with ID %s", id));
         Vendor vendor = vendorRepository
                 .findById(id)
-                .orElseThrow(() -> new NotFoundException(String.format("Vendor with ID %s not found",id)));
+                .orElseThrow(() -> new NotFoundException(String.format("Vendor with ID %s not found", id)));
         log.debug(String.format("Successfully found Vendor with ID %s", id));
         return vendorMapper.getDTO(vendor);
     }
@@ -51,7 +51,7 @@ public class VendorServiceImpl implements VendorService {
     @Override
     public void deleteById(UUID id) {
         log.debug(String.format("Deleting Vendor with ID %s", id));
-        vendorRepository.findById(id).orElseThrow(() -> new NotFoundException(String.format("Vendor with ID %s not found",id)));
+        vendorRepository.findById(id).orElseThrow(() -> new NotFoundException(String.format("Vendor with ID %s not found", id)));
         vendorRepository.deleteById(id);
         log.debug(String.format("Successfully deleted Vendor with ID %s", id));
     }

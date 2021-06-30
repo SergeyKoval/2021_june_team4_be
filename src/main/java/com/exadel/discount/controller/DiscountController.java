@@ -1,7 +1,7 @@
 package com.exadel.discount.controller;
 
+import com.exadel.discount.dto.discount.CreateDiscountDTO;
 import com.exadel.discount.dto.discount.DiscountDTO;
-import com.exadel.discount.dto.validation.Create;
 import com.exadel.discount.service.DiscountService;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 import java.util.UUID;
@@ -43,7 +44,7 @@ public class DiscountController {
 
     @PostMapping
     @ApiOperation("Add new discount")
-    public DiscountDTO addDiscount(@RequestBody @Validated(Create.class) DiscountDTO discountDTO) {
+    public DiscountDTO addDiscount(@RequestBody @Valid CreateDiscountDTO discountDTO) {
         return discountService.save(discountDTO);
     }
 
@@ -52,7 +53,5 @@ public class DiscountController {
     public void deleteDiscount(@PathVariable(name = "id") @NotNull UUID id) {
         discountService.deleteById(id);
     }
-
-
 
 }

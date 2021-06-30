@@ -46,12 +46,12 @@ public class Discount {
     @Column(name = "promo", length = 50, nullable = false)
     private String promo;
     @Column(name = "percent")
-    private int percent;
+    private Integer percent;
     @Column(name = "start_time")
     private LocalDateTime startTime;
     @Column(name = "end_time")
     private LocalDateTime endTime;
-    @Column(name = "active")
+    @Column(name = "active", columnDefinition = "false")
     private boolean active;
 
     @ManyToMany(fetch = FetchType.LAZY)
