@@ -1,5 +1,6 @@
 package com.exadel.discount.repository;
 
+import com.exadel.discount.entity.Discount;
 import com.exadel.discount.entity.Role;
 import com.exadel.discount.entity.User;
 import org.springframework.data.domain.Page;
@@ -18,10 +19,17 @@ import java.util.UUID;
 public interface UserRepository extends JpaRepository<User, UUID> {
     Optional<User> findByEmail(String email);
 
-    //@Query(value = "SELECT u FROM User u WHERE u.role = :r", countQuery = "SELECT count(u) FROM User u WHERE u.role = :r", nativeQuery = true)
-    //Page<User> roleSearch(@Param("r") Role r, Pageable pageable);
+    @EntityGraph(attributePaths = {"city"})
+    Page<User> findAll(Pageable paging);
 
-    Page<User> findUserByRole( Role r, Pageable pageable);
+    @EntityGraph(attributePaths = {"city"})
+    Optional<User> findById(UUID id);
+
+    @EntityGraph(attributePaths = {"city"})
+    @Query(value = "SELECT u FROM User u WHERE u.role = :r", countQuery = "SELECT count(u) FROM User u WHERE u.role = :r",  nativeQuery = true)
+    Page<User> findUserByRole(@Param("r") Role r, Pageable pageable);
+//    @EntityGraph(attributePaths = {"city"})
+//    Page<User> findUserByRole( Role r, Pageable pageable);
 
 
     //@Query(value = "SELECT u FROM User u JOIN FETCH u.city c WHERE c.name LIKE %:city%", countQuery = "SELECT count(u) FROM User u JOIN u.city c WHERE c.name LIKE %:city%", nativeQuery = true)
@@ -31,8 +39,8 @@ public interface UserRepository extends JpaRepository<User, UUID> {
 
    // @Query(value = "SELECT u FROM User u INNER JOIN FETCH u.city.country ct WHERE ct.name LIKE %:ct%", countQuery = "SELECT count(u) FROM User u INNER JOIN u.city.country ct WHERE ct.name LIKE %:ct%", nativeQuery = true)
     //Page<User> countrySearch(@Param("ct")String ct, Pageable pageable);
-    @EntityGraph(attributePaths = {"country"})
-    Page<User> findUsersByCity_Country_Name(String ct, Pageable pageable);
+//    @EntityGraph(attributePaths = {"city"})
+//    Page<User> findUsersByCity_Country_Name(String ct, Pageable pageable);
 
     List<User> findDistinctByLastNameAndFirstName(String lastName, String firstName);
 }

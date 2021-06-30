@@ -23,4 +23,5 @@ public interface CityRepository extends JpaRepository<City, UUID> {
 
     @EntityGraph(attributePaths = {"country"})
     Optional<City> findByName(String name);
+    List<City> findAllByCountry_Name(String country);
 }
