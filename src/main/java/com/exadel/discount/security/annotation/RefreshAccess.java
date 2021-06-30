@@ -1,4 +1,4 @@
-package com.exadel.discount.annotation;
+package com.exadel.discount.security.annotation;
 
 import org.springframework.security.access.prepost.PreAuthorize;
 

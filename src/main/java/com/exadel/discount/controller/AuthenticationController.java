@@ -1,6 +1,7 @@
 package com.exadel.discount.controller;
 
-import com.exadel.discount.annotation.RefreshAccess;
+import com.exadel.discount.dto.authentication.RefreshResponse;
+import com.exadel.discount.security.annotation.RefreshAccess;
 import com.exadel.discount.dto.authentication.AuthenticationRequest;
 import com.exadel.discount.dto.authentication.AuthenticationResponse;
 import com.exadel.discount.service.JwtGenerationService;
@@ -27,28 +28,33 @@ public class AuthenticationController {
 
     @CrossOrigin
     @PostMapping("/login")
-    public ResponseEntity<?> createAuthenticationToken(@RequestBody AuthenticationRequest request) {
+    public ResponseEntity<AuthenticationResponse> createAuthenticationToken(@RequestBody AuthenticationRequest request) {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         request.getUsername(),
                         request.getPassword()
                 ));
-
         final UserDetails userDetails = userDetailsService.loadUserByUsername(request.getUsername());
-        final String accessToken = jwtGenerationService.generateAccessToken(userDetails);
-        final String refreshToken = jwtGenerationService.generateRefreshToken(userDetails);
 
-        return ResponseEntity.ok(new AuthenticationResponse(accessToken, refreshToken));
+        AuthenticationResponse authenticationResponse = AuthenticationResponse.builder()
+                .accessToken(jwtGenerationService.generateAccessToken(userDetails))
+                .refreshToken(jwtGenerationService.generateRefreshToken(userDetails))
+                .build();
+
+        return ResponseEntity.ok(authenticationResponse);
     }
 
     @CrossOrigin
     @RefreshAccess
     @PostMapping("/refresh")
-    public ResponseEntity<?> refreshToken() {
+    public ResponseEntity<RefreshResponse> refreshToken() {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         UserDetails userDetails = this.userDetailsService.loadUserByUsername(username);
-        final String newAccessToken = jwtGenerationService.generateAccessToken(userDetails);
 
-        return ResponseEntity.ok(newAccessToken);
+        RefreshResponse refreshResponse = RefreshResponse.builder()
+                .accessToken(jwtGenerationService.generateAccessToken(userDetails))
+                .build();
+
+        return ResponseEntity.ok(refreshResponse);
     }
 }

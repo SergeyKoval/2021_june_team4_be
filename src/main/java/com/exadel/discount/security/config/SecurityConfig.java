@@ -1,6 +1,6 @@
-package com.exadel.discount.config;
+package com.exadel.discount.security.config;
 
-import com.exadel.discount.filters.JwtFilter;
+import com.exadel.discount.security.filter.JwtFilter;
 import com.exadel.discount.service.impl.UserDetailsServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
