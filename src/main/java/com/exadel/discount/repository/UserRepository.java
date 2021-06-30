@@ -16,14 +16,14 @@ import java.util.UUID;
 public interface UserRepository extends JpaRepository<User, UUID> {
     User findByEmail(String email);
 
-    @Query(value = "select u from User u where u.role = :r", countQuery = "select count(u) from User u where u.role = :r")
+    @Query(value = "select u from User u where u.role = :r", countQuery = "select count(u) from User u where u.role = :r", nativeQuery = true)
     Page<User> roleSearch(@Param("r") Role r, Pageable pageable);
 
-    @Query(value = "select u from User u join fetch u.city c where c.name like %?1%", countQuery = "select count(u) from User u join fetch u.city c where c.name like %?1%")
-    Page<User> citySearch(@Param("c")String city, Pageable pageable);
+    @Query(value = "select u from User u join fetch u.city c where c.name like %:c%", countQuery = "select count(u) from User u join fetch u.city c where c.name like %:c%", nativeQuery = true)
+    Page<User> citySearch(@Param("c")String c, Pageable pageable);
 
-    @Query(value = "select u from User u join fetch u.city.country ct where ct.name like %?1%", countQuery = "select count(u) from User u join fetch u.city.country ct where ct.name like %?1%")
-    Page<User> countrySearch(@Param("ct")String country, Pageable pageable);
+    @Query(value = "select u from User u join fetch u.city.country ct where ct.name like %:ct%", countQuery = "select count(u) from User u join fetch u.city.country ct where ct.name like %:ct%", nativeQuery = true)
+    Page<User> countrySearch(@Param("ct")String ct, Pageable pageable);
 
     List<User> findDistinctByLastNameAndFirstName(String lastName, String firstName);
 }
