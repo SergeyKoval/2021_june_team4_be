@@ -26,7 +26,7 @@ public class AuthenticationController {
     private final UserDetailsServiceImpl userDetailsService;
     private final JwtGenerationService jwtGenerationService;
 
-    @CrossOrigin
+
     @PostMapping("/login")
     public ResponseEntity<AuthenticationResponse> createAuthenticationToken(@RequestBody AuthenticationRequest request) {
         authenticationManager.authenticate(
@@ -44,7 +44,7 @@ public class AuthenticationController {
         return ResponseEntity.ok(authenticationResponse);
     }
 
-    @CrossOrigin
+
     @RefreshAccess
     @PostMapping("/refresh")
     public ResponseEntity<RefreshResponse> refreshToken() {
