@@ -16,13 +16,9 @@ import java.util.UUID;
 @EqualsAndHashCode(exclude = {"vendorLocations"})
 @ToString(exclude = {"vendorLocations"})
 public class VendorDTO {
-    @Null(groups = Create.class)
     private UUID id;
-    @NotBlank(groups = Create.class, message = "Vendor name should be not blank")
-    @Size(max = 50, groups = Create.class, message = "Vendor name should be shorted than {max}")
     private String name;
     private String description;
-    @Null(groups = Create.class)
     private Set<LocationDTO> vendorLocations;
 
 }

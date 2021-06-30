@@ -18,15 +18,10 @@ import java.util.UUID;
 
 @Data
 public class DiscountDTO {
-    @Null(groups = Create.class)
     private UUID id;
-    @NotNull(groups = Create.class, message = "Discount category should be not null")
     private CategoryDTO category;
-    @NotBlank(groups = Create.class, message = "Discount name should be not blank")
     private String name;
     private String description;
-    @NotBlank(groups = Create.class, message = "Discount promo should be not blank")
-    @Size(max = 50, groups = Create.class, message = "Discount promo should be shorted than {max}")
     private String promo;
     private Integer percent;
     private LocalDateTime startTime;
