@@ -16,16 +16,17 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     private final UserRepository repository;
 
     @Override
-    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String email) {
         log.debug("getting a user data from a database");
-        com.exadel.discount.entity.User user = repository.findByEmail(email);
-        log.debug("successfully getting a user data from a database");
+        com.exadel.discount.entity.User user = repository
+                .findByEmail(email)
+                .orElseThrow(() -> new UsernameNotFoundException(String.format("User with email %s not found", email)));
 
         log.debug("creating a security user with a given user data");
         return User
                 .withUsername(user.getEmail())
                 .password(user.getPassword())
-                .roles(String.valueOf(user.getRole()))
+                .roles(user.getRole().name())
                 .build();
     }
 }

@@ -42,23 +42,20 @@ public class JwtFilter extends OncePerRequestFilter {
         if (SecurityContextHolder.getContext().getAuthentication() == null
                 && startsWith(authorizationHeader, AUTHORIZATION_HEADER_TYPE)) {
             final String token = substringAfter(authorizationHeader, " ");
+            final String givenUsername = jwtService.getSubject(token);
+            final String givenRole = jwtService.getRole(token);
 
-            if (jwtService.validateToken(token)) {
-                final String givenUsername = jwtService.getSubject(token);
-                final String givenRole = jwtService.getRole(token);
+            if (isNoneEmpty(givenUsername)) {
+                final UserDetails userDetails = userDetailsService.loadUserByUsername(givenUsername);
 
-                if (isNoneEmpty(givenUsername)) {
-                    final UserDetails userDetails = userDetailsService.loadUserByUsername(givenUsername);
-
-                    if (jwtService.isTokenRefreshOne(givenRole)) {
-                        setAuthentication(new PreAuthenticatedAuthenticationToken(userDetails, null,
-                                Collections.singletonList(new SimpleGrantedAuthority(givenRole))), request);
-
-                    } else if (jwtService.isTokenAccessOne(givenRole)) {
-                        setAuthentication(new PreAuthenticatedAuthenticationToken(userDetails, null,
-                                userDetails.getAuthorities()), request);
-
-                    }
+                if (jwtService.isTokenRefreshOne(givenRole)) {
+                    AbstractAuthenticationToken authentication = new PreAuthenticatedAuthenticationToken(userDetails, null,
+                            Collections.singletonList(new SimpleGrantedAuthority(givenRole)));
+                    setAuthentication(authentication, request);
+                } else {
+                    AbstractAuthenticationToken authentication = new PreAuthenticatedAuthenticationToken(userDetails, null,
+                            userDetails.getAuthorities());
+                    setAuthentication(authentication, request);
                 }
             }
         }

@@ -19,15 +19,13 @@ import java.util.stream.Collectors;
 @Slf4j
 public class JwtGenerationServiceImpl implements JwtGenerationService {
     private final String ROLES_CLAIM_NAME = "role";
+    private final String TOKEN_ENCRYPTION_KEY = "encryptionSecret";
+    private final String REFRESH_ROLE = "ROLE_REFRESH";
 
-    @Value("${jwt.encryption.key}")
-    private String TOKEN_ENCRYPTION_KEY;
-    @Value("${jwt.refresh.role}")
-    private String REFRESH_ROLE;
-    @Value("${jwt.refresh.expiration}")
-    private long REFRESH_TOKEN_EXPIRATION_TIME;
-    @Value("${jwt.access.expiration}")
+    @Value("${jwt.expiration.seconds.access}")
     private long ACCESS_TOKEN_EXPIRATION_TIME;
+    @Value("${jwt.expiration.seconds.refresh}")
+    private long REFRESH_TOKEN_EXPIRATION_TIME;
 
     @Override
     public String generateAccessToken(UserDetails userDetails) {
@@ -38,7 +36,7 @@ public class JwtGenerationServiceImpl implements JwtGenerationService {
                 userDetails.getAuthorities()
                         .stream()
                         .map(GrantedAuthority::getAuthority)
-                        .collect(Collectors.joining()));
+                        .collect(Collectors.joining(" ")));
     }
 
     @Override
