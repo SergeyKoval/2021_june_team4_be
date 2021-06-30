@@ -31,29 +31,17 @@ import java.util.UUID;
 @RequestMapping("/locations")
 public class VendorLocationController {
 
-    private final VendorLocationRepository vendorLocationRepository;
-    private final VendorLocationMapper vendorLocationMapper;
     private final VendorLocationService vendorLocationService;
 
     @GetMapping("/{vendorId}")
     @ApiOperation("Get all VendorLocations vendor's")
     List<VendorLocationDTO> getAll(@PathVariable("vendorId") @NotNull UUID id) {
-        log.debug("Getting list of all Vendors");
-        Vendor vendor = new Vendor();
-        vendor.setId(id);
-        List<VendorLocation> vendorLocationList = vendorLocationRepository.findByVendor(vendor);
-        log.debug("Successfully got list of all Vendors");
-        return vendorLocationMapper.getListDTO(vendorLocationList);
+        return vendorLocationService.getAll(id);
     }
 
     @GetMapping
     VendorLocationDTO getById(@RequestParam(value = "id", required = true) @NotNull UUID id) {
-        log.debug(String.format("Finding VendorLocation with ID %s", id));
-        VendorLocation vendorLocation = vendorLocationRepository
-                .findById(id)
-                .orElseThrow(() -> new NotFoundException(String.format("VendorLocation %s not found", id)));
-        log.debug(String.format("Successfully found VendorLocation with ID %s", id));
-        return vendorLocationMapper.getDTO(vendorLocation);
+        return vendorLocationService.getById(id);
     }
 
 
@@ -61,20 +49,12 @@ public class VendorLocationController {
     @ApiOperation("Add new location of vendor")
     public VendorLocationDTO addVendorLocation(@RequestParam(name = "vendorId", required = true) @NotNull UUID vendorId,
                                                @RequestBody @Validated VendorLocation vendorLocation) {
-        log.debug("Saving new VendorLocation");
-        VendorLocation savedVendorLocation = vendorLocationRepository.save(vendorLocationService.create(vendorLocation, vendorId));
-        log.debug("Successfully saved new VendorLocation");
-        return vendorLocationMapper.getDTO(savedVendorLocation);
+        return vendorLocationService.save(vendorLocation, vendorId);
     }
 
     @DeleteMapping
     @ApiOperation("Delete vendor's location")
     public void deleteLocation(@RequestParam(name = "id", required = true) @NotNull UUID id)  {
-        log.debug(String.format("Deleting VendorLocation with ID %s", id));
-        vendorLocationRepository
-                .findById(id)
-                .orElseThrow(() -> new NotFoundException(String.format("VendorLocation %s not found", id)));
-        vendorLocationRepository.deleteById(id);
-        log.debug(String.format("Successfully deleted VendorLocation with ID %s", id));
+        vendorLocationService.deleteById(id);
     }
 }

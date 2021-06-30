@@ -12,9 +12,13 @@ import java.util.UUID;
 @Repository
 public interface DiscountRepository extends JpaRepository<Discount, UUID> {
 
+
     @EntityGraph(attributePaths = {"category", "vendorLocations", "tags"})
     List<Discount> findAll();
 
     @EntityGraph(attributePaths = {"category", "vendorLocations", "tags"})
     Optional<Discount> findById(UUID id);
+
+    @EntityGraph(attributePaths = {"category", "vendorLocations", "tags"})
+    Discount save(Discount discount);
 }

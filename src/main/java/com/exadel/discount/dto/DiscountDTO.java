@@ -29,5 +29,4 @@ public class DiscountDTO {
     private boolean active;
     private Set<TagDTO> tags;
     private Set<VendorLocationDTO> vendorLocations;
-    private VendorDTO vendor;
 }
