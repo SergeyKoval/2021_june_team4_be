@@ -2,8 +2,6 @@ package com.exadel.discount.controller;
 
 import com.exadel.discount.dto.location.CreateLocationDTO;
 import com.exadel.discount.dto.location.LocationDTO;
-import com.exadel.discount.dto.validation.Create;
-import com.exadel.discount.entity.VendorLocation;
 import com.exadel.discount.service.VendorLocationService;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 import java.util.UUID;
@@ -46,7 +45,7 @@ public class VendorLocationController {
 
     @PostMapping
     @ApiOperation("Add new location")
-    public LocationDTO addVendorLocation(@RequestBody CreateLocationDTO vendorLocation) {
+    public LocationDTO addVendorLocation(@RequestBody @Valid CreateLocationDTO vendorLocation) {
         return vendorLocationService.save(vendorLocation);
     }
 
