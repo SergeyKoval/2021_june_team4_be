@@ -1,6 +1,7 @@
 package com.exadel.discount.mapper;
 
-import com.exadel.discount.dto.VendorLocationDTO;
+import com.exadel.discount.dto.location.CreateLocationDTO;
+import com.exadel.discount.dto.location.LocationDTO;
 import com.exadel.discount.entity.VendorLocation;
 import org.mapstruct.Mapper;
 
@@ -8,9 +9,11 @@ import java.util.List;
 
 @Mapper(componentModel = "spring")
 public interface VendorLocationMapper {
-    VendorLocation parseDTO(VendorLocationDTO vendorLocationDTO);
+    VendorLocation parseDTO(LocationDTO vendorLocationDTO);
+    VendorLocation parseDTO(CreateLocationDTO createLocationDTO);
 
-    VendorLocationDTO getDTO(VendorLocation vendorLocation);
+    LocationDTO getDTO(VendorLocation vendorLocation);
+    CreateLocationDTO getCreateDTO(VendorLocation vendorLocation);
 
-    List<VendorLocationDTO> getListDTO(List<VendorLocation> vendorLocations);
+    List<LocationDTO> getListDTO(List<VendorLocation> vendorLocations);
 }

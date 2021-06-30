@@ -1,22 +1,23 @@
 package com.exadel.discount.dto.location;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
+import com.exadel.discount.dto.validation.Create;
+import com.exadel.discount.dto.vendor.MiniVendorDTO;
+import com.exadel.discount.entity.Vendor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
-import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Null;
+import java.util.UUID;
 
 @Data
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
 public class CreateLocationDTO {
-    @NotBlank
-    private String country;
-    @NotBlank
-    private String city;
-    @NotBlank
-    private String address;
+    @Null(groups = Create.class)
+    private UUID id;
+    //TODO
+    /*private CountryDTO country;
+    private CityDTO city;*/
     private String contact;
+    private String coordinates;
+    @NotNull(groups = Create.class)
+    private MiniVendorDTO vendor;
 }

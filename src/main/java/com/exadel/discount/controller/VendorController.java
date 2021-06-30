@@ -1,11 +1,8 @@
 package com.exadel.discount.controller;
 
-import com.exadel.discount.dto.VendorDTO;
+import com.exadel.discount.dto.vendor.CreateVendorDTO;
+import com.exadel.discount.dto.vendor.VendorDTO;
 import com.exadel.discount.dto.validation.Create;
-import com.exadel.discount.entity.Vendor;
-import com.exadel.discount.exception.NotFoundException;
-import com.exadel.discount.mapper.VendorMapper;
-import com.exadel.discount.repository.VendorRepository;
 import com.exadel.discount.service.VendorService;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
@@ -17,7 +14,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.constraints.NotNull;
@@ -48,7 +44,7 @@ public class VendorController {
 
     @PostMapping
     @ApiOperation("Add new vendor")
-    public VendorDTO saveNewVendor(@RequestBody @Validated(Create.class) VendorDTO vendor) {
+    public CreateVendorDTO saveNewVendor(@RequestBody @Validated(Create.class) CreateVendorDTO vendor) {
         return vendorService.save(vendor);
     }
 

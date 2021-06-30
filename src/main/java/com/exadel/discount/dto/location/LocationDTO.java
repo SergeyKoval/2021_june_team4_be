@@ -1,4 +1,4 @@
-package com.exadel.discount.dto;
+package com.exadel.discount.dto.location;
 
 import com.exadel.discount.dto.validation.Create;
 import lombok.Data;
@@ -7,7 +7,7 @@ import javax.validation.constraints.Null;
 import java.util.UUID;
 
 @Data
-public class VendorLocationDTO {
+public class LocationDTO {
     @Null(groups = Create.class)
     private UUID id;
     //TODO 

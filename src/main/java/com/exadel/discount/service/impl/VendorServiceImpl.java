@@ -1,8 +1,8 @@
 package com.exadel.discount.service.impl;
 
-import com.exadel.discount.dto.VendorDTO;
+import com.exadel.discount.dto.vendor.CreateVendorDTO;
+import com.exadel.discount.dto.vendor.VendorDTO;
 import com.exadel.discount.entity.Vendor;
-import com.exadel.discount.entity.VendorLocation;
 import com.exadel.discount.exception.NotFoundException;
 import com.exadel.discount.mapper.VendorMapper;
 import com.exadel.discount.repository.VendorRepository;
@@ -11,7 +11,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -24,11 +23,11 @@ public class VendorServiceImpl implements VendorService {
     private final VendorMapper vendorMapper;
 
     @Override
-    public VendorDTO save(VendorDTO vendorDTO) {
+    public CreateVendorDTO save(CreateVendorDTO vendorDTO) {
         log.debug("Saving new Vendor");
         Vendor savedVendor = vendorRepository.save(vendorMapper.parseDTO(vendorDTO));
         log.debug("Successfully saved new Vendor");
-        return vendorMapper.getDTO(savedVendor);
+        return vendorMapper.getCreateDTO(savedVendor);
     }
 
     @Override

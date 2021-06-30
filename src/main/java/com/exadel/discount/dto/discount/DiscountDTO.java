@@ -1,5 +1,8 @@
-package com.exadel.discount.dto;
+package com.exadel.discount.dto.discount;
 
+import com.exadel.discount.dto.CategoryDTO;
+import com.exadel.discount.dto.TagDTO;
+import com.exadel.discount.dto.location.LocationDTO;
 import com.exadel.discount.dto.validation.Create;
 import lombok.Data;
 
@@ -28,5 +31,5 @@ public class DiscountDTO {
     private LocalDateTime endTime;
     private boolean active;
     private Set<TagDTO> tags;
-    private Set<VendorLocationDTO> vendorLocations;
+    private Set<LocationDTO> vendorLocations;
 }

@@ -1,11 +1,8 @@
 package com.exadel.discount.controller;
 
-import com.exadel.discount.dto.VendorLocationDTO;
-import com.exadel.discount.entity.Vendor;
+import com.exadel.discount.dto.location.CreateLocationDTO;
+import com.exadel.discount.dto.location.LocationDTO;
 import com.exadel.discount.entity.VendorLocation;
-import com.exadel.discount.exception.NotFoundException;
-import com.exadel.discount.mapper.VendorLocationMapper;
-import com.exadel.discount.repository.VendorLocationRepository;
 import com.exadel.discount.service.VendorLocationService;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
@@ -35,22 +32,21 @@ public class VendorLocationController {
 
     @GetMapping("/{vendorId}")
     @ApiOperation("Get all VendorLocations vendor's")
-    List<VendorLocationDTO> getAll(@PathVariable("vendorId") @NotNull UUID id) {
+    List<LocationDTO> getAll(@PathVariable("vendorId") @NotNull UUID id) {
         return vendorLocationService.getAll(id);
     }
 
     @GetMapping
     @ApiOperation("Get location by ID")
-    VendorLocationDTO getById(@RequestParam(value = "id", required = true) @NotNull UUID id) {
+    LocationDTO getById(@RequestParam(value = "id", required = true) @NotNull UUID id) {
         return vendorLocationService.getById(id);
     }
 
 
     @PostMapping
     @ApiOperation("Add new location")
-    public VendorLocationDTO addVendorLocation(@RequestParam(name = "vendorId", required = true) @NotNull UUID vendorId,
-                                               @RequestBody @Validated VendorLocation vendorLocation) {
-        return vendorLocationService.save(vendorLocation, vendorId);
+    public CreateLocationDTO addVendorLocation( @RequestBody @Validated CreateLocationDTO vendorLocation) {
+        return vendorLocationService.save(vendorLocation);
     }
 
     @DeleteMapping("/{id}")

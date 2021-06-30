@@ -1,13 +1,13 @@
 package com.exadel.discount.service.impl;
 
-import com.exadel.discount.dto.VendorLocationDTO;
+import com.exadel.discount.dto.location.CreateLocationDTO;
+import com.exadel.discount.dto.location.LocationDTO;
 import com.exadel.discount.entity.Vendor;
 import com.exadel.discount.entity.VendorLocation;
 import com.exadel.discount.exception.NotFoundException;
 import com.exadel.discount.mapper.VendorLocationMapper;
 import com.exadel.discount.repository.VendorLocationRepository;
 import com.exadel.discount.service.VendorLocationService;
-import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -24,18 +24,15 @@ public class VendorLocationServiceImpl implements VendorLocationService {
     private final VendorLocationMapper vendorLocationMapper;
 
     @Override
-    public VendorLocationDTO save(VendorLocation vendorLocation, UUID vendorId) {
+    public CreateLocationDTO save(CreateLocationDTO vendorLocation) {
         log.debug("Saving new VendorLocation");
-        Vendor vendor = new Vendor();
-        vendor.setId(vendorId);
-        vendorLocation.setVendor(vendor);
-        VendorLocation savedVendorLocation = vendorLocationRepository.save(vendorLocation);
+        VendorLocation savedVendorLocation = vendorLocationRepository.save(vendorLocationMapper.parseDTO(vendorLocation));
         log.debug("Successfully saved new VendorLocation");
-        return vendorLocationMapper.getDTO(savedVendorLocation);
+        return vendorLocationMapper.getCreateDTO(savedVendorLocation);
     }
 
     @Override
-    public VendorLocationDTO getById(UUID id) {
+    public LocationDTO getById(UUID id) {
         log.debug(String.format("Finding VendorLocation with ID %s", id));
         VendorLocation vendorLocation = vendorLocationRepository
                 .findById(id)
@@ -45,7 +42,7 @@ public class VendorLocationServiceImpl implements VendorLocationService {
     }
 
     @Override
-    public List<VendorLocationDTO> getAll(UUID id) {
+    public List<LocationDTO> getAll(UUID id) {
         log.debug("Getting list of all Vendors");
         Vendor vendor = new Vendor();
         vendor.setId(id);

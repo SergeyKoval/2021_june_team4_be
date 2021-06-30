@@ -1,10 +1,7 @@
 package com.exadel.discount.service.impl;
 
-import com.exadel.discount.dto.DiscountDTO;
-import com.exadel.discount.dto.VendorDTO;
+import com.exadel.discount.dto.discount.DiscountDTO;
 import com.exadel.discount.entity.Discount;
-import com.exadel.discount.entity.Vendor;
-import com.exadel.discount.entity.VendorLocation;
 import com.exadel.discount.exception.NotFoundException;
 import com.exadel.discount.mapper.DiscountMapper;
 import com.exadel.discount.mapper.VendorMapper;
@@ -15,10 +12,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.UUID;
 
 @RequiredArgsConstructor

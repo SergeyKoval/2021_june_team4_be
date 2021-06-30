@@ -1,11 +1,7 @@
 package com.exadel.discount.controller;
 
-import com.exadel.discount.dto.DiscountDTO;
+import com.exadel.discount.dto.discount.DiscountDTO;
 import com.exadel.discount.dto.validation.Create;
-import com.exadel.discount.entity.Discount;
-import com.exadel.discount.exception.NotFoundException;
-import com.exadel.discount.mapper.DiscountMapper;
-import com.exadel.discount.repository.DiscountRepository;
 import com.exadel.discount.service.DiscountService;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
@@ -17,7 +13,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.constraints.NotNull;

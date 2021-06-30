@@ -1,5 +1,6 @@
-package com.exadel.discount.dto;
+package com.exadel.discount.dto.vendor;
 
+import com.exadel.discount.dto.location.LocationDTO;
 import com.exadel.discount.dto.validation.Create;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -22,6 +23,6 @@ public class VendorDTO {
     private String name;
     private String description;
     @Null(groups = Create.class)
-    private Set<VendorLocationDTO> vendorLocations;
+    private Set<LocationDTO> vendorLocations;
 
 }

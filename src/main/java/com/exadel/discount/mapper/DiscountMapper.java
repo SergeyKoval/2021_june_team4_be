@@ -1,6 +1,6 @@
 package com.exadel.discount.mapper;
 
-import com.exadel.discount.dto.DiscountDTO;
+import com.exadel.discount.dto.discount.DiscountDTO;
 import com.exadel.discount.entity.Discount;
 import org.mapstruct.Mapper;
 
