@@ -2,7 +2,6 @@ package com.exadel.discount.service;
 
 import com.exadel.discount.dto.coupon.CouponDto;
 import com.exadel.discount.dto.coupon.CreateCouponDto;
-import org.springframework.data.domain.Sort;
 
 import java.time.LocalDateTime;
 import java.util.List;
