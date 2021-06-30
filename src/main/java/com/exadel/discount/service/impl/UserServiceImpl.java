@@ -2,13 +2,13 @@ package com.exadel.discount.service.impl;
 
 import com.exadel.discount.dto.user.UserCityDto;
 import com.exadel.discount.dto.user.UserDto;
+import com.exadel.discount.entity.City;
 import com.exadel.discount.entity.Role;
 import com.exadel.discount.entity.User;
 import com.exadel.discount.exception.NotFoundException;
 import com.exadel.discount.mapper.UserCityMapper;
 import com.exadel.discount.mapper.UserMapper;
 import com.exadel.discount.repository.CityRepository;
-import com.exadel.discount.repository.CountryRepository;
 import com.exadel.discount.repository.UserRepository;
 import com.exadel.discount.service.SortPageMaker;
 import com.exadel.discount.service.UserService;
@@ -20,6 +20,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -30,7 +31,6 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final CityRepository cityRepository;
-    private final CountryRepository countryRepository;
     private final UserMapper userMapper;
     private final UserCityMapper userCityMapper;
 
@@ -38,11 +38,12 @@ public class UserServiceImpl implements UserService {
     public UserCityDto findUserById(UUID id) {
         log.debug("Finding User by ID");
 
-        User user = userRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException(String.format("User with id %s not found", id)));
-        log.debug("Successfully User is found by ID and starting userCityDto creation");
-
-        UserCityDto userCityDto = userCityMapper.toUserCityDto(user, user.getCity(), user.getCity().getCountry());
+        Optional<User> userOptional = userRepository.findById(id);
+        if (userOptional.isEmpty()) throw new NotFoundException(String.format("User with id %s not found", id));
+        else
+            log.debug("Successfully User is found by ID and starting userCityDto creation");
+        User user = userOptional.get();
+        UserCityDto userCityDto = userCityMapper.toUserCityDto(user, user.getCity());
         log.debug("Successfully created userCityDto");
 
         return userCityDto;
@@ -66,7 +67,7 @@ public class UserServiceImpl implements UserService {
         Page<User> userList;
         log.debug("Getting sorted page-list of Users by role");
         List<String> enumValues = List.of(Arrays.toString(Role.values()));
-        if (enumValues.stream().anyMatch(e -> e.equals(roleFilter.toUpperCase()))) {
+        if (List.of(Arrays.toString(Role.values())).stream().anyMatch(e -> e.equals(roleFilter.toUpperCase()))) {
             userList = userRepository.findUserByRole(Role.valueOf(roleFilter.toUpperCase()), paging);
         } else
             throw new NotFoundException(String.format("No User with role %s is found", roleFilter));
@@ -96,11 +97,17 @@ public class UserServiceImpl implements UserService {
     public List<UserCityDto> findUsersOfCountry(int pageNumber, int pageSize, String sortDirection, String sortField, String countryFilter) {
         Pageable paging = SortPageMaker.makePageable(pageNumber, pageSize, sortDirection, sortField);
         Page<User> userList;
+        List<City> cities;
         log.debug("Getting sorted page-list of Users by Country(");
-        if (countryRepository.findByName(countryFilter).isPresent()) {
-            userList = userRepository.findUsersByCity_Country_Name(countryFilter, paging);
-        } else
-            throw new NotFoundException(String.format("No User with Country %s is found", countryFilter));
+        //if (countryRepository.findByName(countryFilter).isPresent()) {
+            cities = cityRepository.findAllByCountry_Name(countryFilter);
+            if (cities.isEmpty()) {
+                throw new NotFoundException(String.format("No city from country %s is found", countryFilter));
+            }
+            userList = userRepository.findUsersByCity_Name(countryFilter, paging);
+        if(userList.isEmpty()){
+            throw new NotFoundException(String.format("No users from country %s is found", countryFilter));
+        }
         log.debug("Successfully got filtered page-list of Users by role is got");
         return toUserCityDtoList(userList);
     }
@@ -120,7 +127,7 @@ public class UserServiceImpl implements UserService {
 
     private List<UserCityDto> toUserCityDtoList(Page<User> pageUserList) {
         return pageUserList.toList().stream()
-                .map(e -> userCityMapper.toUserCityDto(e, e.getCity(), e.getCity().getCountry()))
+                .map(e -> userCityMapper.toUserCityDto(e, e.getCity()))
                 .collect(Collectors.toList());
     }
 

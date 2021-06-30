@@ -34,6 +34,4 @@ public class UserCityDto {
     private Role role;
     @NotBlank
     private String cityName;
-    @NotNull
-    private String country;
 }

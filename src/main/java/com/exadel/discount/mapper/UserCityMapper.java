@@ -2,7 +2,6 @@ package com.exadel.discount.mapper;
 
 import com.exadel.discount.dto.user.UserCityDto;
 import com.exadel.discount.entity.City;
-import com.exadel.discount.entity.Country;
 import com.exadel.discount.entity.User;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -19,7 +18,5 @@ public interface UserCityMapper {
     @Mapping(source = "user.phone", target = "phone")
     @Mapping(source = "user.email", target = "email")
     @Mapping(source = "city.name", target = "cityName")
-    @Mapping(source = "country.name", target = "country")
-    UserCityDto toUserCityDto(User user, City city, Country country);
-
+    UserCityDto toUserCityDto(User user, City city);
 }
