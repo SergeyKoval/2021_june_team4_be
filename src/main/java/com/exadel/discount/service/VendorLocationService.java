@@ -9,7 +9,7 @@ import java.util.UUID;
 
 public interface VendorLocationService {
 
-    CreateLocationDTO save(CreateLocationDTO createLocationDTO);
+    LocationDTO save(CreateLocationDTO createLocationDTO);
 
     LocationDTO getById(UUID id);
 

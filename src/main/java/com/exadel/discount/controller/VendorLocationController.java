@@ -2,6 +2,7 @@ package com.exadel.discount.controller;
 
 import com.exadel.discount.dto.location.CreateLocationDTO;
 import com.exadel.discount.dto.location.LocationDTO;
+import com.exadel.discount.dto.validation.Create;
 import com.exadel.discount.entity.VendorLocation;
 import com.exadel.discount.service.VendorLocationService;
 import io.swagger.annotations.ApiOperation;
@@ -45,7 +46,7 @@ public class VendorLocationController {
 
     @PostMapping
     @ApiOperation("Add new location")
-    public CreateLocationDTO addVendorLocation( @RequestBody @Validated CreateLocationDTO vendorLocation) {
+    public LocationDTO addVendorLocation(@RequestBody CreateLocationDTO vendorLocation) {
         return vendorLocationService.save(vendorLocation);
     }
 

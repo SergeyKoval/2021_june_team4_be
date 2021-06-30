@@ -6,7 +6,9 @@ import com.exadel.discount.entity.Vendor;
 import com.exadel.discount.entity.VendorLocation;
 import com.exadel.discount.exception.NotFoundException;
 import com.exadel.discount.mapper.VendorLocationMapper;
+import com.exadel.discount.mapper.VendorMapper;
 import com.exadel.discount.repository.VendorLocationRepository;
+import com.exadel.discount.repository.VendorRepository;
 import com.exadel.discount.service.VendorLocationService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,14 +23,23 @@ import java.util.UUID;
 public class VendorLocationServiceImpl implements VendorLocationService {
 
     private final VendorLocationRepository vendorLocationRepository;
+    private final VendorRepository vendorRepository;
     private final VendorLocationMapper vendorLocationMapper;
 
     @Override
-    public CreateLocationDTO save(CreateLocationDTO vendorLocation) {
+    public LocationDTO save(CreateLocationDTO vendorLocation) {
         log.debug("Saving new VendorLocation");
-        VendorLocation savedVendorLocation = vendorLocationRepository.save(vendorLocationMapper.parseDTO(vendorLocation));
+        UUID vendorId = vendorLocation.getVendorId();
+        Vendor vendor = vendorRepository
+                .findById(vendorId)
+                .orElseThrow(() -> new NotFoundException(String.format("Vendor with id %s not found", vendorId)));
+
+        VendorLocation location = vendorLocationMapper.parseDTO(vendorLocation);
+        location.setVendor(vendor);
+
+        VendorLocation savedVendorLocation = vendorLocationRepository.save(location);
         log.debug("Successfully saved new VendorLocation");
-        return vendorLocationMapper.getCreateDTO(savedVendorLocation);
+        return vendorLocationMapper.getDTO(savedVendorLocation);
     }
 
     @Override
@@ -44,8 +55,9 @@ public class VendorLocationServiceImpl implements VendorLocationService {
     @Override
     public List<LocationDTO> getAll(UUID id) {
         log.debug("Getting list of all Vendors");
-        Vendor vendor = new Vendor();
-        vendor.setId(id);
+        Vendor vendor = vendorRepository
+                .findById(id)
+                .orElseThrow(() -> new NotFoundException(String.format("Vendor with id %s not found", id)));
         List<VendorLocation> vendorLocationList = vendorLocationRepository.findByVendor(vendor);
         log.debug("Successfully got list of all Vendors");
         return vendorLocationMapper.getListDTO(vendorLocationList);
