@@ -70,6 +70,9 @@ public class Discount {
     )
     private Set<Tag> tags;
 
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "vendor_id")
+    private Vendor vendor;
     //TODO
     /*@OneToMany(mappedBy = "discount", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private Set<Coupon> coupons;

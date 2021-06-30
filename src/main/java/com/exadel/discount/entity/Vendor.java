@@ -40,4 +40,7 @@ public class Vendor {
             mappedBy = "vendor")
     private Set<VendorLocation> vendorLocations;
 
+    @OneToMany(cascade = CascadeType.REMOVE, mappedBy = "vendor")
+    private Set<Discount> discounts;
+
 }

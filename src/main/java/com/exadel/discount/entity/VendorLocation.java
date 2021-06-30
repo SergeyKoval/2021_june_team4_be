@@ -23,8 +23,8 @@ import java.util.UUID;
 @NoArgsConstructor
 @Entity
 @Table(name = "vendor_locations")
-@EqualsAndHashCode(exclude = {"discounts"})
-@ToString(exclude = {"discounts"})
+@EqualsAndHashCode(exclude = {"discounts", "vendor"})
+@ToString(exclude = {"discounts", "vendor"})
 @AllArgsConstructor
 public class VendorLocation {
     @Id

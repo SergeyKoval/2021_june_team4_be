@@ -43,7 +43,7 @@ public class DiscountServiceImpl implements DiscountService {
         Discount discount = discountMapper.parseDTO(discountDTO);
         discount.setCategory(findCategory(discountDTO.getCategoryId()));
         discount.setTags(findTags(discountDTO.getTagIds()));
-        discount.setVendorLocations(findVendorLocations(discountDTO.getVendorId(),
+        discount.setVendorLocations(findVendorLocations(discount.getVendor().getId(),
                 discountDTO.getVendorLocationsIds()));
 
         Discount savedDiscount = discountRepository.save(discount);
