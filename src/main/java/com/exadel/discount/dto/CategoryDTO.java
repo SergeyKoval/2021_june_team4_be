@@ -9,7 +9,7 @@ import java.util.UUID;
 
 @Data
 public class CategoryDTO {
-    @Null(groups = Create.class)
+    @Null(groups = Create.class, message = "Сategory ID should be blank")
     private UUID id;
     @NotBlank(groups = Create.class, message = "Category name should be not blank")
     private String name;
