@@ -5,6 +5,7 @@ import com.exadel.discount.dto.discount.DiscountDTO;
 import com.exadel.discount.entity.Category;
 import com.exadel.discount.entity.Discount;
 import com.exadel.discount.entity.Tag;
+import com.exadel.discount.entity.Vendor;
 import com.exadel.discount.entity.VendorLocation;
 import com.exadel.discount.exception.NotFoundException;
 import com.exadel.discount.mapper.DiscountMapper;
@@ -43,7 +44,8 @@ public class DiscountServiceImpl implements DiscountService {
         Discount discount = discountMapper.parseDTO(discountDTO);
         discount.setCategory(findCategory(discountDTO.getCategoryId()));
         discount.setTags(findTags(discountDTO.getTagIds()));
-        discount.setVendorLocations(findVendorLocations(discount.getVendor().getId(),
+        discount.setVendor(findVendor(discountDTO.getVendorId()));
+        discount.setVendorLocations(findVendorLocations(discountDTO.getVendorId(),
                 discountDTO.getVendorLocationsIds()));
 
         Discount savedDiscount = discountRepository.save(discount);
@@ -91,8 +93,8 @@ public class DiscountServiceImpl implements DiscountService {
     }
 
     private Set<VendorLocation> findVendorLocations(UUID vendorId, List<UUID> locationIds) {
-        vendorRepository.findById(vendorId)
-                .orElseThrow(() -> new NotFoundException(String.format("Vendor with ID %s doesn't exist", vendorId)));
+        /*vendorRepository.findById(vendorId)
+                .orElseThrow(() -> new NotFoundException(String.format("Vendor with ID %s doesn't exist", vendorId)));*/
 
         List<VendorLocation> existingLocations = locationRepository.findAllById(locationIds);
         existingLocations
@@ -116,6 +118,12 @@ public class DiscountServiceImpl implements DiscountService {
         return categoryRepository
                 .findById(categoryId)
                 .orElseThrow(() -> new NotFoundException(String.format("Category with ID %s doesn't exist", categoryId)));
+    }
+
+    private Vendor findVendor(UUID vendorId) {
+        return vendorRepository
+                .findById(vendorId)
+                .orElseThrow(() -> new NotFoundException(String.format("Vendor with ID %s doesn't exist", vendorId)));
     }
 
 }

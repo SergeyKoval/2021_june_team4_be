@@ -1,6 +1,5 @@
 package com.exadel.discount.dto.discount;
 
-import com.exadel.discount.dto.vendor.BaseVendorDTO;
 import lombok.Data;
 
 import javax.validation.constraints.Max;
@@ -30,7 +29,7 @@ public class CreateDiscountDTO {
     private LocalDateTime endTime;
     private boolean active;
     @NotNull(message = "Vendor should be not null")
-    private BaseVendorDTO vendor;
+    private UUID vendorId;
     private List<UUID> tagIds = new ArrayList<>();
     @NotNull(message = "Discount should have at least one location")
     private List<UUID> vendorLocationsIds;
