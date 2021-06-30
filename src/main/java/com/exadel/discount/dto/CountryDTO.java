@@ -1,7 +1,6 @@
 package com.exadel.discount.dto;
 
 import com.exadel.discount.dto.validation.Create;
-import com.exadel.discount.entity.City;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Null;
@@ -14,5 +13,5 @@ public class CountryDTO {
     @NotBlank(groups = Create.class)
     private String name;
     @Null(groups = Create.class)
-    private List<City> cities;
+    private List<CityDTO> cities;
 }

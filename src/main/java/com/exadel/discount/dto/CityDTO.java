@@ -16,5 +16,5 @@ public class CityDTO {
     private String name;
 
     @NotNull(groups = Create.class)
-    private Country country;
+    private UUID countryId;
 }
