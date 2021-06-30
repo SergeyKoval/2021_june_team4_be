@@ -2,16 +2,14 @@ package com.exadel.discount.dto.location;
 
 import lombok.Data;
 
-import javax.validation.constraints.NotNull;
 import java.util.UUID;
 
 @Data
-public class CreateLocationDTO {
-    //TODO
+public class LocationDTO {
+    private UUID id;
+    //TODO 
     /*private CountryDTO country;
     private CityDTO city;*/
     private String contact;
     private String coordinates;
-    @NotNull(message = "Vendor ID should be not null")
-    private UUID vendorId;
 }

@@ -1,0 +1,38 @@
+package com.exadel.discount.dto.discount;
+
+import com.exadel.discount.dto.CategoryDTO;
+import com.exadel.discount.dto.TagDTO;
+import com.exadel.discount.dto.location.LocationDTO;
+import com.exadel.discount.dto.validation.Create;
+import com.exadel.discount.dto.vendor.BaseVendorDTO;
+import com.exadel.discount.dto.vendor.VendorDTO;
+import lombok.Data;
+
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Null;
+import javax.validation.constraints.Size;
+import java.time.LocalDateTime;
+import java.util.Set;
+import java.util.UUID;
+
+@Data
+public class DiscountDTO {
+    @Null(groups = Create.class)
+    private UUID id;
+    @NotNull(groups = Create.class, message = "Discount category should be not null")
+    private CategoryDTO category;
+    @NotBlank(groups = Create.class, message = "Discount name should be not blank")
+    private String name;
+    private String description;
+    @NotBlank(groups = Create.class, message = "Discount promo should be not blank")
+    @Size(max = 50, groups = Create.class, message = "Discount promo should be shorted than {max}")
+    private String promo;
+    private Integer percent;
+    private LocalDateTime startTime;
+    private LocalDateTime endTime;
+    private boolean active;
+    private Set<TagDTO> tags;
+    private Set<LocationDTO> vendorLocations;
+    private BaseVendorDTO vendor;
+}
