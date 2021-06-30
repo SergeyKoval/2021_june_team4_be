@@ -2,8 +2,7 @@ package com.exadel.discount.service;
 
 import com.exadel.discount.dto.favorite.CreateFavoriteDto;
 import com.exadel.discount.dto.favorite.FavoriteDto;
-import com.exadel.discount.entity.Favorite;
-import org.springframework.data.domain.Sort;
+
 
 import java.util.List;
 import java.util.UUID;

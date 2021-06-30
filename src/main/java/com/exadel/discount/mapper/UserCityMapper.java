@@ -21,4 +21,5 @@ public interface UserCityMapper {
     @Mapping(source = "city.name", target = "cityName")
     @Mapping(source = "country.name", target = "country")
     UserCityDto toUserCityDto(User user, City city, Country country);
+
 }

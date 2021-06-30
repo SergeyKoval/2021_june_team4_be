@@ -5,7 +5,6 @@ import com.exadel.discount.dto.coupon.CreateCouponDto;
 import com.exadel.discount.service.CouponService;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Sort;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -27,7 +26,7 @@ public class CouponController {
     private final CouponService couponService;
 
     @GetMapping
-    @ApiOperation("Get list of all coupons with sorting and filtering")
+    @ApiOperation("Get page-list of all coupons with sorting and filtering")
     /**  Get list of all coupons with sorting by params
      sortDirection - ASC or DSC (unsorted - by default) ;
      sortField - name of sorted field by (id - by default)- date **/

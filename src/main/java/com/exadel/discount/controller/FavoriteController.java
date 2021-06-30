@@ -5,7 +5,6 @@ import com.exadel.discount.dto.favorite.FavoriteDto;
 import com.exadel.discount.service.FavoriteService;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;

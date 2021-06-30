@@ -12,8 +12,8 @@ import com.exadel.discount.repository.DiscountRepository;
 import com.exadel.discount.repository.UserRepository;
 import com.exadel.discount.service.CouponService;
 import lombok.AllArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import lombok.extern.slf4j.Slf4j;
@@ -22,7 +22,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -39,19 +38,12 @@ public class CouponServiceImpl implements CouponService {
         if (!sortDirection.equals("")) {
             sort = Sort.by(Sort.Direction.valueOf(sortDirection.toUpperCase()), sortField);
         }
+        Pageable paging = PageRequest.of(pageNumber - 1, pageSize, sort);
+        List<Coupon> filteredCouponList = couponRepository.dateSearch(startDate, endDate, paging).toList();
         log.debug("Getting sorted page-list of all Coupons");
+        if(filteredCouponList.isEmpty()){throw new NotFoundException(String.format("No Coupons %s are found", filteredCouponList));}
 
-        Page<Coupon> PageCouponList = couponRepository.findAll(PageRequest.of(pageNumber, pageSize, sort));
-        log.debug("Successfully sorted page-list of all Coupons is got and filtering is starting");
-
-        List<Coupon> couponList = PageCouponList.toList();
-        List<Coupon> filteredCouponList = couponList.stream()
-                .filter(e -> e.getDate().isAfter(startDate))
-                .filter(e -> e.getDate().isBefore(endDate))
-            .collect(Collectors.toList());
-        if(filteredCouponList.isEmpty()) throw new NotFoundException(String.format("No Coupons are found between dates %s and %s", startDate, endDate));
-
-        log.debug("Successfully filtered list of Coupons is got");
+        log.debug("Successfully got filtered page-list of Coupons is got");
 
         return couponMapper.toCouponDtoList(filteredCouponList);
     }

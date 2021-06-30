@@ -5,7 +5,6 @@ import com.exadel.discount.dto.user.UserDto;
 import com.exadel.discount.service.UserService;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,18 +23,43 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping
-    @ApiOperation("Get list of all users with sorting and filtering")
-    /**  Get list of all users with sorting by params
-     sortDirection - ASC or DSC (unsorted - by default) ;
-     sortField - name of sorted field by (id - by default)-firstName/lastName/phone/email/login/role/password **/
-    public List<UserCityDto> getUsers(@RequestParam(name = "pageNumber", defaultValue = "0") int pageNumber,
-                                      @RequestParam(name = "pageSize", defaultValue = "10") int pageSize,
-                                      @RequestParam(name = "sortDirection", defaultValue = "") String sortDirection,
-                                      @RequestParam(name = "sortField", defaultValue = "id") String sortField,
-                                      @RequestParam(name = "cityFilter", defaultValue = "") String cityFilter,
-                                      @RequestParam(name = "countryFilter", defaultValue = "") String countryFilter,
-                                      @RequestParam(name = "roleFilter", defaultValue = "") String roleFilter) {
-        return userService.findAllUsers(pageNumber, pageSize, sortDirection, sortField, cityFilter, countryFilter, roleFilter);
+    @ApiOperation("Get page-list of all users without filtering")
+    public List<UserCityDto> getallUsers(@RequestParam(name = "pageNumber", defaultValue = "0") int pageNumber,
+                                         @RequestParam(name = "pageSize", defaultValue = "10") int pageSize,
+                                         @RequestParam(name = "sortDirection", defaultValue = "") String sortDirection,
+                                         @RequestParam(name = "sortField", defaultValue = "id") String sortField) {
+        return userService.findAllUsers(pageNumber, pageSize, sortDirection, sortField);
+    }
+
+    @GetMapping
+    @ApiOperation("Get sorted page-list of users filtered by role")
+    public List<UserCityDto> getUsersByRole(@RequestParam(name = "pageNumber", defaultValue = "0") int pageNumber,
+                                            @RequestParam(name = "pageSize", defaultValue = "10") int pageSize,
+                                            @RequestParam(name = "sortDirection", defaultValue = "") String sortDirection,
+                                            @RequestParam(name = "sortField", defaultValue = "id") String sortField,
+                                            @RequestParam(name = "roleFilter", defaultValue = "USER") String roleFilter) {
+        return userService.findUsersByRole(pageNumber, pageSize, sortDirection, sortField, roleFilter);
+    }
+
+
+    @GetMapping
+    @ApiOperation("Get sorted page-list of users filtered by city")
+    public List<UserCityDto> getUsersByCity(@RequestParam(name = "pageNumber", defaultValue = "0") int pageNumber,
+                                            @RequestParam(name = "pageSize", defaultValue = "10") int pageSize,
+                                            @RequestParam(name = "sortDirection", defaultValue = "") String sortDirection,
+                                            @RequestParam(name = "sortField", defaultValue = "id") String sortField,
+                                            @RequestParam(name = "cityFilter", defaultValue = "") String cityFilter) {
+        return userService.findUsersOfCity(pageNumber, pageSize, sortDirection, sortField, cityFilter);
+    }
+
+    @GetMapping
+    @ApiOperation("Get sorted page-list of users filtered by country")
+    public List<UserCityDto> getUserOfCountry(@RequestParam(name = "pageNumber", defaultValue = "0") int pageNumber,
+                                           @RequestParam(name = "pageSize", defaultValue = "10") int pageSize,
+                                           @RequestParam(name = "sortDirection", defaultValue = "") String sortDirection,
+                                           @RequestParam(name = "sortField", defaultValue = "id") String sortField,
+                                           @RequestParam(name = "countryFilterFilter", defaultValue = "") String countryFilter) {
+        return userService.findUsersOfCountry(pageNumber, pageSize, sortDirection, sortField, countryFilter);
     }
 
     @GetMapping("{id}")
