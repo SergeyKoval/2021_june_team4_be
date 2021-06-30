@@ -17,5 +17,5 @@ public interface CouponService {
 
     CouponDto findCouponByDate(LocalDateTime time);
 
-    List<CouponDto> getCouponsOfUser(UUID userId);
+    List<CouponDto> getCouponsOfUser(int pageNumber, int pageSize, String sortDirection, String sortField, UUID userId);
 }

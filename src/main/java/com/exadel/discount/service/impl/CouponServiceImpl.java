@@ -11,12 +11,11 @@ import com.exadel.discount.repository.CouponRepository;
 import com.exadel.discount.repository.DiscountRepository;
 import com.exadel.discount.repository.UserRepository;
 import com.exadel.discount.service.CouponService;
+import com.exadel.discount.service.SortPageMaker;
 import lombok.AllArgsConstructor;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.stereotype.Service;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -34,17 +33,15 @@ public class CouponServiceImpl implements CouponService {
 
     @Override
     public List<CouponDto> findAllCoupons(int pageNumber, int pageSize, String sortDirection, String sortField, LocalDateTime startDate, LocalDateTime endDate) {
-        Sort sort = Sort.unsorted();
-        if (!sortDirection.equals("")) {
-            sort = Sort.by(Sort.Direction.valueOf(sortDirection.toUpperCase()), sortField);
-        }
-        Pageable paging = PageRequest.of(pageNumber - 1, pageSize, sort);
-        List<Coupon> filteredCouponList = couponRepository.dateSearch(startDate, endDate, paging).toList();
+       Pageable paging = SortPageMaker.makePageable(pageNumber, pageSize, sortDirection, sortField);
         log.debug("Getting sorted page-list of all Coupons");
-        if(filteredCouponList.isEmpty()){throw new NotFoundException(String.format("No Coupons %s are found", filteredCouponList));}
 
-        log.debug("Successfully got filtered page-list of Coupons is got");
+        List<Coupon> filteredCouponList = couponRepository.findCouponsByDateBetween(startDate, endDate, paging).toList();
+        log.debug("Successfully sorted page-list of all Coupons is got");
 
+        if (filteredCouponList.isEmpty()) {
+            throw new NotFoundException(String.format("No Coupons %s are found", filteredCouponList));
+        }
         return couponMapper.toCouponDtoList(filteredCouponList);
     }
 
@@ -97,15 +94,14 @@ public class CouponServiceImpl implements CouponService {
     }
 
     @Override
-    public List<CouponDto> getCouponsOfUser(UUID userId) {
-        log.debug("Finding Coupons of certain user");
+    public List<CouponDto> getCouponsOfUser(int pageNumber, int pageSize, String sortDirection, String sortField, UUID userId) {
+        Pageable paging = SortPageMaker.makePageable(pageNumber, pageSize, sortDirection, sortField);
+        log.debug("Getting sorted page-list Coupons of certain user");
+        List<Coupon> CouponList = couponRepository.findByUserId(userId, paging).toList();
+        if (CouponList.isEmpty())
+            throw new NotFoundException(String.format("No Coupons are found at user with Id %s ", userId));
+        log.debug("Successfully sorted page-list of user's Coupons is got");
 
-        List<CouponDto> CouponDtoList = couponMapper
-                .toCouponDtoList(couponRepository.findByUser(userId));
-
-        log.debug("Successfully list of user's Coupons is got");
-        if(CouponDtoList.isEmpty()) throw new NotFoundException(String.format("No Coupons are found at user with Id %s ", userId));
-
-        return CouponDtoList;
+        return couponMapper.toCouponDtoList(CouponList);
     }
 }

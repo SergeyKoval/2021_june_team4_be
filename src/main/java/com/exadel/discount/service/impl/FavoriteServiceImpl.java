@@ -11,11 +11,11 @@ import com.exadel.discount.repository.DiscountRepository;
 import com.exadel.discount.repository.FavoriteRepository;
 import com.exadel.discount.repository.UserRepository;
 import com.exadel.discount.service.FavoriteService;
+import com.exadel.discount.service.SortPageMaker;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -32,16 +32,13 @@ public class FavoriteServiceImpl implements FavoriteService {
 
     @Override
     public List<FavoriteDto> findAllFavorites( int pageNumber, int pageSize,String sortDirection, String sortField) {
-        Sort sort = Sort.unsorted();
-        if(!sortDirection.equals("")) {
-            sort = Sort.by(Sort.Direction.valueOf(sortDirection.toUpperCase()), sortField);
-        }
-        log.debug("Getting list of all Favorites");
+        Pageable paging = SortPageMaker.makePageable(pageNumber, pageSize, sortDirection, sortField);
+        log.debug("Getting sorted page-list of all Favorites");
 
-        Page<Favorite> favoriteList = favoriteRepository.findAll(PageRequest.of(pageNumber, pageSize, sort));
+        Page<Favorite> favoriteList = favoriteRepository.findAll(paging);
         if(favoriteList.isEmpty()) throw new NotFoundException("No favorites are found");
 
-        log.debug("Successfully got list of all Favorites");
+        log.debug("Successfully got sorted page-list of all Favorites");
 
         return favoriteMapper.toFavoriteDtoList(favoriteList.toList());
     }
@@ -95,15 +92,14 @@ public class FavoriteServiceImpl implements FavoriteService {
     }
 
     @Override
-    public List<FavoriteDto> getFavoritesOfUser(UUID userId) {
+    public List<FavoriteDto> getFavoritesOfUser(int pageNumber, int pageSize, String sortDirection, String sortField, UUID userId){
+        Pageable paging = SortPageMaker.makePageable(pageNumber, pageSize, sortDirection, sortField);
+
         log.debug("Finding Favorites of certain user");
+        List<Favorite> FavoriteList = favoriteRepository.findByUserId(userId, paging).toList();
+        if(FavoriteList.isEmpty()) throw new NotFoundException(String.format("No Favorites are found at user with Id %s ", userId));
+        log.debug("Successfully sorted page-list of user's Favorites is got");
 
-        List<FavoriteDto> FavoriteDtoList = favoriteMapper
-                .toFavoriteDtoList(favoriteRepository.findByUser(userId));
-        if(FavoriteDtoList.isEmpty()) throw new NotFoundException(String.format("No Favorites are found at user with Id %s ", userId));
-
-        log.debug("Successfully list of user's Favorites is got");
-
-        return FavoriteDtoList;
+        return favoriteMapper.toFavoriteDtoList(FavoriteList);
     }
 }

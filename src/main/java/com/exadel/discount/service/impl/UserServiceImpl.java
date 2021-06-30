@@ -10,14 +10,13 @@ import com.exadel.discount.mapper.UserMapper;
 import com.exadel.discount.repository.CityRepository;
 import com.exadel.discount.repository.CountryRepository;
 import com.exadel.discount.repository.UserRepository;
+import com.exadel.discount.service.SortPageMaker;
 import com.exadel.discount.service.UserService;
 import lombok.AllArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.stereotype.Service;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
 import java.util.List;
@@ -51,7 +50,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<UserCityDto> findAllUsers(int pageNumber, int pageSize, String sortDirection, String sortField) {
-        Pageable paging = getPaging(pageNumber, pageSize, sortDirection, sortField);
+        Pageable paging = SortPageMaker.makePageable(pageNumber, pageSize, sortDirection, sortField);
 
         log.debug("Getting sorted page-list of  Users");
 
@@ -63,12 +62,12 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<UserCityDto> findUsersByRole(int pageNumber, int pageSize, String sortDirection, String sortField, String roleFilter) {
-        Pageable paging = getPaging(pageNumber, pageSize, sortDirection, sortField);
+        Pageable paging = SortPageMaker.makePageable(pageNumber, pageSize, sortDirection, sortField);
         Page<User> userList;
         log.debug("Getting sorted page-list of Users by role");
         List<String> enumValues = List.of(Arrays.toString(Role.values()));
         if (enumValues.stream().anyMatch(e -> e.equals(roleFilter.toUpperCase()))) {
-            userList = userRepository.roleSearch(Role.valueOf(roleFilter.toUpperCase()), paging);
+            userList = userRepository.findUserByRole(Role.valueOf(roleFilter.toUpperCase()), paging);
         } else
             throw new NotFoundException(String.format("No User with role %s is found", roleFilter));
 
@@ -78,12 +77,12 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<UserCityDto> findUsersOfCity(int pageNumber, int pageSize, String sortDirection, String sortField, String cityFilter) {
-        Pageable paging = getPaging(pageNumber, pageSize, sortDirection, sortField);
+        Pageable paging = SortPageMaker.makePageable(pageNumber, pageSize, sortDirection, sortField);
         Page<User> userList;
         log.debug("Getting sorted page-list of Users by role");
 
         if (cityRepository.findByName(cityFilter).isPresent()) {
-            userList = userRepository.citySearch(cityFilter, paging);
+            userList = userRepository.findUsersByCity_Name(cityFilter, paging);
         } else
             throw new NotFoundException(String.format("No User from city %s is found", cityFilter));
 
@@ -95,11 +94,11 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<UserCityDto> findUsersOfCountry(int pageNumber, int pageSize, String sortDirection, String sortField, String countryFilter) {
-        Pageable paging = getPaging(pageNumber, pageSize, sortDirection, sortField);
+        Pageable paging = SortPageMaker.makePageable(pageNumber, pageSize, sortDirection, sortField);
         Page<User> userList;
         log.debug("Getting sorted page-list of Users by Country(");
         if (countryRepository.findByName(countryFilter).isPresent()) {
-            userList = userRepository.countrySearch(countryFilter, paging);
+            userList = userRepository.findUsersByCity_Country_Name(countryFilter, paging);
         } else
             throw new NotFoundException(String.format("No User with Country %s is found", countryFilter));
         log.debug("Successfully got filtered page-list of Users by role is got");
@@ -119,16 +118,7 @@ public class UserServiceImpl implements UserService {
         return userMapper.toUserDtoList(suchNameUserList);
     }
 
-    private Pageable getPaging(int pageNumber, int pageSize, String sortDirection, String sortField) {
-        Sort sort = Sort.unsorted();
-        if (!sortDirection.equals("")) {
-            sort = Sort.by(Sort.Direction.valueOf(sortDirection.toUpperCase()), sortField);
-        }
-        return PageRequest.of(pageNumber - 1, pageSize, sort);
-    }
-
-
-    List<UserCityDto> toUserCityDtoList(Page<User> pageUserList) {
+    private List<UserCityDto> toUserCityDtoList(Page<User> pageUserList) {
         return pageUserList.toList().stream()
                 .map(e -> userCityMapper.toUserCityDto(e, e.getCity(), e.getCity().getCountry()))
                 .collect(Collectors.toList());

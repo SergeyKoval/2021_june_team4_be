@@ -23,7 +23,7 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping
-    @ApiOperation("Get page-list of all users without filtering")
+    @ApiOperation("Get sorted page-list of all users without filtering")
     public List<UserCityDto> getallUsers(@RequestParam(name = "pageNumber", defaultValue = "1") int pageNumber,
                                          @RequestParam(name = "pageSize", defaultValue = "10") int pageSize,
                                          @RequestParam(name = "sortDirection", defaultValue = "") String sortDirection,
@@ -69,7 +69,7 @@ public class UserController {
     }
 
     @GetMapping("/name")
-    @ApiOperation("Get user by lastname and firstname")
+    @ApiOperation("Get users by lastname and firstname")
     public List<UserDto> getUsersByName(@RequestParam("lastname") @NotNull String lastName,
                                         @RequestParam("firstame") @NotNull String firstName) {
         return userService.findUsersByName(lastName, firstName);
