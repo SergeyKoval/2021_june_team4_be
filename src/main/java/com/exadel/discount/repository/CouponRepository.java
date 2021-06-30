@@ -17,8 +17,10 @@ import java.util.UUID;
 @Repository
 public interface CouponRepository extends JpaRepository<Coupon, UUID> {
     Optional<Coupon> findCouponByDate(LocalDateTime date);
-    List<Coupon> findByUser(UUID id);
+    Page<Coupon> findByUserId(UUID userId, Pageable paging);
 
-    @Query(value = "select c from Coupon c where c.date BETWEEN :startDate and :endDate", countQuery = "select count(c) from Coupon c where c.date BETWEEN :startDate and :endDate", nativeQuery = true)
-    Page<Coupon> dateSearch(@Param("startDate") LocalDateTime startDate, @Param("endDate") LocalDateTime endDate, Pageable pageable);
+//    @Query(value = "SELECT c FROM Coupon c WHERE c.date BETWEEN :startDate AND :endDate", countQuery = "SELECT count(c) FROM Coupon c WHERE c.date BETWEEN :startDate AND :endDate")
+//    Page<Coupon> dateSearch(@Param("startDate") LocalDateTime startDate, @Param("endDate") LocalDateTime endDate, Pageable pageable);
+
+    Page<Coupon> findCouponsByDateBetween( LocalDateTime startDate, LocalDateTime endDate, Pageable pageable);
 }
