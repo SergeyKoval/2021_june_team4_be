@@ -40,21 +40,22 @@ public class VendorLocationController {
     }
 
     @GetMapping
+    @ApiOperation("Get location by ID")
     VendorLocationDTO getById(@RequestParam(value = "id", required = true) @NotNull UUID id) {
         return vendorLocationService.getById(id);
     }
 
 
     @PostMapping
-    @ApiOperation("Add new location of vendor")
+    @ApiOperation("Add new location")
     public VendorLocationDTO addVendorLocation(@RequestParam(name = "vendorId", required = true) @NotNull UUID vendorId,
                                                @RequestBody @Validated VendorLocation vendorLocation) {
         return vendorLocationService.save(vendorLocation, vendorId);
     }
 
-    @DeleteMapping
-    @ApiOperation("Delete vendor's location")
-    public void deleteLocation(@RequestParam(name = "id", required = true) @NotNull UUID id)  {
+    @DeleteMapping("/{id}")
+    @ApiOperation("Delete location")
+    public void deleteLocation(@PathVariable(name = "id") @NotNull UUID id) {
         vendorLocationService.deleteById(id);
     }
 }

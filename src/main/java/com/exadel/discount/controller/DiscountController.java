@@ -52,9 +52,9 @@ public class DiscountController {
         return discountService.save(discountDTO);
     }
 
-    @DeleteMapping
+    @DeleteMapping("/{id}")
     @ApiOperation("Delete discount")
-    public void deleteDiscount(@RequestParam(name = "id", required = true) @NotNull UUID id) {
+    public void deleteDiscount(@PathVariable(name = "id") @NotNull UUID id) {
         discountService.deleteById(id);
     }
 

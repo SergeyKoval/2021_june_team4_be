@@ -52,9 +52,9 @@ public class CategoryController {
         return categoryService.save(categoryDTO);
     }
 
-    @DeleteMapping
+    @DeleteMapping("/{id}")
     @ApiOperation("Delete category by Id")
-    public void deleteCategory(@RequestParam(name = "id", required = true) @NotNull UUID id) {
+    public void deleteCategory(@PathVariable(name = "id") @NotNull UUID id) {
         categoryService.deleteById(id);
     }
 

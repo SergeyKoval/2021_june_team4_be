@@ -52,9 +52,9 @@ public class VendorController {
         return vendorService.save(vendor);
     }
 
-    @DeleteMapping
+    @DeleteMapping("/{id}")
     @ApiOperation("Delete vendor by ID")
-    public void deleteVendor(@RequestParam(name = "id", required = true) @NotNull UUID id) {
+    public void deleteVendor(@PathVariable(name = "id") @NotNull UUID id) {
         vendorService.deleteById(id);
     }
 
