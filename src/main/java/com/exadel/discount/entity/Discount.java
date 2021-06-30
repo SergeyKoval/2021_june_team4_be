@@ -24,8 +24,8 @@ import java.util.UUID;
 @NoArgsConstructor
 @Entity
 @Table(name = "discounts")
-@EqualsAndHashCode(exclude = {"tags"})
-@ToString(exclude = {"tags"})
+@EqualsAndHashCode(exclude = {"tags", "vendorLocations"})
+@ToString(exclude = {"tags", "vendorLocations"})
 public class Discount {
     @Id
     @GeneratedValue(generator = "UUID")
