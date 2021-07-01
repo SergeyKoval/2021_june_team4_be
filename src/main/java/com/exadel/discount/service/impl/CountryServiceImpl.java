@@ -21,7 +21,7 @@ public class CountryServiceImpl implements CountryService {
     private final CountryMapper countryMapper;
 
     @Override
-    public List<CountryDTO> findAllCountries() {
+    public List<CountryDTO> findAll() {
         log.debug("Getting list of all Countries");
 
         List<CountryDTO> countryDTOList = countryMapper.getListDTO(countryRepository.findAll());
@@ -31,10 +31,10 @@ public class CountryServiceImpl implements CountryService {
     }
 
     @Override
-    public CountryDTO findCountryById(UUID id) {
+    public CountryDTO findById(UUID id) {
         log.debug("Finding Country by Id");
 
-        CountryDTO countryDTO = countryMapper.getDTO(countryRepository.findById(id)
+        CountryDTO countryDTO = countryMapper.countryToCountryDTO(countryRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException(String.format("Country with id %s not found", id))));
 
         log.debug("Country successfully found by Id");
@@ -42,14 +42,10 @@ public class CountryServiceImpl implements CountryService {
     }
 
     @Override
-    public CountryDTO findCountryByName(String name) {
+    public CountryDTO findByName(String name) {
         log.debug("Finding Country by Name");
 
-        CountryDTO countryDTO = countryMapper.getDTO(countryRepository.findAll()
-                .stream()
-                .filter(s -> s.getName().equals(name))
-                .findFirst()
-                .orElseThrow(() -> new NotFoundException(String.format("Country with name %s not found", name))));
+        CountryDTO countryDTO = countryMapper.countryToCountryDTO(countryRepository.findByName(name));
 
         log.debug("Country successfully found by Name");
         return countryDTO;
@@ -59,10 +55,10 @@ public class CountryServiceImpl implements CountryService {
     public CountryDTO save(CountryDTO countryDTO) {
         log.debug("Saving new Country");
 
-        Country newCountry = countryRepository.save(countryMapper.parseDTO(countryDTO));
+        Country newCountry = countryRepository.save(countryMapper.countryDTOToCountry(countryDTO));
 
         log.debug("Successfully saved new Country");
-        return countryMapper.getDTO(newCountry);
+        return countryMapper.countryToCountryDTO(newCountry);
     }
 
     @Override
