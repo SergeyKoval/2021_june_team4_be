@@ -1,6 +1,5 @@
 package com.exadel.discount.repository;
 
-import com.exadel.discount.entity.Discount;
 import com.exadel.discount.entity.Role;
 import com.exadel.discount.entity.User;
 import org.springframework.data.domain.Page;
@@ -25,12 +24,8 @@ public interface UserRepository extends JpaRepository<User, UUID> {
     @EntityGraph(attributePaths = {"city"})
     Optional<User> findById(UUID id);
 
-    @EntityGraph(attributePaths = {"city"})
-    @Query(value = "SELECT u FROM User u WHERE u.role = :r", countQuery = "SELECT count(u) FROM User u WHERE u.role = :r",  nativeQuery = true)
+    @Query(value = "SELECT u FROM User u WHERE u.role = :r", countQuery = "SELECT count(u) FROM User u WHERE u.role = :r")
     Page<User> findUserByRole(@Param("r") Role r, Pageable pageable);
-//    @EntityGraph(attributePaths = {"city"})
-//    Page<User> findUserByRole( Role r, Pageable pageable);
-
 
     //@Query(value = "SELECT u FROM User u JOIN FETCH u.city c WHERE c.name LIKE %:city%", countQuery = "SELECT count(u) FROM User u JOIN u.city c WHERE c.name LIKE %:city%", nativeQuery = true)
     //Page<User> findUsersByCity_Name(Param("city")String city, Pageable pageable);
