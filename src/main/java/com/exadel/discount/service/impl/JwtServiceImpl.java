@@ -4,7 +4,6 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.exadel.discount.service.JwtGenerationService;
 import com.exadel.discount.service.JwtService;
-import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -19,7 +18,6 @@ import java.util.stream.Collectors;
 
 @Service
 @Setter
-@Getter
 @Slf4j
 public class JwtServiceImpl implements JwtService, JwtGenerationService {
     private final String ROLES_CLAIM_NAME = "role";
