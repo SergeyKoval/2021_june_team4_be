@@ -11,5 +11,6 @@ public class LocationDTO {
     /*private CountryDTO country;
     private CityDTO city;*/
     private String contact;
-    private String coordinates;
+    private Double coordinateX;
+    private Double coordinateY;
 }
