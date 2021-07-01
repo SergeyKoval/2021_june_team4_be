@@ -56,7 +56,9 @@ public class TagServiceImpl implements TagService {
     @Override
     public void deleteTagById(UUID id) {
         log.debug("Deleting Tag");
-
+        tagRepository
+                .findById(id)
+                .orElseThrow(() -> new NotFoundException(String.format("Tag with id %s not found", id)));
         tagRepository.deleteById(id);
         log.debug("Successfully deleted Tag");
     }
