@@ -10,7 +10,7 @@ import javax.validation.constraints.Size;
 @Data
 public class CreateVendorDTO {
     @NotBlank
-    @Size(max = 50)
+    @Size(max = 50, message = "Vendor name should be shorted than {max}")
     private String name;
     private String description;
 }
