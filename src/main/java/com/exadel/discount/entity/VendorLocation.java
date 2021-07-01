@@ -38,8 +38,11 @@ public class VendorLocation {
     @Column(name = "contact", length = 50)
     private String contact;
 
-    @Column(name = "coordinates")
-    private String coordinates;
+    @Column(name = "coordinate_x")
+    private Double coordinateX;
+
+    @Column(name = "coordinate_y")
+    private Double coordinateY;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "vendor_id")

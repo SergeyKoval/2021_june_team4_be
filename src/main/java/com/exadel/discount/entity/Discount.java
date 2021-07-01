@@ -51,8 +51,12 @@ public class Discount {
     private LocalDateTime startTime;
     @Column(name = "end_time")
     private LocalDateTime endTime;
-    @Column(name = "active")
+    @Column(name = "active", columnDefinition = "boolean default false")
     private boolean active;
+    @Column(name = "archived", columnDefinition = "boolean default false")
+    private boolean archived;
+    @Column(name = "gets_number", columnDefinition = "integer default 0")
+    private Integer getsNumber;
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(

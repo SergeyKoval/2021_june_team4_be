@@ -2,6 +2,7 @@ spring:
   jpa:
     show-sql: true
     hibernate:
-      ddl-auto: update
+      ddl-auto: validate
+    open-in-view: false
   datasource:
     driver-class-name: org.postgresql.Driver
