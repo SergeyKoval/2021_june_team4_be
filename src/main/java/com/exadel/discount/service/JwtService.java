@@ -4,6 +4,4 @@ public interface JwtService {
     String getSubject(String token);
 
     String getRole(String token);
-
-    boolean isTokenRefreshOne(String givenRole);
 }

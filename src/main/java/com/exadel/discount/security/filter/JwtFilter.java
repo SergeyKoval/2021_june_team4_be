@@ -1,9 +1,10 @@
 package com.exadel.discount.security.filter;
 
-import com.exadel.discount.service.JwtService;
+import com.exadel.discount.service.impl.JwtServiceImpl;
 import com.exadel.discount.service.impl.UserDetailsServiceImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
@@ -33,7 +34,7 @@ public class JwtFilter extends OncePerRequestFilter {
     private final String AUTHORIZATION_HEADER_TYPE = "Bearer ";
 
     private final UserDetailsServiceImpl userDetailsService;
-    private final JwtService jwtService;
+    private final JwtServiceImpl jwtService;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
@@ -49,7 +50,7 @@ public class JwtFilter extends OncePerRequestFilter {
             if (isNoneEmpty(givenUsername)) {
                 final UserDetails userDetails = userDetailsService.loadUserByUsername(givenUsername);
 
-                Collection<? extends GrantedAuthority> permissions = jwtService.isTokenRefreshOne(givenRole) ?
+                Collection<? extends GrantedAuthority> permissions = StringUtils.equals(givenRole, jwtService.REFRESH_ROLE) ?
                         Collections.singletonList(new SimpleGrantedAuthority(givenRole)) : userDetails.getAuthorities();
 
                 UsernamePasswordAuthenticationToken authentication =
@@ -62,3 +63,4 @@ public class JwtFilter extends OncePerRequestFilter {
         filterChain.doFilter(request, response);
     }
 }
+

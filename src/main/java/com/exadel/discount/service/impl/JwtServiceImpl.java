@@ -7,7 +7,6 @@ import com.exadel.discount.service.JwtGenerationService;
 import com.exadel.discount.service.JwtService;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -21,7 +20,7 @@ import java.util.Date;
 @Slf4j
 public class JwtServiceImpl implements JwtService, JwtGenerationService {
     private final String ROLES_CLAIM_NAME = "role";
-    private final String REFRESH_ROLE = "ROLE_REFRESH";
+    public final String REFRESH_ROLE = "ROLE_REFRESH";
 
     @Value("${jwt.token.expiration.seconds.access}")
     private long ACCESS_TOKEN_EXPIRATION_TIME;
@@ -45,12 +44,6 @@ public class JwtServiceImpl implements JwtService, JwtGenerationService {
                 .build().verify(token)
                 .getClaim(ROLES_CLAIM_NAME)
                 .asString();
-    }
-
-    @Override
-    public boolean isTokenRefreshOne(String givenRole) {
-        log.debug("checking a token for the refresh affiliation");
-        return StringUtils.equals(givenRole, REFRESH_ROLE);
     }
 
     @Override
