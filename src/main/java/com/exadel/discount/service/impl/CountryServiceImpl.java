@@ -45,7 +45,8 @@ public class CountryServiceImpl implements CountryService {
     public CountryDTO findByName(String name) {
         log.debug("Finding Country by Name");
 
-        CountryDTO countryDTO = countryMapper.countryToCountryDTO(countryRepository.findByName(name));
+        CountryDTO countryDTO = countryMapper.countryToCountryDTO(countryRepository.findByName(name)
+                .orElseThrow(() -> new NotFoundException(String.format("Country with name %s not found", name))));
 
         log.debug("Country successfully found by Name");
         return countryDTO;

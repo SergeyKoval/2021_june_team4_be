@@ -57,12 +57,13 @@ public class CityServiceImpl implements CityService {
     @Override
     public CityDTO findByName(String name) {
         log.debug("Finding City by Name");
-
-        CityDTO cityDTO = cityMapper.cityToCityDTO(cityRepository.findAll()
-                .stream()
-                .filter(s -> s.getName().equals(name))
-                .findFirst()
+        CityDTO cityDTO = cityMapper.cityToCityDTO(cityRepository.findByName(name)
                 .orElseThrow(() -> new NotFoundException(String.format("City with name %s not found", name))));
+//        CityDTO cityDTO = cityMapper.cityToCityDTO(cityRepository.findAll()
+//                .stream()
+//                .filter(s -> s.getName().equals(name))
+//                .findFirst()
+//                .orElseThrow(() -> new NotFoundException(String.format("City with name %s not found", name))));
 
         log.debug("City successfully found by Name");
         return cityDTO;

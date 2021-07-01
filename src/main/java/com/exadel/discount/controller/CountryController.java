@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.constraints.NotNull;
 import java.util.List;
 import java.util.UUID;
 
@@ -31,17 +32,17 @@ public class CountryController {
 
     @GetMapping("/{id}")
     @ApiOperation("Get country by ID")
-    public CountryDTO getCountryById(@PathVariable UUID id) {
+    public CountryDTO getCountryById(@PathVariable @NotNull final UUID id) {
         return countryService.findById(id);
     }
 
     @DeleteMapping("/{id}")
     @ApiOperation("Delete country by ID")
-    public void deleteCountry(@PathVariable UUID id) {
+    public void deleteCountry(@PathVariable @NotNull final UUID id) {
         countryService.deleteById(id);
     }
 
-    @GetMapping("/")
+    @GetMapping("/name")
     @ApiOperation("Get country by Name")
     public CountryDTO getCountryByName(@RequestParam("name") String name) {
         return countryService.findByName(name);

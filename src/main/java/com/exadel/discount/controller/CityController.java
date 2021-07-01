@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.constraints.NotNull;
 import java.util.List;
 import java.util.UUID;
 
@@ -42,13 +43,13 @@ public class CityController {
 
     @GetMapping("/{id}")
     @ApiOperation("Get city by ID")
-    public CityDTO getCityById(@PathVariable UUID id) {
+    public CityDTO getCityById(@PathVariable @NotNull final UUID id) {
         return cityService.findById(id);
     }
 
     @DeleteMapping("/{id}")
     @ApiOperation("Delete city by ID")
-    public void deleteCity(@PathVariable UUID id) {
+    public void deleteCity(@PathVariable @NotNull final UUID id) {
         cityService.deleteById(id);
     }
 }

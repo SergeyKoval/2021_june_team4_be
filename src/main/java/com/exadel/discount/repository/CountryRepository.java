@@ -19,5 +19,5 @@ public interface CountryRepository extends JpaRepository<Country, UUID> {
     Optional<Country> findById(UUID id);
 
     @EntityGraph(attributePaths = {"cities"})
-    Country findByName(String name);
+    Optional<Country> findByName(String name);
 }
