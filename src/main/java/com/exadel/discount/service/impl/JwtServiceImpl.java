@@ -2,6 +2,7 @@ package com.exadel.discount.service.impl;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
+import com.exadel.discount.exception.NotFoundException;
 import com.exadel.discount.service.JwtGenerationService;
 import com.exadel.discount.service.JwtService;
 import lombok.Setter;
@@ -10,6 +11,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
@@ -62,7 +64,8 @@ public class JwtServiceImpl implements JwtService, JwtGenerationService {
                 userDetails.getAuthorities()
                         .stream()
                         .map(GrantedAuthority::getAuthority)
-                        .collect(Collectors.joining(" ")));
+                        .findFirst()
+                        .orElseThrow(() -> new NotFoundException("User does not have any role")));
     }
 
     @Override
