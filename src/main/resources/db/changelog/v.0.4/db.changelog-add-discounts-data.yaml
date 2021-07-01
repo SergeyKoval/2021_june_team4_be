@@ -1,0 +1,215 @@
+databaseChangeLog:
+  - changeSet:
+      id: add-discounts-data
+      author: elizaveta_dubogryz
+      changes:
+        - insert:
+            tableName: discounts
+            columns:
+              - column:
+                  name: id
+                  value: "5f69268b-705e-4fb9-8147-722b4ec1d9da"
+              - column:
+                  name: category_id
+                  value: "5a009936-ac14-4b4b-9121-3638122ea6b5"
+              - column:
+                  name: name
+                  value: "Discount on yoga weekdays"
+              - column:
+                  name: description
+                  value: "Discount's description"
+              - column:
+                  name: percent
+                  value: 25
+              - column:
+                  name: start_time
+                  value: "2021-07-20T00:00:00"
+              - column:
+                  name: end_time
+                  value: "2021-08-20T00:00:00"
+              - column:
+                  name: promo
+                  value: "1abcde1"
+              - column:
+                  name: vendor_id
+                  value: "3633f3cf-7208-4d67-923d-ce6b2cec29e2"
+        - insert:
+            tableName: discounts
+            columns:
+              - column:
+                  name: id
+                  value: "779c30b2-06f9-43d1-87e0-edf4a31784f4"
+              - column:
+                  name: category_id
+                  value: "5a009936-ac14-4b4b-9121-3638122ea6b5"
+              - column:
+                  name: name
+                  value: "Discount on all sports weekends"
+              - column:
+                  name: description
+                  value: "Discount's description"
+              - column:
+                  name: percent
+                  value: 20
+              - column:
+                  name: start_time
+                  value: "2021-06-20T00:00:00"
+              - column:
+                  name: end_time
+                  value: "2021-07-10T00:00:00"
+              - column:
+                  name: promo
+                  value: "1abcde1"
+              - column:
+                  name: vendor_id
+                  value: "3633f3cf-7208-4d67-923d-ce6b2cec29e2"
+        - insert:
+            tableName: discounts
+            columns:
+              - column:
+                  name: id
+                  value: "20a01536-1475-4809-9d2b-56cce28588bf"
+              - column:
+                  name: category_id
+                  value: "5a009936-ac14-4b4b-9121-3638122ea6b5"
+              - column:
+                  name: name
+                  value: "Discount on fitness weekdays mornings"
+              - column:
+                  name: description
+                  value: "Discount's description"
+              - column:
+                  name: percent
+                  value: 5
+              - column:
+                  name: start_time
+                  value: "2021-06-25T00:00:00"
+              - column:
+                  name: end_time
+                  value: "2021-07-15T00:00:00"
+              - column:
+                  name: promo
+                  value: "1abcde1"
+              - column:
+                  name: vendor_id
+                  value: "3633f3cf-7208-4d67-923d-ce6b2cec29e2"
+        - insert:
+            tableName: discounts
+            columns:
+              - column:
+                  name: id
+                  value: "bdcfb249-7829-4c71-bf6c-c74b25ec09b3"
+              - column:
+                  name: category_id
+                  value: "c7737489-01a2-46c3-928c-c4ddc73de7ef"
+              - column:
+                  name: name
+                  value: "Discount on makeup weekdays 14:00-17:00"
+              - column:
+                  name: description
+                  value: "Discount's description"
+              - column:
+                  name: percent
+                  value: 15
+              - column:
+                  name: start_time
+                  value: "2021-06-20T00:00:00"
+              - column:
+                  name: end_time
+                  value: "2021-07-20T00:00:00"
+              - column:
+                  name: promo
+                  value: "1abcde1"
+              - column:
+                  name: vendor_id
+                  value: "db19d31a-67d9-4ab7-9fd5-79ae594ff4e3"
+        - insert:
+            tableName: discounts
+            columns:
+              - column:
+                  name: id
+                  value: "dd5877e8-8b5a-44dd-9e4f-4675c3ba6adc"
+              - column:
+                  name: category_id
+                  value: "c7737489-01a2-46c3-928c-c4ddc73de7ef"
+              - column:
+                  name: name
+                  value: "Discount on nails weekends 10:00-12:00"
+              - column:
+                  name: description
+                  value: "Discount's description"
+              - column:
+                  name: percent
+                  value: 25
+              - column:
+                  name: start_time
+                  value: "2021-07-07T00:00:00"
+              - column:
+                  name: end_time
+                  value: "2021-07-25T00:00:00"
+              - column:
+                  name: promo
+                  value: "1abcde1"
+              - column:
+                  name: vendor_id
+                  value: "db19d31a-67d9-4ab7-9fd5-79ae594ff4e3"
+        - insert:
+            tableName: discounts
+            columns:
+              - column:
+                  name: id
+                  value: "490cf36f-e22e-41a0-b2bb-ff6b578f29d9"
+              - column:
+                  name: category_id
+                  value: "c7737489-01a2-46c3-928c-c4ddc73de7ef"
+              - column:
+                  name: name
+                  value: "Discount on all beauty weekdays 8:00-12:00"
+              - column:
+                  name: description
+                  value: "Discount's description"
+              - column:
+                  name: percent
+                  value: 33
+              - column:
+                  name: start_time
+                  value: "2021-06-28T00:00:00"
+              - column:
+                  name: end_time
+                  value: "2021-07-07T00:00:00"
+              - column:
+                  name: promo
+                  value: "1abcde1"
+              - column:
+                  name: vendor_id
+                  value: "db19d31a-67d9-4ab7-9fd5-79ae594ff4e3"
+        - insert:
+            tableName: discounts
+            columns:
+              - column:
+                  name: id
+                  value: "670246e6-5c73-4b47-9cdc-5005f7ad4fc9"
+              - column:
+                  name: category_id
+                  value: "93577f24-f68f-403e-aa04-0a60c3a445d8"
+              - column:
+                  name: name
+                  value: "Discount on pizza and sushi everyday 14:00-18:00"
+              - column:
+                  name: description
+                  value: "Discount's description"
+              - column:
+                  name: percent
+                  value: 20
+              - column:
+                  name: start_time
+                  value: "2021-06-20T00:00:00"
+              - column:
+                  name: end_time
+                  value: "2021-07-21T00:00:00"
+              - column:
+                  name: promo
+                  value: "1abcde1"
+              - column:
+                  name: vendor_id
+                  value: "2a45c583-1b63-4a95-9f35-62be759e4680"

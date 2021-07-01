@@ -1,0 +1,27 @@
+databaseChangeLog:
+  - changeSet:
+      id: add-gets-number-column
+      author: elizaveta_dubogryz
+      changes:
+        - addColumn:
+            tableName: discounts
+            columns:
+              - column:
+                  name: gets_number
+                  type: integer
+                  defaultValue: 0
+                  constraints:
+                    nullable: false
+  - changeSet:
+      id: change-active-default
+      author: elizaveta_dubogryz
+      changes:
+        - dropDefaultValue:
+            tableName: discounts
+            columnDataType: boolean
+            columnName: active
+        - addDefaultValue:
+            tableName: discounts
+            columnDataType: boolean
+            columnName: active
+            defaultValueBoolean: false

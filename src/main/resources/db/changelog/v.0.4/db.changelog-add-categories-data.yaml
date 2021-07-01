@@ -1,0 +1,32 @@
+databaseChangeLog:
+  - changeSet:
+      id: add-categories-data
+      author: elizaveta_dubogryz
+      changes:
+        - insert:
+            tableName: categories
+            columns:
+              - column:
+                  name: id
+                  value: "5a009936-ac14-4b4b-9121-3638122ea6b5"
+              - column:
+                  name: name
+                  value: "Sport"
+        - insert:
+            tableName: categories
+            columns:
+              - column:
+                  name: id
+                  value: "c7737489-01a2-46c3-928c-c4ddc73de7ef"
+              - column:
+                  name: name
+                  value: "Beauty"
+        - insert:
+            tableName: categories
+            columns:
+              - column:
+                  name: id
+                  value: "93577f24-f68f-403e-aa04-0a60c3a445d8"
+              - column:
+                  name: name
+                  value: "Food"
