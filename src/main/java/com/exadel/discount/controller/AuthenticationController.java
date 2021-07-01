@@ -25,9 +25,8 @@ public class AuthenticationController {
     private final UserDetailsServiceImpl userDetailsService;
     private final JwtGenerationService jwtGenerationService;
 
-
     @PostMapping("/login")
-    public ResponseEntity<AuthenticationResponse> createAuthenticationToken(@RequestBody AuthenticationRequest request) {
+    public AuthenticationResponse createAuthenticationToken(@RequestBody AuthenticationRequest request) {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         request.getUsername(),
@@ -35,25 +34,20 @@ public class AuthenticationController {
                 ));
         final UserDetails userDetails = userDetailsService.loadUserByUsername(request.getUsername());
 
-        AuthenticationResponse authenticationResponse = AuthenticationResponse.builder()
+        return AuthenticationResponse.builder()
                 .accessToken(jwtGenerationService.generateAccessToken(userDetails))
                 .refreshToken(jwtGenerationService.generateRefreshToken(userDetails))
                 .build();
-
-        return ResponseEntity.ok(authenticationResponse);
     }
-
 
     @RefreshAccess
     @PostMapping("/refresh")
-    public ResponseEntity<RefreshResponse> refreshToken() {
+    public RefreshResponse refreshToken() {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         UserDetails userDetails = this.userDetailsService.loadUserByUsername(username);
 
-        RefreshResponse refreshResponse = RefreshResponse.builder()
+        return RefreshResponse.builder()
                 .accessToken(jwtGenerationService.generateAccessToken(userDetails))
                 .build();
-
-        return ResponseEntity.ok(refreshResponse);
     }
 }

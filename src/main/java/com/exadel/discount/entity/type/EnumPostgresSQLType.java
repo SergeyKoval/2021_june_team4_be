@@ -1,4 +1,4 @@
-package com.exadel.discount.config;
+package com.exadel.discount.entity.type;
 
 import org.hibernate.HibernateException;
 import org.hibernate.engine.spi.SharedSessionContractImplementor;
