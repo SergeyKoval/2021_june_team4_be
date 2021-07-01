@@ -1,6 +1,6 @@
 package com.exadel.discount.entity;
 
-import com.exadel.discount.config.EnumPostgresSQLType;
+import com.exadel.discount.entity.type.EnumPostgresSQLType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -36,8 +36,10 @@ public class User {
     )
     private UUID id;
 
+    @Column(name = "email", length = 50, nullable = false)
     private String email;
 
+    @Column(name = "password", length = 225, nullable = false)
     private String password;
 
     @Enumerated(EnumType.STRING)
