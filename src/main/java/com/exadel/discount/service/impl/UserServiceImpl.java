@@ -23,6 +23,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 @AllArgsConstructor
@@ -67,7 +68,8 @@ public class UserServiceImpl implements UserService {
         Page<User> userList;
         log.debug("Getting sorted page-list of Users by role");
         List<String> enumValues = List.of(Arrays.toString(Role.values()));
-        if (List.of(Arrays.toString(Role.values())).stream().anyMatch(e -> e.equals(roleFilter.toUpperCase()))) {
+        if (//List.of(Arrays.toString(Role.values())).contains(roleFilter.toUpperCase())
+        Stream.of(Role.values()).anyMatch(e -> e.toString().equals(roleFilter.toUpperCase()))) {
             userList = userRepository.findUserByRole(Role.valueOf(roleFilter.toUpperCase()), paging);
         } else
             throw new NotFoundException(String.format("No User with role %s is found", roleFilter));
