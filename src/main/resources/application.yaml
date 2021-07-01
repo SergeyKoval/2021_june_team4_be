@@ -7,7 +7,11 @@ spring:
     driver-class-name: org.postgresql.Driver
 
 jwt:
-  expiration:
-    seconds:
-      access: 120
-      refresh: 3600
+  access:
+    expiration:
+      seconds: 120
+  refresh:
+    expiration:
+      seconds: 3600
+  encryption:
+    key: encryptionSecret

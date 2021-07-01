@@ -23,13 +23,14 @@ import java.util.stream.Collectors;
 @Slf4j
 public class JwtServiceImpl implements JwtService, JwtGenerationService {
     private final String ROLES_CLAIM_NAME = "role";
-    private final String TOKEN_ENCRYPTION_KEY = "encryptionSecret";
     private final String REFRESH_ROLE = "ROLE_REFRESH";
 
-    @Value("${jwt.expiration.seconds.access}")
+    @Value("${jwt.access.expiration.seconds}")
     private long ACCESS_TOKEN_EXPIRATION_TIME;
-    @Value("${jwt.expiration.seconds.refresh}")
+    @Value("${jwt.refresh.expiration.seconds}")
     private long REFRESH_TOKEN_EXPIRATION_TIME;
+    @Value("${jwt.encryption.key}")
+    private String TOKEN_ENCRYPTION_KEY;
 
     @Override
     public String getSubject(String token) {
