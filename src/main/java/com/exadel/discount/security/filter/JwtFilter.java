@@ -5,12 +5,12 @@ import com.exadel.discount.service.impl.UserDetailsServiceImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import org.springframework.http.HttpHeaders;
-import org.springframework.security.authentication.AbstractAuthenticationToken;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
-import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -19,6 +19,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Collection;
 import java.util.Collections;
 
 import static org.apache.commons.lang3.StringUtils.startsWith;
@@ -41,29 +42,23 @@ public class JwtFilter extends OncePerRequestFilter {
 
         if (SecurityContextHolder.getContext().getAuthentication() == null
                 && startsWith(authorizationHeader, AUTHORIZATION_HEADER_TYPE)) {
-            final String token = substringAfter(authorizationHeader, " ");
+            final String token = substringAfter(authorizationHeader, AUTHORIZATION_HEADER_TYPE);
             final String givenUsername = jwtService.getSubject(token);
             final String givenRole = jwtService.getRole(token);
 
             if (isNoneEmpty(givenUsername)) {
                 final UserDetails userDetails = userDetailsService.loadUserByUsername(givenUsername);
 
-                if (jwtService.isTokenRefreshOne(givenRole)) {
-                    AbstractAuthenticationToken authentication = new PreAuthenticatedAuthenticationToken(userDetails, null,
-                            Collections.singletonList(new SimpleGrantedAuthority(givenRole)));
-                    setAuthentication(authentication, request);
-                } else {
-                    AbstractAuthenticationToken authentication = new PreAuthenticatedAuthenticationToken(userDetails, null,
-                            userDetails.getAuthorities());
-                    setAuthentication(authentication, request);
-                }
+                Collection<? extends GrantedAuthority> permissions = jwtService.isTokenRefreshOne(givenRole) ?
+                        Collections.singletonList(new SimpleGrantedAuthority(givenRole)) : userDetails.getAuthorities();
+
+                UsernamePasswordAuthenticationToken authentication =
+                        new UsernamePasswordAuthenticationToken(userDetails, null, permissions);
+
+                authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                SecurityContextHolder.getContext().setAuthentication(authentication);
             }
         }
         filterChain.doFilter(request, response);
-    }
-
-    private void setAuthentication(AbstractAuthenticationToken authentication, HttpServletRequest request) {
-        authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-        SecurityContextHolder.getContext().setAuthentication(authentication);
     }
 }

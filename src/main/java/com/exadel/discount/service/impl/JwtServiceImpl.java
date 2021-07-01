@@ -38,8 +38,6 @@ public class JwtServiceImpl implements JwtService {
     @Override
     public boolean isTokenRefreshOne(String givenRole) {
         log.debug("checking a token for the refresh affiliation");
-        System.out.println(givenRole + " " +REFRESH_ROLE);
-        System.out.println(StringUtils.equals(givenRole, REFRESH_ROLE));
         return StringUtils.equals(givenRole, REFRESH_ROLE);
     }
 }
