@@ -23,11 +23,11 @@ public class JwtServiceImpl implements JwtService, JwtGenerationService {
     private final String ROLES_CLAIM_NAME = "role";
     private final String REFRESH_ROLE = "ROLE_REFRESH";
 
-    @Value("${jwt.access.expiration.seconds}")
+    @Value("${jwt.token.expiration.seconds.access}")
     private long ACCESS_TOKEN_EXPIRATION_TIME;
-    @Value("${jwt.refresh.expiration.seconds}")
+    @Value("${jwt.token.expiration.seconds.refresh}")
     private long REFRESH_TOKEN_EXPIRATION_TIME;
-    @Value("${jwt.encryption.key}")
+    @Value("${jwt.token.encryption.key}")
     private String TOKEN_ENCRYPTION_KEY;
 
     @Override
