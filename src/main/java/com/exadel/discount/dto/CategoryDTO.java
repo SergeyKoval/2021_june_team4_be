@@ -13,5 +13,4 @@ public class CategoryDTO {
     private UUID id;
     @NotBlank(groups = Create.class, message = "Category name should be not blank")
     private String name;
-
 }

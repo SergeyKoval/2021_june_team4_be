@@ -42,5 +42,4 @@ public class Vendor {
 
     @OneToMany(cascade = CascadeType.REMOVE, mappedBy = "vendor")
     private Set<Discount> discounts;
-
 }

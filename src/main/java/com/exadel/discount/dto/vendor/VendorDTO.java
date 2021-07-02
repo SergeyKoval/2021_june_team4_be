@@ -20,5 +20,4 @@ public class VendorDTO {
     private String name;
     private String description;
     private Set<LocationDTO> vendorLocations;
-
 }
