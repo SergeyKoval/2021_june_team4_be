@@ -1,13 +1,13 @@
 databaseChangeLog:
   - changeSet:
-      id: add-gets-number-column
+      id: add-view-number-column
       author: elizaveta_dubogryz
       changes:
         - addColumn:
             tableName: discounts
             columns:
               - column:
-                  name: gets_number
+                  name: view_number
                   type: integer
                   defaultValue: 0
                   constraints:
@@ -25,3 +25,16 @@ databaseChangeLog:
             columnDataType: boolean
             columnName: active
             defaultValueBoolean: false
+  - changeSet:
+      id: add-archived-column
+      author: elizaveta_dubogryz
+      changes:
+        - addColumn:
+            tableName: discounts
+            columns:
+              - column:
+                  name: archived
+                  type: boolean
+                  defaultValue: false
+                  constraints:
+                    nullable: false

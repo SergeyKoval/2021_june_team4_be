@@ -1,10 +1,13 @@
 databaseChangeLog:
   - changeSet:
-      id: drop-coordinates-column
+      id: drop-coordinates-contact-columns
       author: elizaveta_dubogryz
       changes:
         - dropColumn:
             columnName: coordinates
+            tableName: vendor_locations
+        - dropColumn:
+            columnName: contact
             tableName: vendor_locations
   - changeSet:
       id: add-new-coordinates-columns

@@ -21,9 +21,6 @@ databaseChangeLog:
               - column:
                   name: coordinate_y
                   value: 30.457407824186795
-              - column:
-                  name: contact
-                  value: "+380991111111"
         - insert:
             tableName: vendor_locations
             columns:
@@ -42,9 +39,6 @@ databaseChangeLog:
               - column:
                   name: coordinate_y
                   value: 24.02843878199858
-              - column:
-                  name: contact
-                  value: "+380991111111"
         - insert:
             tableName: vendor_locations
             columns:
@@ -63,9 +57,6 @@ databaseChangeLog:
               - column:
                   name: coordinate_y
                   value: 27.58595845833772
-              - column:
-                  name: contact
-                  value: "+380991111111"
         - insert:
             tableName: vendor_locations
             columns:
@@ -84,9 +75,6 @@ databaseChangeLog:
               - column:
                   name: coordinate_y
                   value: 30.510264869895984
-              - column:
-                  name: contact
-                  value: "+380991111111"
         - insert:
             tableName: vendor_locations
             columns:
@@ -105,9 +93,6 @@ databaseChangeLog:
               - column:
                   name: coordinate_y
                   value: 36.23949910662686
-              - column:
-                  name: contact
-                  value: "+380991111111"
         - insert:
             tableName: vendor_locations
             columns:
@@ -126,9 +111,6 @@ databaseChangeLog:
               - column:
                   name: coordinate_y
                   value: 30.744292465152558
-              - column:
-                  name: contact
-                  value: "+380991111111"
         - insert:
             tableName: vendor_locations
             columns:
@@ -147,9 +129,6 @@ databaseChangeLog:
               - column:
                   name: coordinate_y
                   value: 24.02729195965408
-              - column:
-                  name: contact
-                  value: "+380991111111"
         - insert:
             tableName: vendor_locations
             columns:
@@ -168,9 +147,6 @@ databaseChangeLog:
               - column:
                   name: coordinate_y
                   value: 27.5582596086718
-              - column:
-                  name: contact
-                  value: "+380991111111"
         - insert:
             tableName: vendor_locations
             columns:
@@ -189,6 +165,3 @@ databaseChangeLog:
               - column:
                   name: coordinate_y
                   value: 21.0185391426144
-              - column:
-                  name: contact
-                  value: "+380991111111"

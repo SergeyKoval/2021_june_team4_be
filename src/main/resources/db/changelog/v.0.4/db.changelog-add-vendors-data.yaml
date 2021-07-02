@@ -15,6 +15,9 @@ databaseChangeLog:
               - column:
                   name: description
                   value: "Sport club"
+              - column:
+                  name: contacts
+                  value: "+380991111111"
         - insert:
             tableName: vendors
             columns:
@@ -27,6 +30,9 @@ databaseChangeLog:
               - column:
                   name: description
                   value: "Pizza and sushi restaurant"
+              - column:
+                  name: contacts
+                  value: "+380991111111"
         - insert:
             tableName: vendors
             columns:
@@ -39,3 +45,6 @@ databaseChangeLog:
               - column:
                   name: description
                   value: "Beauty salon"
+              - column:
+                  name: contacts
+                  value: "+380991111111"
