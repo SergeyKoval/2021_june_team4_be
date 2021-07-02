@@ -8,9 +8,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
@@ -33,6 +31,5 @@ public class CreateDiscountDTO {
     @NotNull(message = "Vendor should be not null")
     private UUID vendorId;
     private Set<UUID> tagIds = new HashSet<>();
-    @NotNull(message = "Discount should have at least one location")
-    private Set<UUID> vendorLocationsIds;
+    private Set<UUID> vendorLocationsIds = new HashSet<>();
 }
