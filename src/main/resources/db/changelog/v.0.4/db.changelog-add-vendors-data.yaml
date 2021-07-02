@@ -1,0 +1,50 @@
+databaseChangeLog:
+  - changeSet:
+      id: add-vendors-data
+      author: elizaveta_dubogryz
+      changes:
+        - insert:
+            tableName: vendors
+            columns:
+              - column:
+                  name: id
+                  value: "3633f3cf-7208-4d67-923d-ce6b2cec29e2"
+              - column:
+                  name: name
+                  value: "SportLife"
+              - column:
+                  name: description
+                  value: "Sport club"
+              - column:
+                  name: contacts
+                  value: "+380991111111"
+        - insert:
+            tableName: vendors
+            columns:
+              - column:
+                  name: id
+                  value: "2a45c583-1b63-4a95-9f35-62be759e4680"
+              - column:
+                  name: name
+                  value: "Mister Cat"
+              - column:
+                  name: description
+                  value: "Pizza and sushi restaurant"
+              - column:
+                  name: contacts
+                  value: "+380991111111"
+        - insert:
+            tableName: vendors
+            columns:
+              - column:
+                  name: id
+                  value: "db19d31a-67d9-4ab7-9fd5-79ae594ff4e3"
+              - column:
+                  name: name
+                  value: "Flow"
+              - column:
+                  name: description
+                  value: "Beauty salon"
+              - column:
+                  name: contacts
+                  value: "+380991111111"
