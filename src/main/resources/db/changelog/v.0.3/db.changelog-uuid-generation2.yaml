@@ -1,0 +1,11 @@
+databaseChangeLog:
+  - changeSet:
+      id: 36-uuid-generation-discounts-locations
+      author: nikolay_chornyi
+      changes:
+        - sql:
+            sql: CREATE EXTENSION IF NOT EXISTS "uuid-ossp"
+        - addDefaultValue:
+            tableName: discounts_locations
+            columnName: id
+            defaultValueComputed: uuid_generate_v4()

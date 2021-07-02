@@ -1,0 +1,7 @@
+databaseChangeLog:
+  - include:
+      file: db.changelog-uuid-generation2.yaml
+      relativeToChangelogFile: true
+  - include:
+      file: db.changelog-add-vendor-to-discount.yaml
+      relativeToChangelogFile: true
