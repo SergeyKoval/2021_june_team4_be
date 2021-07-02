@@ -13,7 +13,7 @@ public interface VendorLocationService {
 
     LocationDTO getById(UUID id);
 
-    List<LocationDTO> getAll(UUID vendorId);
+    List<LocationDTO> getLocationsByVendorId(UUID vendorId);
 
     void deleteById(UUID locationId);
 }
