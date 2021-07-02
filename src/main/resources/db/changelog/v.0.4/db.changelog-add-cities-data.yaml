@@ -1,0 +1,89 @@
+databaseChangeLog:
+  - changeSet:
+      id: add-cities-data
+      author: elizaveta_dubogryz
+      changes:
+        - insert:
+            tableName: cities
+            columns:
+              - column:
+                  name: id
+                  value: "c6a9f8a9-0494-4f51-9c2a-189307ad0cfd"
+              - column:
+                  name: name
+                  value: "Kyiv"
+              - column:
+                  name: country_id
+                  value: "b49abef5-83fe-4d0c-9927-c0aaaf49a2b7"
+        - insert:
+            tableName: cities
+            columns:
+              - column:
+                  name: id
+                  value: "f8d42353-1676-4db7-9bda-2bdc9ffb323c"
+              - column:
+                  name: name
+                  value: "Lviv"
+              - column:
+                  name: country_id
+                  value: "b49abef5-83fe-4d0c-9927-c0aaaf49a2b7"
+        - insert:
+            tableName: cities
+            columns:
+              - column:
+                  name: id
+                  value: "658b74f2-4fb5-4b9d-a87f-0b8f44f06f09"
+              - column:
+                  name: name
+                  value: "Kharkiv"
+              - column:
+                  name: country_id
+                  value: "b49abef5-83fe-4d0c-9927-c0aaaf49a2b7"
+        - insert:
+            tableName: cities
+            columns:
+              - column:
+                  name: id
+                  value: "489cd7f8-870c-4dd1-abc8-e31145a15c5c"
+              - column:
+                  name: name
+                  value: "Odesa"
+              - column:
+                  name: country_id
+                  value: "b49abef5-83fe-4d0c-9927-c0aaaf49a2b7"
+        - insert:
+            tableName: cities
+            columns:
+              - column:
+                  name: id
+                  value: "794a4106-ff4d-44bb-960a-3dec50b033ab"
+              - column:
+                  name: name
+                  value: "Minsk"
+              - column:
+                  name: country_id
+                  value: "13e43451-6b1b-4e0f-bc61-8d903d226617"
+        - insert:
+            tableName: cities
+            columns:
+              - column:
+                  name: id
+                  value: "825fe88e-9c92-4643-b116-333e3d5528d7"
+              - column:
+                  name: name
+                  value: "Gomel"
+              - column:
+                  name: country_id
+                  value: "13e43451-6b1b-4e0f-bc61-8d903d226617"
+        - insert:
+            tableName: cities
+            columns:
+              - column:
+                  name: id
+                  value: "6f04da4d-285e-4578-9553-c0aff173a272"
+              - column:
+                  name: name
+                  value: "Warsaw"
+              - column:
+                  name: country_id
+                  value: "ec62f606-7de5-443a-8d37-cee82134c6cf"

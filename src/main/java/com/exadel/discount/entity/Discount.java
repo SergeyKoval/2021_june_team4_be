@@ -41,18 +41,30 @@ public class Discount {
 
     @Column(name = "name", length = 50, nullable = false)
     private String name;
+
     @Column(name = "description")
     private String description;
+
     @Column(name = "promo", length = 50, nullable = false)
     private String promo;
+
     @Column(name = "percent")
     private Integer percent;
+
     @Column(name = "start_time")
     private LocalDateTime startTime;
+
     @Column(name = "end_time")
     private LocalDateTime endTime;
-    @Column(name = "active")
+
+    @Column(name = "active", columnDefinition = "boolean default false")
     private boolean active;
+
+    @Column(name = "archived", columnDefinition = "boolean default false")
+    private boolean archived;
+
+    @Column(name = "view_number", columnDefinition = "integer default 0")
+    private Integer viewNumber = 0;
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(

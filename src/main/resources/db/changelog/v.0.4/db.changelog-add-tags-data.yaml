@@ -1,0 +1,59 @@
+databaseChangeLog:
+  - changeSet:
+      id: add-tags-data
+      author: elizaveta_dubogryz
+      changes:
+        - insert:
+            tableName: tags
+            columns:
+              - column:
+                  name: id
+                  value: "3a7d3fb1-c694-4d8a-9a78-176864405cdc"
+              - column:
+                  name: name
+                  value: "Pizza"
+        - insert:
+            tableName: tags
+            columns:
+              - column:
+                  name: id
+                  value: "452e5fc0-100a-41e9-951d-ba51f06a795e"
+              - column:
+                  name: name
+                  value: "Sushi"
+        - insert:
+            tableName: tags
+            columns:
+              - column:
+                  name: id
+                  value: "bf48f42a-8110-42fd-b989-df90ed24c56e"
+              - column:
+                  name: name
+                  value: "Nails"
+        - insert:
+            tableName: tags
+            columns:
+              - column:
+                  name: id
+                  value: "46868e13-ea9d-42d1-8811-29413b1d1763"
+              - column:
+                  name: name
+                  value: "Makeup"
+        - insert:
+            tableName: tags
+            columns:
+              - column:
+                  name: id
+                  value: "537edc43-1616-4622-bf45-7b060e6d6471"
+              - column:
+                  name: name
+                  value: "Fitness"
+        - insert:
+            tableName: tags
+            columns:
+              - column:
+                  name: id
+                  value: "b28349b5-0b39-45ee-bb3c-4f96c1abfe75"
+              - column:
+                  name: name
+                  value: "Yoga"
