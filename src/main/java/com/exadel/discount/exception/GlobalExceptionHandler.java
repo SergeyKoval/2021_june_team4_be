@@ -2,7 +2,9 @@ package com.exadel.discount.exception;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -15,14 +17,13 @@ import java.util.stream.Collectors;
 @ControllerAdvice
 @Slf4j
 public class GlobalExceptionHandler {
-
     @ExceptionHandler(NotFoundException.class)
     @ResponseBody
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public ExceptionDetails handleException(NotFoundException notFoundException) {
-        log.error("Exception stack trace: ", notFoundException);
+    public ExceptionDetails handleException(NotFoundException exception) {
+        log.error("Exception stack trace: ", exception);
 
-        return new ExceptionDetails(notFoundException.getMessage());
+        return new ExceptionDetails(exception.getMessage());
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
@@ -42,13 +43,40 @@ public class GlobalExceptionHandler {
         return exceptionDetailsList;
     }
 
-    @ExceptionHandler(AuthenticationException.class)
+    @ExceptionHandler(BadCredentialsException.class)
+    @ResponseBody
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    public ExceptionDetails handleException(BadCredentialsException badCredentialsException) {
+        log.error("Exception stack trace: ", badCredentialsException);
+
+        return new ExceptionDetails(badCredentialsException.getMessage());
+    }
+
+    @ExceptionHandler(InternalAuthenticationServiceException.class)
+    @ResponseBody
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    public ExceptionDetails handleException(InternalAuthenticationServiceException internalAuthenticationServiceException) {
+        log.error("Exception stack trace: ", internalAuthenticationServiceException);
+
+        return new ExceptionDetails(internalAuthenticationServiceException.getMessage());
+    }
+
+    @ExceptionHandler
     @ResponseBody
     @ResponseStatus(HttpStatus.FORBIDDEN)
-    public ExceptionDetails handleException(AuthenticationException authenticationException) {
-        log.error("Exception stack trace: ", authenticationException);
+    public ExceptionDetails handleException(AccessDeniedException accessDeniedException) {
+        log.error("Exception stack trace: ", accessDeniedException);
 
-        return new ExceptionDetails("Incorrect email or password");
+        return new ExceptionDetails("Access is denied");
+    }
+
+    @ExceptionHandler(InvalidTokenException.class)
+    @ResponseBody
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    public ExceptionDetails handleException(InvalidTokenException invalidTokenException) {
+        log.error("Exception stack trace: ", invalidTokenException);
+
+        return new ExceptionDetails(invalidTokenException.getMessage());
     }
 
     @ExceptionHandler
