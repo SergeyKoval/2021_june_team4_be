@@ -7,7 +7,6 @@ import com.exadel.discount.dto.authentication.AuthenticationResponse;
 import com.exadel.discount.service.JwtGenerationService;
 import com.exadel.discount.service.impl.UserDetailsServiceImpl;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
