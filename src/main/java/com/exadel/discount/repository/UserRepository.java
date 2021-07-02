@@ -27,15 +27,8 @@ public interface UserRepository extends JpaRepository<User, UUID> {
     @Query(value = "SELECT u FROM User u WHERE u.role = :r", countQuery = "SELECT count(u) FROM User u WHERE u.role = :r")
     Page<User> findUserByRole(@Param("r") Role r, Pageable pageable);
 
-    //@Query(value = "SELECT u FROM User u JOIN FETCH u.city c WHERE c.name LIKE %:city%", countQuery = "SELECT count(u) FROM User u JOIN u.city c WHERE c.name LIKE %:city%", nativeQuery = true)
-    //Page<User> findUsersByCity_Name(Param("city")String city, Pageable pageable);
     @EntityGraph(attributePaths = {"city"})
     Page<User> findUsersByCity_Name(String city, Pageable pageable);
-
-   // @Query(value = "SELECT u FROM User u INNER JOIN FETCH u.city.country ct WHERE ct.name LIKE %:ct%", countQuery = "SELECT count(u) FROM User u INNER JOIN u.city.country ct WHERE ct.name LIKE %:ct%", nativeQuery = true)
-    //Page<User> countrySearch(@Param("ct")String ct, Pageable pageable);
-//    @EntityGraph(attributePaths = {"city"})
-//    Page<User> findUsersByCity_Country_Name(String ct, Pageable pageable);
 
     List<User> findDistinctByLastNameAndFirstName(String lastName, String firstName);
 }
