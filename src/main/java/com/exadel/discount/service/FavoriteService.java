@@ -1,6 +1,5 @@
 package com.exadel.discount.service;
 
-import com.exadel.discount.dto.coupon.CouponDto;
 import com.exadel.discount.dto.favorite.CreateFavoriteDto;
 import com.exadel.discount.dto.favorite.FavoriteDto;
 

@@ -18,7 +18,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -67,9 +66,8 @@ public class UserServiceImpl implements UserService {
         Pageable paging = SortPageMaker.makePageable(pageNumber, pageSize, sortDirection, sortField);
         Page<User> userList;
         log.debug("Getting sorted page-list of Users by role");
-        List<String> enumValues = List.of(Arrays.toString(Role.values()));
-        if (//List.of(Arrays.toString(Role.values())).contains(roleFilter.toUpperCase())
-        Stream.of(Role.values()).anyMatch(e -> e.toString().equals(roleFilter.toUpperCase()))) {
+
+        if (Stream.of(Role.values()).anyMatch(e -> e.toString().equals(roleFilter.toUpperCase()))) {
             userList = userRepository.findUserByRole(Role.valueOf(roleFilter.toUpperCase()), paging);
         } else
             throw new NotFoundException(String.format("No User with role %s is found", roleFilter));
@@ -101,7 +99,6 @@ public class UserServiceImpl implements UserService {
         Page<User> userList;
         List<City> cities;
         log.debug("Getting sorted page-list of Users by Country(");
-        //if (countryRepository.findByName(countryFilter).isPresent()) {
             cities = cityRepository.findAllByCountry_Name(countryFilter);
             if (cities.isEmpty()) {
                 throw new NotFoundException(String.format("No city from country %s is found", countryFilter));
@@ -132,5 +129,4 @@ public class UserServiceImpl implements UserService {
                 .map(e -> userCityMapper.toUserCityDto(e, e.getCity()))
                 .collect(Collectors.toList());
     }
-
 }
