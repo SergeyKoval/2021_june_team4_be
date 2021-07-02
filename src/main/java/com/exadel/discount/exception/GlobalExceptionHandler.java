@@ -20,7 +20,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(NotFoundException.class)
     @ResponseBody
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public ExceptionDetails handleException(NotFoundException exception) {
+    public ExceptionDetails handleNotFoundException(NotFoundException exception) {
         log.error("Exception stack trace: ", exception);
 
         return new ExceptionDetails(exception.getMessage());
@@ -29,7 +29,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseBody
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public List<ExceptionDetails> handleException(
+    public List<ExceptionDetails> handleMethodArgumentNotValidException(
             MethodArgumentNotValidException notValidException) {
         List<ExceptionDetails> exceptionDetailsList = notValidException
                 .getBindingResult()
@@ -46,26 +46,26 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(BadCredentialsException.class)
     @ResponseBody
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
-    public ExceptionDetails handleException(BadCredentialsException badCredentialsException) {
-        log.error("Exception stack trace: ", badCredentialsException);
+    public ExceptionDetails handleException(BadCredentialsException exception) {
+        log.error("Exception stack trace: ", exception);
 
-        return new ExceptionDetails(badCredentialsException.getMessage());
+        return new ExceptionDetails(exception.getMessage());
     }
 
     @ExceptionHandler(InternalAuthenticationServiceException.class)
     @ResponseBody
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
-    public ExceptionDetails handleException(InternalAuthenticationServiceException internalAuthenticationServiceException) {
-        log.error("Exception stack trace: ", internalAuthenticationServiceException);
+    public ExceptionDetails handleException(InternalAuthenticationServiceException exception) {
+        log.error("Exception stack trace: ", exception);
 
-        return new ExceptionDetails(internalAuthenticationServiceException.getMessage());
+        return new ExceptionDetails(exception.getMessage());
     }
 
-    @ExceptionHandler
+    @ExceptionHandler(AccessDeniedException.class)
     @ResponseBody
     @ResponseStatus(HttpStatus.FORBIDDEN)
-    public ExceptionDetails handleException(AccessDeniedException accessDeniedException) {
-        log.error("Exception stack trace: ", accessDeniedException);
+    public ExceptionDetails handleAccessDeniedException(AccessDeniedException exception) {
+        log.error("Exception stack trace: ", exception);
 
         return new ExceptionDetails("Access is denied");
     }
@@ -73,16 +73,16 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(InvalidTokenException.class)
     @ResponseBody
     @ResponseStatus(HttpStatus.FORBIDDEN)
-    public ExceptionDetails handleException(InvalidTokenException invalidTokenException) {
-        log.error("Exception stack trace: ", invalidTokenException);
+    public ExceptionDetails handleInvalidTokenException(InvalidTokenException exception) {
+        log.error("Exception stack trace: ", exception);
 
-        return new ExceptionDetails(invalidTokenException.getMessage());
+        return new ExceptionDetails(exception.getMessage());
     }
 
     @ExceptionHandler
     @ResponseBody
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public ExceptionDetails handleException(Exception exception) {
+    public ExceptionDetails handleUncaughtException(Exception exception) {
         log.error("Exception stack trace: ", exception);
 
         return new ExceptionDetails(exception.getMessage());
