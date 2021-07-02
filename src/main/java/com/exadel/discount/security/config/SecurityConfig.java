@@ -62,10 +62,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements WebM
         return daoAuthenticationProvider;
     }
 
-    @Override                                             //В методе мы говорим, каким сайтам по каким url и
-    public void addCorsMappings(CorsRegistry registry) {  //какими методами можно делать запросы к нашему приложению, запущенному на 8080.
-        registry.addMapping("/**")              //обращаться к нашему приложению можно по любому внутреннему url – addMapping(“/**”)
-                .allowedOrigins("http://localhost:4200")  //только сайт http://localhost:4200 может делать запросы
-                .allowedMethods("*");                     //запрос можно делать абсолютно всеми методами (GET, POST, PUT и т.д.)
+    @Override
+    public void addCorsMappings(CorsRegistry registry) {
+        registry.addMapping("/**")
+                .allowedOrigins("http://localhost:4200")
+                .allowedMethods("*");
     }
 }
