@@ -1,7 +1,9 @@
 package com.exadel.discount.entity;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
@@ -11,10 +13,8 @@ import java.util.UUID;
 @Data
 @NoArgsConstructor
 @Entity
-//    Check and uncomment after adding User and VendorLocation entities
-
-//@EqualsAndHashCode(exclude = {"users", "vendorLocations"})
-//@ToString(exclude = {"users", "vendorLocations"})
+@EqualsAndHashCode(exclude = {"users", "vendorLocations"})
+@ToString(exclude = {"users", "vendorLocations"})
 @Table(name = "cities")
 public class City {
     @Id
@@ -30,7 +30,7 @@ public class City {
     @JoinColumn(name = "country_id", nullable=false)
     private Country country;
 
-//    Check and uncomment after adding User and VendorLocation entities
+//    Check and uncomment after adding User entity
 
 //    @OneToMany(mappedBy = "city", fetch = FetchType.LAZY)
 //    private List<User> users;
