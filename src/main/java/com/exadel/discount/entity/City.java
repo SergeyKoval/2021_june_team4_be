@@ -35,6 +35,6 @@ public class City {
 //    @OneToMany(mappedBy = "city", fetch = FetchType.LAZY)
 //    private List<User> users;
 
-//    @OneToMany(mappedBy = "city", fetch = FetchType.LAZY)
-//    private List<VendorLocation> vendorLocations;
+    @OneToMany(mappedBy = "city", fetch = FetchType.LAZY)
+    private List<VendorLocation> vendorLocations;
 }

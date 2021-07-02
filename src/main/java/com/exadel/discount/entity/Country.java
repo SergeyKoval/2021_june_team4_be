@@ -28,4 +28,7 @@ public class Country {
 
     @OneToMany(mappedBy = "country")
     private List<City> cities;
+
+    @OneToMany(mappedBy = "country")
+    private List<VendorLocation> vendorLocations;
 }

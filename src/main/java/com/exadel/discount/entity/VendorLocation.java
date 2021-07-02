@@ -45,6 +45,14 @@ public class VendorLocation {
     @JoinColumn(name = "vendor_id")
     private Vendor vendor;
 
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "country_id")
+    private Country country;
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "city_id")
+    private City city;
+
     @ManyToMany(mappedBy = "vendorLocations", fetch = FetchType.LAZY)
     private Set<Discount> discounts;
 }
