@@ -35,9 +35,6 @@ public class VendorLocation {
     @Column(name = "id")
     private UUID id;
 
-    @Column(name = "contact", length = 50)
-    private String contact;
-
     @Column(name = "coordinate_x")
     private Double coordinateX;
 
