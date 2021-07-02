@@ -7,7 +7,6 @@ import java.util.UUID;
 @Data
 public class LocationDTO {
     private UUID id;
-    private String contact;
     private Double coordinateX;
     private Double coordinateY;
 }
