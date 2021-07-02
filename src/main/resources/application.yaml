@@ -14,3 +14,6 @@ jwt:
         refresh: 3600
     encryption:
       key: encryptionSecret
+cors:
+  hosts:
+    - http://localhost:4200
