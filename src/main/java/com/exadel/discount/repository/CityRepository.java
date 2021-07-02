@@ -12,9 +12,9 @@ import java.util.UUID;
 
 @Repository
 public interface CityRepository extends JpaRepository<City, UUID> {
-    @Query(nativeQuery = true,
-            value="select * from cities where country_id = (select id from countries where countries.name = ?1)")
-    List<City> findByCountry(String name);
+    List<City> findByCountryName(String name);
+
+    List<City> findByCountryId(UUID uuid);
 
     Optional<City> findByName(String name);
 }

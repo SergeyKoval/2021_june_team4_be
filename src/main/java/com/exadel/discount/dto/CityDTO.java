@@ -12,10 +12,8 @@ import java.util.UUID;
 public class CityDTO {
     @Null(groups = Create.class)
     private UUID id;
-
     @NotBlank(groups = Create.class)
     private String name;
-
     @NotNull(groups = Create.class)
     private UUID countryId;
 }

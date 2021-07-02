@@ -8,7 +8,9 @@ import java.util.UUID;
 public interface CityService {
     List<CityDTO> findAll();
 
-    List<CityDTO> findAllByCountry(String countryName);
+    List<CityDTO> findAllByCountryName(String countryName);
+
+    List<CityDTO> findAllByCountryId(UUID countryId);
 
     CityDTO findById(UUID id);
 

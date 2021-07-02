@@ -5,6 +5,7 @@ import com.exadel.discount.dto.validation.Create;
 import com.exadel.discount.service.CityService;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,41 +14,37 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/cities")
+@RequestMapping("/countries")
 @RequiredArgsConstructor
 public class CityController {
     private final CityService cityService;
 
-    @GetMapping
+    @GetMapping("/cities")
     @ApiOperation("Get list of all cities")
     public List<CityDTO> getAllCities() {
         return cityService.findAll();
     }
 
-    @GetMapping("/country")
-    @ApiOperation("Get list of all cities")
-    public List<CityDTO> getAllCitiesByCountryName(@RequestParam("name") String countryName) {
-        return cityService.findAllByCountry(countryName);
-    }
-    @GetMapping("/name")
-    @ApiOperation("Get city by Name")
-    public CityDTO getCityByName(@RequestParam("name") String name) {
-        return cityService.findByName(name);
+    @GetMapping("{id}/cities")
+    @ApiOperation("Get list of all cities by CountryID")
+    public List<CityDTO> getAllCitiesByCountryId(@PathVariable("id") UUID id) {
+        return cityService.findAllByCountryId(id);
     }
 
-    @PostMapping
+    @PostMapping("/cities")
+    @ResponseStatus(HttpStatus.CREATED)
     @ApiOperation("Save new City")
     public CityDTO saveCity(@Validated(Create.class) @RequestBody CityDTO cityDTO) {
         return cityService.save(cityDTO);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/cities/{id}")
     @ApiOperation("Get city by ID")
     public CityDTO getCityById(@PathVariable @NotNull final UUID id) {
         return cityService.findById(id);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/cities/{id}")
     @ApiOperation("Delete city by ID")
     public void deleteCity(@PathVariable @NotNull final UUID id) {
         cityService.deleteById(id);

@@ -5,11 +5,16 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.UUID;
 
 @Data
 @NoArgsConstructor
 @Entity
+//    Check and uncomment after adding User and VendorLocation entities
+
+//@EqualsAndHashCode(exclude = {"users", "vendorLocations"})
+//@ToString(exclude = {"users", "vendorLocations"})
 @Table(name = "cities")
 public class City {
     @Id
@@ -24,4 +29,12 @@ public class City {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "country_id", nullable=false)
     private Country country;
+
+//    Check and uncomment after adding User and VendorLocation entities
+
+//    @OneToMany(mappedBy = "city", fetch = FetchType.LAZY)
+//    private List<User> users;
+
+//    @OneToMany(mappedBy = "city", fetch = FetchType.LAZY)
+//    private List<VendorLocation> vendorLocations;
 }

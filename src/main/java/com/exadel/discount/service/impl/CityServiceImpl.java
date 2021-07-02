@@ -34,10 +34,20 @@ public class CityServiceImpl implements CityService {
     }
 
     @Override
-    public List<CityDTO> findAllByCountry(String countryName) {
+    public List<CityDTO> findAllByCountryName(String countryName) {
+        log.debug("Getting list of all Cities by CountryName");
+
+        List<CityDTO> cityDTOList = cityMapper.getListDTO(cityRepository.findByCountryName(countryName));
+
+        log.debug("Successfully got list of all Cities by CountryName");
+        return cityDTOList;
+    }
+
+    @Override
+    public List<CityDTO> findAllByCountryId(UUID countryId) {
         log.debug("Getting list of all Cities by CountryId");
 
-        List<CityDTO> cityDTOList = cityMapper.getListDTO(cityRepository.findByCountry(countryName));
+        List<CityDTO> cityDTOList = cityMapper.getListDTO(cityRepository.findByCountryId(countryId));
 
         log.debug("Successfully got list of all Cities by CountryId");
         return cityDTOList;
@@ -59,11 +69,6 @@ public class CityServiceImpl implements CityService {
         log.debug("Finding City by Name");
         CityDTO cityDTO = cityMapper.cityToCityDTO(cityRepository.findByName(name)
                 .orElseThrow(() -> new NotFoundException(String.format("City with name %s not found", name))));
-//        CityDTO cityDTO = cityMapper.cityToCityDTO(cityRepository.findAll()
-//                .stream()
-//                .filter(s -> s.getName().equals(name))
-//                .findFirst()
-//                .orElseThrow(() -> new NotFoundException(String.format("City with name %s not found", name))));
 
         log.debug("City successfully found by Name");
         return cityDTO;

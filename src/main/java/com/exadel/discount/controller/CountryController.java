@@ -5,6 +5,7 @@ import com.exadel.discount.dto.validation.Create;
 import com.exadel.discount.service.CountryService;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,6 +26,7 @@ public class CountryController {
     }
 
     @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
     @ApiOperation("Save new Country")
     public CountryDTO saveCountry(@Validated(Create.class) @RequestBody CountryDTO countryDTO) {
         return countryService.save(countryDTO);
@@ -41,12 +43,4 @@ public class CountryController {
     public void deleteCountry(@PathVariable @NotNull final UUID id) {
         countryService.deleteById(id);
     }
-
-    @GetMapping("/name")
-    @ApiOperation("Get country by Name")
-    public CountryDTO getCountryByName(@RequestParam("name") String name) {
-        return countryService.findByName(name);
-    }
-
-
 }
