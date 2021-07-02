@@ -1,0 +1,23 @@
+databaseChangeLog:
+  - changeSet:
+      id: 37-add-vendor-to-discount
+      author: nikolay_chornyi
+      changes:
+         - addColumn:
+              tableName: discounts
+              columns:
+                - column:
+                    name: vendor_id
+                    type: UUID
+                    constraints:
+                      nullable: false
+  - changeSet:
+      id: 38-foreignKeyConstraint-discount-to-vendor
+      author: nikolay_chornyi
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: vendor_id
+            baseTableName: discounts
+            constraintName: fk_discounts_vendors
+            referencedColumnNames: id
+            referencedTableName: vendors

@@ -1,21 +1,16 @@
 package com.exadel.discount.dto.vendor;
 
-import com.exadel.discount.dto.location.LocationInfoDTO;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
+import com.exadel.discount.dto.validation.Create;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotBlank;
-import java.util.List;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 @Data
-@Builder
-@AllArgsConstructor
-@NoArgsConstructor
 public class CreateVendorDTO {
-    @NotBlank
+    @NotBlank(message = "Vendor name should be not null")
+    @Size(max = 50, message = "Vendor name should be shorted than {max}")
     private String name;
-    private List<LocationInfoDTO> locations;
     private String description;
 }
