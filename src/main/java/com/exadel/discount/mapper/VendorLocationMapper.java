@@ -16,7 +16,5 @@ public interface VendorLocationMapper {
 
     LocationDTO getDTO(VendorLocation vendorLocation);
 
-    CreateLocationDTO getCreateDTO(VendorLocation vendorLocation);
-
     List<LocationDTO> getListDTO(List<VendorLocation> vendorLocations);
 }
