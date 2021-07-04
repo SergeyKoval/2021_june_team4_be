@@ -71,7 +71,7 @@ public class UserController {
     @GetMapping("/name")
     @ApiOperation("Get users by lastname and firstname")
     public List<UserDto> getUsersByName(@RequestParam("lastname") @NotNull String lastName,
-                                        @RequestParam("firstame") @NotNull String firstName) {
+                                        @RequestParam("firstname") @NotNull String firstName) {
         return userService.findUsersByName(lastName, firstName);
     }
 }
