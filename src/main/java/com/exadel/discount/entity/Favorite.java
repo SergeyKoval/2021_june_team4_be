@@ -21,8 +21,6 @@ import java.util.UUID;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode
-@ToString
 @Table(name = "favorites")
 public class Favorite {
     @Id

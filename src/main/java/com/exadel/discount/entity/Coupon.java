@@ -23,8 +23,6 @@ import java.util.UUID;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode
-@ToString
 @Table(name = "coupons")
 public class Coupon {
     @Id

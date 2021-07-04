@@ -13,8 +13,6 @@ import java.util.UUID;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode
-@ToString
 public class FavoriteDto {
     @NotNull
     private UUID id;

@@ -6,8 +6,11 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-import org.hibernate.annotations.*;
-import org.hibernate.engine.internal.JoinSequence;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Type;
+import org.hibernate.annotations.TypeDef;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -30,8 +33,8 @@ import java.util.UUID;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(exclude = {"coupons","favorites"})
-@ToString(exclude = {"coupons","favorites"})
+@EqualsAndHashCode(exclude = {"coupons", "favorites"})
+@ToString(exclude = {"coupons", "favorites"})
 @TypeDef(
         name = "user_role",
         typeClass = EnumPostgresSQLType.class
