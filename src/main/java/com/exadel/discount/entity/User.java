@@ -33,8 +33,8 @@ import java.util.UUID;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(exclude = {"coupons","favorites"})
-@ToString(exclude = {"coupons","favorites"})
+@EqualsAndHashCode(exclude = {"coupons", "favorites"})
+@ToString(exclude = {"coupons", "favorites"})
 @TypeDef(
         name = "user_role",
         typeClass = EnumPostgresSQLType.class
