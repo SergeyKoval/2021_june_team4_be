@@ -2,6 +2,7 @@ package com.exadel.discount.service.impl;
 
 import com.exadel.discount.dto.CategoryDTO;
 import com.exadel.discount.entity.Category;
+import com.exadel.discount.exception.DeletionRestrictedException;
 import com.exadel.discount.exception.NotFoundException;
 import com.exadel.discount.mapper.CategoryMapper;
 import com.exadel.discount.repository.CategoryRepository;
@@ -50,7 +51,10 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public void deleteById(UUID id) {
         log.debug(String.format("Deleting Category with ID %s", id));
-        categoryRepository.findById(id).orElseThrow(() -> new NotFoundException(String.format("Category with ID %s not found", id)));
+        Category category = categoryRepository.findById(id).orElseThrow(() -> new NotFoundException(String.format("Category with ID %s not found", id)));
+        if (!category.getDiscounts().isEmpty()) {
+            throw new DeletionRestrictedException("Category with ID %s can't be deleted as it has discounts");
+        }
         categoryRepository.deleteById(id);
         log.debug(String.format("Successfully deleted Category with ID %s", id));
     }
