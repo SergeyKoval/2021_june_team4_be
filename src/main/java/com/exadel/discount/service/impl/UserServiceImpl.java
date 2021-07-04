@@ -79,7 +79,7 @@ public class UserServiceImpl implements UserService {
     public List<UserCityDto> findUsersOfCity(int pageNumber, int pageSize, String sortDirection, String sortField, String cityFilter) {
         Pageable paging = SortPageMaker.makePageable(pageNumber, pageSize, sortDirection, sortField);
         Page<User> userList;
-        log.debug("Getting sorted page-list of Users by role");
+        log.debug("Getting sorted page-list of Users by city");
 
         if (cityRepository.findByName(cityFilter).isPresent()) {
             userList = userRepository.findUsersByCity_Name(cityFilter, paging);
@@ -95,18 +95,13 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<UserCityDto> findUsersOfCountry(int pageNumber, int pageSize, String sortDirection, String sortField, String countryFilter) {
         Pageable paging = SortPageMaker.makePageable(pageNumber, pageSize, sortDirection, sortField);
-        //Page<User> userList;
-        //List<City> cities;
-       // log.debug("Getting sorted page-list of Users by Country(");
-        //    cities = cityRepository.findAllByCountry_Name(countryFilter);
-        //    if (cities.isEmpty()) {
-       //         throw new NotFoundException(String.format("No city from country %s is found", countryFilter));
-       //     }
+        log.debug("Getting sorted page-list of Users by country");
+
         Page<User> userList = userRepository.findUsersByCountry_Name(countryFilter, paging);
         if(userList.isEmpty()){
             throw new NotFoundException(String.format("No users from country %s is found", countryFilter));
         }
-        log.debug("Successfully got filtered page-list of Users by role is got");
+        log.debug("Successfully got filtered page-list of Users by country is got");
         return toUserCityDtoList(userList);
     }
 

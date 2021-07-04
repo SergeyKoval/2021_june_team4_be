@@ -7,7 +7,7 @@ import lombok.ToString;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
-import java.util.Set;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -30,7 +30,7 @@ public class Country {
     String name;
 
     @OneToMany(mappedBy = "country", fetch = FetchType.LAZY)
-    private Set<City> cities;
+    private List<City> cities;
 
 //    @OneToMany(mappedBy = "country", fetch = FetchType.LAZY)
 //    private List<VendorLocation> vendorLocations;
