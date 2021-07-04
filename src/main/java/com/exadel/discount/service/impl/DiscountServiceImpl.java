@@ -46,6 +46,7 @@ public class DiscountServiceImpl implements DiscountService {
         discount.setVendor(findVendor(createDiscountDTO.getVendorId()));
         discount.setVendorLocations(findVendorLocations(createDiscountDTO.getVendorId(),
                 createDiscountDTO.getVendorLocationsIds()));
+
         Discount savedDiscount = discountRepository.save(discount);
         log.debug("Successfully saved new Discount");
         return discountMapper.getDTO(savedDiscount);
@@ -91,19 +92,14 @@ public class DiscountServiceImpl implements DiscountService {
     }
 
     private Set<VendorLocation> findVendorLocations(UUID vendorId, Set<UUID> locationIds) {
-        List<VendorLocation> existingLocations = locationRepository.findAllById(locationIds);
-        existingLocations
-                .forEach((VendorLocation location) -> {
-                    if (!location.getVendor().getId().equals(vendorId)) {
-                        throw new NotFoundException(String.format("Not all locations with IDs %s belongs to Vendor", locationIds));
-                    }
-                });
+        List<VendorLocation> existingLocations = locationRepository
+                .findByIdInAndVendorId(locationIds, vendorId);
         List<UUID> existingLocationIds = existingLocations
                 .stream()
                 .map(VendorLocation::getId)
                 .collect(Collectors.toList());
         if (!existingLocationIds.containsAll(locationIds)) {
-            throw new NotFoundException(String.format("Not all tags with IDs %s exist", locationIds));
+            throw new NotFoundException(String.format("Not all Vendor's locations with IDs %s exist", locationIds));
         }
         return new HashSet<>(existingLocations);
     }
