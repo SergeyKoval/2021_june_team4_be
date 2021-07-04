@@ -58,7 +58,7 @@ public class UserController {
                                            @RequestParam(name = "pageSize", defaultValue = "10") int pageSize,
                                            @RequestParam(name = "sortDirection", defaultValue = "") String sortDirection,
                                            @RequestParam(name = "sortField", defaultValue = "id") String sortField,
-                                           @RequestParam(name = "countryFilterFilter", defaultValue = "") String countryFilter) {
+                                           @RequestParam(name = "countryFilter", defaultValue = "") String countryFilter) {
         return userService.findUsersOfCountry(pageNumber, pageSize, sortDirection, sortField, countryFilter);
     }
 

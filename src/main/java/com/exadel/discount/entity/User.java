@@ -7,6 +7,7 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import org.hibernate.annotations.*;
+import org.hibernate.engine.internal.JoinSequence;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -57,6 +58,7 @@ public class User {
     @Column(name = "password", length = 225, nullable = false)
     private String password;
 
+    @Fetch(FetchMode.JOIN)
     @Enumerated(EnumType.STRING)
     @Column(columnDefinition = "role", nullable = false)
     @Type(type = "user_role")
