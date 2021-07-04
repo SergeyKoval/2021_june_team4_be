@@ -2,7 +2,6 @@ package com.exadel.discount.service.impl;
 
 import com.exadel.discount.dto.user.UserCityDto;
 import com.exadel.discount.dto.user.UserDto;
-import com.exadel.discount.entity.City;
 import com.exadel.discount.entity.Role;
 import com.exadel.discount.entity.User;
 import com.exadel.discount.exception.NotFoundException;
@@ -96,14 +95,14 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<UserCityDto> findUsersOfCountry(int pageNumber, int pageSize, String sortDirection, String sortField, String countryFilter) {
         Pageable paging = SortPageMaker.makePageable(pageNumber, pageSize, sortDirection, sortField);
-        Page<User> userList;
-        List<City> cities;
-        log.debug("Getting sorted page-list of Users by Country(");
-            cities = cityRepository.findAllByCountry_Name(countryFilter);
-            if (cities.isEmpty()) {
-                throw new NotFoundException(String.format("No city from country %s is found", countryFilter));
-            }
-            userList = userRepository.findUsersByCity_Name(countryFilter, paging);
+        //Page<User> userList;
+        //List<City> cities;
+       // log.debug("Getting sorted page-list of Users by Country(");
+        //    cities = cityRepository.findAllByCountry_Name(countryFilter);
+        //    if (cities.isEmpty()) {
+       //         throw new NotFoundException(String.format("No city from country %s is found", countryFilter));
+       //     }
+        Page<User> userList = userRepository.findUsersByCountry_Name(countryFilter, paging);
         if(userList.isEmpty()){
             throw new NotFoundException(String.format("No users from country %s is found", countryFilter));
         }

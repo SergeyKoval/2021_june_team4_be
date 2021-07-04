@@ -30,5 +30,9 @@ public interface UserRepository extends JpaRepository<User, UUID> {
     @EntityGraph(attributePaths = {"city"})
     Page<User> findUsersByCity_Name(String city, Pageable pageable);
 
+    @Query(value = "SELECT u FROM User u JOIN FETCH City c ON c.id = u.city JOIN FETCH Country ct ON c.country = ct.id WHERE ct.name = :countryFilter",
+            countQuery = "SELECT count(u) FROM User u JOIN City c ON c.id = u.city JOIN Country ct ON c.country = ct.id WHERE ct.name = :countryFilter")
+    Page<User> findUsersByCountry_Name(@Param("countryFilter")String country, Pageable pageable);
+
     List<User> findDistinctByLastNameAndFirstName(String lastName, String firstName);
 }
