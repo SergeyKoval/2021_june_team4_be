@@ -58,7 +58,7 @@ public class DiscountController {
         return discountService.getAllArchived();
     }
 
-    @PutMapping("/restore/{id}")
+    @PutMapping("/archived/{id}/restore")
     @ApiOperation("Restore Discount by ID")
     public DiscountDTO restoreDiscount(@PathVariable UUID id) {
         return discountService.restoreById(id);
