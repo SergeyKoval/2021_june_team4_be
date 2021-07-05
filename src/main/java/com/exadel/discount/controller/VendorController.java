@@ -1,5 +1,7 @@
 package com.exadel.discount.controller;
 
+import com.exadel.discount.dto.validation.Create;
+import com.exadel.discount.dto.vendor.BaseVendorDTO;
 import com.exadel.discount.dto.vendor.CreateVendorDTO;
 import com.exadel.discount.dto.vendor.VendorDTO;
 import com.exadel.discount.service.VendorService;
@@ -11,6 +13,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -45,6 +48,13 @@ public class VendorController {
     @ApiOperation("Add new vendor")
     public VendorDTO saveNewVendor(@RequestBody @Valid CreateVendorDTO vendor) {
         return vendorService.save(vendor);
+    }
+
+    @PutMapping("/{id}")
+    @ApiOperation("Edit vendor by ID")
+    BaseVendorDTO updateVendor(@PathVariable @NotNull UUID id,
+                               @RequestBody @NotNull BaseVendorDTO vendorDTO) {
+        return vendorService.updateVendorById(vendorDTO, id);
     }
 
     @DeleteMapping("/{id}")
