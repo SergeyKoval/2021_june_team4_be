@@ -23,8 +23,8 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 @RequiredArgsConstructor
 public class SecurityConfig extends WebSecurityConfigurerAdapter implements WebMvcConfigurer {
-    @Value("cors.hosts[0]")
-    private String ALLOWED_CORS_ORIGIN_1;
+    @Value("${cors.hosts}")
+    private final String[] allowedOrigins;
 
     private final UserDetailsServiceImpl userDetailsServiceImpl;
     private final JwtFilter jwtFilter;
@@ -69,7 +69,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements WebM
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
-                .allowedOrigins(ALLOWED_CORS_ORIGIN_1)
+                .allowedOrigins(allowedOrigins[0])
                 .allowedMethods("*");
     }
 }
