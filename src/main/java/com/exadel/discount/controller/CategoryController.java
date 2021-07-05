@@ -1,16 +1,17 @@
 package com.exadel.discount.controller;
 
-import com.exadel.discount.dto.CategoryDTO;
+import com.exadel.discount.dto.category.CategoryDTO;
+import com.exadel.discount.dto.category.UpdateCategoryDTO;
 import com.exadel.discount.dto.validation.Create;
 import com.exadel.discount.service.CategoryService;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -44,6 +45,12 @@ public class CategoryController {
     @ApiOperation("Add new category")
     public CategoryDTO addCategory(@RequestBody @Validated(Create.class) CategoryDTO categoryDTO) {
         return categoryService.save(categoryDTO);
+    }
+
+    @PutMapping
+    @ApiOperation("Update category")
+    UpdateCategoryDTO updateCategory(@RequestBody @Validated(Create.class) UpdateCategoryDTO updateCategoryDTO) {
+        return categoryService.updateCategory(updateCategoryDTO);
     }
 
     @DeleteMapping("/{id}")

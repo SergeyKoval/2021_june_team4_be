@@ -1,6 +1,6 @@
 package com.exadel.discount.dto.discount;
 
-import com.exadel.discount.dto.CategoryDTO;
+import com.exadel.discount.dto.category.CategoryDTO;
 import com.exadel.discount.dto.TagDTO;
 import com.exadel.discount.dto.location.LocationDTO;
 import com.exadel.discount.dto.vendor.BaseVendorDTO;

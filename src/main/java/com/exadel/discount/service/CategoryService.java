@@ -1,6 +1,7 @@
 package com.exadel.discount.service;
 
-import com.exadel.discount.dto.CategoryDTO;
+import com.exadel.discount.dto.category.CategoryDTO;
+import com.exadel.discount.dto.category.UpdateCategoryDTO;
 
 import java.util.List;
 import java.util.UUID;
@@ -14,4 +15,6 @@ public interface CategoryService {
     void deleteById(UUID id);
 
     List<CategoryDTO> getAll();
+
+    UpdateCategoryDTO updateCategory(UpdateCategoryDTO updateCategoryDTO);
 }

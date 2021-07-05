@@ -1,4 +1,4 @@
-package com.exadel.discount.dto;
+package com.exadel.discount.dto.category;
 
 import com.exadel.discount.dto.validation.Create;
 import lombok.Data;
