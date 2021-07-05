@@ -43,7 +43,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(DeletionRestrictedException.class)
     @ResponseBody
-    @ResponseStatus(HttpStatus.FORBIDDEN)
+    @ResponseStatus(HttpStatus.PRECONDITION_FAILED)
     public ExceptionDetails handleException(DeletionRestrictedException exception) {
         log.error("Exception stack trace: ", exception);
 
