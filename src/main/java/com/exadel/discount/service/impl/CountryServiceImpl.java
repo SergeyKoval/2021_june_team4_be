@@ -17,6 +17,7 @@ import java.util.UUID;
 @Service
 @RequiredArgsConstructor
 public class CountryServiceImpl implements CountryService {
+
     private final CountryRepository countryRepository;
     private final CountryMapper countryMapper;
 
@@ -25,8 +26,8 @@ public class CountryServiceImpl implements CountryService {
         log.debug("Getting list of all Countries");
 
         List<CountryDTO> countryDTOList = countryMapper.getListDTO(countryRepository.findAll());
-
         log.debug("Successfully got list of all Countries");
+
         return countryDTOList;
     }
 
@@ -36,8 +37,8 @@ public class CountryServiceImpl implements CountryService {
 
         CountryDTO countryDTO = countryMapper.countryToCountryDTO(countryRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException(String.format("Country with id %s not found", id))));
-
         log.debug("Country successfully found by Id");
+
         return countryDTO;
     }
 
@@ -47,8 +48,8 @@ public class CountryServiceImpl implements CountryService {
 
         CountryDTO countryDTO = countryMapper.countryToCountryDTO(countryRepository.findByName(name)
                 .orElseThrow(() -> new NotFoundException(String.format("Country with name %s not found", name))));
-
         log.debug("Country successfully found by Name");
+
         return countryDTO;
     }
 
@@ -57,18 +58,18 @@ public class CountryServiceImpl implements CountryService {
         log.debug("Saving new Country");
 
         Country newCountry = countryRepository.save(countryMapper.countryDTOToCountry(countryDTO));
-
         log.debug("Successfully saved new Country");
+
         return countryMapper.countryToCountryDTO(newCountry);
     }
 
     @Override
     public void deleteById(UUID id) {
         log.debug("Deleting Country");
+
         countryRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException(String.format("Cannot delete. Country with Id %s not found", id)));
         countryRepository.deleteById(id);
-
         log.debug("Country successfully deleted");
     }
 }
