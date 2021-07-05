@@ -5,12 +5,12 @@ import com.exadel.discount.dto.discount.DiscountDTO;
 import com.exadel.discount.service.DiscountService;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -36,8 +36,7 @@ public class DiscountController {
 
     @GetMapping("/{discountId}")
     @ApiOperation("Get discount by ID")
-    public DiscountDTO getDiscountById(
-            @PathVariable(name = "discountId") @NotNull UUID id) {
+    public DiscountDTO getDiscountById(@PathVariable(name = "discountId") @NotNull UUID id) {
         return discountService.getById(id);
     }
 
@@ -51,5 +50,17 @@ public class DiscountController {
     @ApiOperation("Delete discount")
     public void deleteDiscount(@PathVariable(name = "id") @NotNull UUID id) {
         discountService.deleteById(id);
+    }
+
+    @GetMapping("/archived")
+    @ApiOperation("Get all archived Discounts")
+    public List<DiscountDTO> getAllArchivedDiscounts() {
+        return discountService.getAllArchived();
+    }
+
+    @PutMapping("/restore/{id}")
+    @ApiOperation("Restore Discount by ID")
+    public DiscountDTO restoreDiscount(@PathVariable UUID id) {
+        return discountService.restoreById(id);
     }
 }
