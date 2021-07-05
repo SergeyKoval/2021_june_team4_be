@@ -19,12 +19,14 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+import java.util.List;
+
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 @RequiredArgsConstructor
 public class SecurityConfig extends WebSecurityConfigurerAdapter implements WebMvcConfigurer {
     @Value("${cors.hosts}")
-    private final String[] allowedOrigins;
+    private final List<String> allowedOrigins;
 
     private final UserDetailsServiceImpl userDetailsServiceImpl;
     private final JwtFilter jwtFilter;
@@ -69,7 +71,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements WebM
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
-                .allowedOrigins(allowedOrigins[0])
+                .allowedOrigins(allowedOrigins.get(0))
                 .allowedMethods("*");
     }
 }
