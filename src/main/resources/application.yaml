@@ -16,4 +16,5 @@ jwt:
     encryption:
       key: encryptionSecret
 cors:
-  hosts: http://localhost:4200
+  hosts:
+    - http://localhost:4200
