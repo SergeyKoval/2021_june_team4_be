@@ -3,6 +3,8 @@ package com.exadel.discount.repository;
 import com.exadel.discount.entity.Vendor;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -17,4 +19,20 @@ public interface VendorRepository extends JpaRepository<Vendor, UUID> {
 
     @EntityGraph(attributePaths = {"vendorLocations"})
     Optional<Vendor> findById(UUID id);
+
+    @EntityGraph(attributePaths = {"vendorLocations"})
+    List<Vendor> findAllByArchivedTrue();
+
+    @EntityGraph(attributePaths = {"vendorLocations"})
+    List<Vendor> findAllByArchivedFalse();
+
+    @EntityGraph(attributePaths = {"vendorLocations"})
+    Optional<Vendor> findByIdAndArchivedFalse(UUID id);
+
+    @EntityGraph(attributePaths = {"vendorLocations"})
+    Optional<Vendor> findByIdAndArchivedTrue(UUID id);
+
+    @Query("SELECT v FROM Vendor v WHERE v.id=:vendorId AND v.archived=false AND" +
+            "(SELECT count(d) FROM Discount d WHERE d.vendor.id=:vendorId AND d.archived=false) = 0")
+    Optional<Vendor> findByIdWithNoDiscounts(@Param("vendorId") UUID vendorId);
 }

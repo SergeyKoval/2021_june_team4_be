@@ -18,6 +18,7 @@ import com.exadel.discount.service.DiscountService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashSet;
 import java.util.List;
@@ -79,6 +80,22 @@ public class DiscountServiceImpl implements DiscountService {
         log.debug(String.format("Successfully deleted Discount with ID %s", id));
     }
 
+    @Override
+    @Transactional
+    public DiscountDTO restoreById(UUID id) {
+        log.debug("Finding archived Discount by ID");
+        Discount discount = discountRepository
+                .findByIdAndArchivedTrue(id)
+                .orElseThrow(() -> new NotFoundException(String.format("Archived Discount with id %s not found", id)));
+        if (discount.getVendor().isArchived()) {
+            throw new NotFoundException(String.format("Discount can't be restored as Vendor with id %s not found", discount.getVendor().getId()));
+        }
+        discount.setArchived(false);
+        Discount restoredDiscount = discountRepository.save(discount);
+        log.debug("Successfully restored Discount");
+        return discountMapper.getDTO(restoredDiscount);
+    }
+
     private Set<Tag> findTags(Set<UUID> tagIds) {
         List<Tag> existingTags = tagRepository.findAllById(tagIds);
         List<UUID> existingTagIds = existingTags
@@ -112,7 +129,7 @@ public class DiscountServiceImpl implements DiscountService {
 
     private Vendor findVendor(UUID vendorId) {
         return vendorRepository
-                .findById(vendorId)
+                .findByIdAndArchivedFalse(vendorId)
                 .orElseThrow(() -> new NotFoundException(String.format("Vendor with ID %s doesn't exist", vendorId)));
     }
 }
