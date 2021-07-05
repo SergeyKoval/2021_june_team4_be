@@ -1,0 +1,27 @@
+databaseChangeLog:
+  - changeSet:
+      id: drop-column-vendor-locations
+      author: Anton Rud
+      changes:
+        - dropColumn:
+            columnName: coordinate_y
+            tableName: vendor_locations
+        - dropColumn:
+            columnName: coordinate_x
+            tableName: vendor_locations
+  - changeSet:
+      id: add-new-coordinates-columns
+      author: Anton Rud
+      changes:
+        - addColumn:
+            tableName: vendor_locations
+            columns:
+              - column:
+                  name: latitude
+                  type: double
+        - addColumn:
+            tableName: vendor_locations
+            columns:
+              - column:
+                  name: longitude
+                  type: double

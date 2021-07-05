@@ -1,0 +1,7 @@
+databaseChangeLog:
+  - include:
+        file: db.changelog-rename-column-in-vendor-locations.yaml
+        relativeToChangelogFile: true
+  - include:
+        file: db.changelog-add-vendor-locations.yaml
+        relativeToChangelogFile: true

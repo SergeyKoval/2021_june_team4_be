@@ -35,11 +35,11 @@ public class VendorLocation {
     @Column(name = "id")
     private UUID id;
 
-    @Column(name = "coordinate_x")
-    private Double coordinateX;
+    @Column(name = "latitude")
+    private Double latitude;
 
-    @Column(name = "coordinate_y")
-    private Double coordinateY;
+    @Column(name = "longitude")
+    private Double longitude;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "vendor_id")
