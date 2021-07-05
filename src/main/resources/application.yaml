@@ -5,7 +5,4 @@ spring:
       ddl-auto: validate
     open-in-view: false
   datasource:
-    url: jdbc:postgresql://localhost:5432/todolist
-    username: postgres
-    password: asdqwe
     driver-class-name: org.postgresql.Driver
