@@ -27,6 +27,7 @@
         <lombok-mapstruct.version>0.2.0</lombok-mapstruct.version>
         <logback.version>1.2.3</logback.version>
         <slf4j.version>1.7.31</slf4j.version>
+        <checkstyle-maven-plugin.version>3.1.2</checkstyle-maven-plugin.version>
     </properties>
 
     <dependencies>
@@ -110,6 +111,21 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-checkstyle-plugin</artifactId>
+                <version>${checkstyle-maven-plugin.version}</version>
+                <configuration>
+                    <configLocation>checkstyle.xml</configLocation>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
 
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -139,5 +155,16 @@
             </plugin>
         </plugins>
     </build>
-
+    <reporting>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-checkstyle-plugin</artifactId>
+                <version>${checkstyle-maven-plugin.version}</version>
+                <configuration>
+                    <configLocation>checkstyle.xml</configLocation>
+                </configuration>
+            </plugin>
+        </plugins>
+    </reporting>
 </project>
