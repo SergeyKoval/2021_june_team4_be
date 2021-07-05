@@ -59,7 +59,7 @@ public class VendorController {
         return vendorService.getAllArchived();
     }
 
-    @PutMapping("/restore/{id}")
+    @PutMapping("/archived/{id}/restore")
     @ApiOperation("Restore Vendor by ID")
     public VendorDTO restoreVendor(@PathVariable UUID id) {
         return vendorService.restoreById(id);
