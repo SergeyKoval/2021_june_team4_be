@@ -57,7 +57,7 @@ public class DiscountServiceImpl implements DiscountService {
     public DiscountDTO getById(UUID id) {
         log.debug(String.format("Finding Discount with ID %s", id));
         Discount discount = discountRepository
-                .findByIdAndArchivedFalse(id)
+                .findByIdAndArchived(id, false)
                 .orElseThrow(() -> new NotFoundException(String.format("Discount with id %s not found", id)));
         log.debug(String.format("Successfully found Discount with ID %s", id));
         return discountMapper.getDTO(discount);
@@ -66,7 +66,7 @@ public class DiscountServiceImpl implements DiscountService {
     @Override
     public List<DiscountDTO> getAll() {
         log.debug("Getting list of all Discounts");
-        List<DiscountDTO> discountDTOS = discountMapper.getListDTO(discountRepository.findAllByArchivedFalse());
+        List<DiscountDTO> discountDTOS = discountMapper.getListDTO(discountRepository.findAllByArchived(false));
         log.debug("Successfully got list of all Discounts");
         return discountDTOS;
     }
@@ -75,8 +75,9 @@ public class DiscountServiceImpl implements DiscountService {
     @Transactional
     public void deleteById(UUID id) {
         log.debug(String.format("Deleting Discount with ID %s", id));
-        Discount discount = discountRepository.findByIdAndArchivedFalse(id).orElseThrow(() ->
-                new NotFoundException(String.format("Discount with ID %s not found", id)));
+        Discount discount = discountRepository
+                .findByIdAndArchived(id, false)
+                .orElseThrow(() -> new NotFoundException(String.format("Discount with ID %s not found", id)));
         discount.setArchived(true);
         discountRepository.save(discount);
         log.debug(String.format("Successfully deleted Discount with ID %s", id));
@@ -85,7 +86,7 @@ public class DiscountServiceImpl implements DiscountService {
     @Override
     public List<DiscountDTO> getAllArchived() {
         log.debug("Getting list of all archived Discounts");
-        List<DiscountDTO> discountDTOS = discountMapper.getListDTO(discountRepository.findAllByArchivedTrue());
+        List<DiscountDTO> discountDTOS = discountMapper.getListDTO(discountRepository.findAllByArchived(true));
         log.debug("Successfully got list of all archived Discounts");
         return discountDTOS;
     }
@@ -95,7 +96,7 @@ public class DiscountServiceImpl implements DiscountService {
     public DiscountDTO restoreById(UUID id) {
         log.debug("Finding archived Discount by ID");
         Discount discount = discountRepository
-                .findByIdAndArchivedTrue(id)
+                .findByIdAndArchived(id, true)
                 .orElseThrow(() -> new NotFoundException(String.format("Archived Discount with id %s not found", id)));
         discount.setArchived(false);
         Discount restoredDiscount = discountRepository.save(discount);
