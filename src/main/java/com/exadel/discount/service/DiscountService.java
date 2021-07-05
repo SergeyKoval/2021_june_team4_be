@@ -15,4 +15,8 @@ public interface DiscountService {
     List<DiscountDTO> getAll();
 
     void deleteById(UUID id);
+
+    List<DiscountDTO> getAllArchived();
+
+    DiscountDTO restoreById(UUID id);
 }
