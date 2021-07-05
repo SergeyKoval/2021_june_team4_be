@@ -49,12 +49,14 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public CategoryDTO updateCategory(CategoryDTO categoryDTO, UUID id) {
+    public CategoryDTO updateCategoryById(CategoryDTO categoryDTO, UUID id) {
+        log.debug(String.format("Update Category with ID %s", id));
         return categoryRepository.findCategoryById(id)
                 .map(category -> {
                     if (categoryDTO.getName() != null) {
                         category.setName(categoryDTO.getName());
                     }
+                    log.debug(String.format("Successfully update Category with ID %s", id));
                     return categoryMapper.getDTO(categoryRepository.save(category));
                 })
                 .orElseThrow(() -> new NotFoundException(String.format("Category with ID %s not found", id)));

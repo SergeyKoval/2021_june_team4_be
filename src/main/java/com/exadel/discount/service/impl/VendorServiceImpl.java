@@ -59,6 +59,7 @@ public class VendorServiceImpl implements VendorService {
 
     @Override
     public BaseVendorDTO updateVendorById(BaseVendorDTO vendorDTO, UUID id) {
+        log.debug(String.format("Update Vendor with ID %s", id));
         return vendorRepository.findById(id)
                 .map( vendor -> {
                     if (vendorDTO.getName() != null) {
@@ -70,6 +71,7 @@ public class VendorServiceImpl implements VendorService {
                     if (vendorDTO.getDescription() != null) {
                         vendor.setDescription(vendorDTO.getDescription());
                     }
+                    log.debug(String.format("Successfully update Vendor with ID %s", id));
                     return vendorMapper.getBaseDTO(vendorRepository.save(vendor));
                 }).orElseThrow( () -> new NotFoundException(String.format("Vendor with ID %s not found", id)));
     }

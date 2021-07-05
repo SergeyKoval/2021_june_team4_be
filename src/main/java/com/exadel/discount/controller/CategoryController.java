@@ -50,7 +50,7 @@ public class CategoryController {
     @ApiOperation("Update category")
     CategoryDTO updateCategory(@PathVariable @NotNull UUID id,
                                      @RequestBody @Validated(Create.class) CategoryDTO categoryDTO) {
-        return categoryService.updateCategory(categoryDTO, id);
+        return categoryService.updateCategoryById(categoryDTO, id);
     }
 
     @DeleteMapping("/{id}")

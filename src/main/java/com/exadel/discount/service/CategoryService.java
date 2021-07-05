@@ -15,5 +15,5 @@ public interface CategoryService {
 
     List<CategoryDTO> getAll();
 
-    CategoryDTO updateCategory(CategoryDTO categoryDTO, UUID id);
+    CategoryDTO updateCategoryById(CategoryDTO categoryDTO, UUID id);
 }
