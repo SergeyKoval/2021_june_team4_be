@@ -1,7 +1,6 @@
 package com.exadel.discount.service.impl;
 
 import com.exadel.discount.dto.category.CategoryDTO;
-import com.exadel.discount.dto.category.UpdateCategoryDTO;
 import com.exadel.discount.entity.Category;
 import com.exadel.discount.exception.DeletionRestrictedException;
 import com.exadel.discount.exception.NotFoundException;
@@ -50,13 +49,13 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public UpdateCategoryDTO updateCategory(UpdateCategoryDTO updateCategoryDTO) {
-        return categoryRepository.findById(updateCategoryDTO.getId())
+    public CategoryDTO updateCategory(CategoryDTO categoryDTO, UUID id) {
+        return categoryRepository.findCategoryById(id)
                 .map(category -> {
-                    category.setName(updateCategoryDTO.getName());
-                    return categoryMapper.getUpdateDTO(categoryRepository.save(category));
+                    category.setName(categoryDTO.getName());
+                    return categoryMapper.getDTO(categoryRepository.save(category));
                 })
-                .orElseThrow(() -> new NotFoundException(String.format("Category with ID %s not found", updateCategoryDTO.getId())));
+                .orElseThrow(() -> new NotFoundException(String.format("Category with ID %s not found", id)));
     }
 
     @Override

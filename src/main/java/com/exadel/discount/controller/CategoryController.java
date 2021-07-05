@@ -1,7 +1,6 @@
 package com.exadel.discount.controller;
 
 import com.exadel.discount.dto.category.CategoryDTO;
-import com.exadel.discount.dto.category.UpdateCategoryDTO;
 import com.exadel.discount.dto.validation.Create;
 import com.exadel.discount.service.CategoryService;
 import io.swagger.annotations.ApiOperation;
@@ -47,10 +46,11 @@ public class CategoryController {
         return categoryService.save(categoryDTO);
     }
 
-    @PutMapping
+    @PutMapping("/{id}")
     @ApiOperation("Update category")
-    UpdateCategoryDTO updateCategory(@RequestBody @Validated(Create.class) UpdateCategoryDTO updateCategoryDTO) {
-        return categoryService.updateCategory(updateCategoryDTO);
+    CategoryDTO updateCategory(@PathVariable @NotNull UUID id,
+                                     @RequestBody @Validated(Create.class) CategoryDTO categoryDTO) {
+        return categoryService.updateCategory(categoryDTO, id);
     }
 
     @DeleteMapping("/{id}")
