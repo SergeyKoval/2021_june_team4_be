@@ -52,7 +52,9 @@ public class CategoryServiceImpl implements CategoryService {
     public CategoryDTO updateCategory(CategoryDTO categoryDTO, UUID id) {
         return categoryRepository.findCategoryById(id)
                 .map(category -> {
-                    category.setName(categoryDTO.getName());
+                    if (categoryDTO.getName() != null) {
+                        category.setName(categoryDTO.getName());
+                    }
                     return categoryMapper.getDTO(categoryRepository.save(category));
                 })
                 .orElseThrow(() -> new NotFoundException(String.format("Category with ID %s not found", id)));
