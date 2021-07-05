@@ -1,0 +1,32 @@
+databaseChangeLog:
+  - changeSet:
+      id: add-countries-data
+      author: elizaveta_dubogryz
+      changes:
+        - insert:
+            tableName: countries
+            columns:
+              - column:
+                  name: id
+                  value: "b49abef5-83fe-4d0c-9927-c0aaaf49a2b7"
+              - column:
+                  name: name
+                  value: "Ukraine"
+        - insert:
+            tableName: countries
+            columns:
+              - column:
+                  name: id
+                  value: "13e43451-6b1b-4e0f-bc61-8d903d226617"
+              - column:
+                  name: name
+                  value: "Belarus"
+        - insert:
+            tableName: countries
+            columns:
+              - column:
+                  name: id
+                  value: "ec62f606-7de5-443a-8d37-cee82134c6cf"
+              - column:
+                  name: name
+                  value: "Poland"

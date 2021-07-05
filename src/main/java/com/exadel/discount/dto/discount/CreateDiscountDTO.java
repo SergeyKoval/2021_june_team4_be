@@ -32,7 +32,7 @@ public class CreateDiscountDTO {
     private boolean active;
     @NotNull(message = "Vendor should be not null")
     private UUID vendorId;
-    private Set<UUID> tagIds = new HashSet();
+    private Set<UUID> tagIds = new HashSet<>();
     @NotNull(message = "Discount should have at least one location")
-    private Set<UUID> vendorLocationsIds = new HashSet();
+    private Set<UUID> vendorLocationsIds = new HashSet<>();
 }

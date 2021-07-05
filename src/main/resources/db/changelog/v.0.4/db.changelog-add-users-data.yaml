@@ -1,6 +1,6 @@
 databaseChangeLog:
   - changeSet:
-      id: 32-add-users-data
+      id: add-users-data
       author: elizaveta_dubogryz
       changes:
         - insert:

@@ -1,6 +1,6 @@
 databaseChangeLog:
   - changeSet:
-      id: 31-add-cities-data
+      id: add-cities-data
       author: elizaveta_dubogryz
       changes:
         - insert:

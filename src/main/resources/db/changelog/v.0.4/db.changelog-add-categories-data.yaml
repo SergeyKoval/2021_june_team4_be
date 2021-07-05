@@ -1,32 +1,32 @@
 databaseChangeLog:
   - changeSet:
-      id: 30-add-countries-data
+      id: add-categories-data
       author: elizaveta_dubogryz
       changes:
         - insert:
-            tableName: countries
+            tableName: categories
             columns:
               - column:
                   name: id
-                  value: "b49abef5-83fe-4d0c-9927-c0aaaf49a2b7"
+                  value: "5a009936-ac14-4b4b-9121-3638122ea6b5"
               - column:
                   name: name
-                  value: "Ukraine"
+                  value: "Sport"
         - insert:
-            tableName: countries
+            tableName: categories
             columns:
               - column:
                   name: id
-                  value: "13e43451-6b1b-4e0f-bc61-8d903d226617"
+                  value: "c7737489-01a2-46c3-928c-c4ddc73de7ef"
               - column:
                   name: name
-                  value: "Belarus"
+                  value: "Beauty"
         - insert:
-            tableName: countries
+            tableName: categories
             columns:
               - column:
                   name: id
-                  value: "ec62f606-7de5-443a-8d37-cee82134c6cf"
+                  value: "93577f24-f68f-403e-aa04-0a60c3a445d8"
               - column:
                   name: name
-                  value: "Poland"
+                  value: "Food"
