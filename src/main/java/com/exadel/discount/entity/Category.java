@@ -33,7 +33,6 @@ public class Category {
     @Column(name = "name", nullable = false, length = 50)
     private String name;
 
-    @OneToMany(cascade =  CascadeType.REMOVE,
-            mappedBy = "category")
+    @OneToMany(mappedBy = "category")
     private List<Discount> discounts;
 }
