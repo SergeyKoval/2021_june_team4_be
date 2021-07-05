@@ -41,6 +41,15 @@ public class GlobalExceptionHandler {
         return exceptionDetailsList;
     }
 
+    @ExceptionHandler(DeletionRestrictedException.class)
+    @ResponseBody
+    @ResponseStatus(HttpStatus.PRECONDITION_FAILED)
+    public ExceptionDetails handleException(DeletionRestrictedException exception) {
+        log.error("Exception stack trace: ", exception);
+
+        return new ExceptionDetails(exception.getMessage());
+    }
+
     @ExceptionHandler
     @ResponseBody
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
