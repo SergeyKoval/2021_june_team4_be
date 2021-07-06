@@ -46,6 +46,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements WebM
                 .csrf().disable()
                 .authorizeRequests()
                 .antMatchers("/authenticate/login").permitAll()
+                .antMatchers("/swagger-ui/**").permitAll()
                 .anyRequest().authenticated()
                 .and().sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
