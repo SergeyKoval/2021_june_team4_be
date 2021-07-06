@@ -1,7 +1,6 @@
 package com.exadel.discount.controller;
 
-import com.exadel.discount.dto.user.UserCityDto;
-import com.exadel.discount.dto.user.UserDto;
+import com.exadel.discount.dto.user.UserDTO;
 import com.exadel.discount.service.UserService;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
@@ -24,7 +23,7 @@ public class UserController {
 
     @GetMapping
     @ApiOperation("Get sorted page-list of all users without filtering")
-    public List<UserCityDto> getallUsers(@RequestParam(name = "pageNumber", defaultValue = "1") int pageNumber,
+    public List<UserDTO> getallUsers(@RequestParam(name = "pageNumber", defaultValue = "1") int pageNumber,
                                          @RequestParam(name = "pageSize", defaultValue = "10") int pageSize,
                                          @RequestParam(name = "sortDirection", defaultValue = "") String sortDirection,
                                          @RequestParam(name = "sortField", defaultValue = "id") String sortField) {
@@ -33,7 +32,7 @@ public class UserController {
 
     @GetMapping("/role")
     @ApiOperation("Get sorted page-list of users filtered by role")
-    public List<UserCityDto> getUsersByRole(@RequestParam(name = "pageNumber", defaultValue = "1") int pageNumber,
+    public List<UserDTO> getUsersByRole(@RequestParam(name = "pageNumber", defaultValue = "1") int pageNumber,
                                             @RequestParam(name = "pageSize", defaultValue = "10") int pageSize,
                                             @RequestParam(name = "sortDirection", defaultValue = "") String sortDirection,
                                             @RequestParam(name = "sortField", defaultValue = "id") String sortField,
@@ -44,7 +43,7 @@ public class UserController {
 
     @GetMapping("/city")
     @ApiOperation("Get sorted page-list of users filtered by city")
-    public List<UserCityDto> getUsersByCity(@RequestParam(name = "pageNumber", defaultValue = "1") int pageNumber,
+    public List<UserDTO> getUsersByCity(@RequestParam(name = "pageNumber", defaultValue = "1") int pageNumber,
                                             @RequestParam(name = "pageSize", defaultValue = "10") int pageSize,
                                             @RequestParam(name = "sortDirection", defaultValue = "") String sortDirection,
                                             @RequestParam(name = "sortField", defaultValue = "id") String sortField,
@@ -54,7 +53,7 @@ public class UserController {
 
     @GetMapping("/country")
     @ApiOperation("Get sorted page-list of users filtered by country")
-    public List<UserCityDto> getUserOfCountry(@RequestParam(name = "pageNumber", defaultValue = "1") int pageNumber,
+    public List<UserDTO> getUserOfCountry(@RequestParam(name = "pageNumber", defaultValue = "1") int pageNumber,
                                            @RequestParam(name = "pageSize", defaultValue = "10") int pageSize,
                                            @RequestParam(name = "sortDirection", defaultValue = "") String sortDirection,
                                            @RequestParam(name = "sortField", defaultValue = "id") String sortField,
@@ -64,13 +63,13 @@ public class UserController {
 
     @GetMapping("{id}")
     @ApiOperation("Get user by ID")
-    public UserCityDto getUserById(@PathVariable @NotNull final UUID id) {
+    public UserDTO getUserById(@PathVariable @NotNull final UUID id) {
         return userService.findUserById(id);
     }
 
     @GetMapping("/name")
     @ApiOperation("Get users by lastname and firstname")
-    public List<UserDto> getUsersByName(@RequestParam("lastname") @NotNull String lastName,
+    public List<UserDTO> getUsersByName(@RequestParam("lastname") @NotNull String lastName,
                                         @RequestParam("firstname") @NotNull String firstName) {
         return userService.findUsersByName(lastName, firstName);
     }
