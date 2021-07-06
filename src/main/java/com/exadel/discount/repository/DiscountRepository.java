@@ -19,5 +19,8 @@ public interface DiscountRepository extends JpaRepository<Discount, UUID> {
     Optional<Discount> findById(UUID id);
 
     @EntityGraph(attributePaths = {"category", "vendorLocations", "tags", "vendor"})
-    Optional<Discount> findByIdAndArchivedTrue(UUID id);
+    List<Discount> findAllByArchived(boolean archived);
+
+    @EntityGraph(attributePaths = {"category", "vendorLocations", "tags", "vendor"})
+    Optional<Discount> findByIdAndArchived(UUID id, boolean archived);
 }
