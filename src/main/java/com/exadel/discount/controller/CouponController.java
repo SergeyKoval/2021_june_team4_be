@@ -1,7 +1,7 @@
 package com.exadel.discount.controller;
 
-import com.exadel.discount.dto.coupon.CouponDto;
-import com.exadel.discount.dto.coupon.CreateCouponDto;
+import com.exadel.discount.dto.coupon.CouponDTO;
+import com.exadel.discount.dto.coupon.CreateCouponDTO;
 import com.exadel.discount.service.CouponService;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
@@ -31,7 +31,7 @@ public class CouponController {
      sortDirection - ASC or DSC (unsorted - by default) ;
      sortField - name of sorted field by (date - by default)- date/id
      filtering - after startDate and/or before endDate (default filtering - between 2000-01-10T00:00:00 and 9999-01-10T00:00:00 **/
-    public List<CouponDto> getAllCoupons(@RequestParam(name = "pageNumber", defaultValue = "1") int pageNumber,
+    public List<CouponDTO> getAllCoupons(@RequestParam(name = "pageNumber", defaultValue = "1") int pageNumber,
                                          @RequestParam(name = "pageSize", defaultValue = "10") int pageSize,
                                          @RequestParam(value = "sortDirection", defaultValue = "") String sortDirection,
                                          @RequestParam(value = "sortField", defaultValue = "date") String sortField,
@@ -42,19 +42,19 @@ public class CouponController {
 
     @GetMapping("{id}")
     @ApiOperation("Get coupon by ID")
-    public CouponDto getCouponById(@PathVariable @NotNull final UUID id) {
+    public CouponDTO getCouponById(@PathVariable @NotNull final UUID id) {
         return couponService.findCouponById(id);
     }
 
     @PostMapping
     @ApiOperation("Save new coupon to user")
-    public CouponDto addCoupon(@RequestBody @NotNull final CreateCouponDto createCouponDto) {
-        return couponService.assignCouponToUser(createCouponDto);
+    public CouponDTO addCoupon(@RequestBody @NotNull final CreateCouponDTO createCouponDTO) {
+        return couponService.assignCouponToUser(createCouponDTO);
     }
 
     @GetMapping("/ofuser")
     @ApiOperation("Get sorted page-list of coupons of certain user")
-    public List<CouponDto> getCouponsOfUser(@RequestParam(name = "pageNumber", defaultValue = "1") int pageNumber,
+    public List<CouponDTO> getCouponsOfUser(@RequestParam(name = "pageNumber", defaultValue = "1") int pageNumber,
                                             @RequestParam(name = "pageSize", defaultValue = "10") int pageSize,
                                             @RequestParam(value = "sortDirection", defaultValue = "") String sortDirection,
                                             @RequestParam(value = "sortField", defaultValue = "date") String sortField,
@@ -65,7 +65,7 @@ public class CouponController {
     //Time example : 2021-06-15T11:58:11
     @GetMapping("/date")
     @ApiOperation("Get coupon by certain date")
-    public CouponDto getCouponByDate(@RequestParam("date")
+    public CouponDTO getCouponByDate(@RequestParam("date")
                                      @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) @NotNull final LocalDateTime date) {
         return couponService.findCouponByDate(date);
     }

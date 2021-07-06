@@ -11,8 +11,10 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CreateFavoriteDto {
+
     @NotNull
     private UUID userId;
+
     @NotNull
     private UUID discountId;
 }

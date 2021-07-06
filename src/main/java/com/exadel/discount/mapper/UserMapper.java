@@ -6,27 +6,24 @@ import com.exadel.discount.dto.user.UserDTO;
 import com.exadel.discount.entity.City;
 import com.exadel.discount.entity.Country;
 import com.exadel.discount.entity.User;
+import lombok.AllArgsConstructor;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
-@Mapper(componentModel = "spring", imports = CountryMapper.class)
+@Mapper(componentModel = "spring")
 public abstract class UserMapper {
 
     @Autowired
     protected CountryMapper countryMapper;
-    // UserMapper INSTANCE = Mappers.getMapper( UserMapper.class );
+    @Autowired
+    protected  CityMapper cityMapper;
+
     @Mapping(expression = "java(countryMapper.countryToCountryDTO(user.getCity().getCountry()))", target = "countryDTO")
-    //  @Mapping(expression = "java(user.city.country)", target = "countryDTO")
+    @Mapping(expression = "java(cityMapper.cityToCityDTO(user.getCity()))", target = "cityDTO")
     public abstract UserDTO toUserDTO(User user);
-
-    @Mapping(expression = "java(city.getCountry().getId())", target = "countryId")
-        //@Mapping(source = "java(city.country.id)", target = "countryId")
-    public abstract CityDTO cityToCityDTO(City city);
-
-    public abstract CountryDTO countryToCountryDTO(Country country);
 
     public abstract List<UserDTO> toUserDTOList(List<User> userList);
 }
