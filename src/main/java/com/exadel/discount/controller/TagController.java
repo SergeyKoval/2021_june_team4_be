@@ -42,7 +42,7 @@ public class TagController {
 
     @GetMapping("/{id}")
     @ApiOperation("Get tag by ID")
-    @AdminAccess
+    @UserAccess
     public TagDTO getTagById(@PathVariable UUID id) {
         return tagService.getById(id);
     }
