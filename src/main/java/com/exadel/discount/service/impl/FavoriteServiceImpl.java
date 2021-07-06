@@ -1,7 +1,7 @@
 package com.exadel.discount.service.impl;
 
-import com.exadel.discount.dto.favorite.CreateFavoriteDto;
-import com.exadel.discount.dto.favorite.FavoriteDto;
+import com.exadel.discount.dto.favorite.CreateFavoriteDTO;
+import com.exadel.discount.dto.favorite.FavoriteDTO;
 import com.exadel.discount.entity.Discount;
 import com.exadel.discount.entity.Favorite;
 import com.exadel.discount.entity.User;
@@ -31,7 +31,7 @@ public class FavoriteServiceImpl implements FavoriteService {
     private final DiscountRepository discountRepository;
 
     @Override
-    public List<FavoriteDto> findAllFavorites( int pageNumber, int pageSize,String sortDirection, String sortField) {
+    public List<FavoriteDTO> findAllFavorites(int pageNumber, int pageSize, String sortDirection, String sortField) {
         Pageable paging = SortPageMaker.makePageable(pageNumber, pageSize, sortDirection, sortField);
         log.debug("Getting sorted page-list of all Favorites");
 
@@ -40,11 +40,11 @@ public class FavoriteServiceImpl implements FavoriteService {
 
         log.debug("Successfully got sorted page-list of all Favorites");
 
-        return favoriteMapper.toFavoriteDtoList(favoriteList.toList());
+        return favoriteMapper.toFavoriteDTOList(favoriteList.toList());
     }
 
     @Override
-    public FavoriteDto findFavoriteById(UUID id) {
+    public FavoriteDTO findFavoriteById(UUID id) {
         log.debug("Finding Favorite by ID");
 
         Favorite favorite = favoriteRepository
@@ -53,20 +53,20 @@ public class FavoriteServiceImpl implements FavoriteService {
 
         log.debug("Successfully Favorite is found by ID");
 
-        return favoriteMapper.toFavoriteDto(favorite);
+        return favoriteMapper.toFavoriteDTO(favorite);
     }
 
     @Override
-    public FavoriteDto assignFavoriteToUser(CreateFavoriteDto createFavoriteDto) {
+    public FavoriteDTO assignFavoriteToUser(CreateFavoriteDTO createFavoriteDTO) {
         log.debug("Finding of certain user by ID");
 
         User user = userRepository
-                .findById(createFavoriteDto.getUserId())
-                .orElseThrow(() -> new NotFoundException(String.format("User with id %s not found", createFavoriteDto.getUserId())));
+                .findById(createFavoriteDTO.getUserId())
+                .orElseThrow(() -> new NotFoundException(String.format("User with id %s not found", createFavoriteDTO.getUserId())));
 
         Discount discount = discountRepository
-                .findById(createFavoriteDto.getDiscountId())
-                .orElseThrow(() -> new NotFoundException(String.format("Discount with id %s not found", createFavoriteDto.getDiscountId())));
+                .findById(createFavoriteDTO.getDiscountId())
+                .orElseThrow(() -> new NotFoundException(String.format("Discount with id %s not found", createFavoriteDTO.getDiscountId())));
 
         log.debug("Successfully certain User and Discount are found by ID. Starting Favorite creation/saving.");
 
@@ -77,7 +77,7 @@ public class FavoriteServiceImpl implements FavoriteService {
         favoriteRepository.save(favorite);
         log.debug("Successfully new Favorite is saved to certain user");
 
-        return favoriteMapper.toFavoriteDto(favorite);
+        return favoriteMapper.toFavoriteDTO(favorite);
     }
 
     @Override
@@ -92,7 +92,7 @@ public class FavoriteServiceImpl implements FavoriteService {
     }
 
     @Override
-    public List<FavoriteDto> getFavoritesOfUser(int pageNumber, int pageSize, String sortDirection, String sortField, UUID userId){
+    public List<FavoriteDTO> getFavoritesOfUser(int pageNumber, int pageSize, String sortDirection, String sortField, UUID userId){
         Pageable paging = SortPageMaker.makePageable(pageNumber, pageSize, sortDirection, sortField);
 
         log.debug("Finding Favorites of certain user");
@@ -100,6 +100,6 @@ public class FavoriteServiceImpl implements FavoriteService {
         if(FavoriteList.isEmpty()) throw new NotFoundException(String.format("No Favorites are found at user with Id %s ", userId));
         log.debug("Successfully sorted page-list of user's Favorites is got");
 
-        return favoriteMapper.toFavoriteDtoList(FavoriteList);
+        return favoriteMapper.toFavoriteDTOList(FavoriteList);
     }
 }

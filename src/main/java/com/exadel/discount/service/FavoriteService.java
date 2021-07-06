@@ -1,20 +1,20 @@
 package com.exadel.discount.service;
 
-import com.exadel.discount.dto.favorite.CreateFavoriteDto;
-import com.exadel.discount.dto.favorite.FavoriteDto;
+import com.exadel.discount.dto.favorite.CreateFavoriteDTO;
+import com.exadel.discount.dto.favorite.FavoriteDTO;
 
 
 import java.util.List;
 import java.util.UUID;
 
 public interface FavoriteService {
-    FavoriteDto findFavoriteById(UUID id);
+    FavoriteDTO findFavoriteById(UUID id);
 
     void deleteFavoriteByID(UUID id);
 
-    List<FavoriteDto> findAllFavorites( int pageNumber, int pageSize, String sortDirection, String sortField);
+    List<FavoriteDTO> findAllFavorites(int pageNumber, int pageSize, String sortDirection, String sortField);
 
-    FavoriteDto assignFavoriteToUser(CreateFavoriteDto createFavoriteDto);
+    FavoriteDTO assignFavoriteToUser(CreateFavoriteDTO createFavoriteDTO);
 
-    List<FavoriteDto> getFavoritesOfUser(int pageNumber, int pageSize, String sortDirection, String sortField, UUID userId);
+    List<FavoriteDTO> getFavoritesOfUser(int pageNumber, int pageSize, String sortDirection, String sortField, UUID userId);
 }

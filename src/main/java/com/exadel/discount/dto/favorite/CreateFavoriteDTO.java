@@ -10,11 +10,11 @@ import java.util.UUID;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class CreateFavoriteDto {
+public class CreateFavoriteDTO {
 
-    @NotNull
+    @NotNull(message = "User ID should be not null")
     private UUID userId;
 
-    @NotNull
+    @NotNull(message = "Discount ID should be not null")
     private UUID discountId;
 }

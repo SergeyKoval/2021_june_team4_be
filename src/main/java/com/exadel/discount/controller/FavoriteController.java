@@ -1,7 +1,7 @@
 package com.exadel.discount.controller;
 
-import com.exadel.discount.dto.favorite.CreateFavoriteDto;
-import com.exadel.discount.dto.favorite.FavoriteDto;
+import com.exadel.discount.dto.favorite.CreateFavoriteDTO;
+import com.exadel.discount.dto.favorite.FavoriteDTO;
 import com.exadel.discount.service.FavoriteService;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
@@ -27,9 +27,9 @@ public class FavoriteController {
     @GetMapping
     @ApiOperation("Get sorted(id) page-list of all favorites")
     /**  Get list of all users with sorting by params
-     sortDirection - ASC or DSC (unsorted - by default) ;
-     sortField - name of sorted field by (id - by default) **/
-    public List<FavoriteDto> getAllFavorites(@RequestParam(name = "pageNumber", defaultValue = "1") int pageNumber,
+     * sortDirection - ASC or DSC (unsorted - by default) ;
+     * sortField - name of sorted field by (id - by default) */
+    public List<FavoriteDTO> getAllFavorites(@RequestParam(name = "pageNumber", defaultValue = "1") int pageNumber,
                                              @RequestParam(name = "pageSize", defaultValue = "10") int pageSize,
                                              @RequestParam(value = "sortDirection", defaultValue = "") String sortDirection,
                                          @RequestParam(value = "sortField", defaultValue = "id") String sortField){
@@ -38,19 +38,19 @@ public class FavoriteController {
 
     @GetMapping("{id}")
     @ApiOperation("Get favorite by ID")
-    public FavoriteDto getFavoriteById(@PathVariable @NotNull final UUID id) {
+    public FavoriteDTO getFavoriteById(@PathVariable @NotNull final UUID id) {
         return favoriteService.findFavoriteById(id);
     }
 
     @PostMapping
     @ApiOperation("Save new favorite to user")
-    public FavoriteDto addFavorite(@RequestBody @NotNull final CreateFavoriteDto createFavoriteDto) {
-        return favoriteService.assignFavoriteToUser(createFavoriteDto);
+    public FavoriteDTO addFavorite(@RequestBody @NotNull final CreateFavoriteDTO createFavoriteDTO) {
+        return favoriteService.assignFavoriteToUser(createFavoriteDTO);
     }
 
     @GetMapping("/ofuser")
     @ApiOperation("Get sorted page-list of favorites of certain user")
-    public List<FavoriteDto> getFavoritesOfUser(@RequestParam(name = "pageNumber", defaultValue = "1") int pageNumber,
+    public List<FavoriteDTO> getFavoritesOfUser(@RequestParam(name = "pageNumber", defaultValue = "1") int pageNumber,
                                                 @RequestParam(name = "pageSize", defaultValue = "10") int pageSize,
                                                 @RequestParam(value = "sortDirection", defaultValue = "") String sortDirection,
                                                 @RequestParam(value = "sortField", defaultValue = "id") String sortField,
