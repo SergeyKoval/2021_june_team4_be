@@ -140,7 +140,7 @@ public class DiscountServiceImpl implements DiscountService {
 
     private Vendor findVendor(UUID vendorId) {
         return vendorRepository
-                .findByIdAndArchivedFalse(vendorId)
+                .findByIdAndArchived(vendorId, false)
                 .orElseThrow(() -> new NotFoundException(String.format("Vendor with ID %s doesn't exist", vendorId)));
     }
 }

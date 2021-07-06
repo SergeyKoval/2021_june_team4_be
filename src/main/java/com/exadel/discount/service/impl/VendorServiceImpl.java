@@ -36,7 +36,7 @@ public class VendorServiceImpl implements VendorService {
     public VendorDTO getById(UUID id) {
         log.debug(String.format("Finding Vendor with ID %s", id));
         Vendor vendor = vendorRepository
-                .findByIdAndArchivedFalse(id)
+                .findByIdAndArchived(id, false)
                 .orElseThrow(() -> new NotFoundException(String.format("Vendor with ID %s not found", id)));
         log.debug(String.format("Successfully found Vendor with ID %s", id));
         return vendorMapper.getDTO(vendor);
@@ -45,7 +45,7 @@ public class VendorServiceImpl implements VendorService {
     @Override
     public List<VendorDTO> getAll() {
         log.debug("Getting list of all Vendors");
-        List<Vendor> vendorList = vendorRepository.findAllByArchivedFalse();
+        List<Vendor> vendorList = vendorRepository.findAllByArchived(false);
         log.debug("Successfully got list of all Vendors");
         return vendorMapper.getListDTO(vendorList);
     }
@@ -65,7 +65,7 @@ public class VendorServiceImpl implements VendorService {
     @Override
     public List<VendorDTO> getAllArchived() {
         log.debug("Getting list of archived Vendors");
-        List<Vendor> vendorList = vendorRepository.findAllByArchivedTrue();
+        List<Vendor> vendorList = vendorRepository.findAllByArchived(true);
         log.debug("Successfully got list of archived Vendors");
         return vendorMapper.getListDTO(vendorList);
     }
@@ -75,7 +75,8 @@ public class VendorServiceImpl implements VendorService {
     public VendorDTO restoreById(UUID id) {
         log.debug(String.format("Restoring Vendor with ID %s", id));
         Vendor vendor = vendorRepository
-                .findByIdAndArchivedTrue(id).orElseThrow(() -> new NotFoundException(String.format("Archived Vendor with ID %s not found", id)));
+                .findByIdAndArchived(id, true)
+                .orElseThrow(() -> new NotFoundException(String.format("Archived Vendor with ID %s not found", id)));
         vendor.setArchived(false);
         Vendor restoredVendor = vendorRepository.save(vendor);
         log.debug(String.format("Successfully restored Vendor with ID %s", id));

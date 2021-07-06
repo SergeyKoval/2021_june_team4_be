@@ -21,16 +21,10 @@ public interface VendorRepository extends JpaRepository<Vendor, UUID> {
     Optional<Vendor> findById(UUID id);
 
     @EntityGraph(attributePaths = {"vendorLocations"})
-    List<Vendor> findAllByArchivedTrue();
+    List<Vendor> findAllByArchived(boolean archived);
 
     @EntityGraph(attributePaths = {"vendorLocations"})
-    List<Vendor> findAllByArchivedFalse();
-
-    @EntityGraph(attributePaths = {"vendorLocations"})
-    Optional<Vendor> findByIdAndArchivedFalse(UUID id);
-
-    @EntityGraph(attributePaths = {"vendorLocations"})
-    Optional<Vendor> findByIdAndArchivedTrue(UUID id);
+    Optional<Vendor> findByIdAndArchived(UUID id, boolean archived);
 
     @Query("SELECT v FROM Vendor v WHERE v.id=:vendorId AND v.archived=false AND" +
             "(SELECT count(d) FROM Discount d WHERE d.vendor.id=:vendorId AND d.archived=false) = 0")
