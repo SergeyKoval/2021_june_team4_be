@@ -7,8 +7,8 @@ import java.util.UUID;
 
 @Data
 public class CreateLocationDTO {
-    private Double coordinateX;
-    private Double coordinateY;
+    private Double latitude;
+    private Double longitude;
     @NotNull(message = "Vendor ID should be not null")
     private UUID vendorId;
 }
