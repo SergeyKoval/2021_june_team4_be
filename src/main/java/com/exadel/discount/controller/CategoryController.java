@@ -2,6 +2,8 @@ package com.exadel.discount.controller;
 
 import com.exadel.discount.dto.CategoryDTO;
 import com.exadel.discount.dto.validation.Create;
+import com.exadel.discount.security.annotation.AdminAccess;
+import com.exadel.discount.security.annotation.UserAccess;
 import com.exadel.discount.service.CategoryService;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
@@ -29,12 +31,14 @@ public class CategoryController {
 
     @GetMapping
     @ApiOperation("Get all categories")
+    @UserAccess
     public List<CategoryDTO> getAll() {
         return categoryService.getAll();
     }
 
     @GetMapping("/{categoryId}")
     @ApiOperation("Get information about category by Id")
+    @UserAccess
     public CategoryDTO getById(
             @PathVariable(name = "categoryId") @NotNull UUID id) {
         return categoryService.getById(id);
@@ -42,12 +46,14 @@ public class CategoryController {
 
     @PostMapping
     @ApiOperation("Add new category")
+    @AdminAccess
     public CategoryDTO addCategory(@RequestBody @Validated(Create.class) CategoryDTO categoryDTO) {
         return categoryService.save(categoryDTO);
     }
 
     @DeleteMapping("/{id}")
     @ApiOperation("Delete category by Id")
+    @AdminAccess
     public void deleteCategory(@PathVariable(name = "id") @NotNull UUID id) {
         categoryService.deleteById(id);
     }

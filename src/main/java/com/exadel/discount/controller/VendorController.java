@@ -2,6 +2,8 @@ package com.exadel.discount.controller;
 
 import com.exadel.discount.dto.vendor.CreateVendorDTO;
 import com.exadel.discount.dto.vendor.VendorDTO;
+import com.exadel.discount.security.annotation.AdminAccess;
+import com.exadel.discount.security.annotation.UserAccess;
 import com.exadel.discount.service.VendorService;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
@@ -30,12 +32,14 @@ public class VendorController {
 
     @GetMapping
     @ApiOperation("Get list of all vendors")
+    @UserAccess
     public List<VendorDTO> getVendorsList() {
         return vendorService.getAll();
     }
 
     @GetMapping("/{id}")
     @ApiOperation("Get vendor by ID")
+    @UserAccess
     public VendorDTO getVendorById(
             @PathVariable(name = "id") @NotNull UUID id) {
         return vendorService.getById(id);
@@ -43,12 +47,14 @@ public class VendorController {
 
     @PostMapping
     @ApiOperation("Add new vendor")
+    @AdminAccess
     public VendorDTO saveNewVendor(@RequestBody @Valid CreateVendorDTO vendor) {
         return vendorService.save(vendor);
     }
 
     @DeleteMapping("/{id}")
     @ApiOperation("Delete vendor by ID")
+    @AdminAccess
     public void deleteVendor(@PathVariable(name = "id") @NotNull UUID id) {
         vendorService.deleteById(id);
     }
