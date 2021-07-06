@@ -7,15 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 import org.hibernate.annotations.GenericGenerator;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.Set;
 import java.util.UUID;
 
@@ -35,11 +27,12 @@ public class VendorLocation {
     @Column(name = "id")
     private UUID id;
 
-    @Column(name = "latitude")
-    private Double latitude;
-
-    @Column(name = "longitude")
-    private Double longitude;
+    @Embedded
+    @AttributeOverrides({
+            @AttributeOverride( name = "latitude", column = @Column(name = "latitude")),
+            @AttributeOverride( name = "longitude", column = @Column(name = "longitude"))
+    })
+    private Point position;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "vendor_id")
