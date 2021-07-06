@@ -1,10 +1,11 @@
 package com.exadel.discount.dto.coupon;
 
-import com.sun.istack.NotNull;
+import com.exadel.discount.dto.discount.DiscountDTO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -12,8 +13,13 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CouponDto {
-    @NotNull
+
+    @NotNull(message = "Coupon ID should be not null")
     private UUID id;
-    @NotNull
+
+    @NotNull(message = "Coupon date should be not null")
     private LocalDateTime date;
+
+    @NotNull(message = "Discount should be not null")
+    private DiscountDTO discountDto;
 }

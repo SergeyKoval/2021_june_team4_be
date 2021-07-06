@@ -1,5 +1,6 @@
 package com.exadel.discount.dto.coupon;
 
+import com.exadel.discount.dto.discount.DiscountDTO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -11,8 +12,10 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CreateCouponDto {
-    @NotNull
+
+    @NotNull(message = "Coupon ID should be not null")
     private UUID userId;
-    @NotNull
+
+    @NotNull(message = "Discount ID should be not null")
     private UUID discountId;
 }
