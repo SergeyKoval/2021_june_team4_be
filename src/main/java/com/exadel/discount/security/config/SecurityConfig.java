@@ -84,6 +84,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements WebM
                         HttpMethod.POST.name(),
                         HttpMethod.DELETE.name(),
                         HttpMethod.PUT.name())
-                .allowedHeaders(HttpHeaders.AUTHORIZATION, HttpHeaders.CONTENT_TYPE);
+                .allowedHeaders(HttpHeaders.AUTHORIZATION, HttpHeaders.CONTENT_TYPE)
+                .allowCredentials(true);
     }
 }
