@@ -54,11 +54,12 @@ public class VendorServiceImpl implements VendorService {
     @Transactional
     public void deleteById(UUID id) {
         log.debug(String.format("Deleting Vendor with ID %s", id));
-        Vendor vendor = vendorRepository
-                .findByIdWithNoDiscounts(id)
-                .orElseThrow(() -> new DeletionRestrictedException(String.format("Vendor with ID %s doesn't exist or can't be deleted as it has discounts", id)));
-        vendor.setArchived(true);
-        vendorRepository.save(vendor);
+        if (!vendorRepository.existsByIdWithNoDiscounts(id)) {
+            throw new DeletionRestrictedException(
+                    String.format("Vendor with ID %s doesn't exist or can't be deleted as it has discounts", id)
+            );
+        }
+        vendorRepository.archiveById(id);
         log.debug(String.format("Successfully deleted Vendor with ID %s", id));
     }
 
@@ -77,9 +78,8 @@ public class VendorServiceImpl implements VendorService {
         Vendor vendor = vendorRepository
                 .findByIdAndArchived(id, true)
                 .orElseThrow(() -> new NotFoundException(String.format("Archived Vendor with ID %s not found", id)));
-        vendor.setArchived(false);
-        Vendor restoredVendor = vendorRepository.save(vendor);
+        vendorRepository.restoreById(id);
         log.debug(String.format("Successfully restored Vendor with ID %s", id));
-        return vendorMapper.getDTO(restoredVendor);
+        return vendorMapper.getDTO(vendor);
     }
 }
