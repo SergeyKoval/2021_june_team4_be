@@ -6,16 +6,20 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotNull;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class CreateCouponDto {
+public class CouponDTO {
 
     @NotNull(message = "Coupon ID should be not null")
-    private UUID userId;
+    private UUID id;
 
-    @NotNull(message = "Discount ID should be not null")
-    private UUID discountId;
+    @NotNull(message = "Coupon date should be not null")
+    private LocalDateTime date;
+
+    @NotNull(message = "Discount should be not null")
+    private DiscountDTO discountDto;
 }
