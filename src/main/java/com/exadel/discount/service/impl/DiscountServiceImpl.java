@@ -99,7 +99,9 @@ public class DiscountServiceImpl implements DiscountService {
                 .findByIdAndArchived(id, true)
                 .orElseThrow(() -> new NotFoundException(String.format("Archived Discount with id %s not found", id)));
         if (discount.getVendor().isArchived()) {
-            throw new NotFoundException(String.format("Discount can't be restored as Vendor with id %s not found", discount.getVendor().getId()));
+            throw new NotFoundException(
+                    String.format("Discount can't be restored as Vendor with id %s not found"
+                            , discount.getVendor().getId()));
         }
         discount.setArchived(false);
         Discount restoredDiscount = discountRepository.save(discount);
@@ -135,7 +137,9 @@ public class DiscountServiceImpl implements DiscountService {
     private Category findCategory(UUID categoryId) {
         return categoryRepository
                 .findById(categoryId)
-                .orElseThrow(() -> new NotFoundException(String.format("Category with ID %s doesn't exist", categoryId)));
+                .orElseThrow(() -> new NotFoundException(
+                        String.format("Category with ID %s doesn't exist", categoryId)
+                ));
     }
 
     private Vendor findVendor(UUID vendorId) {
