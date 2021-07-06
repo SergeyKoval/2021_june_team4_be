@@ -75,11 +75,10 @@ public class DiscountServiceImpl implements DiscountService {
     @Transactional
     public void deleteById(UUID id) {
         log.debug(String.format("Deleting Discount with ID %s", id));
-        Discount discount = discountRepository
-                .findByIdAndArchived(id, false)
-                .orElseThrow(() -> new NotFoundException(String.format("Discount with ID %s not found", id)));
-        discount.setArchived(true);
-        discountRepository.save(discount);
+        if (!discountRepository.existsByIdAndArchived(id, false)) {
+            throw new NotFoundException(String.format("Discount with ID %s not found", id));
+        }
+        discountRepository.setArchivedById(id, true);
         log.debug(String.format("Successfully deleted Discount with ID %s", id));
     }
 
@@ -103,10 +102,9 @@ public class DiscountServiceImpl implements DiscountService {
                     String.format("Discount can't be restored as Vendor with id %s not found"
                             , discount.getVendor().getId()));
         }
-        discount.setArchived(false);
-        Discount restoredDiscount = discountRepository.save(discount);
+        discountRepository.setArchivedById(id, false);
         log.debug("Successfully restored Discount");
-        return discountMapper.getDTO(restoredDiscount);
+        return discountMapper.getDTO(discount);
     }
 
     private Set<Tag> findTags(Set<UUID> tagIds) {
