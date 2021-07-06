@@ -1,0 +1,13 @@
+databaseChangeLog:
+  - changeSet:
+      id: add-new-coordinates-columns
+      author: Anton Rud
+      changes:
+        - renameColumn:
+            tableName: vendor_locations
+            newColumnName: latitude
+            oldColumnName: coordinate_x
+        - renameColumn:
+            tableName: vendor_locations
+            newColumnName: longitude
+            oldColumnName: coordinate_y
