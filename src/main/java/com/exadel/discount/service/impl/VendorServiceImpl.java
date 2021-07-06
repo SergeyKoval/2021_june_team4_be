@@ -59,7 +59,7 @@ public class VendorServiceImpl implements VendorService {
                     String.format("Vendor with ID %s doesn't exist or can't be deleted as it has discounts", id)
             );
         }
-        vendorRepository.setArchivedById(id, true);
+        vendorRepository.archiveById(id);
         log.debug(String.format("Successfully deleted Vendor with ID %s", id));
     }
 
@@ -78,7 +78,8 @@ public class VendorServiceImpl implements VendorService {
         Vendor vendor = vendorRepository
                 .findByIdAndArchived(id, true)
                 .orElseThrow(() -> new NotFoundException(String.format("Archived Vendor with ID %s not found", id)));
-        vendorRepository.setArchivedById(id, false);
+        vendorRepository.restoreById(id);
+        vendor.setArchived(false);
         log.debug(String.format("Successfully restored Vendor with ID %s", id));
         return vendorMapper.getDTO(vendor);
     }
