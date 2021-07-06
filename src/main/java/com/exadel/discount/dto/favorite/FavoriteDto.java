@@ -12,7 +12,6 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 public class FavoriteDto {
-
     @NotNull(message = "Favorite ID should be not null")
     private UUID id;
 

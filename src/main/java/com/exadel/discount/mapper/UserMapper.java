@@ -17,12 +17,16 @@ public abstract class UserMapper {
 
     @Autowired
     protected CountryMapper countryMapper;
-
+    // UserMapper INSTANCE = Mappers.getMapper( UserMapper.class );
     @Mapping(expression = "java(countryMapper.countryToCountryDTO(user.getCity().getCountry()))", target = "countryDTO")
+    //  @Mapping(expression = "java(user.city.country)", target = "countryDTO")
     public abstract UserDTO toUserDTO(User user);
 
     @Mapping(expression = "java(city.getCountry().getId())", target = "countryId")
+        //@Mapping(source = "java(city.country.id)", target = "countryId")
     public abstract CityDTO cityToCityDTO(City city);
+
+    public abstract CountryDTO countryToCountryDTO(Country country);
 
     public abstract List<UserDTO> toUserDTOList(List<User> userList);
 }

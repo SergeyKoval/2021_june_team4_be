@@ -15,28 +15,20 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserDTO {
-
     @NotNull(message = "User ID should be not null")
     private UUID id;
-
-    @NotNull(message = "User's first name should be not null")
+    @NotNull(message = "User first name should be not null")
     private String firstName;
-
-    @NotNull(message = "User's last name should be not null")
+    @NotNull(message = "User last name should be not null")
     private String lastName;
-
     @NotNull(message = "User's phone should be not null")
     private String phone;
-
     @NotNull(message = "User's email should be not null")
     private String email;
-
     @NotNull(message = "User's role should be not null")
     private Role role;
-
     @NotBlank(message = "City of User should be not null")
     private CityDTO cityDTO;
-
     @NotBlank(message = "Country of User should be not null")
     private CountryDTO countryDTO;
 }
