@@ -5,10 +5,11 @@ import com.exadel.discount.dto.location.LocationDTO;
 import com.exadel.discount.entity.VendorLocation;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.NullValueCheckStrategy;
 
 import java.util.List;
 
-@Mapper(componentModel = "spring", uses = {CityMapper.class})
+@Mapper(componentModel = "spring", uses = {CityMapper.class}, nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS)
 public interface VendorLocationMapper {
 
     @Mapping(source = "latitude", target = "position.latitude")

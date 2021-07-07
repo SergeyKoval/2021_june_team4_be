@@ -9,6 +9,8 @@ public interface CategoryService {
 
     CategoryDTO save(CategoryDTO categoryDTO);
 
+    CategoryDTO updateCategoryById(CategoryDTO categoryDTO, UUID id);
+
     CategoryDTO getById(UUID id);
 
     void deleteById(UUID id);

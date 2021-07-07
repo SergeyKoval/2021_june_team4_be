@@ -1,5 +1,6 @@
 package com.exadel.discount.service;
 
+import com.exadel.discount.dto.vendor.BaseVendorDTO;
 import com.exadel.discount.dto.vendor.CreateVendorDTO;
 import com.exadel.discount.dto.vendor.VendorDTO;
 
@@ -9,6 +10,8 @@ import java.util.UUID;
 public interface VendorService {
 
     VendorDTO save(CreateVendorDTO vendor);
+
+    BaseVendorDTO updateVendorById(BaseVendorDTO vendorDTO, UUID id);
 
     VendorDTO getById(UUID id);
 

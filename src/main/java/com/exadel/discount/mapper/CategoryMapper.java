@@ -3,10 +3,11 @@ package com.exadel.discount.mapper;
 import com.exadel.discount.dto.CategoryDTO;
 import com.exadel.discount.entity.Category;
 import org.mapstruct.Mapper;
+import org.mapstruct.NullValueCheckStrategy;
 
 import java.util.List;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS)
 public interface CategoryMapper {
 
     Category parseDTO(CategoryDTO categoryDTO);
