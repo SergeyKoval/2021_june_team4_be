@@ -40,6 +40,9 @@ public class Vendor {
     @Column(name = "contacts", length = 255)
     private String contacts;
 
+    @Column(name = "archived", columnDefinition = "boolean default false")
+    private boolean archived;
+
     @OneToMany(cascade = CascadeType.REMOVE,
             mappedBy = "vendor")
     private Set<VendorLocation> vendorLocations;
