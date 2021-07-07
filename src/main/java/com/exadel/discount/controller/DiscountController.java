@@ -2,9 +2,11 @@ package com.exadel.discount.controller;
 
 import com.exadel.discount.dto.discount.CreateDiscountDTO;
 import com.exadel.discount.dto.discount.DiscountDTO;
+import com.exadel.discount.dto.discount.DiscountFilter;
 import com.exadel.discount.service.DiscountService;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,10 +15,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -30,8 +34,32 @@ public class DiscountController {
 
     @GetMapping
     @ApiOperation("Get all discounts")
-    public List<DiscountDTO> getAllDiscounts() {
-        return discountService.getAll();
+    public List<DiscountDTO> getAllDiscounts(@RequestParam(defaultValue = "0", required = false) Integer page,
+                                             @RequestParam(defaultValue = "20", required = false) Integer size,
+                                             @RequestParam(defaultValue = "id", required = false) String sortBy,
+                                             @RequestParam(defaultValue = "asc", required = false) String sortDirection,
+                                             @RequestParam(required = false) List<UUID> vendorId,
+                                             @RequestParam(required = false) List<UUID> categoryId,
+                                             @RequestParam(required = false) List<UUID> countryId,
+                                             @RequestParam(required = false) List<UUID> cityId,
+                                             @RequestParam(required = false) List<UUID> tagId,
+                                             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime endDateTimeFrom,
+                                             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime endDateTimeTo,
+                                             @RequestParam(required = false) Integer percentFrom,
+                                             @RequestParam(required = false) Integer percentTo) {
+        DiscountFilter filter = DiscountFilter.builder()
+                .vendorIds(vendorId)
+                .categoryIds(categoryId)
+                .countryIds(countryId)
+                .cityIds(cityId)
+                .tagIds(tagId)
+                .endDateFrom(endDateTimeFrom)
+                .endDateTo(endDateTimeTo)
+                .percentFrom(percentFrom)
+                .percentTo(percentTo)
+                .archived(false)
+                .build();
+        return discountService.getAll(sortBy, sortDirection, page, size, filter);
     }
 
     @GetMapping("/{discountId}")
@@ -54,8 +82,32 @@ public class DiscountController {
 
     @GetMapping("/archived")
     @ApiOperation("Get all archived Discounts")
-    public List<DiscountDTO> getAllArchivedDiscounts() {
-        return discountService.getAllArchived();
+    public List<DiscountDTO> getAllArchivedDiscounts(@RequestParam(defaultValue = "0", required = false) Integer page,
+                                                     @RequestParam(defaultValue = "20", required = false) Integer size,
+                                                     @RequestParam(defaultValue = "id", required = false) String sortBy,
+                                                     @RequestParam(defaultValue = "asc", required = false) String sortDirection,
+                                                     @RequestParam(required = false) List<UUID> vendorId,
+                                                     @RequestParam(required = false) List<UUID> categoryId,
+                                                     @RequestParam(required = false) List<UUID> countryId,
+                                                     @RequestParam(required = false) List<UUID> cityId,
+                                                     @RequestParam(required = false) List<UUID> tagId,
+                                                     @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime endDateTimeFrom,
+                                                     @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime endDateTimeTo,
+                                                     @RequestParam(required = false) Integer percentFrom,
+                                                     @RequestParam(required = false) Integer percentTo) {
+        DiscountFilter filter = DiscountFilter.builder()
+                .vendorIds(vendorId)
+                .categoryIds(categoryId)
+                .countryIds(countryId)
+                .cityIds(cityId)
+                .tagIds(tagId)
+                .endDateFrom(endDateTimeFrom)
+                .endDateTo(endDateTimeTo)
+                .percentFrom(percentFrom)
+                .percentTo(percentTo)
+                .archived(true)
+                .build();
+        return discountService.getAll(sortBy, sortDirection, page, size, filter);
     }
 
     @PutMapping("/archived/{id}/restore")

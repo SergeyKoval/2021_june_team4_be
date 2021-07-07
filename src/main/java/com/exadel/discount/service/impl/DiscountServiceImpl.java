@@ -2,8 +2,10 @@ package com.exadel.discount.service.impl;
 
 import com.exadel.discount.dto.discount.CreateDiscountDTO;
 import com.exadel.discount.dto.discount.DiscountDTO;
+import com.exadel.discount.dto.discount.DiscountFilter;
 import com.exadel.discount.entity.Category;
 import com.exadel.discount.entity.Discount;
+import com.exadel.discount.entity.QDiscount;
 import com.exadel.discount.entity.Tag;
 import com.exadel.discount.entity.Vendor;
 import com.exadel.discount.entity.VendorLocation;
@@ -15,8 +17,13 @@ import com.exadel.discount.repository.TagRepository;
 import com.exadel.discount.repository.VendorLocationRepository;
 import com.exadel.discount.repository.VendorRepository;
 import com.exadel.discount.service.DiscountService;
+import com.exadel.discount.util.QPredicates;
+import com.querydsl.core.types.Predicate;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -64,10 +71,15 @@ public class DiscountServiceImpl implements DiscountService {
     }
 
     @Override
-    public List<DiscountDTO> getAll() {
-        log.debug("Getting list of all Discounts");
-        List<DiscountDTO> discountDTOS = discountMapper.getListDTO(discountRepository.findAllByArchived(false));
-        log.debug("Successfully got list of all Discounts");
+    public List<DiscountDTO> getAll(String sortBy, String sortDir, Integer page, Integer size, DiscountFilter filter) {
+        Sort sort = "desc".equalsIgnoreCase(sortDir) ?
+                Sort.by(sortBy).descending() :
+                Sort.by(sortBy);
+        Pageable pageable = PageRequest.of(page, size, sort);
+        log.debug("Getting list of all Discounts by filter");
+        List<DiscountDTO> discountDTOS = discountMapper
+                .getListDTO(discountRepository.findAll(getPredicate(filter), pageable).getContent());
+        log.debug("Successfully got list of all Discounts by filter");
         return discountDTOS;
     }
 
@@ -81,14 +93,6 @@ public class DiscountServiceImpl implements DiscountService {
         discount.setArchived(true);
         discountRepository.save(discount);
         log.debug(String.format("Successfully deleted Discount with ID %s", id));
-    }
-
-    @Override
-    public List<DiscountDTO> getAllArchived() {
-        log.debug("Getting list of all archived Discounts");
-        List<DiscountDTO> discountDTOS = discountMapper.getListDTO(discountRepository.findAllByArchived(true));
-        log.debug("Successfully got list of all archived Discounts");
-        return discountDTOS;
     }
 
     @Override
@@ -139,5 +143,18 @@ public class DiscountServiceImpl implements DiscountService {
         return vendorRepository
                 .findById(vendorId)
                 .orElseThrow(() -> new NotFoundException(String.format("Vendor with ID %s doesn't exist", vendorId)));
+    }
+
+    private Predicate getPredicate(DiscountFilter filter) {
+        return QPredicates.builder()
+                .add(filter.getArchived(), QDiscount.discount.archived::eq)
+                .add(filter.getPercentFrom(), QDiscount.discount.percent::goe)
+                .add(filter.getPercentTo(), QDiscount.discount.percent::loe)
+                .add(filter.getEndDateFrom(), QDiscount.discount.endTime::goe)
+                .add(filter.getEndDateTo(), QDiscount.discount.endTime::loe)
+                .add(filter.getCategoryIds(), QDiscount.discount.category.id::in)
+                .add(filter.getTagIds(), QDiscount.discount.tags.any().id::in)
+                .add(filter.getVendorIds(), QDiscount.discount.vendor.id::in)
+                .buildAnd();
     }
 }
