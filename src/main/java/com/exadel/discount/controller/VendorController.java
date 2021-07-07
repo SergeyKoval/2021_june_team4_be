@@ -61,12 +61,14 @@ public class VendorController {
 
     @GetMapping("/archived")
     @ApiOperation("Get all archived Vendors")
+    @AdminAccess
     public List<VendorDTO> getAllArchivedVendors() {
         return vendorService.getAllArchived();
     }
 
     @PutMapping("/archived/{id}/restore")
     @ApiOperation("Restore Vendor by ID")
+    @AdminAccess
     public VendorDTO restoreVendor(@PathVariable UUID id) {
         return vendorService.restoreById(id);
     }
