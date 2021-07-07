@@ -2,10 +2,12 @@ package com.exadel.discount.service.impl;
 
 import com.exadel.discount.dto.location.CreateLocationDTO;
 import com.exadel.discount.dto.location.LocationDTO;
+import com.exadel.discount.entity.City;
 import com.exadel.discount.entity.Vendor;
 import com.exadel.discount.entity.VendorLocation;
 import com.exadel.discount.exception.NotFoundException;
 import com.exadel.discount.mapper.VendorLocationMapper;
+import com.exadel.discount.repository.CityRepository;
 import com.exadel.discount.repository.VendorLocationRepository;
 import com.exadel.discount.repository.VendorRepository;
 import com.exadel.discount.service.VendorLocationService;
@@ -23,6 +25,7 @@ public class VendorLocationServiceImpl implements VendorLocationService {
 
     private final VendorLocationRepository vendorLocationRepository;
     private final VendorRepository vendorRepository;
+    private final CityRepository cityRepository;
     private final VendorLocationMapper vendorLocationMapper;
 
     @Override
@@ -30,10 +33,15 @@ public class VendorLocationServiceImpl implements VendorLocationService {
         log.debug("Saving new VendorLocation");
         UUID vendorId = vendorLocation.getVendorId();
         Vendor vendor = vendorRepository
-                .findById(vendorId)
+                .findByIdAndArchived(vendorId, false)
                 .orElseThrow(() -> new NotFoundException(String.format("Vendor with id %s not found", vendorId)));
+        UUID cityId = vendorLocation.getCityId();
+        City city = cityRepository
+                .findById(cityId)
+                .orElseThrow(() -> new NotFoundException(String.format("City with id %s not found", cityId)));
         VendorLocation location = vendorLocationMapper.parseDTO(vendorLocation);
         location.setVendor(vendor);
+        location.setCity(city);
         VendorLocation savedVendorLocation = vendorLocationRepository.save(location);
         log.debug("Successfully saved new VendorLocation");
         return vendorLocationMapper.getDTO(savedVendorLocation);
@@ -52,9 +60,9 @@ public class VendorLocationServiceImpl implements VendorLocationService {
     @Override
     public List<LocationDTO> getLocationsByVendorId(UUID id) {
         log.debug("Getting list of all Vendors");
-        vendorRepository
-                .findById(id)
-                .orElseThrow(() -> new NotFoundException(String.format("Vendor with id %s not found", id)));
+        if (!vendorRepository.existsByIdAndArchived(id, false)) {
+            throw new NotFoundException(String.format("Vendor with id %s not found", id));
+        }
         List<VendorLocation> vendorLocationList = vendorLocationRepository.findByVendorId(id);
         log.debug("Successfully got list of all Vendors");
         return vendorLocationMapper.getListDTO(vendorLocationList);
@@ -63,9 +71,9 @@ public class VendorLocationServiceImpl implements VendorLocationService {
     @Override
     public void deleteById(UUID id) {
         log.debug(String.format("Deleting VendorLocation with ID %s", id));
-        vendorLocationRepository
-                .findById(id)
-                .orElseThrow(() -> new NotFoundException(String.format("VendorLocation %s not found", id)));
+        if (!vendorLocationRepository.existsById(id)) {
+            throw new NotFoundException(String.format("VendorLocation with ID %s not found", id));
+        }
         vendorLocationRepository.deleteById(id);
         log.debug(String.format("Successfully deleted VendorLocation with ID %s", id));
     }

@@ -15,4 +15,8 @@ public interface VendorService {
     List<VendorDTO> getAll();
 
     void deleteById(UUID id);
+
+    List<VendorDTO> getAllArchived();
+
+    VendorDTO restoreById(UUID id);
 }

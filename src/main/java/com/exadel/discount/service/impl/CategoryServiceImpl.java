@@ -51,7 +51,9 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public void deleteById(UUID id) {
         log.debug(String.format("Deleting Category with ID %s", id));
-        Category category = categoryRepository.findById(id).orElseThrow(() -> new NotFoundException(String.format("Category with ID %s not found", id)));
+        Category category = categoryRepository
+                .findById(id)
+                .orElseThrow(() -> new NotFoundException(String.format("Category with ID %s not found", id)));
         if (!category.getDiscounts().isEmpty()) {
             throw new DeletionRestrictedException(String.format("Category with ID %s can't be deleted as it has discounts", id));
         }
