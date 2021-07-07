@@ -2,7 +2,6 @@ package com.exadel.discount.service;
 
 import com.exadel.discount.dto.location.CreateLocationDTO;
 import com.exadel.discount.dto.location.LocationDTO;
-import com.exadel.discount.entity.VendorLocation;
 
 import java.util.List;
 import java.util.UUID;
