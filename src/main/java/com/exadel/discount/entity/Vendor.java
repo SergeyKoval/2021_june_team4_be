@@ -33,8 +33,15 @@ public class Vendor {
 
     @Column(name = "name", length = 50, nullable = false)
     private String name;
+
     @Column(name = "description")
     private String description;
+
+    @Column(name = "contacts", length = 255)
+    private String contacts;
+
+    @Column(name = "archived", columnDefinition = "boolean default false")
+    private boolean archived;
 
     @OneToMany(cascade = CascadeType.REMOVE,
             mappedBy = "vendor")

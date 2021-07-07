@@ -1,0 +1,40 @@
+databaseChangeLog:
+  - changeSet:
+      id: add-view-number-column
+      author: elizaveta_dubogryz
+      changes:
+        - addColumn:
+            tableName: discounts
+            columns:
+              - column:
+                  name: view_number
+                  type: integer
+                  defaultValue: 0
+                  constraints:
+                    nullable: false
+  - changeSet:
+      id: change-active-default
+      author: elizaveta_dubogryz
+      changes:
+        - dropDefaultValue:
+            tableName: discounts
+            columnDataType: boolean
+            columnName: active
+        - addDefaultValue:
+            tableName: discounts
+            columnDataType: boolean
+            columnName: active
+            defaultValueBoolean: false
+  - changeSet:
+      id: add-archived-column
+      author: elizaveta_dubogryz
+      changes:
+        - addColumn:
+            tableName: discounts
+            columns:
+              - column:
+                  name: archived
+                  type: boolean
+                  defaultValue: false
+                  constraints:
+                    nullable: false

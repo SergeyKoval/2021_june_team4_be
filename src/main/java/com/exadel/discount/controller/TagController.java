@@ -2,6 +2,8 @@ package com.exadel.discount.controller;
 
 import com.exadel.discount.dto.TagDTO;
 import com.exadel.discount.dto.validation.Create;
+import com.exadel.discount.security.annotation.AdminAccess;
+import com.exadel.discount.security.annotation.UserAccess;
 import com.exadel.discount.service.TagService;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
@@ -26,24 +28,28 @@ public class TagController {
 
     @GetMapping
     @ApiOperation("Get list of all tags")
+    @UserAccess
     public List<TagDTO> getAllTags() {
         return tagService.getAllTags();
     }
 
     @PostMapping
     @ApiOperation("Save new tag")
+    @AdminAccess
     public TagDTO saveTag(@Validated(Create.class) @RequestBody TagDTO tag) {
         return tagService.saveTag(tag);
     }
 
     @GetMapping("/{id}")
     @ApiOperation("Get tag by ID")
+    @UserAccess
     public TagDTO getTagById(@PathVariable UUID id) {
         return tagService.getById(id);
     }
 
     @DeleteMapping("/{id}")
     @ApiOperation("Delete tag by ID")
+    @AdminAccess
     public void deleteTag(@PathVariable UUID id) {
         tagService.deleteTagById(id);
     }
