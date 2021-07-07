@@ -32,4 +32,6 @@ public interface DiscountRepository extends JpaRepository<Discount, UUID> {
     void setArchivedById(@Param("discountId") UUID id, @Param("archived") boolean archived);
 
     boolean existsByIdAndArchived(UUID id, boolean archived);
+
+    boolean existsByIdAndArchivedAndVendorArchived(UUID id, boolean discountArchived, boolean vendorArchived);
 }

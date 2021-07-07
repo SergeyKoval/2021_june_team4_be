@@ -38,4 +38,6 @@ public interface VendorRepository extends JpaRepository<Vendor, UUID> {
     @Query("SELECT count(v)>0 FROM Vendor v WHERE v.id=:vendorId AND v.archived=false AND" +
             "(SELECT count(d) FROM Discount d WHERE d.vendor.id=:vendorId AND d.archived=false) = 0")
     boolean existsByIdWithNoDiscounts(@Param("vendorId") UUID vendorId);
+
+    boolean existsByIdAndArchived(UUID id, boolean archived);
 }

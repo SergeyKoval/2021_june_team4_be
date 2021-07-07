@@ -94,15 +94,14 @@ public class DiscountServiceImpl implements DiscountService {
     @Transactional
     public DiscountDTO restoreById(UUID id) {
         log.debug("Finding archived Discount by ID");
-        Discount discount = discountRepository
-                .findByIdAndArchived(id, true)
-                .orElseThrow(() -> new NotFoundException(String.format("Archived Discount with id %s not found", id)));
-        if (discount.getVendor().isArchived()) {
+        if (!discountRepository.existsByIdAndArchivedAndVendorArchived(id, true, false)) {
             throw new NotFoundException(
-                    String.format("Discount can't be restored as Vendor with id %s not found"
-                            , discount.getVendor().getId()));
+                    String.format("Archived Discount with id %s not found or can't be restored", id));
         }
         discountRepository.setArchivedById(id, false);
+        Discount discount = discountRepository
+                .findByIdAndArchived(id, false)
+                .orElseThrow(() -> new NotFoundException(String.format("Restored Discount with id %s not found", id)));
         log.debug("Successfully restored Discount");
         return discountMapper.getDTO(discount);
     }

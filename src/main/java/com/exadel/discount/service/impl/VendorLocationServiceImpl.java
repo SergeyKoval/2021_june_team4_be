@@ -52,9 +52,9 @@ public class VendorLocationServiceImpl implements VendorLocationService {
     @Override
     public List<LocationDTO> getLocationsByVendorId(UUID id) {
         log.debug("Getting list of all Vendors");
-        vendorRepository
-                .findById(id)
-                .orElseThrow(() -> new NotFoundException(String.format("Vendor with id %s not found", id)));
+        if (!vendorRepository.existsByIdAndArchived(id, false)) {
+            throw new NotFoundException(String.format("Vendor with id %s not found", id));
+        }
         List<VendorLocation> vendorLocationList = vendorLocationRepository.findByVendorId(id);
         log.debug("Successfully got list of all Vendors");
         return vendorLocationMapper.getListDTO(vendorLocationList);
@@ -63,9 +63,9 @@ public class VendorLocationServiceImpl implements VendorLocationService {
     @Override
     public void deleteById(UUID id) {
         log.debug(String.format("Deleting VendorLocation with ID %s", id));
-        vendorLocationRepository
-                .findById(id)
-                .orElseThrow(() -> new NotFoundException(String.format("VendorLocation %s not found", id)));
+        if (!vendorLocationRepository.existsById(id)) {
+            throw new NotFoundException(String.format("VendorLocation with ID %s not found", id));
+        }
         vendorLocationRepository.deleteById(id);
         log.debug(String.format("Successfully deleted VendorLocation with ID %s", id));
     }
