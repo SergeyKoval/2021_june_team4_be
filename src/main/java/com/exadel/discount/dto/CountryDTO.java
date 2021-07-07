@@ -1,5 +1,6 @@
 package com.exadel.discount.dto;
 
+import com.exadel.discount.dto.city.BaseCityDto;
 import com.exadel.discount.dto.validation.Create;
 import lombok.Data;
 
@@ -10,10 +11,10 @@ import java.util.UUID;
 
 @Data
 public class CountryDTO {
-    @Null(groups = Create.class)
+    @Null(groups = Create.class, message = "Country id should be null")
     private UUID id;
-    @NotBlank(groups = Create.class)
+    @NotBlank(groups = Create.class, message = "Country name should be not blank")
     private String name;
-    @Null(groups = Create.class)
-    private List<CityDTO> cities;
+    @Null(groups = Create.class, message = "List of cities should be null")
+    private List<BaseCityDto> cities;
 }
