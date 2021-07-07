@@ -2,8 +2,8 @@ package com.exadel.discount.service.impl;
 
 import com.exadel.discount.dto.CategoryDTO;
 import com.exadel.discount.entity.Category;
-import com.exadel.discount.exception.DeletionRestrictedException;
-import com.exadel.discount.exception.NotFoundException;
+import com.exadel.discount.exception.custom_exception.DeletionRestrictedException;
+import com.exadel.discount.exception.custom_exception.NotFoundException;
 import com.exadel.discount.mapper.CategoryMapper;
 import com.exadel.discount.repository.CategoryRepository;
 import com.exadel.discount.service.CategoryService;

@@ -7,7 +7,7 @@ import com.exadel.discount.entity.Discount;
 import com.exadel.discount.entity.Tag;
 import com.exadel.discount.entity.Vendor;
 import com.exadel.discount.entity.VendorLocation;
-import com.exadel.discount.exception.NotFoundException;
+import com.exadel.discount.exception.custom_exception.NotFoundException;
 import com.exadel.discount.mapper.DiscountMapper;
 import com.exadel.discount.repository.CategoryRepository;
 import com.exadel.discount.repository.DiscountRepository;

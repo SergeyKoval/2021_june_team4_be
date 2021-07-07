@@ -2,7 +2,7 @@ package com.exadel.discount.service.impl;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
-import com.exadel.discount.exception.InvalidTokenException;
+import com.exadel.discount.exception.custom_exception.InvalidTokenException;
 import com.exadel.discount.service.JwtGenerationService;
 import com.exadel.discount.service.JwtService;
 import lombok.Setter;

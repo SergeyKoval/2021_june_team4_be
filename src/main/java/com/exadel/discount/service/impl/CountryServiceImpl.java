@@ -2,7 +2,7 @@ package com.exadel.discount.service.impl;
 
 import com.exadel.discount.dto.CountryDTO;
 import com.exadel.discount.entity.Country;
-import com.exadel.discount.exception.NotFoundException;
+import com.exadel.discount.exception.custom_exception.NotFoundException;
 import com.exadel.discount.mapper.CountryMapper;
 import com.exadel.discount.repository.CountryRepository;
 import com.exadel.discount.service.CountryService;

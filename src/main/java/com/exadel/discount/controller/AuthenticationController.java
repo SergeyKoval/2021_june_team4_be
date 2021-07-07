@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
+
 @RestController
 @RequestMapping("/authenticate")
 @RequiredArgsConstructor
@@ -25,7 +27,7 @@ public class AuthenticationController {
     private final JwtGenerationService jwtGenerationService;
 
     @PostMapping("/login")
-    public AuthenticationResponse createAuthenticationToken(@RequestBody AuthenticationRequest request) {
+    public AuthenticationResponse createAuthenticationToken(@RequestBody @Valid AuthenticationRequest request) {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         request.getUsername(),
