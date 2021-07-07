@@ -12,13 +12,15 @@ import java.util.List;
 public interface VendorLocationMapper {
 
     @Mapping(source = "latitude", target = "position.latitude")
-    @Mapping(source = "longitude",target = "position.longitude")
+    @Mapping(source = "longitude", target = "position.longitude")
     VendorLocation parseDTO(LocationDTO vendorLocationDTO);
 
     @Mapping(source = "latitude", target = "position.latitude")
-    @Mapping(source = "longitude",target = "position.longitude")
+    @Mapping(source = "longitude", target = "position.longitude")
     VendorLocation parseDTO(CreateLocationDTO createLocationDTO);
 
+    @Mapping(source = "position.latitude", target = "latitude")
+    @Mapping(source = "position.longitude", target = "longitude")
     LocationDTO getDTO(VendorLocation vendorLocation);
 
     List<LocationDTO> getListDTO(List<VendorLocation> vendorLocations);
