@@ -15,16 +15,16 @@ import java.util.UUID;
 @Repository
 public interface VendorRepository extends JpaRepository<Vendor, UUID> {
 
-    @EntityGraph(attributePaths = {"vendorLocations"})
+    @EntityGraph(attributePaths = {"vendorLocations", "vendorLocations.city", "vendorLocations.city.country"})
     List<Vendor> findAll();
 
-    @EntityGraph(attributePaths = {"vendorLocations"})
+    @EntityGraph(attributePaths = {"vendorLocations", "vendorLocations.city", "vendorLocations.city.country"})
     Optional<Vendor> findById(UUID id);
 
-    @EntityGraph(attributePaths = {"vendorLocations"})
+    @EntityGraph(attributePaths = {"vendorLocations", "vendorLocations.city", "vendorLocations.city.country"})
     List<Vendor> findAllByArchived(boolean archived);
 
-    @EntityGraph(attributePaths = {"vendorLocations"})
+    @EntityGraph(attributePaths = {"vendorLocations", "vendorLocations.city", "vendorLocations.city.country"})
     Optional<Vendor> findByIdAndArchived(UUID id, boolean archived);
 
     @Modifying
