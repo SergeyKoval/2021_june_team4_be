@@ -15,16 +15,20 @@ import java.util.UUID;
 @Repository
 public interface DiscountRepository extends JpaRepository<Discount, UUID> {
 
-    @EntityGraph(attributePaths = {"category", "vendorLocations", "tags", "vendor"})
+    @EntityGraph(attributePaths = {"category", "vendorLocations", "tags", "vendor",
+            "vendorLocations.city", "vendorLocations.city.country"})
     List<Discount> findAll();
 
-    @EntityGraph(attributePaths = {"category", "vendorLocations", "tags", "vendor"})
+    @EntityGraph(attributePaths = {"category", "vendorLocations", "tags", "vendor",
+            "vendorLocations.city", "vendorLocations.city.country"})
     Optional<Discount> findById(UUID id);
 
-    @EntityGraph(attributePaths = {"category", "vendorLocations", "tags", "vendor"})
+    @EntityGraph(attributePaths = {"category", "vendorLocations", "tags", "vendor",
+            "vendorLocations.city", "vendorLocations.city.country"})
     List<Discount> findAllByArchived(boolean archived);
 
-    @EntityGraph(attributePaths = {"category", "vendorLocations", "tags", "vendor"})
+    @EntityGraph(attributePaths = {"category", "vendorLocations", "tags", "vendor",
+            "vendorLocations.city", "vendorLocations.city.country"})
     Optional<Discount> findByIdAndArchived(UUID id, boolean archived);
 
     @Modifying
