@@ -8,7 +8,7 @@ import javax.validation.constraints.Null;
 import java.util.UUID;
 
 @Data
-public class BaseCityDto {
+public class BaseCityDTO {
     @Null(groups = Create.class, message = "City id should be null")
     private UUID id;
     @NotBlank(groups = Create.class, message = "City name should be not blank")

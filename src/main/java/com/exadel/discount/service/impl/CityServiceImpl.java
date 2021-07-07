@@ -1,6 +1,6 @@
 package com.exadel.discount.service.impl;
 
-import com.exadel.discount.dto.city.BaseCityDto;
+import com.exadel.discount.dto.city.BaseCityDTO;
 import com.exadel.discount.dto.city.CityDTO;
 import com.exadel.discount.entity.City;
 import com.exadel.discount.entity.Country;
@@ -70,7 +70,7 @@ public class CityServiceImpl implements CityService {
     }
 
     @Override
-    public CityDTO save(UUID countryId, BaseCityDto cityDTO) {
+    public CityDTO save(UUID countryId, BaseCityDTO cityDTO) {
         log.debug("Saving new City");
         Country country = countryRepository
                 .findById(countryId)

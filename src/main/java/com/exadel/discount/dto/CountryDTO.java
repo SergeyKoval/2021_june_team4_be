@@ -1,6 +1,6 @@
 package com.exadel.discount.dto;
 
-import com.exadel.discount.dto.city.BaseCityDto;
+import com.exadel.discount.dto.city.BaseCityDTO;
 import com.exadel.discount.dto.validation.Create;
 import lombok.Data;
 
@@ -16,5 +16,5 @@ public class CountryDTO {
     @NotBlank(groups = Create.class, message = "Country name should be not blank")
     private String name;
     @Null(groups = Create.class, message = "List of cities should be null")
-    private List<BaseCityDto> cities;
+    private List<BaseCityDTO> cities;
 }
