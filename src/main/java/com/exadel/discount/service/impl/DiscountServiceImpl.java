@@ -18,6 +18,7 @@ import com.exadel.discount.repository.VendorLocationRepository;
 import com.exadel.discount.repository.VendorRepository;
 import com.exadel.discount.service.DiscountService;
 import com.exadel.discount.util.QPredicates;
+import com.querydsl.core.types.ExpressionUtils;
 import com.querydsl.core.types.Predicate;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -150,15 +151,20 @@ public class DiscountServiceImpl implements DiscountService {
     }
 
     private Predicate getPredicate(DiscountFilter filter) {
-        return QPredicates.builder()
-                .add(filter.getArchived(), QDiscount.discount.archived::eq)
-                .add(filter.getPercentFrom(), QDiscount.discount.percent::goe)
-                .add(filter.getPercentTo(), QDiscount.discount.percent::loe)
-                .add(filter.getEndDateFrom(), QDiscount.discount.endTime::goe)
-                .add(filter.getEndDateTo(), QDiscount.discount.endTime::loe)
-                .add(filter.getCategoryIds(), QDiscount.discount.category.id::in)
-                .add(filter.getTagIds(), QDiscount.discount.tags.any().id::in)
-                .add(filter.getVendorIds(), QDiscount.discount.vendor.id::in)
-                .buildAnd();
+        return ExpressionUtils.and(
+                QPredicates.builder()
+                        .add(filter.getCountryIds(), QDiscount.discount.vendorLocations.any().city.country.id::in)
+                        .add(filter.getCityIds(), QDiscount.discount.vendorLocations.any().city.id::in)
+                        .buildOr(),
+                QPredicates.builder()
+                        .add(filter.getArchived(), QDiscount.discount.archived::eq)
+                        .add(filter.getPercentFrom(), QDiscount.discount.percent::goe)
+                        .add(filter.getPercentTo(), QDiscount.discount.percent::loe)
+                        .add(filter.getEndDateFrom(), QDiscount.discount.endTime::goe)
+                        .add(filter.getEndDateTo(), QDiscount.discount.endTime::loe)
+                        .add(filter.getCategoryIds(), QDiscount.discount.category.id::in)
+                        .add(filter.getTagIds(), QDiscount.discount.tags.any().id::in)
+                        .add(filter.getVendorIds(), QDiscount.discount.vendor.id::in)
+                        .buildAnd());
     }
 }
