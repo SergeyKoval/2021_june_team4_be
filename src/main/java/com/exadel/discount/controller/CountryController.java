@@ -5,6 +5,7 @@ import com.exadel.discount.dto.city.BaseCityDto;
 import com.exadel.discount.dto.city.CityDTO;
 import com.exadel.discount.dto.validation.Create;
 import com.exadel.discount.security.annotation.AdminAccess;
+import com.exadel.discount.security.annotation.UserAccess;
 import com.exadel.discount.service.CityService;
 import com.exadel.discount.service.CountryService;
 import io.swagger.annotations.ApiOperation;
@@ -33,7 +34,7 @@ public class CountryController {
 
     @GetMapping
     @ApiOperation("Get list of all countries")
-    @AdminAccess
+    @UserAccess
     public List<CountryDTO> getAllCountries() {
         return countryService.findAll();
     }
@@ -48,7 +49,7 @@ public class CountryController {
 
     @GetMapping("/{countryId}")
     @ApiOperation("Get country by ID")
-    @AdminAccess
+    @UserAccess
     public CountryDTO getCountryById(@PathVariable @NotNull final UUID countryId) {
         return countryService.findById(countryId);
     }
@@ -62,7 +63,7 @@ public class CountryController {
 
     @GetMapping("{countryId}/cities")
     @ApiOperation("Get list of all cities by CountryId")
-    @AdminAccess
+    @UserAccess
     public List<CityDTO> getAllCitiesByCountryId(@PathVariable UUID countryId) {
         return cityService.findAllByCountryId(countryId);
     }
@@ -78,7 +79,7 @@ public class CountryController {
 
     @GetMapping("{countryId}/cities/{cityId}")
     @ApiOperation("Get city by Id")
-    @AdminAccess
+    @UserAccess
     public CityDTO getCityById(@PathVariable @NotNull final UUID cityId) {
         return cityService.findById(cityId);
     }
