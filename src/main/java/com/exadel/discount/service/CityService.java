@@ -1,6 +1,7 @@
 package com.exadel.discount.service;
 
-import com.exadel.discount.dto.CityDTO;
+import com.exadel.discount.dto.city.BaseCityDto;
+import com.exadel.discount.dto.city.CityDTO;
 
 import java.util.List;
 import java.util.UUID;
@@ -17,7 +18,7 @@ public interface CityService {
 
     CityDTO findByName(String name);
 
-    CityDTO save(CityDTO cityDTO);
+    CityDTO save(UUID countryId, BaseCityDto cityDTO);
 
     void deleteById(UUID id);
 }

@@ -1,7 +1,8 @@
 package com.exadel.discount.controller;
 
-import com.exadel.discount.dto.CityDTO;
 import com.exadel.discount.dto.CountryDTO;
+import com.exadel.discount.dto.city.BaseCityDto;
+import com.exadel.discount.dto.city.CityDTO;
 import com.exadel.discount.dto.validation.Create;
 import com.exadel.discount.service.CityService;
 import com.exadel.discount.service.CountryService;
@@ -9,14 +10,15 @@ import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
+
 import javax.validation.constraints.NotNull;
 import java.util.List;
 import java.util.UUID;
@@ -62,8 +64,9 @@ public class CountryController {
     @PostMapping("{countryId}/cities")
     @ResponseStatus(HttpStatus.CREATED)
     @ApiOperation("Save new City")
-    public CityDTO saveCity(@Validated(Create.class) @RequestBody CityDTO cityDTO) {
-        return cityService.save(cityDTO);
+    public CityDTO saveCity(@PathVariable @NotNull UUID countryId,
+                            @Validated(Create.class) @RequestBody BaseCityDto cityDTO) {
+        return cityService.save(countryId, cityDTO);
     }
 
     @GetMapping("{countryId}/cities/{cityId}")

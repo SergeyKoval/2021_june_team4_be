@@ -19,6 +19,8 @@ public interface CityMapper {
 
     List<CityDTO> getListDTO(List<City> cities);
 
+    City baseCityDTOToCity(BaseCityDto city);
+
     BaseCityDto cityToBaseCityDTO(City city);
 
     List<BaseCityDto> getListBaseDTO(List<City> cities);
