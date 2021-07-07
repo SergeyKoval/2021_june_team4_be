@@ -21,6 +21,7 @@ public class DiscountDTO {
     private LocalDateTime startTime;
     private LocalDateTime endTime;
     private boolean active;
+    private boolean archived;
     private Set<TagDTO> tags;
     private Set<LocationDTO> vendorLocations;
     private BaseVendorDTO vendor;

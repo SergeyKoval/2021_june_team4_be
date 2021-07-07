@@ -1,6 +1,5 @@
 package com.exadel.discount.repository;
 
-import com.exadel.discount.entity.Vendor;
 import com.exadel.discount.entity.VendorLocation;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -16,4 +15,5 @@ public interface VendorLocationRepository extends JpaRepository<VendorLocation, 
 
     List<VendorLocation> findByIdInAndVendorId(Collection<UUID> locationIds, UUID vendorId);
 
+    boolean existsById(UUID id);
 }
