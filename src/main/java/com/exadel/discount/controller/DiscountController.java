@@ -46,8 +46,12 @@ public class DiscountController {
                                              @RequestParam(required = false) List<UUID> countryId,
                                              @RequestParam(required = false) List<UUID> cityId,
                                              @RequestParam(required = false) List<UUID> tagId,
-                                             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime endDateTimeFrom,
-                                             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime endDateTimeTo,
+                                             @RequestParam(required = false)
+                                             @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+                                                     LocalDateTime endDateTimeFrom,
+                                             @RequestParam(required = false)
+                                             @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+                                                     LocalDateTime endDateTimeTo,
                                              @RequestParam(required = false) Integer percentFrom,
                                              @RequestParam(required = false) Integer percentTo) {
         DiscountFilter filter = DiscountFilter.builder()
@@ -92,14 +96,19 @@ public class DiscountController {
     public List<DiscountDTO> getAllArchivedDiscounts(@RequestParam(defaultValue = "0", required = false) Integer page,
                                                      @RequestParam(defaultValue = "20", required = false) Integer size,
                                                      @RequestParam(defaultValue = "id", required = false) String sortBy,
-                                                     @RequestParam(defaultValue = "asc", required = false) String sortDirection,
+                                                     @RequestParam(defaultValue = "asc", required = false)
+                                                             String sortDirection,
                                                      @RequestParam(required = false) List<UUID> vendorId,
                                                      @RequestParam(required = false) List<UUID> categoryId,
                                                      @RequestParam(required = false) List<UUID> countryId,
                                                      @RequestParam(required = false) List<UUID> cityId,
                                                      @RequestParam(required = false) List<UUID> tagId,
-                                                     @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime endDateTimeFrom,
-                                                     @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime endDateTimeTo,
+                                                     @RequestParam(required = false)
+                                                     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+                                                             LocalDateTime endDateTimeFrom,
+                                                     @RequestParam(required = false)
+                                                     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+                                                             LocalDateTime endDateTimeTo,
                                                      @RequestParam(required = false) Integer percentFrom,
                                                      @RequestParam(required = false) Integer percentTo) {
         DiscountFilter filter = DiscountFilter.builder()
