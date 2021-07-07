@@ -5,20 +5,22 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import org.hibernate.annotations.GenericGenerator;
-import javax.persistence.Entity;
-import javax.persistence.Table;
-import javax.persistence.Id;
-import javax.persistence.GeneratedValue;
+
 import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
 import java.util.List;
 import java.util.UUID;
 
 @Data
 @NoArgsConstructor
 @Entity
-@EqualsAndHashCode(exclude = {"cities"})
-@ToString(exclude = {"cities"})
+@EqualsAndHashCode(exclude = {"cities", "vendorLocations"})
+@ToString(exclude = {"cities", "vendorLocations"})
 @Table(name = "countries")
 public class Country {
     @Id
@@ -30,9 +32,9 @@ public class Country {
     @Column(name = "name", length = 50, nullable = false)
     private String name;
 
-    @OneToMany(mappedBy = "country")
+    @OneToMany(mappedBy = "country", fetch = FetchType.LAZY)
     private List<City> cities;
 
-    @OneToMany(mappedBy = "country")
+    @OneToMany(mappedBy = "country", fetch = FetchType.LAZY)
     private List<VendorLocation> vendorLocations;
 }
