@@ -1,7 +1,7 @@
 package com.exadel.discount.dto.user;
 
 import com.exadel.discount.dto.city.CityDTO;
-import com.exadel.discount.dto.country.CountryDTO;
+import com.exadel.discount.dto.CountryDTO;
 import com.exadel.discount.entity.Role;
 import lombok.AllArgsConstructor;
 import lombok.Data;
