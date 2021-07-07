@@ -53,11 +53,9 @@ public class CategoryServiceImpl implements CategoryService {
         log.debug(String.format("Update Category with ID %s", id));
         return categoryRepository.findCategoryById(id)
                 .map(category -> {
-                    if (categoryDTO.getName() != null) {
-                        category.setName(categoryDTO.getName());
-                    }
+                    CategoryDTO updatedCategory = categoryMapper.getDTO(categoryRepository.save(categoryMapper.parseDTO(categoryDTO)));
                     log.debug(String.format("Successfully update Category with ID %s", id));
-                    return categoryMapper.getDTO(categoryRepository.save(category));
+                    return updatedCategory;
                 })
                 .orElseThrow(() -> new NotFoundException(String.format("Category with ID %s not found", id)));
     }
