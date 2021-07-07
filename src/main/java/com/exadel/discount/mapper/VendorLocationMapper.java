@@ -8,7 +8,7 @@ import org.mapstruct.Mapping;
 
 import java.util.List;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", uses = {CityMapper.class})
 public interface VendorLocationMapper {
 
     @Mapping(source = "latitude", target = "position.latitude")
