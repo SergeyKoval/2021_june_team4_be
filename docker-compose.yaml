@@ -1,25 +1,8 @@
 version: "3.8"
 services:
-  postgres:
-    container_name: postgres
-    image: postgres:12-alpine
-    restart: always
-    environment:
-      - POSTGRES_PASSWORD=asdqwe
-      - POSTGRES_USER=postgres
-      - POSTGRES_DB=discounts # пароль к локальной бд
-
-    ports:
-      - "5432:5432"    # порт для бд, по умолчанию 5432
   backend:
     build: .
     container_name: backend
-    environment:
-        SPRING_DATASOURCE_URL: ${SPRING_DATASOURCE_URL}
-        SPRING_DATASOURCE_USERNAME: ${SPRING_DATASOURCE_USERNAME}
-        SPRING_DATASOURCE_PASSWORD: ${SPRING_DATASOURCE_PASSWORD}
     ports:
       - "8080:8080"
     restart: always    # при несанкционированных падениях апки, будет произведен рестарт
-    depends_on:
-      - postgres  # загружает апку после полной загрузки бд, а не произвольно
