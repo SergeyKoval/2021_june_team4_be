@@ -1,5 +1,6 @@
 package com.exadel.discount.service;
 
+import com.exadel.discount.dto.discount.DiscountFilter;
 import com.exadel.discount.dto.discount.CreateDiscountDTO;
 import com.exadel.discount.dto.discount.DiscountDTO;
 
@@ -12,11 +13,9 @@ public interface DiscountService {
 
     DiscountDTO getById(UUID id);
 
-    List<DiscountDTO> getAll();
+    List<DiscountDTO> getAll(String sortBy, String sortDir, Integer page, Integer size, DiscountFilter filter);
 
     void deleteById(UUID id);
-
-    List<DiscountDTO> getAllArchived();
 
     DiscountDTO restoreById(UUID id);
 }

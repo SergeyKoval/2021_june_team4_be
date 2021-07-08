@@ -1,6 +1,6 @@
 package com.exadel.discount.mapper;
 
-import com.exadel.discount.dto.city.BaseCityDto;
+import com.exadel.discount.dto.city.BaseCityDTO;
 import com.exadel.discount.dto.city.CityDTO;
 import com.exadel.discount.entity.City;
 import org.mapstruct.Mapper;
@@ -19,9 +19,9 @@ public interface CityMapper {
 
     List<CityDTO> getListDTO(List<City> cities);
 
-    City baseCityDTOToCity(BaseCityDto city);
+    City baseCityDTOToCity(BaseCityDTO city);
 
-    BaseCityDto cityToBaseCityDTO(City city);
+    BaseCityDTO cityToBaseCityDTO(City city);
 
-    List<BaseCityDto> getListBaseDTO(List<City> cities);
+    List<BaseCityDTO> getListBaseDTO(List<City> cities);
 }
