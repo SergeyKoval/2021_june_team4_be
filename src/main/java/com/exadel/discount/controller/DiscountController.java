@@ -38,7 +38,7 @@ public class DiscountController {
     @ApiOperation("Get all discounts")
     @UserAccess
     public List<DiscountDTO> getAllDiscounts(@RequestParam(defaultValue = "0", required = false) Integer page,
-                                             @RequestParam(defaultValue = "20", required = false) Integer size,
+                                             @RequestParam(defaultValue = "12", required = false) Integer size,
                                              @RequestParam(defaultValue = "id", required = false) String sortBy,
                                              @RequestParam(defaultValue = "asc", required = false) String sortDirection,
                                              @RequestParam(required = false) List<UUID> vendorId,
@@ -94,7 +94,7 @@ public class DiscountController {
     @ApiOperation("Get all archived Discounts")
     @AdminAccess
     public List<DiscountDTO> getAllArchivedDiscounts(@RequestParam(defaultValue = "0", required = false) Integer page,
-                                                     @RequestParam(defaultValue = "20", required = false) Integer size,
+                                                     @RequestParam(defaultValue = "12", required = false) Integer size,
                                                      @RequestParam(defaultValue = "id", required = false) String sortBy,
                                                      @RequestParam(defaultValue = "asc", required = false)
                                                              String sortDirection,
