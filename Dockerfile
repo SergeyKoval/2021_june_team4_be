@@ -15,4 +15,5 @@ WORKDIR /app
 
 COPY --from=MAVEN_BUILD /build/target/discount-1.0-SNAPSHOT.jar /app/
 
-ENTRYPOINT ["java","-jar", "discount-1.0-SNAPSHOT.jar"]
+#ENTRYPOINT ["java","-jar", "discount-1.0-SNAPSHOT.jar"]
+CMD [ "sh", "-c", "java -Xmx256m -jar discount-1.0-SNAPSHOT.jar"]

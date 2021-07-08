@@ -6,7 +6,9 @@ spring:
     open-in-view: false
   datasource:
     driver-class-name: org.postgresql.Driver
-
+    url: ${SPRING_DATASOURCE_URL}
+    username: ${SPRING_DATASOURCE_USERNAME}
+    password: ${SPRING_DATASOURCE_PASSWORD}
 jwt:
   token:
     expiration:
@@ -18,3 +20,5 @@ jwt:
 cors:
   hosts:
     - http://localhost:4200
+server:
+  port: ${PORT}
