@@ -1,7 +1,7 @@
 package com.exadel.discount.controller;
 
 import com.exadel.discount.dto.CountryDTO;
-import com.exadel.discount.dto.city.BaseCityDto;
+import com.exadel.discount.dto.city.BaseCityDTO;
 import com.exadel.discount.dto.city.CityDTO;
 import com.exadel.discount.dto.validation.Create;
 import com.exadel.discount.security.annotation.AdminAccess;
@@ -73,7 +73,7 @@ public class CountryController {
     @ApiOperation("Save new City")
     @AdminAccess
     public CityDTO saveCity(@PathVariable @NotNull UUID countryId,
-                            @Validated(Create.class) @RequestBody BaseCityDto cityDTO) {
+                            @Validated(Create.class) @RequestBody BaseCityDTO cityDTO) {
         return cityService.save(countryId, cityDTO);
     }
 
