@@ -45,7 +45,7 @@ public class User {
             name = "UUID",
             strategy = "org.hibernate.id.UUIDGenerator"
     )
-    UUID id;
+    private UUID id;
     @Column(name = "first_name", length = 50, nullable = false)
     private String firstName;
 
