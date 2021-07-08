@@ -7,6 +7,8 @@ import com.exadel.discount.dto.vendor.BaseVendorDTO;
 import lombok.Data;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
@@ -25,4 +27,9 @@ public class DiscountDTO {
     private Set<TagDTO> tags;
     private Set<LocationDTO> vendorLocations;
     private BaseVendorDTO vendor;
+    private List<String> images = new ArrayList<>();
+
+    {
+        images.add("https://cdn.pixabay.com/photo/2015/04/19/08/32/marguerite-729510_960_720.jpg");
+    }
 }
