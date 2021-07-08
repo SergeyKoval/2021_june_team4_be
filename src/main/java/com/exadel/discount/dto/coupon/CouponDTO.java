@@ -18,5 +18,5 @@ public class CouponDTO {
     @NotNull(message = "Coupon date should be not null")
     private LocalDateTime date;
     @NotNull(message = "Discount should be not null")
-    private DiscountDTO discountDto;
+    private DiscountDTO discountDTO;
 }
