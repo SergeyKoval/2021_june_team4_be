@@ -1,6 +1,8 @@
 package com.exadel.discount.mapper;
 
+import com.exadel.discount.dto.discount.DiscountDTO;
 import com.exadel.discount.dto.favorite.FavoriteDTO;
+import com.exadel.discount.entity.Discount;
 import com.exadel.discount.entity.Favorite;
 import org.mapstruct.Mapper;
 
@@ -11,4 +13,6 @@ public interface FavoriteMapper {
     FavoriteDTO toFavoriteDTO(Favorite favorite);
 
     List<FavoriteDTO> toFavoriteDTOList(List<Favorite> favorites);
+
+    DiscountDTO getDTO(Discount discount);
 }

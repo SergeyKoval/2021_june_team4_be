@@ -33,14 +33,18 @@ public class CouponController {
      * sortField - name of sorted field by (date - by default)- date/id
      * filtering - after startDate and/or before endDate
      * (default filtering - between 2000-01-10T00:00:00 and 9999-01-10T00:00:00 */
-    public List<CouponDTO> getAllCoupons(@RequestParam(name = "pageNumber", defaultValue = "1") int pageNumber,
-                                         @RequestParam(name = "pageSize", defaultValue = "10") int pageSize,
-                                         @RequestParam(value = "sortDirection", defaultValue = "") String sortDirection,
-                                         @RequestParam(value = "sortField", defaultValue = "date") String sortField,
-                                         @RequestParam(value = "startDate", defaultValue = "2000-01-10T00:00:00")
+    public List<CouponDTO> getAllCoupons(@RequestParam(name = "pageNumber", defaultValue = "1", required = false)
+                                                     int pageNumber,
+                                         @RequestParam(name = "pageSize", defaultValue = "10", required = false)
+                                                    int pageSize,
+                                         @RequestParam(value = "sortDirection", defaultValue = "", required = false)
+                                                     String sortDirection,
+                                         @RequestParam(value = "sortField", defaultValue = "date", required = false)
+                                                     String sortField,
+                                         @RequestParam(value = "startDate", defaultValue = "2000-01-10T00:00:00", required = false)
                                              @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
                                              final LocalDateTime startDate,
-                                         @RequestParam(value = "endDate", defaultValue = "9999-01-10T00:00:00")
+                                         @RequestParam(value = "endDate", defaultValue = "9999-01-10T00:00:00", required = false)
                                              @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
                                              final LocalDateTime endDate) {
         return couponService.findAllCoupons(pageNumber, pageSize, sortDirection, sortField, startDate, endDate);
