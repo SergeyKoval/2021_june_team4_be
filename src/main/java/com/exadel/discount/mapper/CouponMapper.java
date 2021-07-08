@@ -8,11 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.util.List;
 
 @Mapper(componentModel = "spring")
-public abstract class CouponMapper {
-
+public abstract class CouponMapper{
     @Autowired
     DiscountMapper discountMapper;
-
     public CouponDTO toCouponDTO(Coupon coupon){
         CouponDTO couponDTO = new CouponDTO();
         couponDTO.setDate(coupon.getDate());
@@ -20,5 +18,6 @@ public abstract class CouponMapper {
         couponDTO.setDiscountDto(discountMapper.getDTO(coupon.getDiscount()));
         return couponDTO;
     }
+
     public abstract List<CouponDTO> toCouponDTOList(List<Coupon> coupons);
 }
