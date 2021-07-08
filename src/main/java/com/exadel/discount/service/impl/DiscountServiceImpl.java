@@ -22,9 +22,10 @@ import com.querydsl.core.types.ExpressionUtils;
 import com.querydsl.core.types.Predicate;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -76,12 +77,12 @@ public class DiscountServiceImpl implements DiscountService {
         Sort sort = "desc".equalsIgnoreCase(sortDir) ?
                 Sort.by(sortBy).descending() :
                 Sort.by(sortBy);
-        Pageable pageable = PageRequest.of(page, size, sort);
         log.debug("Getting list of all Discounts by filter");
-        List<DiscountDTO> discountDTOS = discountMapper
-                .getListDTO(discountRepository.findAll(getPredicate(filter), pageable).getContent());
+        List<Discount> discounts = discountRepository.findAll(getPredicate(filter), sort);
+        Page<Discount> discountPage = PageableExecutionUtils
+                .getPage(discounts, PageRequest.of(page, size), () -> discounts.size());
         log.debug("Successfully got list of all Discounts by filter");
-        return discountDTOS;
+        return discountMapper.getListDTO(discountPage.getContent());
     }
 
     @Override

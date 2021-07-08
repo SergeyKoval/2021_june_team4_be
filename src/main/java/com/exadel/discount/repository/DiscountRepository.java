@@ -2,8 +2,7 @@ package com.exadel.discount.repository;
 
 import com.exadel.discount.entity.Discount;
 import com.querydsl.core.types.Predicate;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -33,7 +32,7 @@ public interface DiscountRepository extends JpaRepository<Discount, UUID>, Query
 
     @EntityGraph(attributePaths = {"category", "vendorLocations", "tags", "vendor",
             "vendorLocations.city", "vendorLocations.city.country"})
-    Page<Discount> findAll(Predicate predicate, Pageable pageable);
+    List<Discount> findAll(Predicate predicate, Sort sort);
 
     @Modifying
     @Query("UPDATE Discount d SET d.archived=:archived WHERE d.id=:discountId")
