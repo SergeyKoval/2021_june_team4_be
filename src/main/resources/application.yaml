@@ -21,3 +21,5 @@ jwt:
 cors:
   hosts:
     - http://localhost:4200
+server:
+  port: ${PORT:8080}
