@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -28,4 +29,8 @@ public interface CouponRepository extends JpaRepository<Coupon, UUID> {
     @EntityGraph(attributePaths = {"discount", "discount.category", "discount.vendorLocations", "discount.tags",
             "discount.vendor", "discount.vendorLocations.city", "discount.vendorLocations.city.country"})
     Page<Coupon> findCouponsByDateBetween(LocalDateTime startDate, LocalDateTime endDate, Pageable pageable);
+
+    @EntityGraph(attributePaths = {"discount", "discount.category", "discount.vendorLocations", "discount.tags",
+            "discount.vendor", "discount.vendorLocations.city", "discount.vendorLocations.city.country"})
+    List<Coupon> findAll();
 }

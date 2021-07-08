@@ -36,7 +36,6 @@ public class City {
     @Column(name = "name", length = 50, nullable = false)
     private String name;
 
-    @Fetch(FetchMode.JOIN)
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "country_id", nullable = false)
     private Country country;

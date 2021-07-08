@@ -1,14 +1,17 @@
 package com.exadel.discount.service.impl;
 
 import com.exadel.discount.dto.user.UserDTO;
-import com.exadel.discount.entity.Role;
+import com.exadel.discount.dto.user.UserFilter;
+import com.exadel.discount.entity.QUser;
 import com.exadel.discount.entity.User;
 import com.exadel.discount.exception.NotFoundException;
 import com.exadel.discount.mapper.UserMapper;
-import com.exadel.discount.repository.CityRepository;
 import com.exadel.discount.repository.UserRepository;
+import com.exadel.discount.repository.query.QueryPredicateBuilder;
 import com.exadel.discount.service.SortPageMaker;
 import com.exadel.discount.service.UserService;
+import com.querydsl.core.types.ExpressionUtils;
+import com.querydsl.core.types.Predicate;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -16,9 +19,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.stream.Stream;
 
 @Service
 @AllArgsConstructor
@@ -26,7 +29,6 @@ import java.util.stream.Stream;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
-    private final CityRepository cityRepository;
     private final UserMapper userMapper;
 
     @Override
@@ -42,68 +44,18 @@ public class UserServiceImpl implements UserService {
     public List<UserDTO> findAllUsers(int pageNumber,
                                       int pageSize,
                                       String sortDirection,
-                                      String sortField) {
+                                      String sortField,
+                                      UserFilter filter) {
         Pageable paging = SortPageMaker.makePageable(pageNumber, pageSize, sortDirection, sortField);
 
         log.debug("Getting sorted page-list of  Users");
 
-        Page<User> userList = userRepository.findAll(paging);
+        Page<User> userList = userRepository.findAll(preparePredicateForFindingAll(filter), paging);
         log.debug("Successfully sorted page-list of Users is got without filtering");
 
         return userMapper.toUserDTOList(userList.toList());
 
     }
-
-    @Override
-    public List<UserDTO> findUsersByRole(int pageNumber,
-                                         int pageSize,
-                                         String sortDirection,
-                                         String sortField,
-                                         String roleFilter) {
-        Pageable paging = SortPageMaker.makePageable(pageNumber, pageSize, sortDirection, sortField);
-        Page<User> userList;
-        log.debug("Getting sorted page-list of Users by role");
-        if (Stream.of(Role.values()).anyMatch(e -> e.toString().equals(roleFilter.toUpperCase())))
-            userList = userRepository.findByRole(Role.valueOf(roleFilter.toUpperCase()), paging);
-        else throw new NotFoundException(String.format("No User with role %s is found", roleFilter));
-        log.debug("Successfully got filtered page-list of Users by role is got");
-        return userMapper.toUserDTOList(userList.toList());
-
-    }
-
-    @Override
-    public List<UserDTO> findUsersOfCity(int pageNumber,
-                                         int pageSize,
-                                         String sortDirection,
-                                         String sortField,
-                                         String cityFilter) {
-        Pageable paging = SortPageMaker.makePageable(pageNumber, pageSize, sortDirection, sortField);
-        Page<User> userList;
-        log.debug("Getting sorted page-list of Users by city");
-        if (cityRepository.findByName(cityFilter).isPresent()) {
-            userList = userRepository.findByCity_Name(cityFilter, paging);
-        } else throw new NotFoundException(String.format("No User from city %s is found", cityFilter));
-        log.debug("Successfully got filtered page-list of Users by city is got");
-        return userMapper.toUserDTOList(userList.toList());
-    }
-
-    @SuppressWarnings("checkstyle:WhitespaceAround")
-    @Override
-    public List<UserDTO> findUsersOfCountry(int pageNumber,
-                                            int pageSize,
-                                            String sortDirection,
-                                            String sortField,
-                                            String countryFilter) {
-        Pageable paging = SortPageMaker.makePageable(pageNumber, pageSize, sortDirection, sortField);
-        log.debug("Getting sorted page-list of Users by country");
-        Page<User> userList = userRepository.findUsersByCity_Country_Name(countryFilter, paging);
-        if (userList.isEmpty()) throw
-                new NotFoundException(String.format("No users from country %s is found", countryFilter));
-
-        log.debug("Successfully got filtered page-list of Users by country is got");
-        return userMapper.toUserDTOList(userList.toList());
-    }
-
 
     @Override
     public List<UserDTO> findUsersByName(String lastName, String firstName) {
@@ -114,5 +66,18 @@ public class UserServiceImpl implements UserService {
                         "                                                  firstname %s ", lastName, firstName));
         log.debug("Successfully User is found by lastname and firstname");
         return userMapper.toUserDTOList(suchNameUserList);
+    }
+
+    private Predicate preparePredicateForFindingAll(UserFilter userfilter) {
+        return ExpressionUtils.and(
+                QueryPredicateBuilder.init()
+                        .append(userfilter.getCityName(), QUser.user.city.name::eq)
+                        .append(userfilter.getCountryName(), QUser.user.city.country.name::eq)
+                        .buildOr(),
+                QueryPredicateBuilder.init()
+                        .append(userfilter.getFirstName(), QUser.user.firstName::eq)
+                        .append(userfilter.getLastName(), QUser.user.lastName::eq)
+                        .append(userfilter.getRoleFilter().toUpperCase(Locale.ROOT), QUser.user.role.stringValue()::eq)
+                        .buildAnd());
     }
 }
