@@ -17,7 +17,7 @@ import com.exadel.discount.repository.TagRepository;
 import com.exadel.discount.repository.VendorLocationRepository;
 import com.exadel.discount.repository.VendorRepository;
 import com.exadel.discount.service.DiscountService;
-import com.exadel.discount.util.QPredicates;
+import com.exadel.discount.repository.query.QueryPredicateBuilder;
 import com.querydsl.core.types.ExpressionUtils;
 import com.querydsl.core.types.Predicate;
 import lombok.RequiredArgsConstructor;
@@ -78,7 +78,7 @@ public class DiscountServiceImpl implements DiscountService {
                 Sort.by(sortBy).descending() :
                 Sort.by(sortBy);
         log.debug("Getting list of all Discounts by filter");
-        List<Discount> discounts = discountRepository.findAll(getPredicate(filter), sort);
+        List<Discount> discounts = discountRepository.findAll(preparePredicateForFindingAll(filter), sort);
         Page<Discount> discountPage = PageableExecutionUtils
                 .getPage(discounts, PageRequest.of(page, size), () -> discounts.size());
         log.debug("Successfully got list of all Discounts by filter");
@@ -151,21 +151,21 @@ public class DiscountServiceImpl implements DiscountService {
                 .orElseThrow(() -> new NotFoundException(String.format("Vendor with ID %s doesn't exist", vendorId)));
     }
 
-    private Predicate getPredicate(DiscountFilter filter) {
+    private Predicate preparePredicateForFindingAll(DiscountFilter filter) {
         return ExpressionUtils.and(
-                QPredicates.builder()
-                        .add(filter.getCountryIds(), QDiscount.discount.vendorLocations.any().city.country.id::in)
-                        .add(filter.getCityIds(), QDiscount.discount.vendorLocations.any().city.id::in)
+                QueryPredicateBuilder.init()
+                        .append(filter.getCountryIds(), QDiscount.discount.vendorLocations.any().city.country.id::in)
+                        .append(filter.getCityIds(), QDiscount.discount.vendorLocations.any().city.id::in)
                         .buildOr(),
-                QPredicates.builder()
-                        .add(filter.getArchived(), QDiscount.discount.archived::eq)
-                        .add(filter.getPercentFrom(), QDiscount.discount.percent::goe)
-                        .add(filter.getPercentTo(), QDiscount.discount.percent::loe)
-                        .add(filter.getEndDateFrom(), QDiscount.discount.endTime::goe)
-                        .add(filter.getEndDateTo(), QDiscount.discount.endTime::loe)
-                        .add(filter.getCategoryIds(), QDiscount.discount.category.id::in)
-                        .add(filter.getTagIds(), QDiscount.discount.tags.any().id::in)
-                        .add(filter.getVendorIds(), QDiscount.discount.vendor.id::in)
+                QueryPredicateBuilder.init()
+                        .append(filter.getArchived(), QDiscount.discount.archived::eq)
+                        .append(filter.getPercentFrom(), QDiscount.discount.percent::goe)
+                        .append(filter.getPercentTo(), QDiscount.discount.percent::loe)
+                        .append(filter.getEndDateFrom(), QDiscount.discount.endTime::goe)
+                        .append(filter.getEndDateTo(), QDiscount.discount.endTime::loe)
+                        .append(filter.getCategoryIds(), QDiscount.discount.category.id::in)
+                        .append(filter.getTagIds(), QDiscount.discount.tags.any().id::in)
+                        .append(filter.getVendorIds(), QDiscount.discount.vendor.id::in)
                         .buildAnd());
     }
 }
