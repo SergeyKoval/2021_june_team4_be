@@ -10,10 +10,10 @@ import java.util.List;
 import java.util.function.Function;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class QPredicateBuilder {
+public class QueryPredicateBuilder {
     private List<Predicate> predicates = new ArrayList<>();
 
-    public <T> QPredicateBuilder append(T object, Function<T, Predicate> function) {
+    public <T> QueryPredicateBuilder append(T object, Function<T, Predicate> function) {
         if (object != null) {
             predicates.add(function.apply(object));
         }
@@ -28,7 +28,7 @@ public class QPredicateBuilder {
         return ExpressionUtils.anyOf(predicates);
     }
 
-    public static QPredicateBuilder init() {
-        return new QPredicateBuilder();
+    public static QueryPredicateBuilder init() {
+        return new QueryPredicateBuilder();
     }
 }

@@ -17,7 +17,7 @@ import com.exadel.discount.repository.TagRepository;
 import com.exadel.discount.repository.VendorLocationRepository;
 import com.exadel.discount.repository.VendorRepository;
 import com.exadel.discount.service.DiscountService;
-import com.exadel.discount.repository.query.QPredicateBuilder;
+import com.exadel.discount.repository.query.QueryPredicateBuilder;
 import com.querydsl.core.types.ExpressionUtils;
 import com.querydsl.core.types.Predicate;
 import lombok.RequiredArgsConstructor;
@@ -153,11 +153,11 @@ public class DiscountServiceImpl implements DiscountService {
 
     private Predicate preparePredicateForFindingAll(DiscountFilter filter) {
         return ExpressionUtils.and(
-                QPredicateBuilder.init()
+                QueryPredicateBuilder.init()
                         .append(filter.getCountryIds(), QDiscount.discount.vendorLocations.any().city.country.id::in)
                         .append(filter.getCityIds(), QDiscount.discount.vendorLocations.any().city.id::in)
                         .buildOr(),
-                QPredicateBuilder.init()
+                QueryPredicateBuilder.init()
                         .append(filter.getArchived(), QDiscount.discount.archived::eq)
                         .append(filter.getPercentFrom(), QDiscount.discount.percent::goe)
                         .append(filter.getPercentTo(), QDiscount.discount.percent::loe)
