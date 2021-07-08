@@ -19,6 +19,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -36,7 +37,8 @@ public class FavoriteServiceImpl implements FavoriteService {
         log.debug("Getting sorted page-list of all Favorites");
 
         Page<Favorite> favoriteList = favoriteRepository.findAll(paging);
-        if(favoriteList.isEmpty()) throw new NotFoundException("No favorites are found");
+        if (favoriteList.isEmpty()) throw
+                new NotFoundException("No favorites are found");
 
         log.debug("Successfully got sorted page-list of all Favorites");
 
@@ -46,14 +48,11 @@ public class FavoriteServiceImpl implements FavoriteService {
     @Override
     public FavoriteDTO findFavoriteById(UUID id) {
         log.debug("Finding Favorite by ID");
-
-        Favorite favorite = favoriteRepository
-                .findById(id)
-                .orElseThrow(() -> new NotFoundException(String.format("Favorite with id %s not found", id)));
-
-        log.debug("Successfully Favorite is found by ID");
-
-        return favoriteMapper.toFavoriteDTO(favorite);
+        Optional<Favorite> favoriteOptional = favoriteRepository.findById(id);
+        if (favoriteOptional.isEmpty()) throw
+                new NotFoundException(String.format("Favorite with id %s not found", id));
+        else log.debug("Successfully Favorite is found by ID");
+        return favoriteMapper.toFavoriteDTO(favoriteOptional.get());
     }
 
     @Override
@@ -62,11 +61,13 @@ public class FavoriteServiceImpl implements FavoriteService {
 
         User user = userRepository
                 .findById(createFavoriteDTO.getUserId())
-                .orElseThrow(() -> new NotFoundException(String.format("User with id %s not found", createFavoriteDTO.getUserId())));
+                .orElseThrow(() -> new NotFoundException(String
+                        .format("User with id %s not found", createFavoriteDTO.getUserId())));
 
         Discount discount = discountRepository
                 .findById(createFavoriteDTO.getDiscountId())
-                .orElseThrow(() -> new NotFoundException(String.format("Discount with id %s not found", createFavoriteDTO.getDiscountId())));
+                .orElseThrow(() -> new NotFoundException(String
+                        .format("Discount with id %s not found", createFavoriteDTO.getDiscountId())));
 
         log.debug("Successfully certain User and Discount are found by ID. Starting Favorite creation/saving.");
 
@@ -92,14 +93,19 @@ public class FavoriteServiceImpl implements FavoriteService {
     }
 
     @Override
-    public List<FavoriteDTO> getFavoritesOfUser(int pageNumber, int pageSize, String sortDirection, String sortField, UUID userId){
+    public List<FavoriteDTO> getFavoritesOfUser(int pageNumber,
+                                                int pageSize,
+                                                String sortDirection,
+                                                String sortField,
+                                                UUID userId){
         Pageable paging = SortPageMaker.makePageable(pageNumber, pageSize, sortDirection, sortField);
 
         log.debug("Finding Favorites of certain user");
-        List<Favorite> FavoriteList = favoriteRepository.findByUserId(userId, paging).toList();
-        if(FavoriteList.isEmpty()) throw new NotFoundException(String.format("No Favorites are found at user with Id %s ", userId));
+        List<Favorite> favoriteList = favoriteRepository.findByUserId(userId, paging).toList();
+        if (favoriteList.isEmpty()) throw
+                new NotFoundException(String.format("No Favorites are found at user with Id %s ", userId));
         log.debug("Successfully sorted page-list of user's Favorites is got");
 
-        return favoriteMapper.toFavoriteDTOList(FavoriteList);
+        return favoriteMapper.toFavoriteDTOList(favoriteList);
     }
 }

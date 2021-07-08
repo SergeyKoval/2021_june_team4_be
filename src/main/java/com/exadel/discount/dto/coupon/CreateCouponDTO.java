@@ -12,10 +12,8 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CreateCouponDTO {
-
     @NotNull(message = "Coupon ID should be not null")
     private UUID userId;
-
     @NotNull(message = "Discount ID should be not null")
     private UUID discountId;
 }

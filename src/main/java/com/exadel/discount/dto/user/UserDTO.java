@@ -1,7 +1,6 @@
 package com.exadel.discount.dto.user;
 
 import com.exadel.discount.dto.city.CityDTO;
-import com.exadel.discount.dto.CountryDTO;
 import com.exadel.discount.entity.Role;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -29,6 +28,4 @@ public class UserDTO {
     private Role role;
     @NotBlank(message = "City of User should be not null")
     private CityDTO cityDTO;
-    @NotBlank(message = "Country of User should be not null")
-    private CountryDTO countryDTO;
 }

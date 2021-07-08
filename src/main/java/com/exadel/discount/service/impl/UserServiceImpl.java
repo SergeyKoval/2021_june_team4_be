@@ -32,20 +32,17 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDTO findUserById(UUID id) {
         log.debug("Finding User by ID");
-
         Optional<User> userOptional = userRepository.findById(id);
         if (userOptional.isEmpty()) throw new NotFoundException(String.format("User with id %s not found", id));
-        else
-            log.debug("Successfully User is found by ID and starting userDTO creation");
-
-        UserDTO userDTO = userMapper.toUserDTO(userOptional.get());
-        log.debug("Successfully created userDTO");
-
-        return userDTO;
+        else log.debug("Successfully User is found by ID");
+        return userMapper.toUserDTO(userOptional.get());
     }
 
     @Override
-    public List<UserDTO> findAllUsers(int pageNumber, int pageSize, String sortDirection, String sortField) {
+    public List<UserDTO> findAllUsers(int pageNumber,
+                                      int pageSize,
+                                      String sortDirection,
+                                      String sortField) {
         Pageable paging = SortPageMaker.makePageable(pageNumber, pageSize, sortDirection, sortField);
 
         log.debug("Getting sorted page-list of  Users");
@@ -58,47 +55,51 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<UserDTO> findUsersByRole(int pageNumber, int pageSize, String sortDirection, String sortField, String roleFilter) {
+    public List<UserDTO> findUsersByRole(int pageNumber,
+                                         int pageSize,
+                                         String sortDirection,
+                                         String sortField,
+                                         String roleFilter) {
         Pageable paging = SortPageMaker.makePageable(pageNumber, pageSize, sortDirection, sortField);
         Page<User> userList;
         log.debug("Getting sorted page-list of Users by role");
-
-        if (Stream.of(Role.values()).anyMatch(e -> e.toString().equals(roleFilter.toUpperCase()))) {
-            userList = userRepository.findUserByRole(Role.valueOf(roleFilter.toUpperCase()), paging);
-        } else
-            throw new NotFoundException(String.format("No User with role %s is found", roleFilter));
-
+        if (Stream.of(Role.values()).anyMatch(e -> e.toString().equals(roleFilter.toUpperCase())))
+            userList = userRepository.findByRole(Role.valueOf(roleFilter.toUpperCase()), paging);
+        else throw new NotFoundException(String.format("No User with role %s is found", roleFilter));
         log.debug("Successfully got filtered page-list of Users by role is got");
         return userMapper.toUserDTOList(userList.toList());
 
     }
 
     @Override
-    public List<UserDTO> findUsersOfCity(int pageNumber, int pageSize, String sortDirection, String sortField, String cityFilter) {
+    public List<UserDTO> findUsersOfCity(int pageNumber,
+                                         int pageSize,
+                                         String sortDirection,
+                                         String sortField,
+                                         String cityFilter) {
         Pageable paging = SortPageMaker.makePageable(pageNumber, pageSize, sortDirection, sortField);
         Page<User> userList;
         log.debug("Getting sorted page-list of Users by city");
-
         if (cityRepository.findByName(cityFilter).isPresent()) {
-            userList = userRepository.findUsersByCity_Name(cityFilter, paging);
-        } else
-            throw new NotFoundException(String.format("No User from city %s is found", cityFilter));
-
-
+            userList = userRepository.findByCity_Name(cityFilter, paging);
+        } else throw new NotFoundException(String.format("No User from city %s is found", cityFilter));
         log.debug("Successfully got filtered page-list of Users by city is got");
         return userMapper.toUserDTOList(userList.toList());
     }
 
-
+    @SuppressWarnings("checkstyle:WhitespaceAround")
     @Override
-    public List<UserDTO> findUsersOfCountry(int pageNumber, int pageSize, String sortDirection, String sortField, String countryFilter) {
+    public List<UserDTO> findUsersOfCountry(int pageNumber,
+                                            int pageSize,
+                                            String sortDirection,
+                                            String sortField,
+                                            String countryFilter) {
         Pageable paging = SortPageMaker.makePageable(pageNumber, pageSize, sortDirection, sortField);
         log.debug("Getting sorted page-list of Users by country");
+        Page<User> userList = userRepository.findUsersByCity_Country_Name(countryFilter, paging);
+        if (userList.isEmpty()) throw
+                new NotFoundException(String.format("No users from country %s is found", countryFilter));
 
-        Page<User> userList = userRepository.findUsersByCountry_Name(countryFilter, paging);
-        if(userList.isEmpty()){
-            throw new NotFoundException(String.format("No users from country %s is found", countryFilter));
-        }
         log.debug("Successfully got filtered page-list of Users by country is got");
         return userMapper.toUserDTOList(userList.toList());
     }
@@ -107,12 +108,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<UserDTO> findUsersByName(String lastName, String firstName) {
         log.debug("Finding User by lastName and firstName");
-
         List<User> suchNameUserList = userRepository.findDistinctByLastNameAndFirstName(lastName, firstName);
-        if (suchNameUserList.size() == 0)
-            throw new NotFoundException(String.format("Not found a user with Lastname %s and firstname %s ", lastName, firstName));
+        if (suchNameUserList.size() == 0) throw
+                new NotFoundException(String.format("Not found a user with lastname %s and " +
+                        "                                                  firstname %s ", lastName, firstName));
         log.debug("Successfully User is found by lastname and firstname");
-
         return userMapper.toUserDTOList(suchNameUserList);
     }
 }

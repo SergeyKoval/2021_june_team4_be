@@ -1,6 +1,7 @@
 package com.exadel.discount.controller;
 
 import com.exadel.discount.dto.user.UserDTO;
+import com.exadel.discount.security.annotation.AdminAccess;
 import com.exadel.discount.service.UserService;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
@@ -53,6 +54,7 @@ public class UserController {
 
     @GetMapping("/country")
     @ApiOperation("Get sorted page-list of users filtered by country")
+    @AdminAccess
     public List<UserDTO> getUserOfCountry(@RequestParam(name = "pageNumber", defaultValue = "1") int pageNumber,
                                            @RequestParam(name = "pageSize", defaultValue = "10") int pageSize,
                                            @RequestParam(name = "sortDirection", defaultValue = "") String sortDirection,
@@ -63,12 +65,14 @@ public class UserController {
 
     @GetMapping("{id}")
     @ApiOperation("Get user by ID")
+    @AdminAccess
     public UserDTO getUserById(@PathVariable @NotNull final UUID id) {
         return userService.findUserById(id);
     }
 
     @GetMapping("/name")
     @ApiOperation("Get users by lastname and firstname")
+    @AdminAccess
     public List<UserDTO> getUsersByName(@RequestParam("lastname") @NotNull String lastName,
                                         @RequestParam("firstname") @NotNull String firstName) {
         return userService.findUsersByName(lastName, firstName);

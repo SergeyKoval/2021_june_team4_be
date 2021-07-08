@@ -13,13 +13,10 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CouponDTO {
-
     @NotNull(message = "Coupon ID should be not null")
     private UUID id;
-
     @NotNull(message = "Coupon date should be not null")
     private LocalDateTime date;
-
     @NotNull(message = "Discount should be not null")
     private DiscountDTO discountDto;
 }

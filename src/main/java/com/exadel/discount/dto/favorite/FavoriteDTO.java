@@ -14,7 +14,6 @@ import java.util.UUID;
 public class FavoriteDTO {
     @NotNull(message = "Favorite ID should be not null")
     private UUID id;
-
     @NotNull(message = "Discount should be not null")
     private DiscountDTO discountDTO;
 }
