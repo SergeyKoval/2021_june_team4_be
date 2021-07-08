@@ -8,7 +8,7 @@ import org.mapstruct.NullValueCheckStrategy;
 
 import java.util.List;
 
-@Mapper(componentModel = "spring", uses = {VendorLocationMapper.class}, nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS)
+@Mapper(componentModel = "spring", uses = {VendorLocationMapper.class})
 public interface DiscountMapper {
 
     Discount parseDTO(DiscountDTO discountDTO);

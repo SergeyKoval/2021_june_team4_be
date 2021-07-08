@@ -33,51 +33,52 @@ public class VendorController {
     private final VendorService vendorService;
 
     @GetMapping
-    @ApiOperation("Get list of all vendors")
     @UserAccess
+    @ApiOperation("Get list of all vendors")
     public List<VendorDTO> getVendorsList() {
         return vendorService.getAll();
     }
 
     @GetMapping("/{id}")
-    @ApiOperation("Get vendor by ID")
     @UserAccess
+    @ApiOperation("Get vendor by ID")
     public VendorDTO getVendorById(
             @PathVariable(name = "id") @NotNull UUID id) {
         return vendorService.getById(id);
     }
 
     @PostMapping
-    @ApiOperation("Add new vendor")
     @AdminAccess
+    @ApiOperation("Add new vendor")
     public VendorDTO saveNewVendor(@RequestBody @Valid CreateVendorDTO vendor) {
         return vendorService.save(vendor);
     }
 
     @PutMapping("/{id}")
+    @AdminAccess
     @ApiOperation("Edit vendor by ID")
-    BaseVendorDTO updateVendor(@PathVariable @NotNull UUID id,
+    public VendorDTO updateVendor(@PathVariable @NotNull UUID id,
                                @RequestBody @NotNull BaseVendorDTO vendorDTO) {
         return vendorService.updateVendorById(vendorDTO, id);
     }
 
     @DeleteMapping("/{id}")
-    @ApiOperation("Delete vendor by ID")
     @AdminAccess
+    @ApiOperation("Delete vendor by ID")
     public void deleteVendor(@PathVariable(name = "id") @NotNull UUID id) {
         vendorService.deleteById(id);
     }
 
     @GetMapping("/archived")
-    @ApiOperation("Get all archived Vendors")
     @AdminAccess
+    @ApiOperation("Get all archived Vendors")
     public List<VendorDTO> getAllArchivedVendors() {
         return vendorService.getAllArchived();
     }
 
     @PutMapping("/archived/{id}/restore")
-    @ApiOperation("Restore Vendor by ID")
     @AdminAccess
+    @ApiOperation("Restore Vendor by ID")
     public VendorDTO restoreVendor(@PathVariable UUID id) {
         return vendorService.restoreById(id);
     }

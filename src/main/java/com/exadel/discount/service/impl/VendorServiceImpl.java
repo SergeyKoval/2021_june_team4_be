@@ -34,13 +34,14 @@ public class VendorServiceImpl implements VendorService {
     }
 
     @Override
-    public BaseVendorDTO updateVendorById(BaseVendorDTO vendorDTO, UUID id) {
+    @Transactional
+    public VendorDTO updateVendorById(BaseVendorDTO vendorDTO, UUID id) {
         log.debug(String.format("Update Vendor with ID %s", id));
         return vendorRepository.findById(id)
                 .map( vendor -> {
                     vendor = vendorMapper.update(vendorDTO, vendor);
                     vendor.setId(id);
-                    BaseVendorDTO updatedVendorDTO = vendorMapper.getBaseDTO(vendorRepository.save(vendor));
+                    VendorDTO updatedVendorDTO = vendorMapper.getDTO(vendorRepository.save(vendor));
                     log.debug(String.format("Successfully update Vendor with ID %s", id));
                     return updatedVendorDTO;
                 }).orElseThrow( () -> new NotFoundException(String.format("Vendor with ID %s not found", id)));

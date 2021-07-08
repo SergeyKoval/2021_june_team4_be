@@ -11,7 +11,7 @@ public interface VendorService {
 
     VendorDTO save(CreateVendorDTO vendor);
 
-    BaseVendorDTO updateVendorById(BaseVendorDTO vendorDTO, UUID id);
+    VendorDTO updateVendorById(BaseVendorDTO vendorDTO, UUID id);
 
     VendorDTO getById(UUID id);
 

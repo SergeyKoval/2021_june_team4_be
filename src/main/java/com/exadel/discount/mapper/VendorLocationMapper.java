@@ -9,7 +9,7 @@ import org.mapstruct.NullValueCheckStrategy;
 
 import java.util.List;
 
-@Mapper(componentModel = "spring", uses = {CityMapper.class}, nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS)
+@Mapper(componentModel = "spring", uses = {CityMapper.class})
 public interface VendorLocationMapper {
 
     @Mapping(source = "latitude", target = "position.latitude")

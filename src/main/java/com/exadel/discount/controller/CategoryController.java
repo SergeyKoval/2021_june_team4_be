@@ -30,37 +30,38 @@ public class CategoryController {
     private final CategoryService categoryService;
 
     @GetMapping
-    @ApiOperation("Get all categories")
     @UserAccess
+    @ApiOperation("Get all categories")
     public List<CategoryDTO> getAll() {
         return categoryService.getAll();
     }
 
     @GetMapping("/{categoryId}")
-    @ApiOperation("Get information about category by Id")
     @UserAccess
+    @ApiOperation("Get information about category by Id")
     public CategoryDTO getById(
             @PathVariable(name = "categoryId") @NotNull UUID id) {
         return categoryService.getById(id);
     }
 
     @PostMapping
-    @ApiOperation("Add new category")
     @AdminAccess
+    @ApiOperation("Add new category")
     public CategoryDTO addCategory(@RequestBody @Validated(Create.class) CategoryDTO categoryDTO) {
         return categoryService.save(categoryDTO);
     }
 
     @PutMapping("/{id}")
+    @AdminAccess
     @ApiOperation("Update category")
-    CategoryDTO updateCategory(@PathVariable @NotNull UUID id,
+    public CategoryDTO updateCategory(@PathVariable @NotNull UUID id,
                                @RequestBody @Validated(Create.class) CategoryDTO categoryDTO) {
         return categoryService.updateCategoryById(categoryDTO, id);
     }
 
     @DeleteMapping("/{id}")
-    @ApiOperation("Delete category by Id")
     @AdminAccess
+    @ApiOperation("Delete category by Id")
     public void deleteCategory(@PathVariable(name = "id") @NotNull UUID id) {
         categoryService.deleteById(id);
     }
