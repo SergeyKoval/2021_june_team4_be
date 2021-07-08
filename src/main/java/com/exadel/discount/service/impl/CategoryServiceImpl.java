@@ -35,7 +35,9 @@ public class CategoryServiceImpl implements CategoryService {
         log.debug(String.format("Update Category with ID %s", id));
         return categoryRepository.findCategoryById(id)
                 .map(category -> {
-                    CategoryDTO updatedCategory = categoryMapper.getDTO(categoryRepository.save(categoryMapper.parseDTO(categoryDTO)));
+                    category = categoryMapper.update(categoryDTO, category);
+                    category.setId(id);
+                    CategoryDTO updatedCategory = categoryMapper.getDTO(categoryRepository.save(category));
                     log.debug(String.format("Successfully update Category with ID %s", id));
                     return updatedCategory;
                 })

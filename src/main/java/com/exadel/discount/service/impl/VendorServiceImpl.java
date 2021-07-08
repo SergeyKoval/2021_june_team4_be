@@ -38,7 +38,9 @@ public class VendorServiceImpl implements VendorService {
         log.debug(String.format("Update Vendor with ID %s", id));
         return vendorRepository.findById(id)
                 .map( vendor -> {
-                    BaseVendorDTO updatedVendorDTO = vendorMapper.getBaseDTO(vendorRepository.save(vendorMapper.parseDTO(vendorDTO)));
+                    vendor = vendorMapper.update(vendorDTO, vendor);
+                    vendor.setId(id);
+                    BaseVendorDTO updatedVendorDTO = vendorMapper.getBaseDTO(vendorRepository.save(vendor));
                     log.debug(String.format("Successfully update Vendor with ID %s", id));
                     return updatedVendorDTO;
                 }).orElseThrow( () -> new NotFoundException(String.format("Vendor with ID %s not found", id)));
