@@ -16,6 +16,7 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Set;
 import java.util.UUID;
@@ -48,8 +49,8 @@ public class Discount {
     @Column(name = "promo", length = 50, nullable = false)
     private String promo;
 
-    @Column(name = "percent")
-    private Integer percent;
+    @Column(name = "price")
+    private BigDecimal price;
 
     @Column(name = "start_time")
     private LocalDateTime startTime;

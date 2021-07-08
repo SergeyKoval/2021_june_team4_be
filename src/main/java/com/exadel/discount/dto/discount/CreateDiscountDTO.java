@@ -7,6 +7,7 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
@@ -22,9 +23,9 @@ public class CreateDiscountDTO {
     @NotBlank(message = "Discount promo should be not blank")
     @Size(max = 50, message = "Discount promo should be shorted than {max}")
     private String promo;
-    @Min(value = 1, message = "Discount percent should be more than {min}")
-    @Max(value = 100, message = "Discount percent should be more less than {max}")
-    private Integer percent;
+    @Min(value = 1, message = "Discount price should be more than {min}")
+    @Max(value = 100, message = "Discount price should be more less than {max}")
+    private BigDecimal price;
     private LocalDateTime startTime;
     private LocalDateTime endTime;
     private boolean active;

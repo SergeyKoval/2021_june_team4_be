@@ -6,6 +6,7 @@ import com.exadel.discount.dto.location.LocationDTO;
 import com.exadel.discount.dto.vendor.BaseVendorDTO;
 import lombok.Data;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Set;
 import java.util.UUID;
@@ -17,7 +18,7 @@ public class DiscountDTO {
     private String name;
     private String description;
     private String promo;
-    private Integer percent;
+    private BigDecimal price;
     private LocalDateTime startTime;
     private LocalDateTime endTime;
     private boolean active;
