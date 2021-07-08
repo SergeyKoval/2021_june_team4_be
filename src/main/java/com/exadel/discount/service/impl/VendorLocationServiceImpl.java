@@ -5,7 +5,7 @@ import com.exadel.discount.dto.location.LocationDTO;
 import com.exadel.discount.entity.City;
 import com.exadel.discount.entity.Vendor;
 import com.exadel.discount.entity.VendorLocation;
-import com.exadel.discount.exception.NotFoundException;
+import com.exadel.discount.exception.custom_exception.NotFoundException;
 import com.exadel.discount.mapper.VendorLocationMapper;
 import com.exadel.discount.repository.CityRepository;
 import com.exadel.discount.repository.VendorLocationRepository;

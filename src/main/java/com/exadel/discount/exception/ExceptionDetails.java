@@ -1,10 +1,13 @@
 package com.exadel.discount.exception;
 
-import lombok.AllArgsConstructor;
+import com.exadel.discount.exception.type.ExceptionCause;
+import lombok.Builder;
 import lombok.Data;
 
 @Data
-@AllArgsConstructor
+@Builder
 public class ExceptionDetails {
     private String message;
+    private String field;
+    private ExceptionCause cause;
 }
