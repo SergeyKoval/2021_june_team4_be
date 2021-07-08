@@ -28,11 +28,11 @@ public interface DiscountRepository extends JpaRepository<Discount, UUID>, Query
 
     @EntityGraph(attributePaths = {"category", "vendorLocations", "tags", "vendor",
             "vendorLocations.city", "vendorLocations.city.country"})
-    Optional<Discount> findByIdAndArchived(UUID id, boolean archived);
+    List<Discount> findAll(Predicate predicate, Sort sort);
 
     @EntityGraph(attributePaths = {"category", "vendorLocations", "tags", "vendor",
             "vendorLocations.city", "vendorLocations.city.country"})
-    List<Discount> findAll(Predicate predicate, Sort sort);
+    Optional<Discount> findByIdAndArchived(UUID id, boolean archived);
 
     @Modifying
     @Query("UPDATE Discount d SET d.archived=:archived WHERE d.id=:discountId")
