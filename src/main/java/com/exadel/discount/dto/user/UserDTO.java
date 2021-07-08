@@ -27,5 +27,5 @@ public class UserDTO {
     @NotNull(message = "User's role should be not null")
     private Role role;
     @NotBlank(message = "City of User should be not null")
-    private CityDTO cityDTO;
+    private CityDTO city;
 }
