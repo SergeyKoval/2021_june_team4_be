@@ -15,7 +15,7 @@ public abstract class CouponMapper{
         CouponDTO couponDTO = new CouponDTO();
         couponDTO.setDate(coupon.getDate());
         couponDTO.setId(coupon.getId());
-        couponDTO.setDiscountDto(discountMapper.getDTO(coupon.getDiscount()));
+        couponDTO.setDiscountDTO(discountMapper.getDTO(coupon.getDiscount()));
         return couponDTO;
     }
 
