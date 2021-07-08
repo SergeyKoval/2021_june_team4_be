@@ -4,7 +4,6 @@ import com.exadel.discount.dto.discount.CreateDiscountDTO;
 import com.exadel.discount.dto.discount.DiscountDTO;
 import com.exadel.discount.entity.Discount;
 import org.mapstruct.Mapper;
-import org.mapstruct.NullValueCheckStrategy;
 
 import java.util.List;
 

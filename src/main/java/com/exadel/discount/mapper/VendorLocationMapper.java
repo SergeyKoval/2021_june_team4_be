@@ -5,7 +5,6 @@ import com.exadel.discount.dto.location.LocationDTO;
 import com.exadel.discount.entity.VendorLocation;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import org.mapstruct.NullValueCheckStrategy;
 
 import java.util.List;
 
