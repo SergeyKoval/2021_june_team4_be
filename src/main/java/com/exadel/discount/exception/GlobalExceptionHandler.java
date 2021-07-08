@@ -19,7 +19,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static com.exadel.discount.exception.type.ExceptionCause.*;
-import static org.apache.commons.lang3.StringUtils.upperCase;
 
 @ControllerAdvice
 @Slf4j
@@ -31,7 +30,10 @@ public class GlobalExceptionHandler {
     public ExceptionDetails handleNotFoundValue(Exception exception) {
         log.error("Exception stack trace: ", exception);
 
-        return new ExceptionDetails(exception.getMessage(), NOT_FOUND.name());
+        return ExceptionDetails.builder()
+                .message(exception.getMessage())
+                .cause(NOT_FOUND)
+                .build();
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
@@ -43,9 +45,11 @@ public class GlobalExceptionHandler {
                 .getFieldErrors()
                 .stream()
                 .map(error ->
-                        new ExceptionDetails(
-                                error.getDefaultMessage(),
-                                upperCase(error.getField()) + _FILED_INCORRECT.name()))
+                        ExceptionDetails.builder()
+                                .message(error.getDefaultMessage())
+                                .cause(FILED_INCORRECT)
+                                .field(error.getField())
+                                .build())
                 .collect(Collectors.toList());
 
         log.error("Exception stack trace: ", exception);
@@ -59,7 +63,10 @@ public class GlobalExceptionHandler {
     public ExceptionDetails handleIncorrectAuthentication(Exception exception) {
         log.error("Exception stack trace: ", exception);
 
-        return new ExceptionDetails(exception.getMessage(), AUTHENTICATION_FAILED.name());
+        return ExceptionDetails.builder()
+                .message(exception.getMessage())
+                .cause(AUTHENTICATION_FAILED)
+                .build();
     }
 
     @ExceptionHandler({AccessDeniedException.class, InvalidTokenException.class})
@@ -68,7 +75,10 @@ public class GlobalExceptionHandler {
     public ExceptionDetails handleIncorrectEndpointAccessRights(Exception exception) {
         log.error("Exception stack trace: ", exception);
 
-        return new ExceptionDetails(exception.getMessage(), ACCESS_DENIED.name());
+        return ExceptionDetails.builder()
+                .message(exception.getMessage())
+                .cause(ACCESS_DENIED)
+                .build();
     }
 
     @ExceptionHandler(DeletionRestrictedException.class)
@@ -77,7 +87,10 @@ public class GlobalExceptionHandler {
     public ExceptionDetails handleIncorrectDataDeletion(Exception exception) {
         log.error("Exception stack trace: ", exception);
 
-        return new ExceptionDetails(exception.getMessage(), DELETION_RESTRICTED.name());
+        return ExceptionDetails.builder()
+                .message(exception.getMessage())
+                .cause(DELETION_RESTRICTED)
+                .build();
     }
 
     @ExceptionHandler
@@ -86,6 +99,9 @@ public class GlobalExceptionHandler {
     public ExceptionDetails handleUncaughtException(Exception exception) {
         log.error("Exception stack trace: ", exception);
 
-        return new ExceptionDetails(exception.getMessage(), UNCAUGHT_EXCEPTION.name());
+        return ExceptionDetails.builder()
+                .message(exception.getMessage())
+                .cause(UNCAUGHT_EXCEPTION)
+                .build();
     }
 }
