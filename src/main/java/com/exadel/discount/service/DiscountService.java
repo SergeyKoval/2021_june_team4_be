@@ -18,4 +18,6 @@ public interface DiscountService {
     void deleteById(UUID id);
 
     DiscountDTO restoreById(UUID id);
+
+    List<DiscountDTO> getAll(String sortBy, String sortDir, Integer page, Integer size, String search);
 }

@@ -16,8 +16,8 @@ import com.exadel.discount.repository.DiscountRepository;
 import com.exadel.discount.repository.TagRepository;
 import com.exadel.discount.repository.VendorLocationRepository;
 import com.exadel.discount.repository.VendorRepository;
-import com.exadel.discount.service.DiscountService;
 import com.exadel.discount.repository.query.QueryPredicateBuilder;
+import com.exadel.discount.service.DiscountService;
 import com.querydsl.core.types.ExpressionUtils;
 import com.querydsl.core.types.Predicate;
 import lombok.RequiredArgsConstructor;
@@ -33,6 +33,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -112,6 +113,19 @@ public class DiscountServiceImpl implements DiscountService {
         return discountMapper.getDTO(discount);
     }
 
+    @Override
+    public List<DiscountDTO> getAll(String sortBy, String sortDir, Integer page, Integer size, String search) {
+        Sort sort = "desc".equalsIgnoreCase(sortDir) ?
+                Sort.by(sortBy).descending() :
+                Sort.by(sortBy);
+        log.debug("Getting list of all Discounts by search");
+        List<Discount> discounts = discountRepository.findAll(prepareSearchPredicate(search), sort);
+        Page<Discount> discountPage = PageableExecutionUtils
+                .getPage(discounts, PageRequest.of(page, size), () -> discounts.size());
+        log.debug("Successfully got list of all Discounts by search");
+        return discountMapper.getListDTO(discountPage.getContent());
+    }
+
     private Set<Tag> findTags(Set<UUID> tagIds) {
         List<Tag> existingTags = tagRepository.findAllById(tagIds);
         List<UUID> existingTagIds = existingTags
@@ -167,5 +181,21 @@ public class DiscountServiceImpl implements DiscountService {
                         .append(filter.getTagIds(), QDiscount.discount.tags.any().id::in)
                         .append(filter.getVendorIds(), QDiscount.discount.vendor.id::in)
                         .buildAnd());
+    }
+
+    private Predicate prepareSearchPredicate(String search) {
+        List<Predicate> words = Pattern
+                .compile(" ")
+                .splitAsStream(search)
+                .filter(word -> word.length() >= 3)
+                .map(word -> QueryPredicateBuilder.init()
+                        .append(word, QDiscount.discount.name::containsIgnoreCase)
+                        .append(word, QDiscount.discount.description::containsIgnoreCase)
+                        .append(word, QDiscount.discount.vendor.name::containsIgnoreCase)
+                        .append(word, QDiscount.discount.category.name::containsIgnoreCase)
+                        .append(word, QDiscount.discount.tags.any().name::containsIgnoreCase)
+                        .buildOr())
+                .collect(Collectors.toList());
+        return ExpressionUtils.allOf(words);
     }
 }

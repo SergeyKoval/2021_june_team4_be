@@ -132,4 +132,11 @@ public class DiscountController {
     public DiscountDTO restoreDiscount(@PathVariable UUID id) {
         return discountService.restoreById(id);
     }
+
+    @GetMapping("/search")
+    @ApiOperation("Get Discounts by search")
+    public List<DiscountDTO> search(@RequestParam(defaultValue = "8", required = false) Integer size,
+                                    @RequestParam String searchString) {
+        return discountService.getAll("viewNumber", "desc", 0, size, searchString);
+    }
 }
