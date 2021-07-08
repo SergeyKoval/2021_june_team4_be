@@ -1,17 +1,20 @@
 package com.exadel.discount.service.impl;
 
+import com.exadel.discount.dto.coupon.CouponFilter;
 import com.exadel.discount.dto.favorite.CreateFavoriteDTO;
 import com.exadel.discount.dto.favorite.FavoriteDTO;
-import com.exadel.discount.entity.Discount;
-import com.exadel.discount.entity.Favorite;
-import com.exadel.discount.entity.User;
+import com.exadel.discount.dto.favorite.FavoriteFilter;
+import com.exadel.discount.entity.*;
 import com.exadel.discount.exception.NotFoundException;
 import com.exadel.discount.mapper.FavoriteMapper;
 import com.exadel.discount.repository.DiscountRepository;
 import com.exadel.discount.repository.FavoriteRepository;
 import com.exadel.discount.repository.UserRepository;
+import com.exadel.discount.repository.query.QueryPredicateBuilder;
 import com.exadel.discount.service.FavoriteService;
 import com.exadel.discount.service.SortPageMaker;
+import com.querydsl.core.types.ExpressionUtils;
+import com.querydsl.core.types.Predicate;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -32,11 +35,11 @@ public class FavoriteServiceImpl implements FavoriteService {
     private final DiscountRepository discountRepository;
 
     @Override
-    public List<FavoriteDTO> findAllFavorites(int pageNumber, int pageSize, String sortDirection, String sortField) {
+    public List<FavoriteDTO> findAllFavorites(int pageNumber, int pageSize, String sortDirection, String sortField, FavoriteFilter filter) {
         Pageable paging = SortPageMaker.makePageable(pageNumber, pageSize, sortDirection, sortField);
         log.debug("Getting sorted page-list of all Favorites");
 
-        Page<Favorite> favoriteList = favoriteRepository.findAll(paging);
+        Page<Favorite> favoriteList = favoriteRepository.findAll(preparePredicateForFindingAll(filter), paging);
         if (favoriteList.isEmpty()) throw
                 new NotFoundException("No favorites are found");
 
@@ -91,21 +94,13 @@ public class FavoriteServiceImpl implements FavoriteService {
         favoriteRepository.deleteById(id);
         log.debug("Successfully Favorite is deleted  by ID");
     }
-
-    @Override
-    public List<FavoriteDTO> getFavoritesOfUser(int pageNumber,
-                                                int pageSize,
-                                                String sortDirection,
-                                                String sortField,
-                                                UUID userId){
-        Pageable paging = SortPageMaker.makePageable(pageNumber, pageSize, sortDirection, sortField);
-
-        log.debug("Finding Favorites of certain user");
-        List<Favorite> favoriteList = favoriteRepository.findByUserId(userId, paging).toList();
-        if (favoriteList.isEmpty()) throw
-                new NotFoundException(String.format("No Favorites are found at user with Id %s ", userId));
-        log.debug("Successfully sorted page-list of user's Favorites is got");
-
-        return favoriteMapper.toFavoriteDTOList(favoriteList);
+    private Predicate preparePredicateForFindingAll(FavoriteFilter favoritefilter) {
+        return ExpressionUtils.and(
+                QueryPredicateBuilder.init()
+                        .append(favoritefilter.getUserId(), QFavorite.favorite.user.id::eq)
+                        .buildOr(),
+                QueryPredicateBuilder.init()
+                        .append(favoritefilter.getUserId(), QFavorite.favorite.user.id::eq)
+                        .buildAnd());
     }
 }

@@ -1,10 +1,14 @@
 package com.exadel.discount.repository;
 
 import com.exadel.discount.entity.Coupon;
+import com.exadel.discount.entity.Favorite;
+import com.querydsl.core.types.Predicate;
+import liquibase.pro.packaged.C;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
@@ -13,7 +17,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Repository
-public interface CouponRepository extends JpaRepository<Coupon, UUID> {
+public interface CouponRepository extends JpaRepository<Coupon, UUID>, QuerydslPredicateExecutor<Coupon> {
     @EntityGraph(attributePaths = {"discount", "discount.category", "discount.vendorLocations", "discount.tags",
             "discount.vendor", "discount.vendorLocations.city", "discount.vendorLocations.city.country"})
     Optional<Coupon> findById(UUID userId);
@@ -24,11 +28,7 @@ public interface CouponRepository extends JpaRepository<Coupon, UUID> {
 
     @EntityGraph(attributePaths = {"discount", "discount.category", "discount.vendorLocations", "discount.tags",
             "discount.vendor", "discount.vendorLocations.city", "discount.vendorLocations.city.country"})
-    Page<Coupon> findByUserId(UUID userId, Pageable paging);
-
-    @EntityGraph(attributePaths = {"discount", "discount.category", "discount.vendorLocations", "discount.tags",
-            "discount.vendor", "discount.vendorLocations.city", "discount.vendorLocations.city.country"})
-    Page<Coupon> findCouponsByDateBetween(LocalDateTime startDate, LocalDateTime endDate, Pageable pageable);
+    Page<Coupon> findAll(Pageable paging, Predicate predicate);
 
     @EntityGraph(attributePaths = {"discount", "discount.category", "discount.vendorLocations", "discount.tags",
             "discount.vendor", "discount.vendorLocations.city", "discount.vendorLocations.city.country"})

@@ -1,17 +1,22 @@
 package com.exadel.discount.service.impl;
 
 import com.exadel.discount.dto.coupon.CouponDTO;
+import com.exadel.discount.dto.coupon.CouponFilter;
 import com.exadel.discount.dto.coupon.CreateCouponDTO;
 import com.exadel.discount.entity.Coupon;
 import com.exadel.discount.entity.Discount;
+import com.exadel.discount.entity.QCoupon;
 import com.exadel.discount.entity.User;
 import com.exadel.discount.exception.NotFoundException;
 import com.exadel.discount.mapper.CouponMapper;
 import com.exadel.discount.repository.CouponRepository;
 import com.exadel.discount.repository.DiscountRepository;
 import com.exadel.discount.repository.UserRepository;
+import com.exadel.discount.repository.query.QueryPredicateBuilder;
 import com.exadel.discount.service.CouponService;
 import com.exadel.discount.service.SortPageMaker;
+import com.querydsl.core.types.ExpressionUtils;
+import com.querydsl.core.types.Predicate;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
@@ -26,10 +31,9 @@ import java.util.UUID;
 @AllArgsConstructor
 @Slf4j
 public class CouponServiceImpl implements CouponService {
-
     private final CouponRepository couponRepository;
-    private final UserRepository userRepository;
     private final CouponMapper couponMapper;
+    private final UserRepository userRepository;
     private final DiscountRepository discountRepository;
 
     @Override
@@ -37,12 +41,12 @@ public class CouponServiceImpl implements CouponService {
                                           int pageSize,
                                           String sortDirection,
                                           String sortField,
-                                          LocalDateTime startDate,
-                                          LocalDateTime endDate) {
+                                          CouponFilter couponFilter) {
        Pageable paging = SortPageMaker.makePageable(pageNumber, pageSize, sortDirection, sortField);
         log.debug("Getting sorted page-list of all Coupons");
         List<Coupon> filteredCouponList = couponRepository
-                .findCouponsByDateBetween(startDate, endDate, paging).toList();
+                .findAll(paging, preparePredicateForFindingAll(couponFilter))
+                .toList();
         log.debug("Successfully sorted page-list of all Coupons is got");
         if (filteredCouponList.isEmpty()) {
             throw new NotFoundException(String.format("No Coupons %s are found", filteredCouponList));
@@ -60,28 +64,6 @@ public class CouponServiceImpl implements CouponService {
         return couponMapper.toCouponDTO(couponOptional.get());
     }
 
-    @Override
-    public CouponDTO assignCouponToUser(CreateCouponDTO createCouponDTO) {
-        log.debug("Finding of certain User and Discount by ID");
-        Optional<User> userOptional = userRepository.findById(createCouponDTO.getUserId());
-            if (userOptional.isEmpty()) throw new NotFoundException(String
-                    .format("User with id %s not found", createCouponDTO.getUserId()));
-        Optional<Discount> discountOptional = discountRepository.findById(createCouponDTO.getDiscountId());
-            if (discountOptional.isEmpty()) throw  new NotFoundException(String
-                        .format("Discount with id %s not found", createCouponDTO.getDiscountId()));
-
-        log.debug("Successfully certain User and Discount are found by ID. Starting Coupon creation/saving.");
-
-        Coupon coupon = new Coupon();
-        coupon.setDate(LocalDateTime.now());
-        coupon.setUser(userOptional.get());
-        coupon.setDiscount(discountOptional.get());
-        couponRepository.save(coupon);
-        log.debug("Successfully new Coupon is saved");
-
-        return couponMapper.toCouponDTO(coupon);
-    }
-
     public CouponDTO findCouponByDate(LocalDateTime date) {
         log.debug("Finding coupon by date");
 
@@ -94,19 +76,40 @@ public class CouponServiceImpl implements CouponService {
         return couponMapper.toCouponDTO(foundedCoupon);
     }
 
-    @Override
-    public List<CouponDTO> getCouponsOfUser(int pageNumber,
-                                            int pageSize,
-                                            String sortDirection,
-                                            String sortField,
-                                            UUID userId) {
-        Pageable paging = SortPageMaker.makePageable(pageNumber, pageSize, sortDirection, sortField);
-        log.debug("Getting sorted page-list Coupons of certain user");
-        List<Coupon> couponList = couponRepository.findByUserId(userId, paging).toList();
-        if (couponList.isEmpty()) throw new NotFoundException(String
-                .format("No Coupons are found at user with Id %s ", userId));
-        log.debug("Successfully sorted page-list of user's Coupons is got");
+        @Override
+        public CouponDTO assignCouponToUser(CreateCouponDTO createCouponDTO) {
+            log.debug("Finding of certain user by ID");
 
-        return couponMapper.toCouponDTOList(couponList);
+            User user = userRepository
+                    .findById(createCouponDTO.getUserId())
+                    .orElseThrow(() -> new NotFoundException(String
+                            .format("User with id %s not found", createCouponDTO.getUserId())));
+
+            Discount discount = discountRepository
+                    .findById(createCouponDTO.getDiscountId())
+                    .orElseThrow(() -> new NotFoundException(String
+                            .format("Discount with id %s not found", createCouponDTO.getDiscountId())));
+
+            log.debug("Successfully certain User and Discount are found by ID. Starting coupon creation/saving.");
+
+            Coupon coupon = new Coupon();
+            coupon.setUser(user);
+            coupon.setDiscount(discount);
+
+            couponRepository.save(coupon);
+            log.debug("Successfully new coupon is saved to certain user");
+
+            return couponMapper.toCouponDTO(coupon);
+        }
+
+    private Predicate preparePredicateForFindingAll(CouponFilter couponfilter) {
+        return ExpressionUtils.and(
+                QueryPredicateBuilder.init()
+                        .append(couponfilter.getStartDate(), QCoupon.coupon.date::goe)
+                        .append(couponfilter.getEndDate(), QCoupon.coupon.date::loe)
+                        .buildOr(),
+                QueryPredicateBuilder.init()
+                        .append(couponfilter.getUserId(), QCoupon.coupon.user.id::eq)
+                        .buildAnd());
     }
 }

@@ -26,4 +26,7 @@ public interface UserRepository extends JpaRepository<User, UUID>, QuerydslPredi
 
     @EntityGraph(attributePaths = {"city", "city.country"})
     List<User> findDistinctByLastNameAndFirstName(String lastName, String firstName);
+
+    @EntityGraph(attributePaths = {"city", "city.country"})
+    List<User> findAll();
 }
