@@ -1,8 +1,10 @@
 package com.exadel.discount.exception;
 
+import com.exadel.discount.exception.custom_exception.APIException;
 import com.exadel.discount.exception.custom_exception.DeletionRestrictedException;
 import com.exadel.discount.exception.custom_exception.InvalidTokenException;
 import com.exadel.discount.exception.custom_exception.NotFoundException;
+import com.exadel.discount.exception.type.ExceptionCause;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.AccessDeniedException;
@@ -18,13 +20,6 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.exadel.discount.exception.type.ExceptionCause.NOT_FOUND_VALUE;
-import static com.exadel.discount.exception.type.ExceptionCause.INCORRECT_VALUE;
-import static com.exadel.discount.exception.type.ExceptionCause.AUTHENTICATION_FAILED;
-import static com.exadel.discount.exception.type.ExceptionCause.ACCESS_DENIED;
-import static com.exadel.discount.exception.type.ExceptionCause.DELETION_DENIED;
-import static com.exadel.discount.exception.type.ExceptionCause.UNCAUGHT_EXCEPTION;
-
 @ControllerAdvice
 @Slf4j
 public class GlobalExceptionHandler {
@@ -32,12 +27,12 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(NotFoundException.class)
     @ResponseBody
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public ExceptionDetails handleNotFoundValue(Exception exception) {
+    public ExceptionDetails handleNotFoundValue(APIException exception) {
         log.error("Exception stack trace: ", exception);
 
         return ExceptionDetails.builder()
                 .message(exception.getMessage())
-                .cause(NOT_FOUND_VALUE)
+                .cause(ExceptionCause.NOT_FOUND_VALUE)
                 .build();
     }
 
@@ -52,7 +47,7 @@ public class GlobalExceptionHandler {
                 .map(error ->
                         ExceptionDetails.builder()
                                 .message(error.getDefaultMessage())
-                                .cause(INCORRECT_VALUE)
+                                .cause(ExceptionCause.INCORRECT_VALUE)
                                 .field(error.getField())
                                 .build())
                 .collect(Collectors.toList());
@@ -65,36 +60,36 @@ public class GlobalExceptionHandler {
     @ExceptionHandler({InternalAuthenticationServiceException.class, BadCredentialsException.class})
     @ResponseBody
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
-    public ExceptionDetails handleIncorrectAuthentication(Exception exception) {
+    public ExceptionDetails handleIncorrectAuthentication(APIException exception) {
         log.error("Exception stack trace: ", exception);
 
         return ExceptionDetails.builder()
                 .message(exception.getMessage())
-                .cause(AUTHENTICATION_FAILED)
+                .cause(ExceptionCause.AUTHENTICATION_FAILED)
                 .build();
     }
 
     @ExceptionHandler({AccessDeniedException.class, InvalidTokenException.class})
     @ResponseBody
     @ResponseStatus(HttpStatus.FORBIDDEN)
-    public ExceptionDetails handleIncorrectEndpointAccessRights(Exception exception) {
+    public ExceptionDetails handleIncorrectEndpointAccessRights(APIException exception) {
         log.error("Exception stack trace: ", exception);
 
         return ExceptionDetails.builder()
                 .message(exception.getMessage())
-                .cause(ACCESS_DENIED)
+                .cause(ExceptionCause.ACCESS_DENIED)
                 .build();
     }
 
     @ExceptionHandler(DeletionRestrictedException.class)
     @ResponseBody
     @ResponseStatus(HttpStatus.PRECONDITION_FAILED)
-    public ExceptionDetails handleIncorrectDataDeletion(Exception exception) {
+    public ExceptionDetails handleIncorrectDataDeletion(APIException exception) {
         log.error("Exception stack trace: ", exception);
 
         return ExceptionDetails.builder()
                 .message(exception.getMessage())
-                .cause(DELETION_DENIED)
+                .cause(ExceptionCause.DELETION_DENIED)
                 .build();
     }
 
@@ -106,7 +101,7 @@ public class GlobalExceptionHandler {
 
         return ExceptionDetails.builder()
                 .message(exception.getMessage())
-                .cause(UNCAUGHT_EXCEPTION)
+                .cause(ExceptionCause.UNCAUGHT_EXCEPTION)
                 .build();
     }
 }
