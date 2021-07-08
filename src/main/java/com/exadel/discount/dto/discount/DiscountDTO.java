@@ -31,5 +31,7 @@ public class DiscountDTO {
 
     {
         images.add("https://cdn.pixabay.com/photo/2015/04/19/08/32/marguerite-729510_960_720.jpg");
+        images.add("https://cdn.pixabay.com/photo/2013/07/02/22/20/bouquet-142876_960_720.jpg");
+        images.add("https://cdn.pixabay.com/photo/2013/07/30/12/25/bouquet-168831_960_720.jpg");
     }
 }
