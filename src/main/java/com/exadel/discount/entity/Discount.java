@@ -5,17 +5,21 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Type;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
+import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.persistence.Id;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Column;
+import javax.persistence.ManyToOne;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
+import javax.persistence.Enumerated;
+import javax.persistence.EnumType;
+import javax.persistence.JoinTable;
+
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Set;
@@ -49,8 +53,10 @@ public class Discount {
     @Column(name = "promo", length = 50, nullable = false)
     private String promo;
 
-    @Column(name = "price")
-    private BigDecimal price;
+    @Enumerated(EnumType.STRING)
+    @Column(columnDefinition = "discountType", nullable = false)
+    @Type(type = "discount_type")
+    private BigDecimal discountType;
 
     @Column(name = "start_time")
     private LocalDateTime startTime;
