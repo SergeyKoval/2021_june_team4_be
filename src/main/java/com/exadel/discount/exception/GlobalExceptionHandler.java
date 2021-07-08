@@ -18,7 +18,12 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.exadel.discount.exception.type.ExceptionCause.*;
+import static com.exadel.discount.exception.type.ExceptionCause.NOT_FOUND_VALUE;
+import static com.exadel.discount.exception.type.ExceptionCause.INCORRECT_VALUE;
+import static com.exadel.discount.exception.type.ExceptionCause.AUTHENTICATION_FAILED;
+import static com.exadel.discount.exception.type.ExceptionCause.ACCESS_DENIED;
+import static com.exadel.discount.exception.type.ExceptionCause.DELETION_DENIED;
+import static com.exadel.discount.exception.type.ExceptionCause.UNCAUGHT_EXCEPTION;
 
 @ControllerAdvice
 @Slf4j
@@ -32,7 +37,7 @@ public class GlobalExceptionHandler {
 
         return ExceptionDetails.builder()
                 .message(exception.getMessage())
-                .cause(NOT_FOUND)
+                .cause(NOT_FOUND_VALUE)
                 .build();
     }
 
@@ -47,7 +52,7 @@ public class GlobalExceptionHandler {
                 .map(error ->
                         ExceptionDetails.builder()
                                 .message(error.getDefaultMessage())
-                                .cause(FILED_INCORRECT)
+                                .cause(INCORRECT_VALUE)
                                 .field(error.getField())
                                 .build())
                 .collect(Collectors.toList());
@@ -89,7 +94,7 @@ public class GlobalExceptionHandler {
 
         return ExceptionDetails.builder()
                 .message(exception.getMessage())
-                .cause(DELETION_RESTRICTED)
+                .cause(DELETION_DENIED)
                 .build();
     }
 

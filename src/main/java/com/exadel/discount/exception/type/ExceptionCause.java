@@ -1,10 +1,13 @@
 package com.exadel.discount.exception.type;
 
 public enum ExceptionCause {
-    ACCESS_DENIED,
     AUTHENTICATION_FAILED,
-    FILED_INCORRECT,
-    DELETION_RESTRICTED,
-    NOT_FOUND,
+
+    ACCESS_DENIED,
+    DELETION_DENIED,
+
+    INCORRECT_VALUE,
+    NOT_FOUND_VALUE,
+
     UNCAUGHT_EXCEPTION
 }
