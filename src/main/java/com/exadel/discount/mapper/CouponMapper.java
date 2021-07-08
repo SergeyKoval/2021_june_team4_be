@@ -3,12 +3,22 @@ package com.exadel.discount.mapper;
 import com.exadel.discount.dto.coupon.CouponDTO;
 import com.exadel.discount.entity.Coupon;
 import org.mapstruct.Mapper;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
-@Mapper(componentModel = "spring", uses = {DiscountMapper.class})
-public interface CouponMapper{
-    CouponDTO toCouponDTO(Coupon coupon);
+@Mapper(componentModel = "spring")
+public abstract class CouponMapper {
 
-    List<CouponDTO> toCouponDTOList(List<Coupon> coupons);
+    @Autowired
+    DiscountMapper discountMapper;
+
+    public CouponDTO toCouponDTO(Coupon coupon){
+        CouponDTO couponDTO = new CouponDTO();
+        couponDTO.setDate(coupon.getDate());
+        couponDTO.setId(coupon.getId());
+        couponDTO.setDiscountDTO(discountMapper.getDTO(coupon.getDiscount()));
+        return couponDTO;
+    }
+    public abstract List<CouponDTO> toCouponDTOList(List<Coupon> coupons);
 }
