@@ -1,6 +1,5 @@
 package com.exadel.discount.dto.coupon;
 
-import com.exadel.discount.dto.discount.DiscountDTO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

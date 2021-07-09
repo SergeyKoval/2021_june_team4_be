@@ -8,6 +8,7 @@ import java.util.List;
 
 @Mapper(componentModel = "spring", uses = {DiscountMapper.class})
 public interface CouponMapper{
+
     CouponDTO toCouponDTO(Coupon coupon);
 
     List<CouponDTO> toCouponDTOList(List<Coupon> coupons);
