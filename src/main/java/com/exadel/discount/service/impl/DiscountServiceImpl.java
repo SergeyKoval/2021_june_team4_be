@@ -159,8 +159,6 @@ public class DiscountServiceImpl implements DiscountService {
                         .buildOr(),
                 QueryPredicateBuilder.init()
                         .append(filter.getArchived(), QDiscount.discount.archived::eq)
-                        .append(filter.getPriceFrom(), QDiscount.discount.value::goe)
-                        .append(filter.getPriceTo(), QDiscount.discount.value::loe)
                         .append(filter.getEndDateFrom(), QDiscount.discount.endTime::goe)
                         .append(filter.getEndDateTo(), QDiscount.discount.endTime::loe)
                         .append(filter.getCategoryIds(), QDiscount.discount.category.id::in)

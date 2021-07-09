@@ -27,7 +27,6 @@ public class CreateDiscountDTO {
     @NotBlank(message = "Type of discount  should be not blank")
     private DiscountType discountType;
     @Min(value = 1, message = "Discount value should be more than {min}")
-    @Max(value = 100, message = "Discount value should be more less than {max}")
     private BigDecimal value;
     private LocalDateTime startTime;
     private LocalDateTime endTime;

@@ -22,7 +22,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
@@ -52,9 +51,7 @@ public class DiscountController {
                                                      LocalDateTime endDateTimeFrom,
                                              @RequestParam(required = false)
                                              @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
-                                                     LocalDateTime endDateTimeTo,
-                                             @RequestParam(required = false) BigDecimal priceFrom,
-                                             @RequestParam(required = false) BigDecimal priceTo) {
+                                                     LocalDateTime endDateTimeTo) {
         DiscountFilter filter = DiscountFilter.builder()
                 .vendorIds(vendorId)
                 .categoryIds(categoryId)
@@ -63,8 +60,6 @@ public class DiscountController {
                 .tagIds(tagId)
                 .endDateFrom(endDateTimeFrom)
                 .endDateTo(endDateTimeTo)
-                .priceFrom(priceFrom)
-                .priceTo(priceTo)
                 .archived(false)
                 .build();
         return discountService.getAll(sortBy, sortDirection, page, size, filter);
@@ -109,9 +104,7 @@ public class DiscountController {
                                                              LocalDateTime endDateTimeFrom,
                                                      @RequestParam(required = false)
                                                      @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
-                                                             LocalDateTime endDateTimeTo,
-                                                     @RequestParam(required = false) BigDecimal priceFrom,
-                                                     @RequestParam(required = false) BigDecimal priceTo) {
+                                                             LocalDateTime endDateTimeTo) {
         DiscountFilter filter = DiscountFilter.builder()
                 .vendorIds(vendorId)
                 .categoryIds(categoryId)
@@ -120,8 +113,6 @@ public class DiscountController {
                 .tagIds(tagId)
                 .endDateFrom(endDateTimeFrom)
                 .endDateTo(endDateTimeTo)
-                .priceFrom(priceFrom)
-                .priceTo(priceTo)
                 .archived(true)
                 .build();
         return discountService.getAll(sortBy, sortDirection, page, size, filter);
