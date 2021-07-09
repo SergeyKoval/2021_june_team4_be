@@ -1,11 +1,13 @@
 package com.exadel.discount.entity;
 
+import com.exadel.discount.entity.type.EnumPostgresSQLType;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
+import org.hibernate.annotations.TypeDef;
 
 import javax.persistence.FetchType;
 import javax.persistence.Entity;
@@ -31,6 +33,10 @@ import java.util.UUID;
 @Table(name = "discounts")
 @EqualsAndHashCode(exclude = {"tags", "vendorLocations"})
 @ToString(exclude = {"tags", "vendorLocations"})
+@TypeDef(
+        name = "discount_type",
+        typeClass = EnumPostgresSQLType.class
+)
 public class Discount {
     @Id
     @GeneratedValue(generator = "UUID")
