@@ -45,12 +45,12 @@ public class UserServiceImpl implements UserService {
                                       int pageSize,
                                       String sortDirection,
                                       String sortField,
-                                      UserFilter filter) {
+                                      UserFilter userFilter) {
         Pageable paging = SortPageMaker.makePageable(pageNumber, pageSize, sortDirection, sortField);
 
         log.debug("Getting sorted page-list of  Users");
 
-        Page<User> userList = userRepository.findAll(preparePredicateForFindingAll(filter), paging);
+        Page<User> userList = userRepository.findAll(preparePredicateForFindingAllUsers(userFilter), paging);
         log.debug("Successfully sorted page-list of Users is got without filtering");
 
         return userMapper.toUserDTOList(userList.toList());
@@ -68,7 +68,7 @@ public class UserServiceImpl implements UserService {
         return userMapper.toUserDTOList(suchNameUserList);
     }
 
-    private Predicate preparePredicateForFindingAll(UserFilter userfilter) {
+    private Predicate preparePredicateForFindingAllUsers(UserFilter userfilter) {
         return ExpressionUtils.and(
                 QueryPredicateBuilder.init()
                         .append(userfilter.getCityName(), QUser.user.city.name::eq)

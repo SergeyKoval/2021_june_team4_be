@@ -45,7 +45,7 @@ public class CouponServiceImpl implements CouponService {
        Pageable paging = SortPageMaker.makePageable(pageNumber, pageSize, sortDirection, sortField);
         log.debug("Getting sorted page-list of all Coupons");
         List<Coupon> filteredCouponList = couponRepository
-                .findAll(paging, preparePredicateForFindingAll(couponFilter))
+                .findAll(preparePredicateForFindingAllCoupons(couponFilter), paging)
                 .toList();
         log.debug("Successfully sorted page-list of all Coupons is got");
         if (filteredCouponList.isEmpty()) {
@@ -102,7 +102,7 @@ public class CouponServiceImpl implements CouponService {
             return couponMapper.toCouponDTO(coupon);
         }
 
-    private Predicate preparePredicateForFindingAll(CouponFilter couponfilter) {
+    private Predicate preparePredicateForFindingAllCoupons(CouponFilter couponfilter) {
         return ExpressionUtils.and(
                 QueryPredicateBuilder.init()
                         .append(couponfilter.getCountryIds(), QCoupon.coupon.discount.vendorLocations.any().city.country.id::in)

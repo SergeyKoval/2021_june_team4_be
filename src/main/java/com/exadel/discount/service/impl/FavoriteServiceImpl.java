@@ -41,11 +41,11 @@ public class FavoriteServiceImpl implements FavoriteService {
                                               int pageSize,
                                               String sortDirection,
                                               String sortField,
-                                              FavoriteFilter filter) {
+                                              FavoriteFilter favoriteFilter) {
         Pageable paging = SortPageMaker.makePageable(pageNumber, pageSize, sortDirection, sortField);
         log.debug("Getting sorted page-list of all Favorites");
 
-        Page<Favorite> favoriteList = favoriteRepository.findAll(preparePredicateForFindingAll(filter), paging);
+        Page<Favorite> favoriteList = favoriteRepository.findAll(preparePredicateForFindingAllFavorites(favoriteFilter), paging);
         if (favoriteList.isEmpty()) throw
                 new NotFoundException("No favorites are found");
 
@@ -100,7 +100,7 @@ public class FavoriteServiceImpl implements FavoriteService {
         favoriteRepository.deleteById(id);
         log.debug("Successfully Favorite is deleted  by ID");
     }
-    private Predicate preparePredicateForFindingAll(FavoriteFilter favoritefilter) {
+    private Predicate preparePredicateForFindingAllFavorites(FavoriteFilter favoritefilter) {
         return ExpressionUtils.and(
                 QueryPredicateBuilder.init()
                         .append(favoritefilter.getCountryIds(), QFavorite.favorite.discount.vendorLocations.any()

@@ -8,7 +8,8 @@ import java.util.List;
 
 @Mapper(componentModel = "spring", uses = {DiscountMapper.class})
 public interface FavoriteMapper{
-    FavoriteDTO toFavoriteDTO(Favorite favorite);
 
-    List<FavoriteDTO> toFavoriteDTOList(List<Favorite> favorites);
+    FavoriteDTO toFavoriteDTO (Favorite favorite);
+
+    List<FavoriteDTO> toFavoriteDTOList (List<Favorite> favorites);
 }

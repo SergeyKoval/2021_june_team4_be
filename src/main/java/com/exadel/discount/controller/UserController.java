@@ -30,15 +30,15 @@ public class UserController {
                                      @RequestParam(name = "pageSize", defaultValue = "10", required = false) int pageSize,
                                      @RequestParam(name = "sortDirection", defaultValue = "", required = false) String sortDirection,
                                      @RequestParam(name = "sortField", defaultValue = "id", required = false) String sortBy,
-                                     @RequestParam(name = "roleFilter", required = false) String roleFilter,
+                                     @RequestParam(name = "role", required = false) String role,
                                      @RequestParam(name = "cityName", required = false) String cityName,
-                                     @RequestParam(name = "countryFilter", required = false) String countryName,
+                                     @RequestParam(name = "countryName", required = false) String countryName,
                                      @RequestParam(name = "firstName", required = false) String firstName,
                                      @RequestParam(name = "lastName", required = false) String lastName) {
         UserFilter filter = UserFilter.builder()
                 .firstName(firstName)
                 .lastName(lastName)
-                .roleFilter(roleFilter)
+                .roleFilter(role)
                 .cityName(cityName)
                 .countryName(countryName)
                 .build();
