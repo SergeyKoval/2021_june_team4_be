@@ -72,11 +72,11 @@ public class UserServiceImpl implements UserService {
                 QueryPredicateBuilder.init()
                         .append(userFilter.getCityName(), QUser.user.city.name::eq)
                         .append(userFilter.getCountryName(), QUser.user.city.country.name::eq)
+                        .append(userFilter.getRole(), QUser.user.role::eq)
                         .buildOr(),
                 QueryPredicateBuilder.init()
-                        .append(userFilter.getFirstName(), QUser.user.firstName::eq)
-                        .append(userFilter.getLastName(), QUser.user.lastName::eq)
-                        .append(userFilter.getRole(), QUser.user.role::eq)
+                        .append(userFilter.getFirstName(), QUser.user.firstName::containsIgnoreCase)
+                        .append(userFilter.getLastName(), QUser.user.lastName::containsIgnoreCase)
                         .buildAnd());
     }
 }
