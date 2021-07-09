@@ -11,4 +11,6 @@ public class CreateLocationDTO {
     private Double longitude;
     @NotNull(message = "Vendor ID should be not null")
     private UUID vendorId;
+    @NotNull(message = "City ID should be not null")
+    private UUID cityId;
 }
