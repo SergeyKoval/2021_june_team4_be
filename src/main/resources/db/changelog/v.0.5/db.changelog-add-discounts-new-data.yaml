@@ -1,0 +1,19 @@
+databaseChangeLog:
+  - changeSet:
+      id: add-new-disconts-data
+      author: Anton Rud
+      dbms: postgresql
+      sql: CREATE TYPE DISCOUNT_TYPE as ENUM ('PERCENT', 'PRICE');
+  - changeSet:
+      id: add-column
+      author: Anton Rud
+      changes:
+        - addColumn:
+            tableName: discounts
+            columns:
+              - column:
+                  name: discount_type
+                  type: DISCOUNT_TYPE
+                  defaultValue: PRICE
+                  constraints:
+                    nullable: false

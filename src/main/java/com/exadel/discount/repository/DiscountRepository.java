@@ -1,10 +1,13 @@
 package com.exadel.discount.repository;
 
 import com.exadel.discount.entity.Discount;
+import com.querydsl.core.types.Predicate;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
@@ -13,18 +16,22 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Repository
-public interface DiscountRepository extends JpaRepository<Discount, UUID> {
+public interface DiscountRepository extends JpaRepository<Discount, UUID>, QuerydslPredicateExecutor<Discount> {
 
-    @EntityGraph(attributePaths = {"category", "vendorLocations", "tags", "vendor"})
+    @EntityGraph(attributePaths = {"category", "vendorLocations", "tags", "vendor",
+            "vendorLocations.city", "vendorLocations.city.country"})
     List<Discount> findAll();
 
-    @EntityGraph(attributePaths = {"category", "vendorLocations", "tags", "vendor"})
+    @EntityGraph(attributePaths = {"category", "vendorLocations", "tags", "vendor",
+            "vendorLocations.city", "vendorLocations.city.country"})
     Optional<Discount> findById(UUID id);
 
-    @EntityGraph(attributePaths = {"category", "vendorLocations", "tags", "vendor"})
-    List<Discount> findAllByArchived(boolean archived);
+    @EntityGraph(attributePaths = {"category", "vendorLocations", "tags", "vendor",
+            "vendorLocations.city", "vendorLocations.city.country"})
+    List<Discount> findAll(Predicate predicate, Sort sort);
 
-    @EntityGraph(attributePaths = {"category", "vendorLocations", "tags", "vendor"})
+    @EntityGraph(attributePaths = {"category", "vendorLocations", "tags", "vendor",
+            "vendorLocations.city", "vendorLocations.city.country"})
     Optional<Discount> findByIdAndArchived(UUID id, boolean archived);
 
     @Modifying

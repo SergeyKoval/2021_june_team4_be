@@ -2,8 +2,10 @@ package com.exadel.discount.service.impl;
 
 import com.exadel.discount.dto.discount.CreateDiscountDTO;
 import com.exadel.discount.dto.discount.DiscountDTO;
+import com.exadel.discount.dto.discount.DiscountFilter;
 import com.exadel.discount.entity.Category;
 import com.exadel.discount.entity.Discount;
+import com.exadel.discount.entity.QDiscount;
 import com.exadel.discount.entity.Tag;
 import com.exadel.discount.entity.Vendor;
 import com.exadel.discount.entity.VendorLocation;
@@ -15,8 +17,15 @@ import com.exadel.discount.repository.TagRepository;
 import com.exadel.discount.repository.VendorLocationRepository;
 import com.exadel.discount.repository.VendorRepository;
 import com.exadel.discount.service.DiscountService;
+import com.exadel.discount.repository.query.QueryPredicateBuilder;
+import com.querydsl.core.types.ExpressionUtils;
+import com.querydsl.core.types.Predicate;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -64,11 +73,16 @@ public class DiscountServiceImpl implements DiscountService {
     }
 
     @Override
-    public List<DiscountDTO> getAll() {
-        log.debug("Getting list of all Discounts");
-        List<DiscountDTO> discountDTOS = discountMapper.getListDTO(discountRepository.findAllByArchived(false));
-        log.debug("Successfully got list of all Discounts");
-        return discountDTOS;
+    public List<DiscountDTO> getAll(String sortBy, String sortDir, Integer page, Integer size, DiscountFilter filter) {
+        Sort sort = "desc".equalsIgnoreCase(sortDir) ?
+                Sort.by(sortBy).descending() :
+                Sort.by(sortBy);
+        log.debug("Getting list of all Discounts by filter");
+        List<Discount> discounts = discountRepository.findAll(preparePredicateForFindingAll(filter), sort);
+        Page<Discount> discountPage = PageableExecutionUtils
+                .getPage(discounts, PageRequest.of(page, size), () -> discounts.size());
+        log.debug("Successfully got list of all Discounts by filter");
+        return discountMapper.getListDTO(discountPage.getContent());
     }
 
     @Override
@@ -80,14 +94,6 @@ public class DiscountServiceImpl implements DiscountService {
         }
         discountRepository.setArchivedById(id, true);
         log.debug(String.format("Successfully deleted Discount with ID %s", id));
-    }
-
-    @Override
-    public List<DiscountDTO> getAllArchived() {
-        log.debug("Getting list of all archived Discounts");
-        List<DiscountDTO> discountDTOS = discountMapper.getListDTO(discountRepository.findAllByArchived(true));
-        log.debug("Successfully got list of all archived Discounts");
-        return discountDTOS;
     }
 
     @Override
@@ -143,5 +149,21 @@ public class DiscountServiceImpl implements DiscountService {
         return vendorRepository
                 .findByIdAndArchived(vendorId, false)
                 .orElseThrow(() -> new NotFoundException(String.format("Vendor with ID %s doesn't exist", vendorId)));
+    }
+
+    private Predicate preparePredicateForFindingAll(DiscountFilter filter) {
+        return ExpressionUtils.and(
+                QueryPredicateBuilder.init()
+                        .append(filter.getCountryIds(), QDiscount.discount.vendorLocations.any().city.country.id::in)
+                        .append(filter.getCityIds(), QDiscount.discount.vendorLocations.any().city.id::in)
+                        .buildOr(),
+                QueryPredicateBuilder.init()
+                        .append(filter.getArchived(), QDiscount.discount.archived::eq)
+                        .append(filter.getEndDateFrom(), QDiscount.discount.endTime::goe)
+                        .append(filter.getEndDateTo(), QDiscount.discount.endTime::loe)
+                        .append(filter.getCategoryIds(), QDiscount.discount.category.id::in)
+                        .append(filter.getTagIds(), QDiscount.discount.tags.any().id::in)
+                        .append(filter.getVendorIds(), QDiscount.discount.vendor.id::in)
+                        .buildAnd());
     }
 }
