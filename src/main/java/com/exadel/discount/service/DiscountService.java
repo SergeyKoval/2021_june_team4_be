@@ -19,5 +19,5 @@ public interface DiscountService {
 
     DiscountDTO restoreById(UUID id);
 
-    List<DiscountDTO> getAll(String sortBy, String sortDir, Integer page, Integer size, String search);
+    List<DiscountDTO> search(Integer size, String searchText);
 }

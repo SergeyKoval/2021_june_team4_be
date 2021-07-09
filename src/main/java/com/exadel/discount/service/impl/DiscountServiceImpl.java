@@ -114,15 +114,13 @@ public class DiscountServiceImpl implements DiscountService {
     }
 
     @Override
-    public List<DiscountDTO> getAll(String sortBy, String sortDir, Integer page, Integer size, String search) {
-        Sort sort = "desc".equalsIgnoreCase(sortDir) ?
-                Sort.by(sortBy).descending() :
-                Sort.by(sortBy);
-        log.debug("Getting list of all Discounts by search");
-        List<Discount> discounts = discountRepository.findAll(prepareSearchPredicate(search), sort);
+    public List<DiscountDTO> search(Integer size, String searchText) {
+        log.debug("Getting list of all Discounts by searchText");
+        List<Discount> discounts = discountRepository
+                .findAll(prepareSearchPredicate(searchText), Sort.by("viewNumber"));
         Page<Discount> discountPage = PageableExecutionUtils
-                .getPage(discounts, PageRequest.of(page, size), () -> discounts.size());
-        log.debug("Successfully got list of all Discounts by search");
+                .getPage(discounts, PageRequest.of(0, size), () -> discounts.size());
+        log.debug("Successfully got list of all Discounts by searchText");
         return discountMapper.getListDTO(discountPage.getContent());
     }
 
@@ -183,10 +181,10 @@ public class DiscountServiceImpl implements DiscountService {
                         .buildAnd());
     }
 
-    private Predicate prepareSearchPredicate(String search) {
-        List<Predicate> words = Pattern
+    private Predicate prepareSearchPredicate(String searchText) {
+        List<Predicate> searchPredicates = Pattern
                 .compile(" ")
-                .splitAsStream(search)
+                .splitAsStream(searchText)
                 .filter(word -> word.length() >= 3)
                 .map(word -> QueryPredicateBuilder.init()
                         .append(word, QDiscount.discount.name::containsIgnoreCase)
@@ -196,6 +194,6 @@ public class DiscountServiceImpl implements DiscountService {
                         .append(word, QDiscount.discount.tags.any().name::containsIgnoreCase)
                         .buildOr())
                 .collect(Collectors.toList());
-        return ExpressionUtils.allOf(words);
+        return ExpressionUtils.allOf(searchPredicates);
     }
 }
