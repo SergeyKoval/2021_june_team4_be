@@ -24,6 +24,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.stereotype.Service;
@@ -117,11 +118,12 @@ public class DiscountServiceImpl implements DiscountService {
     public List<DiscountDTO> search(Integer size, String searchText) {
         log.debug("Getting list of all Discounts by searchText");
         List<Discount> discounts = discountRepository
-                .findAll(prepareSearchPredicate(searchText), Sort.by("viewNumber"));
-        Page<Discount> discountPage = PageableExecutionUtils
-                .getPage(discounts, PageRequest.of(0, size), () -> discounts.size());
+                .findAll(prepareSearchPredicate(searchText),
+                        PageRequest.of(0, size, Sort.by("viewNumber"))).getContent();
+//        Page<Discount> discountPage = PageableExecutionUtils
+//                .getPage(discounts, PageRequest.of(0, size), () -> discounts.size());
         log.debug("Successfully got list of all Discounts by searchText");
-        return discountMapper.getListDTO(discountPage.getContent());
+        return discountMapper.getListDTO(discounts);
     }
 
     private Set<Tag> findTags(Set<UUID> tagIds) {
