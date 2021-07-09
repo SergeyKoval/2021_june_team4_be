@@ -3,6 +3,7 @@ package com.exadel.discount.controller;
 import com.exadel.discount.dto.discount.DiscountFilter;
 import com.exadel.discount.dto.user.UserDTO;
 import com.exadel.discount.dto.user.UserFilter;
+import com.exadel.discount.entity.Role;
 import com.exadel.discount.security.annotation.AdminAccess;
 import com.exadel.discount.service.UserService;
 import io.swagger.annotations.ApiOperation;
@@ -26,11 +27,11 @@ public class UserController {
 
     @GetMapping
     @ApiOperation("Get sorted page-list of all users without filtering")
-    public List<UserDTO> getallUsers(@RequestParam(name = "pageNumber", defaultValue = "1", required = false) int pageNumber,
-                                     @RequestParam(name = "pageSize", defaultValue = "10", required = false) int pageSize,
-                                     @RequestParam(name = "sortDirection", defaultValue = "", required = false) String sortDirection,
-                                     @RequestParam(name = "sortField", defaultValue = "id", required = false) String sortBy,
-                                     @RequestParam(name = "role", required = false) String role,
+    public List<UserDTO> getAllUsers(@RequestParam(name = "pageNumber", defaultValue = "1") int pageNumber,
+                                     @RequestParam(name = "pageSize", defaultValue = "10") int pageSize,
+                                     @RequestParam(name = "sortDirection", defaultValue = "") String sortDirection,
+                                     @RequestParam(name = "sortField", defaultValue = "id") String sortBy,
+                                     @RequestParam(name = "role", defaultValue = "USER", required = false) String role,
                                      @RequestParam(name = "cityName", required = false) String cityName,
                                      @RequestParam(name = "countryName", required = false) String countryName,
                                      @RequestParam(name = "firstName", required = false) String firstName,
@@ -38,7 +39,7 @@ public class UserController {
         UserFilter filter = UserFilter.builder()
                 .firstName(firstName)
                 .lastName(lastName)
-                .roleFilter(role)
+                .role(Role.valueOf(role.toUpperCase()))
                 .cityName(cityName)
                 .countryName(countryName)
                 .build();

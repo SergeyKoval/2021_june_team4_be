@@ -22,6 +22,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -44,13 +45,12 @@ public class FavoriteServiceImpl implements FavoriteService {
                                               FavoriteFilter favoriteFilter) {
         Pageable paging = SortPageMaker.makePageable(pageNumber, pageSize, sortDirection, sortField);
         log.debug("Getting sorted page-list of all Favorites");
-
-        Page<Favorite> favoriteList = favoriteRepository.findAll(preparePredicateForFindingAllFavorites(favoriteFilter), paging);
+        Page<Favorite> favoriteList = favoriteRepository
+                .findAll(preparePredicateForFindingAllFavorites(favoriteFilter), paging);
         if (favoriteList.isEmpty()) throw
                 new NotFoundException("No favorites are found");
 
         log.debug("Successfully got sorted page-list of all Favorites");
-
         return favoriteMapper.toFavoriteDTOList(favoriteList.toList());
     }
 
@@ -64,10 +64,10 @@ public class FavoriteServiceImpl implements FavoriteService {
         return favoriteMapper.toFavoriteDTO(favoriteOptional.get());
     }
 
+    @Transactional
     @Override
     public FavoriteDTO assignFavoriteToUser(CreateFavoriteDTO createFavoriteDTO) {
         log.debug("Finding of certain user by ID");
-
         User user = userRepository
                 .findById(createFavoriteDTO.getUserId())
                 .orElseThrow(() -> new NotFoundException(String
@@ -77,7 +77,6 @@ public class FavoriteServiceImpl implements FavoriteService {
                 .findById(createFavoriteDTO.getDiscountId())
                 .orElseThrow(() -> new NotFoundException(String
                         .format("Discount with id %s not found", createFavoriteDTO.getDiscountId())));
-
         log.debug("Successfully certain User and Discount are found by ID. Starting Favorite creation/saving.");
 
         Favorite favorite = new Favorite();
@@ -90,6 +89,7 @@ public class FavoriteServiceImpl implements FavoriteService {
         return favoriteMapper.toFavoriteDTO(favorite);
     }
 
+    @Transactional
     @Override
     public void deleteFavoriteByID(UUID id) {
         log.debug("Finding & deleting Favorite by ID");
@@ -100,6 +100,7 @@ public class FavoriteServiceImpl implements FavoriteService {
         favoriteRepository.deleteById(id);
         log.debug("Successfully Favorite is deleted  by ID");
     }
+
     private Predicate preparePredicateForFindingAllFavorites(FavoriteFilter favoritefilter) {
         return ExpressionUtils.and(
                 QueryPredicateBuilder.init()

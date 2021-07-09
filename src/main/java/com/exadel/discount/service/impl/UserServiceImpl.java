@@ -19,7 +19,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Locale;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -68,16 +67,16 @@ public class UserServiceImpl implements UserService {
         return userMapper.toUserDTOList(suchNameUserList);
     }
 
-    private Predicate preparePredicateForFindingAllUsers(UserFilter userfilter) {
+    private Predicate preparePredicateForFindingAllUsers(UserFilter userFilter) {
         return ExpressionUtils.and(
                 QueryPredicateBuilder.init()
-                        .append(userfilter.getCityName(), QUser.user.city.name::eq)
-                        .append(userfilter.getCountryName(), QUser.user.city.country.name::eq)
+                        .append(userFilter.getCityName(), QUser.user.city.name::eq)
+                        .append(userFilter.getCountryName(), QUser.user.city.country.name::eq)
                         .buildOr(),
                 QueryPredicateBuilder.init()
-                        .append(userfilter.getFirstName(), QUser.user.firstName::eq)
-                        .append(userfilter.getLastName(), QUser.user.lastName::eq)
-                        .append(userfilter.getRoleFilter().toUpperCase(Locale.ROOT), QUser.user.role.stringValue()::eq)
+                        .append(userFilter.getFirstName(), QUser.user.firstName::eq)
+                        .append(userFilter.getLastName(), QUser.user.lastName::eq)
+                        .append(userFilter.getRole(), QUser.user.role::eq)
                         .buildAnd());
     }
 }

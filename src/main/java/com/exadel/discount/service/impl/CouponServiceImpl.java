@@ -21,6 +21,7 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -66,17 +67,16 @@ public class CouponServiceImpl implements CouponService {
 
     public CouponDTO findCouponByDate(LocalDateTime date) {
         log.debug("Finding coupon by date");
-
         Optional<Coupon> coupon = couponRepository.findCouponByDate(date);
         Coupon foundedCoupon;
         if (coupon.isPresent()) foundedCoupon = coupon.get();
         else throw new NotFoundException(String.format("Coupon with date %s not found", date));
         log.debug("Successfully coupon is found by date");
-
         return couponMapper.toCouponDTO(foundedCoupon);
     }
 
-        @Override
+    @Transactional
+    @Override
         public CouponDTO assignCouponToUser(CreateCouponDTO createCouponDTO) {
             log.debug("Finding of certain user by ID");
 
@@ -89,7 +89,6 @@ public class CouponServiceImpl implements CouponService {
                     .findById(createCouponDTO.getDiscountId())
                     .orElseThrow(() -> new NotFoundException(String
                             .format("Discount with id %s not found", createCouponDTO.getDiscountId())));
-
             log.debug("Successfully certain User and Discount are found by ID. Starting coupon creation/saving.");
 
             Coupon coupon = new Coupon();
@@ -98,15 +97,16 @@ public class CouponServiceImpl implements CouponService {
 
             couponRepository.save(coupon);
             log.debug("Successfully new coupon is saved to certain user");
-
             return couponMapper.toCouponDTO(coupon);
         }
 
     private Predicate preparePredicateForFindingAllCoupons(CouponFilter couponfilter) {
         return ExpressionUtils.and(
                 QueryPredicateBuilder.init()
-                        .append(couponfilter.getCountryIds(), QCoupon.coupon.discount.vendorLocations.any().city.country.id::in)
-                        .append(couponfilter.getCityIds(), QCoupon.coupon.discount.vendorLocations.any().city.id::in)
+                        .append(couponfilter.getCountryIds(), QCoupon.coupon.discount.vendorLocations.any()
+                                .city.country.id::in)
+                        .append(couponfilter.getCityIds(), QCoupon.coupon.discount.vendorLocations.any()
+                                .city.id::in)
                         .buildOr(),
                 QueryPredicateBuilder.init()
                         .append(couponfilter.getUserId(), QCoupon.coupon.user.id::eq)
