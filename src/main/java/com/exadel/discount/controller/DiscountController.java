@@ -135,6 +135,7 @@ public class DiscountController {
 
     @GetMapping("/search")
     @ApiOperation("Get Discounts by search text")
+    @UserAccess
     public List<DiscountDTO> search(@RequestParam(defaultValue = "8", required = false) Integer size,
                                     @RequestParam String searchText) {
         return discountService.search(size, searchText);
