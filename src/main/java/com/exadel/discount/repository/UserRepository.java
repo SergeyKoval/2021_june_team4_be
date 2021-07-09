@@ -6,7 +6,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -25,13 +24,13 @@ public interface UserRepository extends JpaRepository<User, UUID> {
     Optional<User> findById(UUID id);
 
     @EntityGraph(attributePaths = {"city", "city.country"})
-    Page<User> findByRole(@Param("r") Role r, Pageable pageable);
+    Page<User> findByRole(Role r, Pageable pageable);
 
     @EntityGraph(attributePaths = {"city", "city.country"})
     Page<User> findByCity_Name(String city, Pageable pageable);
 
     @EntityGraph(attributePaths = {"city", "city.country"})
-    Page<User> findUsersByCity_Country_Name(@Param("countryFilter")String country, Pageable pageable);
+    Page<User> findUsersByCity_Country_Name(String country, Pageable pageable);
 
     @EntityGraph(attributePaths = {"city", "city.country"})
     List<User> findDistinctByLastNameAndFirstName(String lastName, String firstName);

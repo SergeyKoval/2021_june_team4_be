@@ -1,6 +1,6 @@
 package com.exadel.discount.entity;
 
-import com.exadel.discount.config.EnumPostgresSQLType;
+import com.exadel.discount.entity.type.EnumPostgresSQLType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -22,8 +22,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import java.util.ArrayList;
-import java.util.List;
+
+import java.util.Set;
 import java.util.UUID;
 
 @Entity
@@ -69,11 +69,11 @@ public class User {
     @Type(type = "user_role")
     private Role role;
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Coupon> coupons = new ArrayList<>();
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private Set<Coupon> coupons;
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Favorite> favorites = new ArrayList<>();
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private Set<Favorite> favorites;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="city_id", nullable=false)
