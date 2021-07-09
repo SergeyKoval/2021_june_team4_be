@@ -105,11 +105,21 @@ public class CouponServiceImpl implements CouponService {
     private Predicate preparePredicateForFindingAll(CouponFilter couponfilter) {
         return ExpressionUtils.and(
                 QueryPredicateBuilder.init()
-                        .append(couponfilter.getStartDate(), QCoupon.coupon.date::goe)
-                        .append(couponfilter.getEndDate(), QCoupon.coupon.date::loe)
+                        .append(couponfilter.getCountryIds(), QCoupon.coupon.discount.vendorLocations.any().city.country.id::in)
+                        .append(couponfilter.getCityIds(), QCoupon.coupon.discount.vendorLocations.any().city.id::in)
                         .buildOr(),
                 QueryPredicateBuilder.init()
                         .append(couponfilter.getUserId(), QCoupon.coupon.user.id::eq)
+                        .append(couponfilter.getStartDate(), QCoupon.coupon.date::goe)
+                        .append(couponfilter.getEndDate(), QCoupon.coupon.date::loe)
+                        .append(couponfilter.getArchived(), QCoupon.coupon.discount.archived::eq)
+                        .append(couponfilter.getPercentFrom(), QCoupon.coupon.discount.percent::goe)
+                        .append(couponfilter.getPercentTo(), QCoupon.coupon.discount.percent::loe)
+                        .append(couponfilter.getEndDateFrom(), QCoupon.coupon.discount.endTime::goe)
+                        .append(couponfilter.getEndDateTo(), QCoupon.coupon.discount.endTime::loe)
+                        .append(couponfilter.getCategoryIds(), QCoupon.coupon.discount.category.id::in)
+                        .append(couponfilter.getTagIds(), QCoupon.coupon.discount.tags.any().id::in)
+                        .append(couponfilter.getVendorIds(), QCoupon.coupon.discount.vendor.id::in)
                         .buildAnd());
     }
 }

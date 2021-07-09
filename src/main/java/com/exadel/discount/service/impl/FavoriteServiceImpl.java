@@ -1,10 +1,12 @@
 package com.exadel.discount.service.impl;
 
-import com.exadel.discount.dto.coupon.CouponFilter;
 import com.exadel.discount.dto.favorite.CreateFavoriteDTO;
 import com.exadel.discount.dto.favorite.FavoriteDTO;
 import com.exadel.discount.dto.favorite.FavoriteFilter;
-import com.exadel.discount.entity.*;
+import com.exadel.discount.entity.Discount;
+import com.exadel.discount.entity.Favorite;
+import com.exadel.discount.entity.QFavorite;
+import com.exadel.discount.entity.User;
 import com.exadel.discount.exception.NotFoundException;
 import com.exadel.discount.mapper.FavoriteMapper;
 import com.exadel.discount.repository.DiscountRepository;
@@ -35,7 +37,11 @@ public class FavoriteServiceImpl implements FavoriteService {
     private final DiscountRepository discountRepository;
 
     @Override
-    public List<FavoriteDTO> findAllFavorites(int pageNumber, int pageSize, String sortDirection, String sortField, FavoriteFilter filter) {
+    public List<FavoriteDTO> findAllFavorites(int pageNumber,
+                                              int pageSize,
+                                              String sortDirection,
+                                              String sortField,
+                                              FavoriteFilter filter) {
         Pageable paging = SortPageMaker.makePageable(pageNumber, pageSize, sortDirection, sortField);
         log.debug("Getting sorted page-list of all Favorites");
 
@@ -97,10 +103,21 @@ public class FavoriteServiceImpl implements FavoriteService {
     private Predicate preparePredicateForFindingAll(FavoriteFilter favoritefilter) {
         return ExpressionUtils.and(
                 QueryPredicateBuilder.init()
-                        .append(favoritefilter.getUserId(), QFavorite.favorite.user.id::eq)
+                        .append(favoritefilter.getCountryIds(), QFavorite.favorite.discount.vendorLocations.any()
+                                .city.country.id::in)
+                        .append(favoritefilter.getCityIds(), QFavorite.favorite.discount.vendorLocations.any()
+                                .city.id::in)
                         .buildOr(),
                 QueryPredicateBuilder.init()
                         .append(favoritefilter.getUserId(), QFavorite.favorite.user.id::eq)
+                        .append(favoritefilter.getArchived(), QFavorite.favorite.discount.archived::eq)
+                        .append(favoritefilter.getPercentFrom(), QFavorite.favorite.discount.percent::goe)
+                        .append(favoritefilter.getPercentTo(), QFavorite.favorite.discount.percent::loe)
+                        .append(favoritefilter.getEndDateFrom(), QFavorite.favorite.discount.endTime::goe)
+                        .append(favoritefilter.getEndDateTo(), QFavorite.favorite.discount.endTime::loe)
+                        .append(favoritefilter.getCategoryIds(), QFavorite.favorite.discount.category.id::in)
+                        .append(favoritefilter.getTagIds(), QFavorite.favorite.discount.tags.any().id::in)
+                        .append(favoritefilter.getVendorIds(), QFavorite.favorite.discount.vendor.id::in)
                         .buildAnd());
     }
 }
