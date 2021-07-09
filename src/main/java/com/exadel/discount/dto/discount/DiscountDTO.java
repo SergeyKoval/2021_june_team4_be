@@ -4,6 +4,7 @@ import com.exadel.discount.dto.CategoryDTO;
 import com.exadel.discount.dto.TagDTO;
 import com.exadel.discount.dto.location.LocationDTO;
 import com.exadel.discount.dto.vendor.BaseVendorDTO;
+import com.exadel.discount.entity.DiscountType;
 import lombok.Data;
 
 import java.math.BigDecimal;
@@ -18,7 +19,8 @@ public class DiscountDTO {
     private String name;
     private String description;
     private String promo;
-    private BigDecimal price;
+    private DiscountType discountType;
+    private BigDecimal value;
     private LocalDateTime startTime;
     private LocalDateTime endTime;
     private boolean active;

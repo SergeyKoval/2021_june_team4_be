@@ -1,5 +1,6 @@
 package com.exadel.discount.dto.discount;
 
+import com.exadel.discount.entity.DiscountType;
 import lombok.Data;
 
 import javax.validation.constraints.Max;
@@ -23,9 +24,11 @@ public class CreateDiscountDTO {
     @NotBlank(message = "Discount promo should be not blank")
     @Size(max = 50, message = "Discount promo should be shorted than {max}")
     private String promo;
-    @Min(value = 1, message = "Discount price should be more than {min}")
-    @Max(value = 100, message = "Discount price should be more less than {max}")
-    private BigDecimal price;
+    @NotBlank(message = "Type of discount  should be not blank")
+    private DiscountType discountType;
+    @Min(value = 1, message = "Discount value should be more than {min}")
+    @Max(value = 100, message = "Discount value should be more less than {max}")
+    private BigDecimal value;
     private LocalDateTime startTime;
     private LocalDateTime endTime;
     private boolean active;
