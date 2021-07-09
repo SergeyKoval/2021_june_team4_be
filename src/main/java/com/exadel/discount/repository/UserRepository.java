@@ -24,7 +24,7 @@ public interface UserRepository extends JpaRepository<User, UUID> {
     Optional<User> findById(UUID id);
 
     @EntityGraph(attributePaths = {"city", "city.country"})
-    Page<User> findByRole(Role r, Pageable pageable);
+    Page<User> findByRole(Role role, Pageable pageable);
 
     @EntityGraph(attributePaths = {"city", "city.country"})
     Page<User> findByCityName(String city, Pageable pageable);
