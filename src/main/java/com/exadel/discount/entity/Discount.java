@@ -56,7 +56,10 @@ public class Discount {
     @Enumerated(EnumType.STRING)
     @Column(columnDefinition = "discountType", nullable = false)
     @Type(type = "discount_type")
-    private BigDecimal discountType;
+    private DiscountType discountType;
+
+    @Column(name = "value")
+    private BigDecimal value;
 
     @Column(name = "start_time")
     private LocalDateTime startTime;
