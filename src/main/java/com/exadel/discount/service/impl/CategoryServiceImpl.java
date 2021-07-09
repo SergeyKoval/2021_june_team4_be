@@ -10,6 +10,7 @@ import com.exadel.discount.service.CategoryService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.UUID;
@@ -31,6 +32,7 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
+    @Transactional
     public CategoryDTO updateCategoryById(CategoryDTO categoryDTO, UUID id) {
         log.debug(String.format("Update Category with ID %s", id));
         return categoryRepository.findCategoryById(id)
