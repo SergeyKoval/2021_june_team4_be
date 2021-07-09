@@ -24,7 +24,7 @@ public class CreateDiscountDTO {
     @NotBlank(message = "Discount promo should be not blank")
     @Size(max = 50, message = "Discount promo should be shorted than {max}")
     private String promo;
-    @NotBlank(message = "Type of discount  should be not blank")
+    @NotNull(message = "Type of discount  should be not blank")
     private DiscountType discountType;
     @Min(value = 1, message = "Discount value should be more than {min}")
     private BigDecimal value;
