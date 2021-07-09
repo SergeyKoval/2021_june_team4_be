@@ -27,10 +27,10 @@ public interface UserRepository extends JpaRepository<User, UUID> {
     Page<User> findByRole(Role r, Pageable pageable);
 
     @EntityGraph(attributePaths = {"city", "city.country"})
-    Page<User> findByCity_Name(String city, Pageable pageable);
+    Page<User> findByCityName(String city, Pageable pageable);
 
     @EntityGraph(attributePaths = {"city", "city.country"})
-    Page<User> findUsersByCity_Country_Name(String country, Pageable pageable);
+    Page<User> findUsersByCityCountryName(String country, Pageable pageable);
 
     @EntityGraph(attributePaths = {"city", "city.country"})
     List<User> findDistinctByLastNameAndFirstName(String lastName, String firstName);
