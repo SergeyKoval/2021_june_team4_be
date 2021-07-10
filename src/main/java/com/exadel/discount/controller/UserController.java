@@ -5,6 +5,7 @@ import com.exadel.discount.dto.user.UserDTO;
 import com.exadel.discount.dto.user.UserFilter;
 import com.exadel.discount.entity.Role;
 import com.exadel.discount.security.annotation.AdminAccess;
+import com.exadel.discount.security.annotation.UserAccess;
 import com.exadel.discount.service.UserService;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
@@ -26,12 +27,13 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping
-    @ApiOperation("Get sorted page-list of all users without filtering")
+    @ApiOperation("Get sorted page-list of all users with filtering with role USER - as default")
+    @AdminAccess
     public List<UserDTO> getAllUsers(@RequestParam(name = "pageNumber", defaultValue = "1") int pageNumber,
                                      @RequestParam(name = "pageSize", defaultValue = "10") int pageSize,
                                      @RequestParam(name = "sortDirection", defaultValue = "") String sortDirection,
                                      @RequestParam(name = "sortField", defaultValue = "id") String sortBy,
-                                     @RequestParam(name = "role", defaultValue = "USER", required = false) String role,
+                                     @RequestParam(name = "role", defaultValue = "", required = false) String role,
                                      @RequestParam(name = "cityName", required = false) String cityName,
                                      @RequestParam(name = "countryName", required = false) String countryName,
                                      @RequestParam(name = "firstName", required = false) String firstName,
@@ -48,7 +50,7 @@ public class UserController {
 
     @GetMapping("{id}")
     @ApiOperation("Get user by ID")
-    @AdminAccess
+    @UserAccess
     public UserDTO getUserById(@PathVariable @NotNull final UUID id) {
         return userService.findUserById(id);
     }

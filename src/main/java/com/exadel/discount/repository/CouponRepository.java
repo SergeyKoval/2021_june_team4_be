@@ -12,9 +12,6 @@ import org.springframework.stereotype.Repository;
 import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.UUID;
-//@EnableJpaRepositories(
-//        repositoryFactoryBeanClass = CouponRepositoryCustom.class
-//)
 
 @Repository
 public interface CouponRepository extends JpaRepository<Coupon, UUID>, QuerydslPredicateExecutor<Coupon> {
@@ -29,8 +26,4 @@ public interface CouponRepository extends JpaRepository<Coupon, UUID>, QuerydslP
     @EntityGraph(attributePaths = {"discount", "discount.category", "discount.vendorLocations", "discount.tags",
             "discount.vendor", "discount.vendorLocations.city", "discount.vendorLocations.city.country"})
     Page<Coupon> findAll(Predicate predicate, Pageable paging);
-
-//    @EntityGraph(attributePaths = {"discount", "discount.category", "discount.vendorLocations", "discount.tags",
-//            "discount.vendor", "discount.vendorLocations.city", "discount.vendorLocations.city.country"})
-//    List<Coupon> findAll();
 }

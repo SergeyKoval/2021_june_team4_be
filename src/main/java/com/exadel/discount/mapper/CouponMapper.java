@@ -7,7 +7,7 @@ import org.mapstruct.Mapper;
 import java.util.List;
 
 @Mapper(componentModel = "spring", uses = {DiscountMapper.class})
-public interface CouponMapper{
+public interface CouponMapper {
 
     CouponDTO toCouponDTO (Coupon coupon);
 

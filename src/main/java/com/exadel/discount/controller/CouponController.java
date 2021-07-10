@@ -3,11 +3,11 @@ package com.exadel.discount.controller;
 import com.exadel.discount.dto.coupon.CouponDTO;
 import com.exadel.discount.dto.coupon.CouponFilter;
 import com.exadel.discount.dto.coupon.CreateCouponDTO;
-import com.exadel.discount.entity.Coupon;
+import com.exadel.discount.security.annotation.AdminAccess;
+import com.exadel.discount.security.annotation.UserAccess;
 import com.exadel.discount.service.CouponService;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.querydsl.binding.QuerydslPredicate;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,7 +21,6 @@ import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
-import java.util.function.Predicate;
 
 @RestController
 @RequiredArgsConstructor
@@ -30,7 +29,8 @@ public class CouponController {
     private final CouponService couponService;
 
     @GetMapping
-    @ApiOperation("Get sorted page-list of all coupons with fate filtering")
+    @ApiOperation("Get page-list of all coupons with filtering/sorting")
+    @AdminAccess
     public List<CouponDTO> getAllCoupons(@RequestParam(name = "pageNumber", defaultValue = "1", required = false)
                                                      int pageNumber,
                                          @RequestParam(name = "pageSize", defaultValue = "10", required = false)
@@ -67,7 +67,6 @@ public class CouponController {
                 .tagIds(tagId)
                 .percentFrom(percentFrom)
                 .percentTo(percentTo)
-                .archived(false)
                 .userId(userId)
                 .endDateFrom(endDateTimeFrom)
                 .endDateTo(endDateTimeTo)
@@ -79,12 +78,14 @@ public class CouponController {
 
     @GetMapping("{id}")
     @ApiOperation("Get coupon by ID")
+    @AdminAccess
     public CouponDTO getCouponById(@PathVariable @NotNull final UUID id) {
         return couponService.findCouponById(id);
     }
 
     @PostMapping
     @ApiOperation("Save new coupon to user")
+    @UserAccess
     public CouponDTO addCoupon(@RequestBody @NotNull final CreateCouponDTO createCouponDTO) {
         return couponService.assignCouponToUser(createCouponDTO);
     }
@@ -92,6 +93,7 @@ public class CouponController {
     //Time example : 2021-06-15T11:58:11
     @GetMapping("/date")
     @ApiOperation("Get coupon by certain date")
+
     public CouponDTO getCouponByDate(@RequestParam("date")
                                      @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
                                          @NotNull final LocalDateTime date) {

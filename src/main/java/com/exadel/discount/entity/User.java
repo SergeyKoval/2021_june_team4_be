@@ -1,6 +1,6 @@
 package com.exadel.discount.entity;
 
-import com.exadel.discount.config.EnumPostgresSQLType;
+import com.exadel.discount.entity.type.EnumPostgresSQLType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
