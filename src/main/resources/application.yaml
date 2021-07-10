@@ -6,12 +6,15 @@ spring:
     open-in-view: false
   datasource:
     driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/postgres
+    username: postgres
+    password: postgres
 
 jwt:
   token:
     expiration:
       seconds:
-        access: 120
+        access: 120000
         refresh: 3600
     encryption:
       key: encryptionSecret
