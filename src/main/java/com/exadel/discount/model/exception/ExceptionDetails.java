@@ -4,8 +4,7 @@ import lombok.Builder;
 import lombok.Data;
 
 /**
- * This class is used for exception information
- * that are transferred to the client side.
+ * This class is used for exception information that are transferred to the client side.
  *
  * @see com.exadel.discount.controller.exception.GlobalExceptionHandler
  */

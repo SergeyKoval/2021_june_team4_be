@@ -1,6 +1,5 @@
 package com.exadel.discount.controller.exception;
 
-import com.exadel.discount.dto.authentication.AuthenticationRequest;
 import com.exadel.discount.exception.APIException;
 import com.exadel.discount.exception.DeletionRestrictedException;
 import com.exadel.discount.exception.InvalidTokenException;
@@ -36,8 +35,8 @@ public class GlobalExceptionHandler {
 
     /**
      * This method handles a problem at the level of database data searching
-     * about the values that were not found in a database expect for authentication searching on the
-     * {@link com.exadel.discount.controller.AuthenticationController#createAuthenticationToken(AuthenticationRequest)}
+     * about the values that were not found in a database expect for authentication searching that is handled by
+     * {@link #handleIncorrectAuthentication(APIException)}
      *
      * @param exception take a caught exception in {@link ExceptionHandler}.
      * @return the {@link ExceptionDetails} class with default message
