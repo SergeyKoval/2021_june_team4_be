@@ -74,11 +74,20 @@ public class JwtFilter extends OncePerRequestFilter {
             setErrorResponse(response, HttpStatus.FORBIDDEN, exception, ExceptionCause.INCORRECT_TOKEN);
         } catch (TokenExpiredException exception) {
             setErrorResponse(response, HttpStatus.FORBIDDEN, exception, ExceptionCause.EXPIRED_TOKEN);
+        } catch (Exception exception) {
+            setErrorResponse(response, HttpStatus.INTERNAL_SERVER_ERROR, exception, ExceptionCause.UNCAUGHT_EXCEPTION);
         } finally {
             filterChain.doFilter(request, response);
         }
     }
 
+    /**
+     * This method sets an exception response to the clint side when in this filter appears an exception.
+     * @param response a service class that provide a transmission to the client side.
+     * @param httpStatus a http status that will be appropriate for this issue.
+     * @param exception an exception that was caught in the filter.
+     * @param cause a logic word that describes the subject of the issue.
+     */
     public void setErrorResponse(HttpServletResponse response, HttpStatus httpStatus, Exception exception,
                                  ExceptionCause cause) {
         try {
