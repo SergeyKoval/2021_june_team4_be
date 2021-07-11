@@ -15,6 +15,10 @@ import org.springframework.stereotype.Service;
 import java.time.Instant;
 import java.util.Date;
 
+/**
+ * This class represent a service for JWTs.
+ */
+
 @Service
 @Setter
 @Slf4j
@@ -65,6 +69,15 @@ public class JwtServiceImpl implements JwtService, JwtGenerationService {
         return buildToken(userDetails.getUsername(), REFRESH_TOKEN_EXPIRATION_TIME, REFRESH_ROLE);
     }
 
+    /**
+     * This method builds JWT based on a prepared data that are given by
+     * {@link #generateAccessToken(UserDetails)} and {@link #generateRefreshToken(UserDetails)}
+     *
+     * @param subject        it will be set in a subject claim.
+     * @param expirationTime it will be set in a expiration time claim.
+     * @param role           it will be set in a role claim.
+     * @return a built JWT.
+     */
     private String buildToken(String subject, long expirationTime, String role) {
         log.debug("creating a token");
         Instant currentTime = Instant.now();
