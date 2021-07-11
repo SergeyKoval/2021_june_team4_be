@@ -113,7 +113,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler({AccessDeniedException.class, InvalidTokenException.class})
     @ResponseBody
     @ResponseStatus(HttpStatus.FORBIDDEN)
-    public ExceptionDetails handleIncorrectEndpointAccessRights(APIException exception) {
+    public ExceptionDetails handleIncorrectEndpointAccessRightsThroughJWT(APIException exception) {
         log.error("Exception stack trace: ", exception);
 
         return ExceptionDetails.builder()
