@@ -33,6 +33,17 @@ public enum ExceptionCause {
      */
     ACCESS_DENIED,
     /**
+     * It means a problem at the level of token logic.
+     * It is intended for situation when the client side transfers expired
+     * token to get an access to some secured endpoint.
+     */
+    EXPIRED_TOKEN,
+    /**
+     * It means a problem at the level of token logic.
+     * It is intended for situation when a token signature is not correct.
+     */
+    INCORRECT_TOKEN,
+    /**
      * It means a problem at the level of database data deletion.
      * It is intended for situation where database data cannot be deleted.
      */
