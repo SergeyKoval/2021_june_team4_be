@@ -153,7 +153,7 @@ public class GlobalExceptionHandler {
     @ResponseBody
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ExceptionDetails handleUncaughtException(Exception exception) {
-        log.warn("Exception stack trace: ", exception);
+        log.error("Exception stack trace: ", exception);
 
         return ExceptionDetails.builder()
                 .message(exception.getMessage())
