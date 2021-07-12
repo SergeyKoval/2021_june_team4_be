@@ -47,8 +47,7 @@ public class DiscountServiceImpl implements DiscountService {
     private final VendorLocationRepository locationRepository;
     private final DiscountMapper discountMapper;
     private final int SEARCH_WORD_MIN_LENGTH = 3;
-
-
+    
     @Override
     public DiscountDTO save(CreateDiscountDTO createDiscountDTO) {
         log.debug("Saving new Discount");
