@@ -1,5 +1,6 @@
 package com.exadel.discount.service;
 
+import com.exadel.discount.model.dto.vendor.BaseVendorDTO;
 import com.exadel.discount.model.dto.vendor.CreateVendorDTO;
 import com.exadel.discount.model.dto.vendor.VendorDTO;
 
@@ -19,4 +20,6 @@ public interface VendorService {
     List<VendorDTO> getAllArchived();
 
     VendorDTO restoreById(UUID id);
+
+    VendorDTO updateVendorById(BaseVendorDTO vendorDTO, UUID id);
 }

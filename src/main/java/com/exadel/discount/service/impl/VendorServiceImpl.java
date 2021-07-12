@@ -1,5 +1,6 @@
 package com.exadel.discount.service.impl;
 
+import com.exadel.discount.model.dto.vendor.BaseVendorDTO;
 import com.exadel.discount.model.dto.vendor.CreateVendorDTO;
 import com.exadel.discount.model.dto.vendor.VendorDTO;
 import com.exadel.discount.model.entity.Vendor;
@@ -30,6 +31,20 @@ public class VendorServiceImpl implements VendorService {
         Vendor savedVendor = vendorRepository.save(vendorMapper.parseDTO(vendorDTO));
         log.debug("Successfully saved new Vendor");
         return vendorMapper.getDTO(savedVendor);
+    }
+
+    @Override
+    @Transactional
+    public VendorDTO updateVendorById(BaseVendorDTO vendorDTO, UUID id) {
+        log.debug(String.format("Update Vendor with ID %s", id));
+        return vendorRepository.findById(id)
+                .map( vendor -> {
+                    vendor = vendorMapper.update(vendorDTO, vendor);
+                    vendor.setId(id);
+                    VendorDTO updatedVendorDTO = vendorMapper.getDTO(vendorRepository.save(vendor));
+                    log.debug(String.format("Successfully update Vendor with ID %s", id));
+                    return updatedVendorDTO;
+                }).orElseThrow( () -> new NotFoundException(String.format("Vendor with ID %s not found", id)));
     }
 
     @Override

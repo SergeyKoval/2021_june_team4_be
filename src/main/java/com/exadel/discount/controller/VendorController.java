@@ -1,5 +1,6 @@
 package com.exadel.discount.controller;
 
+import com.exadel.discount.model.dto.vendor.BaseVendorDTO;
 import com.exadel.discount.model.dto.vendor.CreateVendorDTO;
 import com.exadel.discount.model.dto.vendor.VendorDTO;
 import com.exadel.discount.security.annotation.AdminAccess;
@@ -50,6 +51,14 @@ public class VendorController {
     @AdminAccess
     public VendorDTO saveNewVendor(@RequestBody @Valid CreateVendorDTO vendor) {
         return vendorService.save(vendor);
+    }
+
+    @PutMapping("/{id}")
+    @AdminAccess
+    @ApiOperation("Edit vendor by ID")
+    public VendorDTO updateVendor(@PathVariable @NotNull UUID id,
+                                  @RequestBody @NotNull BaseVendorDTO vendorDTO) {
+        return vendorService.updateVendorById(vendorDTO, id);
     }
 
     @DeleteMapping("/{id}")
