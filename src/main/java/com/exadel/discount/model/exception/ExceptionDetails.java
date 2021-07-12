@@ -1,12 +1,13 @@
 package com.exadel.discount.model.exception;
 
+import com.exadel.discount.controller.GlobalExceptionHandler;
 import lombok.Builder;
 import lombok.Data;
 
 /**
  * This class is used for exception information that are transferred to the client side.
  *
- * @see com.exadel.discount.controller.exception.GlobalExceptionHandler
+ * @see GlobalExceptionHandler
  */
 
 @Data

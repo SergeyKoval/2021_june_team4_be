@@ -1,4 +1,4 @@
-package com.exadel.discount.controller.exception;
+package com.exadel.discount.controller;
 
 import com.exadel.discount.exception.APIException;
 import com.exadel.discount.exception.DeletionRestrictedException;

@@ -2,7 +2,7 @@ package com.exadel.discount.exception;
 
 /**
  * This abstract class is intended for being
- * our main logical class in {@link com.exadel.discount.controller.exception.GlobalExceptionHandler}.
+ * our main logical class in {@link com.exadel.discount.controller.GlobalExceptionHandler}.
  */
 
 public abstract class APIException extends RuntimeException {
