@@ -1,16 +1,16 @@
 package com.exadel.discount.service.impl;
 
-import com.exadel.discount.dto.discount.CreateDiscountDTO;
-import com.exadel.discount.dto.discount.DiscountDTO;
-import com.exadel.discount.dto.discount.DiscountFilter;
-import com.exadel.discount.entity.Category;
-import com.exadel.discount.entity.Discount;
-import com.exadel.discount.entity.QDiscount;
-import com.exadel.discount.entity.Tag;
-import com.exadel.discount.entity.Vendor;
-import com.exadel.discount.entity.VendorLocation;
+import com.exadel.discount.model.dto.discount.CreateDiscountDTO;
+import com.exadel.discount.model.dto.discount.DiscountDTO;
+import com.exadel.discount.model.dto.discount.DiscountFilter;
+import com.exadel.discount.model.entity.Category;
+import com.exadel.discount.model.entity.Discount;
+import com.exadel.discount.model.entity.QDiscount;
+import com.exadel.discount.model.entity.Tag;
+import com.exadel.discount.model.entity.Vendor;
+import com.exadel.discount.model.entity.VendorLocation;
 import com.exadel.discount.exception.NotFoundException;
-import com.exadel.discount.mapper.DiscountMapper;
+import com.exadel.discount.model.dto.mapper.DiscountMapper;
 import com.exadel.discount.repository.CategoryRepository;
 import com.exadel.discount.repository.DiscountRepository;
 import com.exadel.discount.repository.TagRepository;
