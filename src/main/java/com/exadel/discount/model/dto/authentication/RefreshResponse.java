@@ -1,4 +1,4 @@
-package com.exadel.discount.dto.authentication;
+package com.exadel.discount.model.dto.authentication;
 
 import lombok.Builder;
 import lombok.Getter;
