@@ -1,20 +1,22 @@
 package com.exadel.discount.repository.impl;
 
 import com.exadel.discount.entity.QDiscount;
-import com.exadel.discount.repository.DiscountCustomRepository;
+import com.exadel.discount.repository.QueryFactoryDiscountRepository;
 import com.querydsl.core.types.Predicate;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import java.util.List;
 import java.util.UUID;
 
-public class DiscountCustomRepositoryImpl implements DiscountCustomRepository {
+@Repository
+public class QueryFactoryDiscountRepositoryImpl implements QueryFactoryDiscountRepository {
 
     private final JPAQueryFactory queryFactory;
 
-    public DiscountCustomRepositoryImpl(EntityManager em) {
+    public QueryFactoryDiscountRepositoryImpl(EntityManager em) {
         this.queryFactory = new JPAQueryFactory(em);
     }
 
