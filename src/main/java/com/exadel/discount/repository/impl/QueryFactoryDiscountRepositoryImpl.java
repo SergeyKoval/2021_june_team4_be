@@ -1,6 +1,6 @@
 package com.exadel.discount.repository.impl;
 
-import com.exadel.discount.entity.QDiscount;
+import com.exadel.discount.model.entity.QDiscount;
 import com.exadel.discount.repository.QueryFactoryDiscountRepository;
 import com.querydsl.core.types.Predicate;
 import com.querydsl.jpa.impl.JPAQueryFactory;
