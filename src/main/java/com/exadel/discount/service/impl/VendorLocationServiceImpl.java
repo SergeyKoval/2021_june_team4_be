@@ -1,12 +1,12 @@
 package com.exadel.discount.service.impl;
 
-import com.exadel.discount.dto.location.CreateLocationDTO;
-import com.exadel.discount.dto.location.LocationDTO;
-import com.exadel.discount.entity.City;
-import com.exadel.discount.entity.Vendor;
-import com.exadel.discount.entity.VendorLocation;
+import com.exadel.discount.model.dto.location.CreateLocationDTO;
+import com.exadel.discount.model.dto.location.LocationDTO;
+import com.exadel.discount.model.entity.City;
+import com.exadel.discount.model.entity.Vendor;
+import com.exadel.discount.model.entity.VendorLocation;
 import com.exadel.discount.exception.NotFoundException;
-import com.exadel.discount.mapper.VendorLocationMapper;
+import com.exadel.discount.model.dto.mapper.VendorLocationMapper;
 import com.exadel.discount.repository.CityRepository;
 import com.exadel.discount.repository.VendorLocationRepository;
 import com.exadel.discount.repository.VendorRepository;

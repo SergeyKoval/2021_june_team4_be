@@ -1,6 +1,6 @@
 package com.exadel.discount.repository;
 
-import com.exadel.discount.entity.Tag;
+import com.exadel.discount.model.entity.Tag;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

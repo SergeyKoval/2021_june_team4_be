@@ -1,9 +1,9 @@
 package com.exadel.discount.controller;
 
-import com.exadel.discount.dto.authentication.RefreshResponse;
+import com.exadel.discount.model.dto.authentication.RefreshResponse;
 import com.exadel.discount.security.annotation.RefreshAccess;
-import com.exadel.discount.dto.authentication.AuthenticationRequest;
-import com.exadel.discount.dto.authentication.AuthenticationResponse;
+import com.exadel.discount.model.dto.authentication.AuthenticationRequest;
+import com.exadel.discount.model.dto.authentication.AuthenticationResponse;
 import com.exadel.discount.service.JwtGenerationService;
 import com.exadel.discount.service.impl.UserDetailsServiceImpl;
 import lombok.RequiredArgsConstructor;

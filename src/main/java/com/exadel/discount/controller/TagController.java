@@ -1,7 +1,7 @@
 package com.exadel.discount.controller;
 
-import com.exadel.discount.dto.TagDTO;
-import com.exadel.discount.dto.validation.Create;
+import com.exadel.discount.model.dto.TagDTO;
+import com.exadel.discount.model.dto.validation.Create;
 import com.exadel.discount.security.annotation.AdminAccess;
 import com.exadel.discount.security.annotation.UserAccess;
 import com.exadel.discount.service.TagService;

@@ -18,7 +18,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String email) {
         log.debug("getting a user data from a database");
-        com.exadel.discount.entity.User user = repository
+        com.exadel.discount.model.entity.User user = repository
                 .findByEmail(email)
                 .orElseThrow(() -> new BadCredentialsException(String.format("User with email %s not found", email)));
 

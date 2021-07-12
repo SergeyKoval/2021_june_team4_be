@@ -1,8 +1,8 @@
 package com.exadel.discount.service;
 
-import com.exadel.discount.dto.discount.DiscountFilter;
-import com.exadel.discount.dto.discount.CreateDiscountDTO;
-import com.exadel.discount.dto.discount.DiscountDTO;
+import com.exadel.discount.model.dto.discount.DiscountFilter;
+import com.exadel.discount.model.dto.discount.CreateDiscountDTO;
+import com.exadel.discount.model.dto.discount.DiscountDTO;
 
 import java.util.List;
 import java.util.UUID;

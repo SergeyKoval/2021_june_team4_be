@@ -1,11 +1,11 @@
 package com.exadel.discount.service.impl;
 
-import com.exadel.discount.dto.vendor.CreateVendorDTO;
-import com.exadel.discount.dto.vendor.VendorDTO;
-import com.exadel.discount.entity.Vendor;
+import com.exadel.discount.model.dto.vendor.CreateVendorDTO;
+import com.exadel.discount.model.dto.vendor.VendorDTO;
+import com.exadel.discount.model.entity.Vendor;
 import com.exadel.discount.exception.DeletionRestrictedException;
 import com.exadel.discount.exception.NotFoundException;
-import com.exadel.discount.mapper.VendorMapper;
+import com.exadel.discount.model.dto.mapper.VendorMapper;
 import com.exadel.discount.repository.VendorRepository;
 import com.exadel.discount.service.VendorService;
 import lombok.RequiredArgsConstructor;

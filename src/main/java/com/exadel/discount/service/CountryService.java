@@ -1,6 +1,6 @@
 package com.exadel.discount.service;
 
-import com.exadel.discount.dto.CountryDTO;
+import com.exadel.discount.model.dto.CountryDTO;
 
 import java.util.List;
 import java.util.UUID;

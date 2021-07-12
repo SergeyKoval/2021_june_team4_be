@@ -1,8 +1,8 @@
 package com.exadel.discount.controller;
 
-import com.exadel.discount.dto.discount.CreateDiscountDTO;
-import com.exadel.discount.dto.discount.DiscountDTO;
-import com.exadel.discount.dto.discount.DiscountFilter;
+import com.exadel.discount.model.dto.discount.CreateDiscountDTO;
+import com.exadel.discount.model.dto.discount.DiscountDTO;
+import com.exadel.discount.model.dto.discount.DiscountFilter;
 import com.exadel.discount.security.annotation.AdminAccess;
 import com.exadel.discount.security.annotation.UserAccess;
 import com.exadel.discount.service.DiscountService;
