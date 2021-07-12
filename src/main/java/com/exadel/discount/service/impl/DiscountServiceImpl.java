@@ -117,7 +117,8 @@ public class DiscountServiceImpl implements DiscountService {
     public List<DiscountDTO> search(Integer size, String searchText) {
         log.debug("Getting list of all Discounts by searchText");
         List<UUID> discountsIds = discountRepository
-                .findAllDiscountIds(prepareSearchPredicate(searchText), PageRequest.of(0, size, Sort.by("viewNumber")));
+                .findAllDiscountIds(prepareSearchPredicate(searchText),
+                        PageRequest.of(0, size, Sort.by("viewNumber").descending()));
         List<Discount> discounts = discountRepository.findAllById(discountsIds);
         log.debug("Successfully got list of all Discounts by searchText");
         return discountMapper.getListDTO(discounts);
