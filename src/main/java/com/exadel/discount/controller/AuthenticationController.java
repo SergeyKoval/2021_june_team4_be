@@ -19,6 +19,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
+
 /**
  * This class is intended for user authentication based on JWTs.
  */
@@ -40,7 +42,7 @@ public class AuthenticationController {
      * @throws InvalidTokenException                  if a user does not have any role in a database.
      */
     @PostMapping("/login")
-    public AuthenticationResponse login(@RequestBody AuthenticationRequest request) {
+    public AuthenticationResponse login(@RequestBody @Valid AuthenticationRequest request) {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         request.getUsername(),

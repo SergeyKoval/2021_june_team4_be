@@ -66,6 +66,13 @@
             <version>3.17.0</version>
         </dependency>
 
+        <!-- JSON -->
+        <dependency>
+            <groupId>org.json</groupId>
+            <artifactId>json</artifactId>
+            <version>20210307</version>
+        </dependency>
+
         <!-- Mapstruct -->
         <dependency>
             <groupId>org.mapstruct</groupId>
