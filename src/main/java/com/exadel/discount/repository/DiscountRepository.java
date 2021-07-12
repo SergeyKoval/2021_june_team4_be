@@ -14,7 +14,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Repository
-public interface DiscountRepository extends JpaRepository<Discount, UUID>, QuerydslPredicateExecutor<Discount>, DiscountCustomRepository {
+public interface DiscountRepository extends JpaRepository<Discount, UUID>, DiscountCustomRepository {
 
     @EntityGraph(attributePaths = {"category", "vendorLocations", "tags", "vendor",
             "vendorLocations.city", "vendorLocations.city.country"})
