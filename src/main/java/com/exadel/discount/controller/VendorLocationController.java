@@ -1,7 +1,7 @@
 package com.exadel.discount.controller;
 
-import com.exadel.discount.dto.location.CreateLocationDTO;
-import com.exadel.discount.dto.location.LocationDTO;
+import com.exadel.discount.model.dto.location.CreateLocationDTO;
+import com.exadel.discount.model.dto.location.LocationDTO;
 import com.exadel.discount.security.annotation.AdminAccess;
 import com.exadel.discount.security.annotation.UserAccess;
 import com.exadel.discount.service.VendorLocationService;

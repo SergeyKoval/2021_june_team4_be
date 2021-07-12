@@ -1,13 +1,10 @@
 package com.exadel.discount.repository;
 
-import com.exadel.discount.entity.Discount;
-import com.querydsl.core.types.Predicate;
-import org.springframework.data.domain.Sort;
+import com.exadel.discount.model.entity.Discount;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
@@ -16,7 +13,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Repository
-public interface DiscountRepository extends JpaRepository<Discount, UUID>, QuerydslPredicateExecutor<Discount> {
+public interface DiscountRepository extends JpaRepository<Discount, UUID>, QueryFactoryDiscountRepository {
 
     @EntityGraph(attributePaths = {"category", "vendorLocations", "tags", "vendor",
             "vendorLocations.city", "vendorLocations.city.country"})
@@ -28,7 +25,7 @@ public interface DiscountRepository extends JpaRepository<Discount, UUID>, Query
 
     @EntityGraph(attributePaths = {"category", "vendorLocations", "tags", "vendor",
             "vendorLocations.city", "vendorLocations.city.country"})
-    List<Discount> findAll(Predicate predicate, Sort sort);
+    List<Discount> findAllById(Iterable<UUID> ids);
 
     @EntityGraph(attributePaths = {"category", "vendorLocations", "tags", "vendor",
             "vendorLocations.city", "vendorLocations.city.country"})

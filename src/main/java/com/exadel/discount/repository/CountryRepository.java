@@ -1,6 +1,6 @@
 package com.exadel.discount.repository;
 
-import com.exadel.discount.entity.Country;
+import com.exadel.discount.model.entity.Country;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

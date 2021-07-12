@@ -1,7 +1,7 @@
 package com.exadel.discount.service;
 
-import com.exadel.discount.dto.city.BaseCityDTO;
-import com.exadel.discount.dto.city.CityDTO;
+import com.exadel.discount.model.dto.city.BaseCityDTO;
+import com.exadel.discount.model.dto.city.CityDTO;
 
 import java.util.List;
 import java.util.UUID;
