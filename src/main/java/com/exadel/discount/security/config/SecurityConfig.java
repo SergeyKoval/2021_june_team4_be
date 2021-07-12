@@ -25,6 +25,10 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.util.List;
 
+/**
+ * This class is intended for security configuration.
+ */
+
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 @ConfigurationProperties(prefix = "cors")
