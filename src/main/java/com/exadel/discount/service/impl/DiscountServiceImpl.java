@@ -16,16 +16,15 @@ import com.exadel.discount.repository.DiscountRepository;
 import com.exadel.discount.repository.TagRepository;
 import com.exadel.discount.repository.VendorLocationRepository;
 import com.exadel.discount.repository.VendorRepository;
-import com.exadel.discount.service.DiscountService;
 import com.exadel.discount.repository.query.QueryPredicateBuilder;
+import com.exadel.discount.service.DiscountService;
 import com.querydsl.core.types.ExpressionUtils;
 import com.querydsl.core.types.Predicate;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Page;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -34,6 +33,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @RequiredArgsConstructor
 @Service
@@ -46,6 +46,7 @@ public class DiscountServiceImpl implements DiscountService {
     private final CategoryRepository categoryRepository;
     private final VendorLocationRepository locationRepository;
     private final DiscountMapper discountMapper;
+    private final int SEARCH_WORD_MIN_LENGTH = 3;
 
     @Override
     public DiscountDTO save(CreateDiscountDTO createDiscountDTO) {
@@ -78,11 +79,11 @@ public class DiscountServiceImpl implements DiscountService {
                 Sort.by(sortBy).descending() :
                 Sort.by(sortBy);
         log.debug("Getting list of all Discounts by filter");
-        List<Discount> discounts = discountRepository.findAll(preparePredicateForFindingAll(filter), sort);
-        Page<Discount> discountPage = PageableExecutionUtils
-                .getPage(discounts, PageRequest.of(page, size), () -> discounts.size());
+        List<UUID> discountIds = discountRepository
+                .findAllDiscountIds(preparePredicateForFindingAll(filter), PageRequest.of(page, size));
+        List<Discount> discounts = discountRepository.findAllById(discountIds);
         log.debug("Successfully got list of all Discounts by filter");
-        return discountMapper.getListDTO(discountPage.getContent());
+        return discountMapper.getListDTO(discounts);
     }
 
     @Override
@@ -110,6 +111,17 @@ public class DiscountServiceImpl implements DiscountService {
                 .orElseThrow(() -> new NotFoundException(String.format("Restored Discount with id %s not found", id)));
         log.debug("Successfully restored Discount");
         return discountMapper.getDTO(discount);
+    }
+
+    @Override
+    public List<DiscountDTO> search(Integer size, String searchText) {
+        log.debug("Getting list of all Discounts by searchText");
+        List<UUID> discountsIds = discountRepository
+                .findAllDiscountIds(prepareSearchPredicate(searchText),
+                        PageRequest.of(0, size, Sort.by("viewNumber").descending()));
+        List<Discount> discounts = discountRepository.findAllById(discountsIds);
+        log.debug("Successfully got list of all Discounts by searchText");
+        return discountMapper.getListDTO(discounts);
     }
 
     private Set<Tag> findTags(Set<UUID> tagIds) {
@@ -165,5 +177,20 @@ public class DiscountServiceImpl implements DiscountService {
                         .append(filter.getTagIds(), QDiscount.discount.tags.any().id::in)
                         .append(filter.getVendorIds(), QDiscount.discount.vendor.id::in)
                         .buildAnd());
+    }
+
+    private Predicate prepareSearchPredicate(String searchText) {
+        List<Predicate> searchPredicates = Stream
+                .of(StringUtils.split(searchText, StringUtils.SPACE))
+                .filter(word -> word.length() >= SEARCH_WORD_MIN_LENGTH)
+                .map(word -> QueryPredicateBuilder.init()
+                        .append(word, QDiscount.discount.name::containsIgnoreCase)
+                        .append(word, QDiscount.discount.description::containsIgnoreCase)
+                        .append(word, QDiscount.discount.vendor.name::containsIgnoreCase)
+                        .append(word, QDiscount.discount.category.name::containsIgnoreCase)
+                        .append(word, QDiscount.discount.tags.any().name::containsIgnoreCase)
+                        .buildOr())
+                .collect(Collectors.toList());
+        return ExpressionUtils.allOf(searchPredicates);
     }
 }
