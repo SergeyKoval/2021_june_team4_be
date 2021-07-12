@@ -51,9 +51,7 @@ public class DiscountController {
                                                      LocalDateTime endDateTimeFrom,
                                              @RequestParam(required = false)
                                              @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
-                                                     LocalDateTime endDateTimeTo,
-                                             @RequestParam(required = false) Integer percentFrom,
-                                             @RequestParam(required = false) Integer percentTo) {
+                                                     LocalDateTime endDateTimeTo) {
         DiscountFilter filter = DiscountFilter.builder()
                 .vendorIds(vendorId)
                 .categoryIds(categoryId)
@@ -62,8 +60,6 @@ public class DiscountController {
                 .tagIds(tagId)
                 .endDateFrom(endDateTimeFrom)
                 .endDateTo(endDateTimeTo)
-                .percentFrom(percentFrom)
-                .percentTo(percentTo)
                 .archived(false)
                 .build();
         return discountService.getAll(sortBy, sortDirection, page, size, filter);
@@ -108,9 +104,7 @@ public class DiscountController {
                                                              LocalDateTime endDateTimeFrom,
                                                      @RequestParam(required = false)
                                                      @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
-                                                             LocalDateTime endDateTimeTo,
-                                                     @RequestParam(required = false) Integer percentFrom,
-                                                     @RequestParam(required = false) Integer percentTo) {
+                                                             LocalDateTime endDateTimeTo) {
         DiscountFilter filter = DiscountFilter.builder()
                 .vendorIds(vendorId)
                 .categoryIds(categoryId)
@@ -119,8 +113,6 @@ public class DiscountController {
                 .tagIds(tagId)
                 .endDateFrom(endDateTimeFrom)
                 .endDateTo(endDateTimeTo)
-                .percentFrom(percentFrom)
-                .percentTo(percentTo)
                 .archived(true)
                 .build();
         return discountService.getAll(sortBy, sortDirection, page, size, filter);

@@ -1,0 +1,9 @@
+databaseChangeLog:
+  - changeSet:
+      id: add-new-discount-columns
+      author: Anton Rud
+      changes:
+        - renameColumn:
+            tableName: discounts
+            newColumnName: value
+            oldColumnName: percent
