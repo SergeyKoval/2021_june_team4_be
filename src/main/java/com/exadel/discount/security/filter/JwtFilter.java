@@ -73,13 +73,13 @@ public class JwtFilter extends OncePerRequestFilter {
                 }
             }
         } catch (JWTDecodeException exception) {
-            log.info("Exception stack trace: ", exception);
+            log.warn("Exception stack trace: ", exception);
             setErrorResponse(response, HttpStatus.FORBIDDEN, exception, ExceptionCause.INCORRECT_TOKEN);
         } catch (TokenExpiredException exception) {
             log.info("Exception stack trace: ", exception);
             setErrorResponse(response, HttpStatus.FORBIDDEN, exception, ExceptionCause.EXPIRED_TOKEN);
         } catch (Exception exception) {
-            log.warn("Exception stack trace: ", exception);
+            log.error("Exception stack trace: ", exception);
             setErrorResponse(response, HttpStatus.INTERNAL_SERVER_ERROR, exception, ExceptionCause.UNCAUGHT_EXCEPTION);
         } finally {
             filterChain.doFilter(request, response);
@@ -111,7 +111,7 @@ public class JwtFilter extends OncePerRequestFilter {
             out.print(jsonException);
             out.flush();
         } catch (IOException e) {
-            e.printStackTrace();
+            log.error("Exception stack trace: ", exception);
         }
     }
 }
