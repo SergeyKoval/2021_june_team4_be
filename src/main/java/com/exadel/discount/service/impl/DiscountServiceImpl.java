@@ -22,11 +22,11 @@ import com.querydsl.core.types.ExpressionUtils;
 import com.querydsl.core.types.Predicate;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.StringUtils;
 
 import java.util.HashSet;
 import java.util.List;
@@ -47,7 +47,7 @@ public class DiscountServiceImpl implements DiscountService {
     private final VendorLocationRepository locationRepository;
     private final DiscountMapper discountMapper;
     private final int SEARCH_WORD_MIN_LENGTH = 3;
-    
+
     @Override
     public DiscountDTO save(CreateDiscountDTO createDiscountDTO) {
         log.debug("Saving new Discount");
@@ -180,7 +180,7 @@ public class DiscountServiceImpl implements DiscountService {
 
     private Predicate prepareSearchPredicate(String searchText) {
         List<Predicate> searchPredicates = Stream
-                .of(StringUtils.split(searchText, " "))
+                .of(StringUtils.split(searchText, StringUtils.SPACE))
                 .filter(word -> word.length() >= SEARCH_WORD_MIN_LENGTH)
                 .map(word -> QueryPredicateBuilder.init()
                         .append(word, QDiscount.discount.name::containsIgnoreCase)
