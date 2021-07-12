@@ -46,7 +46,7 @@ public class GlobalExceptionHandler {
     @ResponseBody
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ExceptionDetails handleNotFoundValue(APIException exception) {
-        log.error("Exception stack trace: ", exception);
+        log.info("Exception stack trace: ", exception);
 
         return ExceptionDetails.builder()
                 .message(exception.getMessage())
@@ -77,7 +77,7 @@ public class GlobalExceptionHandler {
                                 .build())
                 .collect(Collectors.toList());
 
-        log.error("Exception stack trace: ", exception);
+        log.info("Exception stack trace: ", exception);
 
         return exceptionDetailsList;
     }
@@ -93,7 +93,7 @@ public class GlobalExceptionHandler {
     @ResponseBody
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
     public ExceptionDetails handleIncorrectAuthentication(APIException exception) {
-        log.error("Exception stack trace: ", exception);
+        log.info("Exception stack trace: ", exception);
 
         return ExceptionDetails.builder()
                 .message(exception.getMessage())
@@ -113,7 +113,7 @@ public class GlobalExceptionHandler {
     @ResponseBody
     @ResponseStatus(HttpStatus.FORBIDDEN)
     public ExceptionDetails handleIncorrectEndpointAccessRightsThroughJWT(APIException exception) {
-        log.error("Exception stack trace: ", exception);
+        log.info("Exception stack trace: ", exception);
 
         return ExceptionDetails.builder()
                 .message(exception.getMessage())
@@ -133,7 +133,7 @@ public class GlobalExceptionHandler {
     @ResponseBody
     @ResponseStatus(HttpStatus.PRECONDITION_FAILED)
     public ExceptionDetails handleIncorrectDataDeletion(APIException exception) {
-        log.error("Exception stack trace: ", exception);
+        log.info("Exception stack trace: ", exception);
 
         return ExceptionDetails.builder()
                 .message(exception.getMessage())
@@ -153,7 +153,7 @@ public class GlobalExceptionHandler {
     @ResponseBody
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ExceptionDetails handleUncaughtException(Exception exception) {
-        log.error("Exception stack trace: ", exception);
+        log.warn("Exception stack trace: ", exception);
 
         return ExceptionDetails.builder()
                 .message(exception.getMessage())
