@@ -36,6 +36,11 @@ import static org.apache.commons.lang3.StringUtils.startsWith;
 import static org.apache.commons.lang3.StringUtils.substringAfter;
 import static org.apache.commons.lang3.StringUtils.isNoneEmpty;
 
+/**
+ * This filter class is intended for the JWT logic of the server.
+ * It checks if incoming JWTs are correct.
+ */
+
 @Component
 @Setter
 @RequiredArgsConstructor
