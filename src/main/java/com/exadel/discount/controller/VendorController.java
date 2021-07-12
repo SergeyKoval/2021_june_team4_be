@@ -1,7 +1,7 @@
 package com.exadel.discount.controller;
 
-import com.exadel.discount.dto.vendor.CreateVendorDTO;
-import com.exadel.discount.dto.vendor.VendorDTO;
+import com.exadel.discount.model.dto.vendor.CreateVendorDTO;
+import com.exadel.discount.model.dto.vendor.VendorDTO;
 import com.exadel.discount.security.annotation.AdminAccess;
 import com.exadel.discount.security.annotation.UserAccess;
 import com.exadel.discount.service.VendorService;

@@ -1,9 +1,9 @@
 package com.exadel.discount.controller;
 
-import com.exadel.discount.dto.CountryDTO;
-import com.exadel.discount.dto.city.BaseCityDTO;
-import com.exadel.discount.dto.city.CityDTO;
-import com.exadel.discount.dto.validation.Create;
+import com.exadel.discount.model.dto.CountryDTO;
+import com.exadel.discount.model.dto.city.BaseCityDTO;
+import com.exadel.discount.model.dto.city.CityDTO;
+import com.exadel.discount.model.dto.validation.Create;
 import com.exadel.discount.security.annotation.AdminAccess;
 import com.exadel.discount.security.annotation.UserAccess;
 import com.exadel.discount.service.CityService;

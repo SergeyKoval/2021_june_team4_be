@@ -149,6 +149,7 @@ public class GlobalExceptionHandler {
      * @return the {@link ExceptionDetails} class with default message
      * and an appropriate logic word {@link ExceptionCause#UNCAUGHT_EXCEPTION}.
      */
+
     @ExceptionHandler
     @ResponseBody
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
