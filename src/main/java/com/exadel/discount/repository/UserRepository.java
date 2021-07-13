@@ -22,6 +22,9 @@ public interface UserRepository extends JpaRepository<User, UUID>, QuerydslPredi
     Page<User> findAll(Predicate predicate, Pageable paging);
 
     @EntityGraph(attributePaths = {"city", "city.country"})
+    Page<User> findAll(Pageable paging);
+
+    @EntityGraph(attributePaths = {"city", "city.country"})
     Optional<User> findById(UUID id);
 
     @EntityGraph(attributePaths = {"city", "city.country"})

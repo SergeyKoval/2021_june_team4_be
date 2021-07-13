@@ -1,5 +1,6 @@
 package com.exadel.discount.service.impl;
 
+import com.exadel.discount.exception.NotFoundException;
 import com.exadel.discount.model.dto.coupon.CouponDTO;
 import com.exadel.discount.model.dto.coupon.CouponFilter;
 import com.exadel.discount.model.dto.coupon.CreateCouponDTO;
@@ -8,13 +9,12 @@ import com.exadel.discount.model.entity.Coupon;
 import com.exadel.discount.model.entity.Discount;
 import com.exadel.discount.model.entity.QCoupon;
 import com.exadel.discount.model.entity.User;
-import com.exadel.discount.exception.NotFoundException;
 import com.exadel.discount.repository.CouponRepository;
 import com.exadel.discount.repository.DiscountRepository;
 import com.exadel.discount.repository.UserRepository;
 import com.exadel.discount.repository.query.QueryPredicateBuilder;
-import com.exadel.discount.service.CouponService;
 import com.exadel.discount.repository.query.SortPageUtil;
+import com.exadel.discount.service.CouponService;
 import com.querydsl.core.types.ExpressionUtils;
 import com.querydsl.core.types.Predicate;
 import lombok.AllArgsConstructor;
@@ -36,14 +36,19 @@ public class CouponServiceImpl implements CouponService {
     private final UserRepository userRepository;
     private final DiscountRepository discountRepository;
 
+    @SuppressWarnings({"checkstyle:WhitespaceAround", "checkstyle:LeftCurly", "checkstyle:NeedBraces"})
     @Override
     public List<CouponDTO> search(int pageNumber, int pageSize, String sortDirection, String sortField,
                                           CouponFilter couponFilter) {
         Pageable paging = SortPageUtil.makePageable(pageNumber, pageSize, sortDirection, sortField);
         log.debug("Getting sorted page-list of all Coupons");
-        List<Coupon> filteredCouponList = couponRepository
-                .findAll(preparePredicateForFindingAllCoupons(couponFilter), paging)
-                .toList();
+        List<Coupon> filteredCouponList = null;
+            if (preparePredicateForFindingAllCoupons(couponFilter) == null) {
+                filteredCouponList = couponRepository.findAll(paging).toList();
+            } else {
+                filteredCouponList = couponRepository
+                .findAll(preparePredicateForFindingAllCoupons(couponFilter), paging).toList();
+            }
         log.debug("Successfully sorted page-list of all Coupons is got");
         return couponMapper.toCouponDTOList(filteredCouponList);
     }

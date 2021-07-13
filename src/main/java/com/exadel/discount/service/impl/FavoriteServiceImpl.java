@@ -3,12 +3,12 @@ package com.exadel.discount.service.impl;
 import com.exadel.discount.model.dto.favorite.CreateFavoriteDTO;
 import com.exadel.discount.model.dto.favorite.FavoriteDTO;
 import com.exadel.discount.model.dto.favorite.FavoriteFilter;
+import com.exadel.discount.exception.NotFoundException;
+import com.exadel.discount.model.dto.mapper.FavoriteMapper;
 import com.exadel.discount.model.entity.Discount;
 import com.exadel.discount.model.entity.Favorite;
 import com.exadel.discount.model.entity.QFavorite;
 import com.exadel.discount.model.entity.User;
-import com.exadel.discount.exception.NotFoundException;
-import com.exadel.discount.model.dto.mapper.FavoriteMapper;
 import com.exadel.discount.repository.DiscountRepository;
 import com.exadel.discount.repository.FavoriteRepository;
 import com.exadel.discount.repository.UserRepository;
@@ -19,7 +19,6 @@ import com.querydsl.core.types.ExpressionUtils;
 import com.querydsl.core.types.Predicate;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -41,10 +40,15 @@ public class FavoriteServiceImpl implements FavoriteService {
                                               FavoriteFilter favoriteFilter) {
         Pageable paging = SortPageUtil.makePageable(pageNumber, pageSize, sortDirection, sortField);
         log.debug("Getting sorted page-list of all Favorites");
-        Page<Favorite> favoriteList = favoriteRepository
-                .findAll(preparePredicateForFindingAllFavorites(favoriteFilter), paging);
+        List<Favorite> filteredFavoriteList = null;
+        if (preparePredicateForFindingAllFavorites(favoriteFilter) == null) {
+            filteredFavoriteList = favoriteRepository.findAll(paging).toList();
+        } else {
+            filteredFavoriteList = favoriteRepository
+                    .findAll(preparePredicateForFindingAllFavorites(favoriteFilter), paging).toList();
+        }
         log.debug("Successfully got sorted page-list of all Favorites");
-        return favoriteMapper.toFavoriteDTOList(favoriteList.toList());
+        return favoriteMapper.toFavoriteDTOList(filteredFavoriteList);
     }
 
     @Override

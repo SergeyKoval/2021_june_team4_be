@@ -14,7 +14,6 @@ import com.querydsl.core.types.ExpressionUtils;
 import com.querydsl.core.types.Predicate;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -44,11 +43,16 @@ public class UserServiceImpl implements UserService {
         Pageable paging = SortPageUtil.makePageable(pageNumber, pageSize, sortDirection, sortField);
 
         log.debug("Getting sorted page-list of  Users");
-
-        Page<User> userList = userRepository.findAll(preparePredicateForFindingAllUsers(userFilter), paging);
+        List<User> filteredUserList = null;
+        if (preparePredicateForFindingAllUsers(userFilter) == null) {
+            filteredUserList = userRepository.findAll(paging).toList();
+        } else {
+            filteredUserList = userRepository
+                    .findAll(preparePredicateForFindingAllUsers(userFilter), paging).toList();
+        }
         log.debug("Successfully sorted page-list of Users is got without filtering");
 
-        return userMapper.toUserDTOList(userList.toList());
+        return userMapper.toUserDTOList(filteredUserList);
 
     }
 
