@@ -1,6 +1,7 @@
 package com.exadel.discount.repository;
 
 import com.exadel.discount.model.entity.Discount;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -25,7 +26,7 @@ public interface DiscountRepository extends JpaRepository<Discount, UUID>, Query
 
     @EntityGraph(attributePaths = {"category", "vendorLocations", "tags", "vendor",
             "vendorLocations.city", "vendorLocations.city.country"})
-    List<Discount> findAllById(Iterable<UUID> ids);
+    List<Discount> findAllByIdIn(Iterable<UUID> ids, Sort sort);
 
     @EntityGraph(attributePaths = {"category", "vendorLocations", "tags", "vendor",
             "vendorLocations.city", "vendorLocations.city.country"})
