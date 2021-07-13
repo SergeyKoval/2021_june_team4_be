@@ -1,0 +1,125 @@
+databaseChangeLog:
+  - changeSet:
+      id: add-tags-discounts-data
+      author: elizaveta_dubogryz
+      changes:
+        - insert:
+            tableName: tags_discounts
+            columns:
+              - column:
+                  name: id
+                  value: "1fa3b7e5-a56e-49d5-bfd2-078708b6e82d"
+              - column:
+                  name: discount_id
+                  value: "5f69268b-705e-4fb9-8147-722b4ec1d9da"
+              - column:
+                  name: tag_id
+                  value: "b28349b5-0b39-45ee-bb3c-4f96c1abfe75"
+        - insert:
+            tableName: tags_discounts
+            columns:
+              - column:
+                  name: id
+                  value: "d0f607a6-93be-478b-8113-3cf9bd1a659e"
+              - column:
+                  name: discount_id
+                  value: "779c30b2-06f9-43d1-87e0-edf4a31784f4"
+              - column:
+                  name: tag_id
+                  value: "b28349b5-0b39-45ee-bb3c-4f96c1abfe75"
+        - insert:
+            tableName: tags_discounts
+            columns:
+              - column:
+                  name: id
+                  value: "2d3d95ba-9a99-47e7-a287-b2a46f7a072a"
+              - column:
+                  name: discount_id
+                  value: "779c30b2-06f9-43d1-87e0-edf4a31784f4"
+              - column:
+                  name: tag_id
+                  value: "537edc43-1616-4622-bf45-7b060e6d6471"
+        - insert:
+            tableName: tags_discounts
+            columns:
+              - column:
+                  name: id
+                  value: "9cf2cad5-0895-400c-a456-2e46a28fa705"
+              - column:
+                  name: discount_id
+                  value: "20a01536-1475-4809-9d2b-56cce28588bf"
+              - column:
+                  name: tag_id
+                  value: "537edc43-1616-4622-bf45-7b060e6d6471"
+        - insert:
+            tableName: tags_discounts
+            columns:
+              - column:
+                  name: id
+                  value: "512a7a0c-41f6-4d87-ad09-9142acdffc9e"
+              - column:
+                  name: discount_id
+                  value: "bdcfb249-7829-4c71-bf6c-c74b25ec09b3"
+              - column:
+                  name: tag_id
+                  value: "46868e13-ea9d-42d1-8811-29413b1d1763"
+        - insert:
+            tableName: tags_discounts
+            columns:
+              - column:
+                  name: id
+                  value: "03039dab-2c8f-46c4-b19f-5c59f80d5c4c"
+              - column:
+                  name: discount_id
+                  value: "490cf36f-e22e-41a0-b2bb-ff6b578f29d9"
+              - column:
+                  name: tag_id
+                  value: "46868e13-ea9d-42d1-8811-29413b1d1763"
+        - insert:
+            tableName: tags_discounts
+            columns:
+              - column:
+                  name: id
+                  value: "a053f1de-b56d-4deb-9c83-76725ea1066b"
+              - column:
+                  name: discount_id
+                  value: "490cf36f-e22e-41a0-b2bb-ff6b578f29d9"
+              - column:
+                  name: tag_id
+                  value: "bf48f42a-8110-42fd-b989-df90ed24c56e"
+        - insert:
+            tableName: tags_discounts
+            columns:
+              - column:
+                  name: id
+                  value: "718598c5-d0c2-4703-834b-e71d7d3b02be"
+              - column:
+                  name: discount_id
+                  value: "dd5877e8-8b5a-44dd-9e4f-4675c3ba6adc"
+              - column:
+                  name: tag_id
+                  value: "bf48f42a-8110-42fd-b989-df90ed24c56e"
+        - insert:
+            tableName: tags_discounts
+            columns:
+              - column:
+                  name: id
+                  value: "39182abe-e232-45a9-95e4-e55b6ff930a6"
+              - column:
+                  name: discount_id
+                  value: "670246e6-5c73-4b47-9cdc-5005f7ad4fc9"
+              - column:
+                  name: tag_id
+                  value: "3a7d3fb1-c694-4d8a-9a78-176864405cdc"
+        - insert:
+            tableName: tags_discounts
+            columns:
+              - column:
+                  name: id
+                  value: "15f2ee8b-509b-4318-bdc7-a9bb3d4f069d"
+              - column:
+                  name: discount_id
+                  value: "670246e6-5c73-4b47-9cdc-5005f7ad4fc9"
+              - column:
+                  name: tag_id
+                  value: "452e5fc0-100a-41e9-951d-ba51f06a795e"

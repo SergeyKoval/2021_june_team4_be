@@ -1,0 +1,20 @@
+databaseChangeLog:
+  - changeSet:
+      id: update-vendors-table
+      author: elizaveta_dubogryz
+      changes:
+        - addColumn:
+            tableName: vendors
+            columns:
+              - column:
+                  name: archived
+                  type: boolean
+                  defaultValue: false
+                  constraints:
+                    nullable: false
+        - addColumn:
+            tableName: vendors
+            columns:
+              - column:
+                  name: contacts
+                  type: varchar(255)

@@ -1,90 +1,76 @@
 package com.exadel.discount.controller;
 
-import com.exadel.discount.dto.location.CreateLocationDTO;
-import com.exadel.discount.dto.location.LocationInfoDTO;
-import com.exadel.discount.dto.vendor.BaseVendorDTO;
-import com.exadel.discount.dto.vendor.CreateVendorDTO;
-import com.exadel.discount.dto.vendor.DetailedVendorDTO;
+import com.exadel.discount.model.dto.vendor.BaseVendorDTO;
+import com.exadel.discount.model.dto.vendor.CreateVendorDTO;
+import com.exadel.discount.model.dto.vendor.VendorDTO;
+import com.exadel.discount.security.annotation.AdminAccess;
+import com.exadel.discount.security.annotation.UserAccess;
+import com.exadel.discount.service.VendorService;
 import io.swagger.annotations.ApiOperation;
+import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.Size;
-import java.util.ArrayList;
+import javax.validation.constraints.NotNull;
 import java.util.List;
+import java.util.UUID;
 
 @Validated
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/vendors")
 public class VendorController {
-    private final List<DetailedVendorDTO> detailedVendorsServiceMock = List.of(
-            new DetailedVendorDTO(1, "Vendor1", List.of(
-                    new LocationInfoDTO(3142342, "Country", "City", "Some address", "Some contacts")
-            ), "Description")
-    );
 
-    private final List<BaseVendorDTO> baseVendorsServiceMock = List.of(
-            new BaseVendorDTO(2, "Vendor2")
-    );
+    private final VendorService vendorService;
 
     @GetMapping
     @ApiOperation("Get list of all vendors")
+    @UserAccess
     public List<BaseVendorDTO> getVendorsList() {
-        return baseVendorsServiceMock;
+        return vendorService.getAll();
     }
 
-    @GetMapping("/{vendorId}")
+    @GetMapping("/{id}")
     @ApiOperation("Get vendor by ID")
-    public DetailedVendorDTO getVendorById(@PathVariable(name = "vendorId") @Min(value = 0) long id) {
-        return detailedVendorsServiceMock.get(0);
+    @UserAccess
+    public VendorDTO getVendorById(
+            @PathVariable(name = "id") @NotNull UUID id) {
+        return vendorService.getById(id);
     }
 
     @PostMapping
-    @ApiOperation("Save new vendor")
-    public DetailedVendorDTO saveNewVendor(@RequestBody @Valid CreateVendorDTO vendor) {
-        return detailedVendorsServiceMock.get(0);
+    @ApiOperation("Add new vendor")
+    @AdminAccess
+    public VendorDTO saveNewVendor(@RequestBody @Valid CreateVendorDTO vendor) {
+        return vendorService.save(vendor);
     }
 
-    @PutMapping("/{vendorId}")
-    @ApiOperation("Update information about vendor")
-    public DetailedVendorDTO updateVendor(@PathVariable(name = "vendorId") @Min(value = 0) long vendorId,
-                                          @RequestBody @Valid DetailedVendorDTO vendor) {
-        return vendor;
-    }
-
-    @DeleteMapping("/{vendorId}")
+    @DeleteMapping("/{id}")
     @ApiOperation("Delete vendor by ID")
-    public void deleteVendor(@PathVariable(name = "vendorId") @Min(value = 0) long vendorId) {
-
+    @AdminAccess
+    public void deleteVendor(@PathVariable(name = "id") @NotNull UUID id) {
+        vendorService.deleteById(id);
     }
 
-    @GetMapping("/{vendorId}/locations")
-    @ApiOperation("Get list of all vendor locations")
-    public List<LocationInfoDTO> getVendorLocations(@PathVariable(name = "vendorId") @Min(value = 0) long vendorId) {
-        return new ArrayList<>();
+    @GetMapping("/archived")
+    @ApiOperation("Get all archived Vendors")
+    @AdminAccess
+    public List<BaseVendorDTO> getAllArchivedVendors() {
+        return vendorService.getAllArchived();
     }
 
-    @PostMapping("/{vendorId}/locations")
-    @ApiOperation("Add new location of vendor")
-    public LocationInfoDTO addNewLocation(@PathVariable(name = "vendorId") @Min(value = 0) long vendorId,
-                                          @RequestBody @Valid CreateLocationDTO location) {
-        return new LocationInfoDTO(3142342, "Country", "City", "Some address", "Some contacts");
-    }
-
-    @PutMapping("/{vendorId}/locations/{locationId}")
-    @ApiOperation("Update vendor's location")
-    public LocationInfoDTO updateLocation(@PathVariable(name = "vendorId") @Min(value = 0) long vendorId,
-                                          @PathVariable(name = "locationId") @Min(value = 0) long locationId,
-                                          @RequestBody @Valid LocationInfoDTO location) {
-        return location;
-    }
-
-    @DeleteMapping("/{vendorId}/locations/{locationId}")
-    @ApiOperation("Delete vendor's location")
-    public void deleteLocation(@PathVariable(name = "vendorId") @Min(value = 0) long id,
-                               @PathVariable(name = "locationId") @Min(value = 0) long locationId) {
-
+    @PutMapping("/archived/{id}/restore")
+    @ApiOperation("Restore Vendor by ID")
+    @AdminAccess
+    public VendorDTO restoreVendor(@PathVariable UUID id) {
+        return vendorService.restoreById(id);
     }
 }
