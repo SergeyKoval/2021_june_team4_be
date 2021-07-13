@@ -14,7 +14,7 @@ import com.exadel.discount.repository.FavoriteRepository;
 import com.exadel.discount.repository.UserRepository;
 import com.exadel.discount.repository.query.QueryPredicateBuilder;
 import com.exadel.discount.service.FavoriteService;
-import com.exadel.discount.service.SortPageMaker;
+import com.exadel.discount.repository.query.SortPageUtil;
 import com.querydsl.core.types.ExpressionUtils;
 import com.querydsl.core.types.Predicate;
 import lombok.AllArgsConstructor;
@@ -37,9 +37,9 @@ public class FavoriteServiceImpl implements FavoriteService {
     private final DiscountRepository discountRepository;
 
     @Override
-    public List<FavoriteDTO> findAllFavorites(int pageNumber, int pageSize, String sortDirection, String sortField,
+    public List<FavoriteDTO> search(int pageNumber, int pageSize, String sortDirection, String sortField,
                                               FavoriteFilter favoriteFilter) {
-        Pageable paging = SortPageMaker.makePageable(pageNumber, pageSize, sortDirection, sortField);
+        Pageable paging = SortPageUtil.makePageable(pageNumber, pageSize, sortDirection, sortField);
         log.debug("Getting sorted page-list of all Favorites");
         Page<Favorite> favoriteList = favoriteRepository
                 .findAll(preparePredicateForFindingAllFavorites(favoriteFilter), paging);

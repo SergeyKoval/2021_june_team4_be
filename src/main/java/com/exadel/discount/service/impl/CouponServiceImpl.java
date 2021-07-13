@@ -14,10 +14,9 @@ import com.exadel.discount.repository.DiscountRepository;
 import com.exadel.discount.repository.UserRepository;
 import com.exadel.discount.repository.query.QueryPredicateBuilder;
 import com.exadel.discount.service.CouponService;
-import com.exadel.discount.service.SortPageMaker;
+import com.exadel.discount.repository.query.SortPageUtil;
 import com.querydsl.core.types.ExpressionUtils;
 import com.querydsl.core.types.Predicate;
-import liquibase.pro.packaged.S;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
@@ -38,9 +37,9 @@ public class CouponServiceImpl implements CouponService {
     private final DiscountRepository discountRepository;
 
     @Override
-    public List<CouponDTO> findAllCoupons(int pageNumber, int pageSize, String sortDirection, String sortField,
+    public List<CouponDTO> search(int pageNumber, int pageSize, String sortDirection, String sortField,
                                           CouponFilter couponFilter) {
-        Pageable paging = SortPageMaker.makePageable(pageNumber, pageSize, sortDirection, sortField);
+        Pageable paging = SortPageUtil.makePageable(pageNumber, pageSize, sortDirection, sortField);
         log.debug("Getting sorted page-list of all Coupons");
         List<Coupon> filteredCouponList = couponRepository
                 .findAll(preparePredicateForFindingAllCoupons(couponFilter), paging)
