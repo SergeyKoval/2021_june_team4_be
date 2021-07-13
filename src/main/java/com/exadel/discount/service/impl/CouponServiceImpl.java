@@ -110,8 +110,8 @@ public class CouponServiceImpl implements CouponService {
                         .buildOr(),
                 QueryPredicateBuilder.init()
                         .append(couponfilter.getUserId(), QCoupon.coupon.user.id::eq)
-                        .append(couponfilter.getStartDate(), QCoupon.coupon.date::goe)
-                        .append(couponfilter.getEndDate(), QCoupon.coupon.date::loe)
+                        .append(couponfilter.getCreationTimeFrom(), QCoupon.coupon.date::goe)
+                        .append(couponfilter.getCreationTimeTo(), QCoupon.coupon.date::loe)
                         .append(couponfilter.getArchived(), QCoupon.coupon.discount.archived::eq)
                         .append(couponfilter.getEndDateFrom(), QCoupon.coupon.discount.endTime::goe)
                         .append(couponfilter.getEndDateTo(), QCoupon.coupon.discount.endTime::loe)
