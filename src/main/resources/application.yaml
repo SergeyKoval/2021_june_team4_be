@@ -5,6 +5,9 @@ spring:
       ddl-auto: validate
     open-in-view: false
   datasource:
+    url: jdbc:postgresql://localhost:5432/discounts
+    username: postgres
+    password: asdqwe
     driver-class-name: org.postgresql.Driver
 
 jwt:
