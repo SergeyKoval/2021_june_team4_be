@@ -1,16 +1,16 @@
 package com.exadel.discount.service.impl;
 
+import com.exadel.discount.exception.NotFoundException;
 import com.exadel.discount.model.dto.discount.CreateDiscountDTO;
 import com.exadel.discount.model.dto.discount.DiscountDTO;
 import com.exadel.discount.model.dto.discount.DiscountFilter;
+import com.exadel.discount.model.dto.mapper.DiscountMapper;
 import com.exadel.discount.model.entity.Category;
 import com.exadel.discount.model.entity.Discount;
 import com.exadel.discount.model.entity.QDiscount;
 import com.exadel.discount.model.entity.Tag;
 import com.exadel.discount.model.entity.Vendor;
 import com.exadel.discount.model.entity.VendorLocation;
-import com.exadel.discount.exception.NotFoundException;
-import com.exadel.discount.model.dto.mapper.DiscountMapper;
 import com.exadel.discount.repository.CategoryRepository;
 import com.exadel.discount.repository.DiscountRepository;
 import com.exadel.discount.repository.TagRepository;
@@ -81,7 +81,7 @@ public class DiscountServiceImpl implements DiscountService {
         log.debug("Getting list of all Discounts by filter");
         List<UUID> discountIds = discountRepository
                 .findAllDiscountIds(preparePredicateForFindingAll(filter), PageRequest.of(page, size));
-        List<Discount> discounts = discountRepository.findAllById(discountIds);
+        List<Discount> discounts = discountRepository.findAllByIdIn(discountIds, sort);
         log.debug("Successfully got list of all Discounts by filter");
         return discountMapper.getListDTO(discounts);
     }
@@ -118,8 +118,9 @@ public class DiscountServiceImpl implements DiscountService {
         log.debug("Getting list of all Discounts by searchText");
         List<UUID> discountsIds = discountRepository
                 .findAllDiscountIds(prepareSearchPredicate(searchText),
-                        PageRequest.of(0, size, Sort.by("viewNumber").descending()));
-        List<Discount> discounts = discountRepository.findAllById(discountsIds);
+                        PageRequest.of(0, size));
+        List<Discount> discounts = discountRepository
+                .findAllByIdIn(discountsIds, Sort.by("viewNumber").descending());
         log.debug("Successfully got list of all Discounts by searchText");
         return discountMapper.getListDTO(discounts);
     }
