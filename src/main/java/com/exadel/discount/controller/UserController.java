@@ -1,9 +1,7 @@
 package com.exadel.discount.controller;
 
-import com.exadel.discount.dto.discount.DiscountFilter;
-import com.exadel.discount.dto.user.UserDTO;
-import com.exadel.discount.dto.user.UserFilter;
-import com.exadel.discount.entity.Role;
+import com.exadel.discount.model.dto.user.UserDTO;
+import com.exadel.discount.model.dto.user.UserFilter;
 import com.exadel.discount.security.annotation.AdminAccess;
 import com.exadel.discount.security.annotation.UserAccess;
 import com.exadel.discount.service.UserService;
@@ -33,17 +31,15 @@ public class UserController {
                                      @RequestParam(name = "pageSize", defaultValue = "10") int pageSize,
                                      @RequestParam(name = "sortDirection", defaultValue = "") String sortDirection,
                                      @RequestParam(name = "sortField", defaultValue = "id") String sortBy,
-                                     @RequestParam(name = "role", defaultValue = "", required = false) String role,
-                                     @RequestParam(name = "cityName", required = false) String cityName,
-                                     @RequestParam(name = "countryName", required = false) String countryName,
+                                     @RequestParam(name = "cityName", required = false) List<UUID> cityIds,
+                                     @RequestParam(name = "countryName", required = false) List<UUID> countryIds,
                                      @RequestParam(name = "firstName", required = false) String firstName,
                                      @RequestParam(name = "lastName", required = false) String lastName) {
         UserFilter filter = UserFilter.builder()
                 .firstName(firstName)
                 .lastName(lastName)
-                .role(Role.valueOf(role.toUpperCase()))
-                .cityName(cityName)
-                .countryName(countryName)
+                .cityIds(cityIds)
+                .countryIds(countryIds)
                 .build();
         return userService.findAllUsers(pageNumber, pageSize, sortDirection, sortBy, filter);
     }

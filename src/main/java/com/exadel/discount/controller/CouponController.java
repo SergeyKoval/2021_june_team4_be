@@ -1,8 +1,8 @@
 package com.exadel.discount.controller;
 
-import com.exadel.discount.dto.coupon.CouponDTO;
-import com.exadel.discount.dto.coupon.CouponFilter;
-import com.exadel.discount.dto.coupon.CreateCouponDTO;
+import com.exadel.discount.model.dto.coupon.CouponDTO;
+import com.exadel.discount.model.dto.coupon.CouponFilter;
+import com.exadel.discount.model.dto.coupon.CreateCouponDTO;
 import com.exadel.discount.security.annotation.AdminAccess;
 import com.exadel.discount.security.annotation.UserAccess;
 import com.exadel.discount.service.CouponService;
@@ -44,8 +44,6 @@ public class CouponController {
                                          @RequestParam(required = false) List<UUID> countryId,
                                          @RequestParam(required = false) List<UUID> cityId,
                                          @RequestParam(required = false) List<UUID> tagId,
-                                         @RequestParam(required = false) Integer percentFrom,
-                                         @RequestParam(required = false) Integer percentTo,
                                          @RequestParam(required = false)
                                              @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
                                                      LocalDateTime endDateTimeFrom,
@@ -54,10 +52,10 @@ public class CouponController {
                                                      LocalDateTime endDateTimeTo,
                                          @RequestParam(value = "startDate", required = false)
                                              @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
-                                             final LocalDateTime startDate,
+                                             final LocalDateTime creationTimeFrom,
                                          @RequestParam(value = "endDate", required = false)
                                              @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
-                                             final LocalDateTime endDate,
+                                             final LocalDateTime creationTimeTo,
                                          @RequestParam(value = "userId", required = false) UUID userId) {
         CouponFilter filter = CouponFilter.builder()
                 .vendorIds(vendorId)
@@ -65,13 +63,11 @@ public class CouponController {
                 .countryIds(countryId)
                 .cityIds(cityId)
                 .tagIds(tagId)
-                .percentFrom(percentFrom)
-                .percentTo(percentTo)
                 .userId(userId)
                 .endDateFrom(endDateTimeFrom)
                 .endDateTo(endDateTimeTo)
-                .startDate(startDate)
-                .endDate(endDate)
+                .startDate(creationTimeFrom)
+                .endDate(creationTimeTo)
                 .build();
         return couponService.findAllCoupons(pageNumber, pageSize, sortDirection, sortField, filter);
     }
@@ -88,15 +84,5 @@ public class CouponController {
     @UserAccess
     public CouponDTO addCoupon(@RequestBody @NotNull final CreateCouponDTO createCouponDTO) {
         return couponService.assignCouponToUser(createCouponDTO);
-    }
-
-    //Time example : 2021-06-15T11:58:11
-    @GetMapping("/date")
-    @ApiOperation("Get coupon by certain date")
-
-    public CouponDTO getCouponByDate(@RequestParam("date")
-                                     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
-                                         @NotNull final LocalDateTime date) {
-        return couponService.findCouponByDate(date);
     }
 }

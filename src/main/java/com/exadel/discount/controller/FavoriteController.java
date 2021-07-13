@@ -1,9 +1,8 @@
 package com.exadel.discount.controller;
 
-import com.exadel.discount.dto.coupon.CouponFilter;
-import com.exadel.discount.dto.favorite.CreateFavoriteDTO;
-import com.exadel.discount.dto.favorite.FavoriteDTO;
-import com.exadel.discount.dto.favorite.FavoriteFilter;
+import com.exadel.discount.model.dto.favorite.CreateFavoriteDTO;
+import com.exadel.discount.model.dto.favorite.FavoriteDTO;
+import com.exadel.discount.model.dto.favorite.FavoriteFilter;
 import com.exadel.discount.security.annotation.AdminAccess;
 import com.exadel.discount.security.annotation.UserAccess;
 import com.exadel.discount.service.FavoriteService;
@@ -42,8 +41,6 @@ public class FavoriteController {
                                              @RequestParam(required = false) List<UUID> countryId,
                                              @RequestParam(required = false) List<UUID> cityId,
                                              @RequestParam(required = false) List<UUID> tagId,
-                                             @RequestParam(required = false) Integer percentFrom,
-                                             @RequestParam(required = false) Integer percentTo,
                                              @RequestParam(required = false)
                                                  @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
                                                          LocalDateTime endDateTimeFrom,
@@ -57,8 +54,6 @@ public class FavoriteController {
                 .countryIds(countryId)
                 .cityIds(cityId)
                 .tagIds(tagId)
-                .percentFrom(percentFrom)
-                .percentTo(percentTo)
                 .userId(userId)
                 .endDateFrom(endDateTimeFrom)
                 .endDateTo(endDateTimeTo)
