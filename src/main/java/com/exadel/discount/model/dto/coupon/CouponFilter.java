@@ -11,8 +11,8 @@ import java.util.UUID;
 @Data
 public class CouponFilter {
     private UUID userId;
-    private LocalDateTime startDate;
-    private LocalDateTime endDate;
+    private LocalDateTime creationTimeFrom;
+    private LocalDateTime creationTimeTo;
     private List<UUID> vendorIds;
     private List<UUID> categoryIds;
     private List<UUID> countryIds;
