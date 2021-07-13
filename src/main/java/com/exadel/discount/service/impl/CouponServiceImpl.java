@@ -19,13 +19,18 @@ import com.querydsl.core.types.ExpressionUtils;
 import com.querydsl.core.types.Predicate;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 @AllArgsConstructor
@@ -35,14 +40,15 @@ public class CouponServiceImpl implements CouponService {
     private final CouponMapper couponMapper;
     private final UserRepository userRepository;
     private final DiscountRepository discountRepository;
+    private static final int SEARCH_WORD_MIN_LENGTH = 3;
 
     @SuppressWarnings({"checkstyle:WhitespaceAround", "checkstyle:LeftCurly", "checkstyle:NeedBraces"})
     @Override
-    public List<CouponDTO> search(int pageNumber, int pageSize, String sortDirection, String sortField,
+    public List<CouponDTO> getAll(int pageNumber, int pageSize, String sortDirection, String sortField,
                                           CouponFilter couponFilter) {
         Pageable paging = SortPageUtil.makePageable(pageNumber, pageSize, sortDirection, sortField);
         log.debug("Getting sorted page-list of all Coupons");
-        List<Coupon> filteredCouponList = null;
+        List<Coupon> filteredCouponList;
             if (preparePredicateForFindingAllCoupons(couponFilter) == null) {
                 filteredCouponList = couponRepository.findAll(paging).toList();
             } else {
@@ -51,6 +57,17 @@ public class CouponServiceImpl implements CouponService {
             }
         log.debug("Successfully sorted page-list of all Coupons is got");
         return couponMapper.toCouponDTOList(filteredCouponList);
+    }
+
+    @Override
+    public List<CouponDTO> search(Integer size, String searchText) {
+        log.debug("Getting sorted page-list of all Coupons by searchText");
+        List<UUID> couponsIds = couponRepository
+                .findAllCouponIds(prepareSearchPredicate(searchText), PageRequest.of(0, size));
+        List<Coupon> coupons = couponRepository
+                .findAllByIdIn(couponsIds, Sort.by("viewNumber").descending());
+        log.debug("Successfully got sorted page-list of all Coupons by searchText");
+        return couponMapper.toCouponDTOList(coupons);
     }
 
     @Override
@@ -107,5 +124,20 @@ public class CouponServiceImpl implements CouponService {
                         .append(couponFilter.getTagIds(), QCoupon.coupon.discount.tags.any().id::in)
                         .append(couponFilter.getVendorIds(), QCoupon.coupon.discount.vendor.id::in)
                         .buildAnd());
+    }
+
+    private Predicate prepareSearchPredicate(String searchText) {
+        List<Predicate> searchPredicates = Stream
+                .of(StringUtils.split(searchText, StringUtils.SPACE))
+                .filter(word -> word.length() >= SEARCH_WORD_MIN_LENGTH)
+                .map(word -> QueryPredicateBuilder.init()
+                        .append(word, QCoupon.coupon.discount.name::containsIgnoreCase)
+                        .append(word, QCoupon.coupon.discount.description::containsIgnoreCase)
+                        .append(word, QCoupon.coupon.discount.vendor.name::containsIgnoreCase)
+                        .append(word, QCoupon.coupon.discount.category.name::containsIgnoreCase)
+                        .append(word, QCoupon.coupon.discount.tags.any().name::containsIgnoreCase)
+                        .buildOr())
+                .collect(Collectors.toList());
+        return ExpressionUtils.allOf(searchPredicates);
     }
 }

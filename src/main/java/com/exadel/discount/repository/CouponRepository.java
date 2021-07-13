@@ -1,11 +1,10 @@
 package com.exadel.discount.repository;
 
 import com.exadel.discount.model.entity.Coupon;
-import com.exadel.discount.model.entity.Favorite;
 import com.querydsl.core.types.Predicate;
-import org.springframework.boot.autoconfigure.data.web.SpringDataWebProperties;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.querydsl.QuerydslPredicateExecutor;
@@ -17,7 +16,8 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Repository
-public interface CouponRepository extends JpaRepository<Coupon, UUID>, QuerydslPredicateExecutor<Coupon> {
+public interface CouponRepository extends JpaRepository<Coupon, UUID>, QuerydslPredicateExecutor<Coupon>,
+                                          QueryFactoryCouponRepository {
     @EntityGraph(attributePaths = {"discount", "discount.category", "discount.vendorLocations", "discount.tags",
             "discount.vendor", "discount.vendorLocations.city", "discount.vendorLocations.city.country"})
     Optional<Coupon> findById(UUID userId);
@@ -33,4 +33,8 @@ public interface CouponRepository extends JpaRepository<Coupon, UUID>, QuerydslP
     @EntityGraph(attributePaths = {"discount", "discount.category", "discount.vendorLocations", "discount.tags",
             "discount.vendor", "discount.vendorLocations.city", "discount.vendorLocations.city.country"})
     Page<Coupon> findAll(Pageable paging);
+
+    @EntityGraph(attributePaths = {"discount", "discount.category", "discount.vendorLocations", "discount.tags",
+            "discount.vendor", "discount.vendorLocations.city", "discount.vendorLocations.city.country"})
+    List<Coupon> findAllByIdIn(Iterable<UUID> ids, Sort sort);
 }

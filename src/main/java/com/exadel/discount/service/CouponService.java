@@ -11,7 +11,9 @@ import java.util.UUID;
 public interface CouponService {
     CouponDTO findCouponById(UUID id);
 
-    List<CouponDTO> search(int pageNumber, int pageSize, String sortDirection, String sortField, CouponFilter filter);
+    List<CouponDTO> getAll(int pageNumber, int pageSize, String sortDirection, String sortField, CouponFilter filter);
 
     CouponDTO assignCouponToUser(CreateCouponDTO createCouponDTO);
+
+    List<CouponDTO> search(Integer size, String searchText);
 }

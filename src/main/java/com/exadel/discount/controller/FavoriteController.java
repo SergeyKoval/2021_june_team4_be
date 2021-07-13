@@ -62,7 +62,15 @@ public class FavoriteController {
                 .endDateTo(endDateTimeTo)
                 .userId(userId)
                 .build();
-        return favoriteService.search(pageNumber, pageSize, sortDirection, sortField, filter);
+        return favoriteService.getAll(pageNumber, pageSize, sortDirection, sortField, filter);
+    }
+
+    @GetMapping("/search")
+    @ApiOperation("Get Favorites by search text")
+    @UserAccess
+    public List<FavoriteDTO> search(@RequestParam(defaultValue = "8", required = false) Integer size,
+                                    @RequestParam String searchText) {
+        return favoriteService.search(size, searchText);
     }
 
     @GetMapping("{id}")

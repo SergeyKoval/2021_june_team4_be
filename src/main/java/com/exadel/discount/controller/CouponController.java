@@ -68,7 +68,15 @@ public class CouponController {
                 .creationTimeFrom(creationTimeFrom)
                 .creationTimeTo(creationTimeTo)
                 .build();
-        return couponService.search(pageNumber, pageSize, sortDirection, sortField, filter);
+        return couponService.getAll(pageNumber, pageSize, sortDirection, sortField, filter);
+    }
+
+    @GetMapping("/search")
+    @ApiOperation("Get Coupons by search text")
+    @UserAccess
+    public List<CouponDTO> search(@RequestParam(defaultValue = "8", required = false) Integer size,
+                                    @RequestParam String searchText) {
+        return couponService.search(size, searchText);
     }
 
     @GetMapping("{id}")
