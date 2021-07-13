@@ -33,9 +33,9 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDTO findUserById(UUID id) {
         log.debug("Finding User by ID");
-        Optional<User> userOptional = userRepository.findById(id);
-        if (userOptional.isEmpty()) throw new NotFoundException(String.format("User with id %s not found", id));
-        else log.debug("Successfully User is found by ID");
+        Optional<User> userOptional = userRepository.findById(id)
+                .orElseThrow(() -> NotFoundException(String.format("User with id %s not found", id)));
+        log.debug("Successfully User is found by ID");
         return userMapper.toUserDTO(userOptional.get());
     }
 
@@ -56,12 +56,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<UserDTO> findUsersByName(String lastName, String firstName) {
         log.debug("Finding User by lastName and firstName");
-        List<User> suchNameUserList = userRepository.findDistinctByLastNameAndFirstName(lastName, firstName);
-        if (suchNameUserList.size() == 0) throw
-                new NotFoundException(String.format("Not found a user with lastname %s and " +
-                        "                                                  firstname %s ", lastName, firstName));
+        List<User> users = userRepository.findDistinctByLastNameAndFirstName(lastName, firstName)
+                .orElseThrow(() -> NotFoundException(String.format("Not found a user with lastname %s and " +
+                                                                   "firstname %s ", lastName, firstName)));
         log.debug("Successfully User is found by lastname and firstname");
-        return userMapper.toUserDTOList(suchNameUserList);
+        return userMapper.toUserDTOList(users);
     }
 
     private Predicate preparePredicateForFindingAllUsers(UserFilter userFilter) {

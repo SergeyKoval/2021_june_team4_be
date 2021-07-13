@@ -44,9 +44,6 @@ public class FavoriteServiceImpl implements FavoriteService {
         log.debug("Getting sorted page-list of all Favorites");
         Page<Favorite> favoriteList = favoriteRepository
                 .findAll(preparePredicateForFindingAllFavorites(favoriteFilter), paging);
-        if (favoriteList.isEmpty()) throw
-                new NotFoundException("No favorites are found");
-
         log.debug("Successfully got sorted page-list of all Favorites");
         return favoriteMapper.toFavoriteDTOList(favoriteList.toList());
     }
@@ -54,10 +51,9 @@ public class FavoriteServiceImpl implements FavoriteService {
     @Override
     public FavoriteDTO findFavoriteById(UUID id) {
         log.debug("Finding Favorite by ID");
-        Optional<Favorite> favoriteOptional = favoriteRepository.findById(id);
-        if (favoriteOptional.isEmpty()) throw
-                new NotFoundException(String.format("Favorite with id %s not found", id));
-        else log.debug("Successfully Favorite is found by ID");
+        Optional<Favorite> favoriteOptional = favoriteRepository.findById(id)
+                .orElseThrow(() -> NotFoundException(String.format("Favorite with id %s not found", id));
+        log.debug("Successfully Favorite is found by ID");
         return favoriteMapper.toFavoriteDTO(favoriteOptional.get());
     }
 
@@ -80,10 +76,10 @@ public class FavoriteServiceImpl implements FavoriteService {
         favorite.setUser(user);
         favorite.setDiscount(discount);
 
-        favoriteRepository.save(favorite);
+        Favorite favoriteSaved = favoriteRepository.save(favorite);
         log.debug("Successfully new Favorite is saved to certain user");
 
-        return favoriteMapper.toFavoriteDTO(favorite);
+        return favoriteMapper.toFavoriteDTO(favoriteSaved);
     }
 
     @Transactional

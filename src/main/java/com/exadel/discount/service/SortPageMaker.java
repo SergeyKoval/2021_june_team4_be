@@ -7,7 +7,7 @@ import org.springframework.data.domain.Sort;
 public class SortPageMaker {
     public static Pageable makePageable(int pageNumber, int pageSize, String sortDirection, String sortField) {
         Sort sort = Sort.unsorted();
-        if (("ASC").equals(sortDirection.toUpperCase()) || ("DESC").equals(sortDirection.toUpperCase())) {
+        if ("ASC".equalsIgnoreCase(sortDirection.toUpperCase()) || "DESC".equalsIgnoreCase(sortDirection.toUpperCase())) {
             sort = Sort.by(Sort.Direction.valueOf(sortDirection.toUpperCase()), sortField);
         }
         return PageRequest.of(pageNumber, pageSize, sort);

@@ -17,6 +17,7 @@ import com.exadel.discount.service.CouponService;
 import com.exadel.discount.service.SortPageMaker;
 import com.querydsl.core.types.ExpressionUtils;
 import com.querydsl.core.types.Predicate;
+import liquibase.pro.packaged.S;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
@@ -46,30 +47,16 @@ public class CouponServiceImpl implements CouponService {
                 .findAll(preparePredicateForFindingAllCoupons(couponFilter), paging)
                 .toList();
         log.debug("Successfully sorted page-list of all Coupons is got");
-        if (filteredCouponList.isEmpty()) {
-            throw new NotFoundException(String.format("No Coupons %s are found", filteredCouponList));
-        }
         return couponMapper.toCouponDTOList(filteredCouponList);
     }
 
     @Override
     public CouponDTO findCouponById(UUID id) {
         log.debug("Finding Coupon by ID");
-        Optional<Coupon> couponOptional = couponRepository.findById(id);
-            if (couponOptional.isEmpty()) throw
-                    new NotFoundException(String.format("Coupon with id %s not found", id));
+        Optional<Coupon> couponOptional = couponRepository.findById(id)
+                .orElseThrow(() -> NotFoundException(String.format("Coupon with id %s not found", id)));
         log.debug("Successfully Coupon is found by ID");
         return couponMapper.toCouponDTO(couponOptional.get());
-    }
-
-    public CouponDTO findCouponByDate(LocalDateTime date) {
-        log.debug("Finding coupon by date");
-        Optional<Coupon> coupon = couponRepository.findCouponByDate(date);
-        Coupon foundedCoupon;
-        if (coupon.isPresent()) foundedCoupon = coupon.get();
-        else throw new NotFoundException(String.format("Coupon with date %s not found", date));
-        log.debug("Successfully coupon is found by date");
-        return couponMapper.toCouponDTO(foundedCoupon);
     }
 
     @Transactional
@@ -91,10 +78,11 @@ public class CouponServiceImpl implements CouponService {
             Coupon coupon = new Coupon();
             coupon.setUser(user);
             coupon.setDiscount(discount);
+            coupon.setDate(LocalDateTime.now());
 
-            couponRepository.save(coupon);
+            Coupon couponSaved = couponRepository.save(coupon);
             log.debug("Successfully new coupon is saved to certain user");
-            return couponMapper.toCouponDTO(coupon);
+            return couponMapper.toCouponDTO(couponSaved);
         }
 
     private Predicate preparePredicateForFindingAllCoupons(CouponFilter couponfilter) {
