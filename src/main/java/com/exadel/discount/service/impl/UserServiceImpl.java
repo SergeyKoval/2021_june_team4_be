@@ -40,10 +40,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<UserDTO> findAllUsers(int pageNumber,
-                                      int pageSize,
-                                      String sortDirection,
-                                      String sortField,
+    public List<UserDTO> findAllUsers(int pageNumber, int pageSize, String sortDirection, String sortField,
                                       UserFilter userFilter) {
         Pageable paging = SortPageMaker.makePageable(pageNumber, pageSize, sortDirection, sortField);
 

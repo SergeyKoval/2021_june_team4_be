@@ -38,10 +38,7 @@ public class FavoriteServiceImpl implements FavoriteService {
     private final DiscountRepository discountRepository;
 
     @Override
-    public List<FavoriteDTO> findAllFavorites(int pageNumber,
-                                              int pageSize,
-                                              String sortDirection,
-                                              String sortField,
+    public List<FavoriteDTO> findAllFavorites(int pageNumber, int pageSize, String sortDirection, String sortField,
                                               FavoriteFilter favoriteFilter) {
         Pageable paging = SortPageMaker.makePageable(pageNumber, pageSize, sortDirection, sortField);
         log.debug("Getting sorted page-list of all Favorites");
