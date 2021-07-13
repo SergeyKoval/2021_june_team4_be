@@ -70,8 +70,8 @@ public class UserServiceImpl implements UserService {
     private Predicate preparePredicateForFindingAllUsers(UserFilter userFilter) {
         return ExpressionUtils.and(
                 QueryPredicateBuilder.init()
-                        .append(userFilter.getCityName(), QUser.user.city.name::eq)
-                        .append(userFilter.getCountryName(), QUser.user.city.country.name::eq)
+                        .append(userFilter.getCityIds(), QUser.user.city.id::in)
+                        .append(userFilter.getCountryIds(), QUser.user.city.country.id::in)
                         .buildOr(),
                 QueryPredicateBuilder.init()
                         .append(userFilter.getRole(), QUser.user.role::eq)
