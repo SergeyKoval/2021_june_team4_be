@@ -51,10 +51,10 @@ public class FavoriteServiceImpl implements FavoriteService {
     @Override
     public FavoriteDTO findFavoriteById(UUID id) {
         log.debug("Finding Favorite by ID");
-        Optional<Favorite> favoriteOptional = favoriteRepository.findById(id)
+        Favorite favorite = favoriteRepository.findById(id)
                 .orElseThrow(() -> NotFoundException(String.format("Favorite with id %s not found", id));
         log.debug("Successfully Favorite is found by ID");
-        return favoriteMapper.toFavoriteDTO(favoriteOptional.get());
+        return favoriteMapper.toFavoriteDTO(favorite);
     }
 
     @Transactional

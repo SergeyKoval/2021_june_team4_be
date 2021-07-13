@@ -33,10 +33,10 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDTO findUserById(UUID id) {
         log.debug("Finding User by ID");
-        Optional<User> userOptional = userRepository.findById(id)
+        User user = userRepository.findById(id)
                 .orElseThrow(() -> NotFoundException(String.format("User with id %s not found", id)));
         log.debug("Successfully User is found by ID");
-        return userMapper.toUserDTO(userOptional.get());
+        return userMapper.toUserDTO(user);
     }
 
     @Override

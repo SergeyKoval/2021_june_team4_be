@@ -53,10 +53,10 @@ public class CouponServiceImpl implements CouponService {
     @Override
     public CouponDTO findCouponById(UUID id) {
         log.debug("Finding Coupon by ID");
-        Optional<Coupon> couponOptional = couponRepository.findById(id)
+        Coupon coupon = couponRepository.findById(id)
                 .orElseThrow(() -> NotFoundException(String.format("Coupon with id %s not found", id)));
         log.debug("Successfully Coupon is found by ID");
-        return couponMapper.toCouponDTO(couponOptional.get());
+        return couponMapper.toCouponDTO(coupon);
     }
 
     @Transactional
