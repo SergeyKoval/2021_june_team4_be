@@ -25,7 +25,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -94,22 +93,22 @@ public class FavoriteServiceImpl implements FavoriteService {
         log.debug("Successfully Favorite is deleted  by ID");
     }
 
-    private Predicate preparePredicateForFindingAllFavorites(FavoriteFilter favoritefilter) {
+    private Predicate preparePredicateForFindingAllFavorites(FavoriteFilter favoriteFilter) {
         return ExpressionUtils.and(
                 QueryPredicateBuilder.init()
-                        .append(favoritefilter.getCountryIds(),
+                        .append(favoriteFilter.getCountryIds(),
                                 QFavorite.favorite.discount.vendorLocations.any().city.country.id::in)
-                        .append(favoritefilter.getCityIds(),
+                        .append(favoriteFilter.getCityIds(),
                                 QFavorite.favorite.discount.vendorLocations.any().city.id::in)
                         .buildOr(),
                 QueryPredicateBuilder.init()
-                        .append(favoritefilter.getUserId(), QFavorite.favorite.user.id::eq)
-                        .append(favoritefilter.getArchived(), QFavorite.favorite.discount.archived::eq)
-                        .append(favoritefilter.getEndDateFrom(), QFavorite.favorite.discount.endTime::goe)
-                        .append(favoritefilter.getEndDateTo(), QFavorite.favorite.discount.endTime::loe)
-                        .append(favoritefilter.getCategoryIds(), QFavorite.favorite.discount.category.id::in)
-                        .append(favoritefilter.getTagIds(), QFavorite.favorite.discount.tags.any().id::in)
-                        .append(favoritefilter.getVendorIds(), QFavorite.favorite.discount.vendor.id::in)
+                        .append(favoriteFilter.getUserId(), QFavorite.favorite.user.id::eq)
+                        .append(favoriteFilter.getArchived(), QFavorite.favorite.discount.archived::eq)
+                        .append(favoriteFilter.getEndDateFrom(), QFavorite.favorite.discount.endTime::goe)
+                        .append(favoriteFilter.getEndDateTo(), QFavorite.favorite.discount.endTime::loe)
+                        .append(favoriteFilter.getCategoryIds(), QFavorite.favorite.discount.category.id::in)
+                        .append(favoriteFilter.getTagIds(), QFavorite.favorite.discount.tags.any().id::in)
+                        .append(favoriteFilter.getVendorIds(), QFavorite.favorite.discount.vendor.id::in)
                         .buildAnd());
     }
 }

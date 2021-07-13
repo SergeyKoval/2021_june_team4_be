@@ -26,7 +26,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -85,24 +84,24 @@ public class CouponServiceImpl implements CouponService {
             return couponMapper.toCouponDTO(couponSaved);
         }
 
-    private Predicate preparePredicateForFindingAllCoupons(CouponFilter couponfilter) {
+    private Predicate preparePredicateForFindingAllCoupons(CouponFilter couponFilter) {
         return ExpressionUtils.and(
                 QueryPredicateBuilder.init()
-                        .append(couponfilter.getCountryIds(),
+                        .append(couponFilter.getCountryIds(),
                                 QCoupon.coupon.discount.vendorLocations.any().city.country.id::in)
-                        .append(couponfilter.getCityIds(),
+                        .append(couponFilter.getCityIds(),
                                 QCoupon.coupon.discount.vendorLocations.any().city.id::in)
                         .buildOr(),
                 QueryPredicateBuilder.init()
-                        .append(couponfilter.getUserId(), QCoupon.coupon.user.id::eq)
-                        .append(couponfilter.getCreationTimeFrom(), QCoupon.coupon.date::goe)
-                        .append(couponfilter.getCreationTimeTo(), QCoupon.coupon.date::loe)
-                        .append(couponfilter.getArchived(), QCoupon.coupon.discount.archived::eq)
-                        .append(couponfilter.getEndDateFrom(), QCoupon.coupon.discount.endTime::goe)
-                        .append(couponfilter.getEndDateTo(), QCoupon.coupon.discount.endTime::loe)
-                        .append(couponfilter.getCategoryIds(), QCoupon.coupon.discount.category.id::in)
-                        .append(couponfilter.getTagIds(), QCoupon.coupon.discount.tags.any().id::in)
-                        .append(couponfilter.getVendorIds(), QCoupon.coupon.discount.vendor.id::in)
+                        .append(couponFilter.getUserId(), QCoupon.coupon.user.id::eq)
+                        .append(couponFilter.getCreationTimeFrom(), QCoupon.coupon.date::goe)
+                        .append(couponFilter.getCreationTimeTo(), QCoupon.coupon.date::loe)
+                        .append(couponFilter.getArchived(), QCoupon.coupon.discount.archived::eq)
+                        .append(couponFilter.getEndDateFrom(), QCoupon.coupon.discount.endTime::goe)
+                        .append(couponFilter.getEndDateTo(), QCoupon.coupon.discount.endTime::loe)
+                        .append(couponFilter.getCategoryIds(), QCoupon.coupon.discount.category.id::in)
+                        .append(couponFilter.getTagIds(), QCoupon.coupon.discount.tags.any().id::in)
+                        .append(couponFilter.getVendorIds(), QCoupon.coupon.discount.vendor.id::in)
                         .buildAnd());
     }
 }
