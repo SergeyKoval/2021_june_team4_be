@@ -1,6 +1,6 @@
 package com.exadel.discount.controller;
 
-import com.exadel.discount.dto.TagDTO;
+import com.exadel.discount.model.dto.TagDTO;
 import com.exadel.discount.service.TagService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

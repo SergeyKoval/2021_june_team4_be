@@ -1,8 +1,8 @@
 package com.exadel.discount.service;
 
-import com.exadel.discount.dto.TagDTO;
-import com.exadel.discount.entity.Tag;
-import com.exadel.discount.mapper.TagMapper;
+import com.exadel.discount.model.dto.TagDTO;
+import com.exadel.discount.model.entity.Tag;
+import com.exadel.discount.model.dto.mapper.TagMapper;
 import com.exadel.discount.repository.TagRepository;
 import com.exadel.discount.service.impl.TagServiceImpl;
 import org.junit.jupiter.api.Assertions;
