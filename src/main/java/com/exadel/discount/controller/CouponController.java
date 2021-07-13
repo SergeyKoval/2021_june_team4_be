@@ -31,7 +31,7 @@ public class CouponController {
     @GetMapping
     @ApiOperation("Get page-list of all coupons with filtering/sorting")
     @AdminAccess
-    public List<CouponDTO> getAllCoupons(@RequestParam(name = "pageNumber", defaultValue = "1", required = false)
+    public List<CouponDTO> getAllCoupons(@RequestParam(name = "pageNumber", defaultValue = "0", required = false)
                                                      int pageNumber,
                                          @RequestParam(name = "pageSize", defaultValue = "10", required = false)
                                                     int pageSize,

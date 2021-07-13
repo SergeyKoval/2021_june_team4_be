@@ -27,7 +27,7 @@ public class UserController {
     @GetMapping
     @ApiOperation("Get sorted page-list of all users with filtering with role USER - as default")
     @AdminAccess
-    public List<UserDTO> getAllUsers(@RequestParam(name = "pageNumber", defaultValue = "1") int pageNumber,
+    public List<UserDTO> getAllUsers(@RequestParam(name = "pageNumber", defaultValue = "0") int pageNumber,
                                      @RequestParam(name = "pageSize", defaultValue = "10") int pageSize,
                                      @RequestParam(name = "sortDirection", defaultValue = "") String sortDirection,
                                      @RequestParam(name = "sortField", defaultValue = "id") String sortBy,
