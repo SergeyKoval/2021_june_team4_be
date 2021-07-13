@@ -27,14 +27,14 @@ public class UserController {
     @GetMapping
     @ApiOperation("Get sorted page-list of all users with filtering with role USER - as default")
     @AdminAccess
-    public List<UserDTO> getAllUsers(@RequestParam(name = "pageNumber", defaultValue = "0") int pageNumber,
-                                     @RequestParam(name = "pageSize", defaultValue = "10") int pageSize,
-                                     @RequestParam(name = "sortDirection", defaultValue = "") String sortDirection,
-                                     @RequestParam(name = "sortField", defaultValue = "id") String sortBy,
-                                     @RequestParam(name = "cityName", required = false) List<UUID> cityIds,
-                                     @RequestParam(name = "countryName", required = false) List<UUID> countryIds,
-                                     @RequestParam(name = "firstName", required = false) String firstName,
-                                     @RequestParam(name = "lastName", required = false) String lastName) {
+    public List<UserDTO> getAllUsers(@RequestParam(required = false, defaultValue = "0") int pageNumber,
+                                     @RequestParam(required = false, defaultValue = "10") int pageSize,
+                                     @RequestParam(required = false, defaultValue = "") String sortDirection,
+                                     @RequestParam(required = false, defaultValue = "id") String sortBy,
+                                     @RequestParam(required = false) List<UUID> cityIds,
+                                     @RequestParam(required = false) List<UUID> countryIds,
+                                     @RequestParam(required = false) String firstName,
+                                     @RequestParam(required = false) String lastName) {
         UserFilter filter = UserFilter.builder()
                 .firstName(firstName)
                 .lastName(lastName)

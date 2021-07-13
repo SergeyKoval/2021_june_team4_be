@@ -31,14 +31,10 @@ public class CouponController {
     @GetMapping
     @ApiOperation("Get page-list of all coupons with filtering/sorting")
     @AdminAccess
-    public List<CouponDTO> getAllCoupons(@RequestParam(name = "pageNumber", defaultValue = "0", required = false)
-                                                     int pageNumber,
-                                         @RequestParam(name = "pageSize", defaultValue = "10", required = false)
-                                                    int pageSize,
-                                         @RequestParam(value = "sortDirection", defaultValue = "", required = false)
-                                                     String sortDirection,
-                                         @RequestParam(value = "sortField", defaultValue = "id", required = false)
-                                                     String sortField,
+    public List<CouponDTO> getAllCoupons(@RequestParam(required = false, defaultValue = "0") int pageNumber,
+                                         @RequestParam(required = false, defaultValue = "10") int pageSize,
+                                         @RequestParam(required = false, defaultValue = "") String sortDirection,
+                                         @RequestParam(required = false, defaultValue = "id") String sortField,
                                          @RequestParam(required = false) List<UUID> vendorId,
                                          @RequestParam(required = false) List<UUID> categoryId,
                                          @RequestParam(required = false) List<UUID> countryId,
