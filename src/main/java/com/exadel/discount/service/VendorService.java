@@ -1,7 +1,7 @@
 package com.exadel.discount.service;
 
-import com.exadel.discount.dto.vendor.CreateVendorDTO;
-import com.exadel.discount.dto.vendor.VendorDTO;
+import com.exadel.discount.model.dto.vendor.CreateVendorDTO;
+import com.exadel.discount.model.dto.vendor.VendorDTO;
 
 import java.util.List;
 import java.util.UUID;
@@ -15,4 +15,8 @@ public interface VendorService {
     List<VendorDTO> getAll();
 
     void deleteById(UUID id);
+
+    List<VendorDTO> getAllArchived();
+
+    VendorDTO restoreById(UUID id);
 }

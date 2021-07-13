@@ -1,0 +1,9 @@
+databaseChangeLog:
+  - changeSet:
+      id: modifyDataType
+      author: Anton Rud
+      changes:
+        - modifyDataType:
+            columnName: value
+            newDataType: money
+            tableName: discounts
