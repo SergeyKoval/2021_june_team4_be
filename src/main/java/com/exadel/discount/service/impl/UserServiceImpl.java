@@ -1,5 +1,6 @@
 package com.exadel.discount.service.impl;
 
+import com.exadel.discount.exception.NotFoundException;
 import com.exadel.discount.model.dto.user.UserDTO;
 import com.exadel.discount.model.dto.user.UserFilter;
 import com.exadel.discount.model.entity.QUser;
@@ -32,7 +33,7 @@ public class UserServiceImpl implements UserService {
     public UserDTO findUserById(UUID id) {
         log.debug("Finding User by ID");
         User user = userRepository.findById(id)
-                .orElseThrow(() -> NotFoundException(String.format("User with id %s not found", id)));
+                .orElseThrow(() -> new NotFoundException(String.format("User with id %s not found", id)));
         log.debug("Successfully User is found by ID");
         return userMapper.toUserDTO(user);
     }
@@ -54,9 +55,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<UserDTO> findUsersByFirstNameAndLastName(String lastName, String firstName) {
         log.debug("Finding User by lastName and firstName");
-        List<User> users = userRepository.findDistinctByLastNameAndFirstName(lastName, firstName)
-                .orElseThrow(() -> NotFoundException(String.format("Not found a user with lastname %s and " +
-                                                                   "firstname %s ", lastName, firstName)));
+        List<User> users = userRepository.findDistinctByLastNameAndFirstName(lastName, firstName);
         log.debug("Successfully User is found by lastname and firstname");
         return userMapper.toUserDTOList(users);
     }
