@@ -4,7 +4,6 @@ import com.exadel.discount.model.dto.coupon.CouponDTO;
 import com.exadel.discount.model.dto.coupon.CouponFilter;
 import com.exadel.discount.model.dto.coupon.CreateCouponDTO;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 

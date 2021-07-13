@@ -52,7 +52,7 @@ public class CouponServiceImpl implements CouponService {
     public CouponDTO findCouponById(UUID id) {
         log.debug("Finding Coupon by ID");
         Coupon coupon = couponRepository.findById(id)
-                .orElseThrow(() -> NotFoundException(String.format("Coupon with id %s not found", id)));
+                .orElseThrow(() -> new NotFoundException(String.format("Coupon with id %s not found", id)));
         log.debug("Successfully Coupon is found by ID");
         return couponMapper.toCouponDTO(coupon);
     }

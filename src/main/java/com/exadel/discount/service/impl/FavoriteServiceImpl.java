@@ -51,7 +51,7 @@ public class FavoriteServiceImpl implements FavoriteService {
     public FavoriteDTO findFavoriteById(UUID id) {
         log.debug("Finding Favorite by ID");
         Favorite favorite = favoriteRepository.findById(id)
-                .orElseThrow(() -> NotFoundException(String.format("Favorite with id %s not found", id));
+                .orElseThrow(() -> new NotFoundException(String.format("Favorite with id %s not found", id)));
         log.debug("Successfully Favorite is found by ID");
         return favoriteMapper.toFavoriteDTO(favorite);
     }
