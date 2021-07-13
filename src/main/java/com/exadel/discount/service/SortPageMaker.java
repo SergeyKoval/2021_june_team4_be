@@ -10,6 +10,6 @@ public class SortPageMaker {
         if (("ASC").equals(sortDirection.toUpperCase()) || ("DESC").equals(sortDirection.toUpperCase())) {
             sort = Sort.by(Sort.Direction.valueOf(sortDirection.toUpperCase()), sortField);
         }
-        return PageRequest.of(pageNumber - 1, pageSize, sort);
+        return PageRequest.of(pageNumber, pageSize, sort);
     }
 }
