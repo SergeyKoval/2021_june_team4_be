@@ -88,10 +88,10 @@ public class CouponServiceImpl implements CouponService {
     private Predicate preparePredicateForFindingAllCoupons(CouponFilter couponfilter) {
         return ExpressionUtils.and(
                 QueryPredicateBuilder.init()
-                        .append(couponfilter.getCountryIds(), QCoupon.coupon.discount.vendorLocations.any()
-                                .city.country.id::in)
-                        .append(couponfilter.getCityIds(), QCoupon.coupon.discount.vendorLocations.any()
-                                .city.id::in)
+                        .append(couponfilter.getCountryIds(),
+                                QCoupon.coupon.discount.vendorLocations.any().city.country.id::in)
+                        .append(couponfilter.getCityIds(),
+                                QCoupon.coupon.discount.vendorLocations.any().city.id::in)
                         .buildOr(),
                 QueryPredicateBuilder.init()
                         .append(couponfilter.getUserId(), QCoupon.coupon.user.id::eq)

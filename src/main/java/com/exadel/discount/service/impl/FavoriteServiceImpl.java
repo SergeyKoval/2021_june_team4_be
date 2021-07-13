@@ -97,10 +97,10 @@ public class FavoriteServiceImpl implements FavoriteService {
     private Predicate preparePredicateForFindingAllFavorites(FavoriteFilter favoritefilter) {
         return ExpressionUtils.and(
                 QueryPredicateBuilder.init()
-                        .append(favoritefilter.getCountryIds(), QFavorite.favorite.discount.vendorLocations.any()
-                                .city.country.id::in)
-                        .append(favoritefilter.getCityIds(), QFavorite.favorite.discount.vendorLocations.any()
-                                .city.id::in)
+                        .append(favoritefilter.getCountryIds(),
+                                QFavorite.favorite.discount.vendorLocations.any().city.country.id::in)
+                        .append(favoritefilter.getCityIds(),
+                                QFavorite.favorite.discount.vendorLocations.any().city.id::in)
                         .buildOr(),
                 QueryPredicateBuilder.init()
                         .append(favoritefilter.getUserId(), QFavorite.favorite.user.id::eq)
