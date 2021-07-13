@@ -1,11 +1,11 @@
 package com.exadel.discount.service.impl;
 
 import com.exadel.discount.exception.NotFoundException;
-import com.exadel.discount.model.dto.mapper.UserMapper;
 import com.exadel.discount.model.dto.user.UserDTO;
 import com.exadel.discount.model.dto.user.UserFilter;
 import com.exadel.discount.model.entity.QUser;
 import com.exadel.discount.model.entity.User;
+import com.exadel.discount.model.dto.mapper.UserMapper;
 import com.exadel.discount.repository.UserRepository;
 import com.exadel.discount.repository.query.QueryPredicateBuilder;
 import com.exadel.discount.repository.query.SortPageUtil;
@@ -14,6 +14,7 @@ import com.querydsl.core.types.ExpressionUtils;
 import com.querydsl.core.types.Predicate;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -43,16 +44,11 @@ public class UserServiceImpl implements UserService {
         Pageable paging = SortPageUtil.makePageable(pageNumber, pageSize, sortDirection, sortField);
 
         log.debug("Getting sorted page-list of  Users");
-        List<User> filteredUserList;
-        if (preparePredicateForFindingAllUsers(userFilter) == null) {
-            filteredUserList = userRepository.findAll(paging).toList();
-        } else {
-            filteredUserList = userRepository
-                    .findAll(preparePredicateForFindingAllUsers(userFilter), paging).toList();
-        }
+
+        Page<User> userList = userRepository.findAll(preparePredicateForFindingAllUsers(userFilter), paging);
         log.debug("Successfully sorted page-list of Users is got without filtering");
 
-        return userMapper.toUserDTOList(filteredUserList);
+        return userMapper.toUserDTOList(userList.toList());
 
     }
 
