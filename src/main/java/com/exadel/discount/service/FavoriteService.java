@@ -1,6 +1,5 @@
 package com.exadel.discount.service;
 
-import com.exadel.discount.model.dto.favorite.CreateFavoriteDTO;
 import com.exadel.discount.model.dto.favorite.FavoriteDTO;
 import com.exadel.discount.model.dto.favorite.FavoriteFilter;
 
@@ -13,7 +12,7 @@ public interface FavoriteService {
 
     void deleteFavoriteByID(UUID id);
 
-    FavoriteDTO assignFavoriteToUser(CreateFavoriteDTO createFavoriteDTO);
+    FavoriteDTO assignFavoriteToUser(UUID discountId);
 
     List<FavoriteDTO> getAll(int pageNumber, int pageSize, String sortDirection, String sortField,
                              FavoriteFilter filter);

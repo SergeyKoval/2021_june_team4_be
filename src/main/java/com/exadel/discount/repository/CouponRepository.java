@@ -8,6 +8,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.querydsl.QuerydslPredicateExecutor;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
@@ -37,4 +38,9 @@ public interface CouponRepository extends JpaRepository<Coupon, UUID>, QuerydslP
     @EntityGraph(attributePaths = {"discount", "discount.category", "discount.vendorLocations", "discount.tags",
             "discount.vendor", "discount.vendorLocations.city", "discount.vendorLocations.city.country"})
     List<Coupon> findAllByIdIn(Iterable<UUID> ids, Sort sort);
+
+    @EntityGraph(attributePaths = {"user", "user.city.country", "user.city", "discount", "discount.category", "discount.vendorLocations", "discount.tags",
+            "discount.vendor", "discount.vendorLocations.city", "discount.vendorLocations.city.country"})
+    boolean existsCouponByDiscountIdAndAndUserEmail(@Param("discountId") UUID discountId,
+                                                      @Param("userEmail") String userEmail);
 }

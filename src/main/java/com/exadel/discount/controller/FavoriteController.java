@@ -1,6 +1,5 @@
 package com.exadel.discount.controller;
 
-import com.exadel.discount.model.dto.favorite.CreateFavoriteDTO;
 import com.exadel.discount.model.dto.favorite.FavoriteDTO;
 import com.exadel.discount.model.dto.favorite.FavoriteFilter;
 import com.exadel.discount.security.annotation.AdminAccess;
@@ -14,7 +13,6 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -83,15 +81,15 @@ public class FavoriteController {
     @PostMapping
     @ApiOperation("Save new favorite to user")
     @UserAccess
-    public FavoriteDTO addFavorite(@RequestBody @NotNull final CreateFavoriteDTO createFavoriteDTO) {
-        return favoriteService.assignFavoriteToUser(createFavoriteDTO);
+    public FavoriteDTO addFavorite(@RequestParam @NotNull final UUID discountId) {
+        return favoriteService.assignFavoriteToUser(discountId);
     }
 
-    @DeleteMapping("{id}")
+    @DeleteMapping("{discountId}")
     @ApiOperation("Delete favorite by ID")
     @UserAccess
-    public void deleteFavorite(@PathVariable @NotNull final UUID id) {
-        favoriteService.deleteFavoriteByID(id);
+    public void deleteFavorite(@PathVariable @NotNull final UUID discountId) {
+        favoriteService.deleteFavoriteByID(discountId);
     }
 }
 
