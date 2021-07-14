@@ -24,9 +24,27 @@ public interface DiscountRepository extends JpaRepository<Discount, UUID>, Query
             "vendorLocations.city", "vendorLocations.city.country"})
     Optional<Discount> findById(UUID id);
 
-    @EntityGraph(attributePaths = {"category", "vendorLocations", "tags", "vendor",
-            "vendorLocations.city", "vendorLocations.city.country"})
+    @EntityGraph(attributePaths = {"category", "vendorLocations", "tags", "vendor"})
     List<Discount> findAllByIdIn(Iterable<UUID> ids, Sort sort);
+
+    @EntityGraph(attributePaths = {"category", "vendorLocations", "tags", "vendor",
+            "vendorLocations.city", "vendorLocations.city.country", "favorites"})
+    @Query("SELECT d FROM Discount d " +
+            "LEFT JOIN d.favorites f " +
+            "ON f.user.email = :userEmail " +
+            "WHERE d.id IN :discountIds")
+    List<Discount> findAllByIdInWithFavoritesByUser(@Param("discountIds") Iterable<UUID> ids, Sort sort,
+                                                    @Param("userEmail") String userEmail);
+
+    @EntityGraph(attributePaths = {"category", "vendorLocations", "tags", "vendor",
+            "vendorLocations.city", "vendorLocations.city.country", "favorites"})
+    @Query("SELECT d FROM Discount d " +
+            "LEFT JOIN d.favorites f " +
+            "on f.user.email = :userEmail " +
+            "WHERE d.id = :discountId AND d.archived = :archived")
+    Optional<Discount> findByIdAndArchivedWithFavoritesByUser(
+            @Param("discountId") UUID id, @Param("archived") boolean archived, @Param("userEmail") String userEmail);
+
 
     @EntityGraph(attributePaths = {"category", "vendorLocations", "tags", "vendor",
             "vendorLocations.city", "vendorLocations.city.country"})

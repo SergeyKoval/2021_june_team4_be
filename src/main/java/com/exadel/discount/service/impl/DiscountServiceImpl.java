@@ -1,6 +1,7 @@
 package com.exadel.discount.service.impl;
 
 import com.exadel.discount.exception.NotFoundException;
+import com.exadel.discount.model.dto.discount.BaseDiscountDTO;
 import com.exadel.discount.model.dto.discount.CreateDiscountDTO;
 import com.exadel.discount.model.dto.discount.DiscountDTO;
 import com.exadel.discount.model.dto.discount.DiscountFilter;
@@ -25,9 +26,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -66,11 +69,17 @@ public class DiscountServiceImpl implements DiscountService {
     @Override
     public DiscountDTO getById(UUID id) {
         log.debug(String.format("Finding Discount with ID %s", id));
+        String userEmail = SecurityContextHolder.getContext().getAuthentication().getName();
         Discount discount = discountRepository
-                .findByIdAndArchived(id, false)
+                .findByIdAndArchivedWithFavoritesByUser(id, false, userEmail)
                 .orElseThrow(() -> new NotFoundException(String.format("Discount with id %s not found", id)));
+        DiscountDTO discountDTO = discountMapper.getDTO(discount);
+        if (!discount.getFavorites().isEmpty()) {
+            discountDTO.setFavorite(true);
+            discountDTO.setFavoriteId(new ArrayList<>(discount.getFavorites()).get(0).getId());
+        }
         log.debug(String.format("Successfully found Discount with ID %s", id));
-        return discountMapper.getDTO(discount);
+        return discountDTO;
     }
 
     @Override
@@ -81,9 +90,21 @@ public class DiscountServiceImpl implements DiscountService {
         log.debug("Getting list of all Discounts by filter");
         List<UUID> discountIds = discountRepository
                 .findAllDiscountIds(preparePredicateForFindingAll(filter), PageRequest.of(page, size));
-        List<Discount> discounts = discountRepository.findAllByIdIn(discountIds, sort);
+        String userEmail = SecurityContextHolder.getContext().getAuthentication().getName();
+        List<DiscountDTO> discountDTOS = discountRepository
+                .findAllByIdInWithFavoritesByUser(discountIds, sort, userEmail)
+                .stream()
+                .map(discount -> {
+                    DiscountDTO discountDTO = discountMapper.getDTO(discount);
+                    if (!discount.getFavorites().isEmpty()) {
+                        discountDTO.setFavorite(true);
+                        discountDTO.setFavoriteId(new ArrayList<>(discount.getFavorites()).get(0).getId());
+                    }
+                    return discountDTO;
+                })
+                .collect(Collectors.toList());
         log.debug("Successfully got list of all Discounts by filter");
-        return discountMapper.getListDTO(discounts);
+        return discountDTOS;
     }
 
     @Override
@@ -114,14 +135,14 @@ public class DiscountServiceImpl implements DiscountService {
     }
 
     @Override
-    public List<DiscountDTO> search(Integer size, String searchText) {
+    public List<BaseDiscountDTO> search(Integer size, String searchText) {
         log.debug("Getting list of all Discounts by searchText");
         List<UUID> discountsIds = discountRepository
                 .findAllDiscountIds(prepareSearchPredicate(searchText), PageRequest.of(0, size));
         List<Discount> discounts = discountRepository
                 .findAllByIdIn(discountsIds, Sort.by("viewNumber").descending());
         log.debug("Successfully got list of all Discounts by searchText");
-        return discountMapper.getListDTO(discounts);
+        return discountMapper.getListBaseDTO(discounts);
     }
 
     private Set<Tag> findTags(Set<UUID> tagIds) {
