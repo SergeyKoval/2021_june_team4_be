@@ -1,6 +1,6 @@
 package com.exadel.discount.controller;
 
-import com.exadel.discount.config.WithMockCustomUser;
+
 import com.exadel.discount.service.TagService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
