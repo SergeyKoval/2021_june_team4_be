@@ -18,14 +18,14 @@ public interface VendorMapper {
 
     Vendor parseDTO(CreateVendorDTO vendorDTO);
 
+    VendorDTO getDTO(Vendor vendor);
+
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     Vendor update(BaseVendorDTO vendorDTO, @MappingTarget Vendor vendor);
 
-    VendorDTO getDTO(Vendor vendor);
+    List<VendorDTO> getListDTO(List<Vendor> vendors);
 
     BaseVendorDTO getBaseDTO(Vendor vendor);
-
-    List<VendorDTO> getListDTO(List<Vendor> vendors);
 
     List<BaseVendorDTO> getListBaseDTO(List<Vendor> vendors);
 }
