@@ -1,9 +1,9 @@
 package com.exadel.discount.service.impl;
 
+import com.exadel.discount.exception.NotFoundException;
 import com.exadel.discount.model.dto.favorite.CreateFavoriteDTO;
 import com.exadel.discount.model.dto.favorite.FavoriteDTO;
 import com.exadel.discount.model.dto.favorite.FavoriteFilter;
-import com.exadel.discount.exception.NotFoundException;
 import com.exadel.discount.model.dto.mapper.FavoriteMapper;
 import com.exadel.discount.model.entity.Discount;
 import com.exadel.discount.model.entity.Favorite;
@@ -13,8 +13,8 @@ import com.exadel.discount.repository.DiscountRepository;
 import com.exadel.discount.repository.FavoriteRepository;
 import com.exadel.discount.repository.UserRepository;
 import com.exadel.discount.repository.query.QueryPredicateBuilder;
-import com.exadel.discount.service.FavoriteService;
 import com.exadel.discount.repository.query.SortPageUtil;
+import com.exadel.discount.service.FavoriteService;
 import com.querydsl.core.types.ExpressionUtils;
 import com.querydsl.core.types.Predicate;
 import lombok.AllArgsConstructor;
@@ -51,8 +51,11 @@ public class FavoriteServiceImpl implements FavoriteService {
         if (preparePredicateForFindingAllFavorites(favoriteFilter) == null) {
             filteredFavoriteList = favoriteRepository.findAll(paging).toList();
         } else {
-            filteredFavoriteList = favoriteRepository
-                    .findAll(preparePredicateForFindingAllFavorites(favoriteFilter), paging).toList();
+            List<UUID> favoriteIds = favoriteRepository
+                    .findAllCouponIds(preparePredicateForFindingAllFavorites(favoriteFilter),
+                            PageRequest.of(pageNumber, pageSize));
+            filteredFavoriteList = favoriteRepository.findAllByIdIn(favoriteIds,
+                    SortPageUtil.makeSort(sortDirection, sortField));
         }
         log.debug("Successfully got sorted page-list of all Favorites");
         return favoriteMapper.toFavoriteDTOList(filteredFavoriteList);

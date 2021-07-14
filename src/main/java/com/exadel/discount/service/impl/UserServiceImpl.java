@@ -1,11 +1,11 @@
 package com.exadel.discount.service.impl;
 
 import com.exadel.discount.exception.NotFoundException;
+import com.exadel.discount.model.dto.mapper.UserMapper;
 import com.exadel.discount.model.dto.user.UserDTO;
 import com.exadel.discount.model.dto.user.UserFilter;
 import com.exadel.discount.model.entity.QUser;
 import com.exadel.discount.model.entity.User;
-import com.exadel.discount.model.dto.mapper.UserMapper;
 import com.exadel.discount.repository.UserRepository;
 import com.exadel.discount.repository.query.QueryPredicateBuilder;
 import com.exadel.discount.repository.query.SortPageUtil;
@@ -45,8 +45,13 @@ public class UserServiceImpl implements UserService {
 
         log.debug("Getting sorted page-list of  Users");
 
-        Page<User> userList = userRepository.findAll(preparePredicateForFindingAllUsers(userFilter), paging);
-        log.debug("Successfully sorted page-list of Users is got without filtering");
+        Page<User> userList;
+        if (preparePredicateForFindingAllUsers(userFilter) == null) {
+            userList = userRepository.findAll(paging);
+        } else {
+            userList = userRepository.findAll(preparePredicateForFindingAllUsers(userFilter), paging);
+            log.debug("Successfully sorted page-list of Users is got without filtering");
+        }
 
         return userMapper.toUserDTOList(userList.toList());
 

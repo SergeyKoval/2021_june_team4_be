@@ -42,7 +42,6 @@ public class CouponServiceImpl implements CouponService {
     private final DiscountRepository discountRepository;
     private static final int SEARCH_WORD_MIN_LENGTH = 3;
 
-    @SuppressWarnings({"checkstyle:WhitespaceAround", "checkstyle:LeftCurly", "checkstyle:NeedBraces"})
     @Override
     public List<CouponDTO> getAll(int pageNumber, int pageSize, String sortDirection, String sortField,
                                   CouponFilter couponFilter) {
@@ -52,8 +51,11 @@ public class CouponServiceImpl implements CouponService {
         if (preparePredicateForFindingAllCoupons(couponFilter) == null) {
             filteredCouponList = couponRepository.findAll(paging).toList();
         } else {
-            filteredCouponList = couponRepository
-                    .findAll(preparePredicateForFindingAllCoupons(couponFilter), paging).toList();
+            List<UUID> couponIds = couponRepository
+                    .findAllCouponIds(preparePredicateForFindingAllCoupons(couponFilter),
+                            PageRequest.of(pageNumber, pageSize));
+            filteredCouponList = couponRepository.findAllByIdIn(couponIds,
+                    SortPageUtil.makeSort(sortDirection, sortField));
         }
         log.debug("Successfully sorted page-list of all Coupons is got");
         return couponMapper.toCouponDTOList(filteredCouponList);
