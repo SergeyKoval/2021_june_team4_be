@@ -1,5 +1,6 @@
 package com.exadel.discount.model.dto.mapper;
 
+import com.exadel.discount.model.dto.discount.BaseDiscountDTO;
 import com.exadel.discount.model.dto.discount.CreateDiscountDTO;
 import com.exadel.discount.model.dto.discount.DiscountDTO;
 import com.exadel.discount.model.entity.Discount;
@@ -17,4 +18,8 @@ public interface DiscountMapper {
     List<DiscountDTO> getListDTO(List<Discount> discounts);
 
     Discount parseDTO(CreateDiscountDTO discounts);
+
+    BaseDiscountDTO getBaseDTO(Discount discount);
+
+    List<BaseDiscountDTO> getListBaseDTO(List<Discount> discounts);
 }

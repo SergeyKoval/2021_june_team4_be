@@ -1,12 +1,12 @@
 package com.exadel.discount.service.impl;
 
+import com.exadel.discount.exception.DeletionRestrictedException;
+import com.exadel.discount.exception.NotFoundException;
+import com.exadel.discount.model.dto.mapper.VendorMapper;
 import com.exadel.discount.model.dto.vendor.BaseVendorDTO;
 import com.exadel.discount.model.dto.vendor.CreateVendorDTO;
 import com.exadel.discount.model.dto.vendor.VendorDTO;
 import com.exadel.discount.model.entity.Vendor;
-import com.exadel.discount.exception.DeletionRestrictedException;
-import com.exadel.discount.exception.NotFoundException;
-import com.exadel.discount.model.dto.mapper.VendorMapper;
 import com.exadel.discount.repository.VendorRepository;
 import com.exadel.discount.service.VendorService;
 import lombok.RequiredArgsConstructor;
@@ -34,20 +34,6 @@ public class VendorServiceImpl implements VendorService {
     }
 
     @Override
-    @Transactional
-    public VendorDTO updateVendorById(BaseVendorDTO vendorDTO, UUID id) {
-        log.debug(String.format("Update Vendor with ID %s", id));
-        return vendorRepository.findById(id)
-                .map( vendor -> {
-                    vendor = vendorMapper.update(vendorDTO, vendor);
-                    vendor.setId(id);
-                    VendorDTO updatedVendorDTO = vendorMapper.getDTO(vendorRepository.save(vendor));
-                    log.debug(String.format("Successfully update Vendor with ID %s", id));
-                    return updatedVendorDTO;
-                }).orElseThrow( () -> new NotFoundException(String.format("Vendor with ID %s not found", id)));
-    }
-
-    @Override
     public VendorDTO getById(UUID id) {
         log.debug(String.format("Finding Vendor with ID %s", id));
         Vendor vendor = vendorRepository
@@ -58,11 +44,11 @@ public class VendorServiceImpl implements VendorService {
     }
 
     @Override
-    public List<VendorDTO> getAll() {
+    public List<BaseVendorDTO> getAll() {
         log.debug("Getting list of all Vendors");
         List<Vendor> vendorList = vendorRepository.findAllByArchived(false);
         log.debug("Successfully got list of all Vendors");
-        return vendorMapper.getListDTO(vendorList);
+        return vendorMapper.getListBaseDTO(vendorList);
     }
 
     @Override
@@ -79,11 +65,11 @@ public class VendorServiceImpl implements VendorService {
     }
 
     @Override
-    public List<VendorDTO> getAllArchived() {
+    public List<BaseVendorDTO> getAllArchived() {
         log.debug("Getting list of archived Vendors");
         List<Vendor> vendorList = vendorRepository.findAllByArchived(true);
         log.debug("Successfully got list of archived Vendors");
-        return vendorMapper.getListDTO(vendorList);
+        return vendorMapper.getListBaseDTO(vendorList);
     }
 
     @Override

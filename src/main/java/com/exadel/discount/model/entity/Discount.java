@@ -33,8 +33,8 @@ import java.util.UUID;
 @NoArgsConstructor
 @Entity
 @Table(name = "discounts")
-@EqualsAndHashCode(exclude = {"tags", "vendorLocations"})
-@ToString(exclude = {"tags", "vendorLocations"})
+@EqualsAndHashCode(exclude = {"tags", "vendorLocations", "coupons", "favorites"})
+@ToString(exclude = {"tags", "vendorLocations", "coupons", "favorites"})
 @TypeDef(
         name = "discount_type",
         typeClass = EnumPostgresSQLType.class

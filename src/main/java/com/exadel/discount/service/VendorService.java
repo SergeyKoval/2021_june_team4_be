@@ -13,11 +13,11 @@ public interface VendorService {
 
     VendorDTO getById(UUID id);
 
-    List<VendorDTO> getAll();
+    List<BaseVendorDTO> getAll();
 
     void deleteById(UUID id);
 
-    List<VendorDTO> getAllArchived();
+    List<BaseVendorDTO> getAllArchived();
 
     VendorDTO restoreById(UUID id);
 

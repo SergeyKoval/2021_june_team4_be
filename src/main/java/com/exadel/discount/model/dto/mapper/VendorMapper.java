@@ -11,7 +11,7 @@ import org.mapstruct.NullValuePropertyMappingStrategy;
 
 import java.util.List;
 
-@Mapper(componentModel = "spring", uses = {VendorLocationMapper.class})
+@Mapper(componentModel = "spring", uses = {VendorLocationMapper.class, DiscountMapper.class})
 public interface VendorMapper {
 
     Vendor parseDTO(VendorDTO vendorDTO);
@@ -26,4 +26,8 @@ public interface VendorMapper {
     BaseVendorDTO getBaseDTO(Vendor vendor);
 
     List<VendorDTO> getListDTO(List<Vendor> vendors);
+
+    BaseVendorDTO getBaseDTO(Vendor vendor);
+
+    List<BaseVendorDTO> getListBaseDTO(List<Vendor> vendors);
 }

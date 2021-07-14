@@ -77,6 +77,7 @@ public class JwtFilter extends OncePerRequestFilter {
                     SecurityContextHolder.getContext().setAuthentication(authentication);
                 }
             }
+            filterChain.doFilter(request, response);
         } catch (JWTDecodeException exception) {
             log.warn("Exception stack trace: ", exception);
             setErrorResponse(response, HttpStatus.FORBIDDEN, exception, ExceptionCause.INCORRECT_TOKEN);
@@ -86,8 +87,6 @@ public class JwtFilter extends OncePerRequestFilter {
         } catch (Exception exception) {
             log.error("Exception stack trace: ", exception);
             setErrorResponse(response, HttpStatus.INTERNAL_SERVER_ERROR, exception, ExceptionCause.UNCAUGHT_EXCEPTION);
-        } finally {
-            filterChain.doFilter(request, response);
         }
     }
 
