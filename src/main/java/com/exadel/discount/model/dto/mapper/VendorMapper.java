@@ -27,7 +27,5 @@ public interface VendorMapper {
 
     List<VendorDTO> getListDTO(List<Vendor> vendors);
 
-    BaseVendorDTO getBaseDTO(Vendor vendor);
-
     List<BaseVendorDTO> getListBaseDTO(List<Vendor> vendors);
 }
