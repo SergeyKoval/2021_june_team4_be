@@ -29,5 +29,4 @@ public class DiscountDTO {
     private Set<LocationDTO> vendorLocations;
     private BaseVendorDTO vendor;
     private boolean favorite;
-    private UUID favoriteId;
 }

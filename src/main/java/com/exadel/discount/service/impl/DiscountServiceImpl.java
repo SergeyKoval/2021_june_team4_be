@@ -30,7 +30,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -76,7 +75,6 @@ public class DiscountServiceImpl implements DiscountService {
         DiscountDTO discountDTO = discountMapper.getDTO(discount);
         if (!discount.getFavorites().isEmpty()) {
             discountDTO.setFavorite(true);
-            discountDTO.setFavoriteId(new ArrayList<>(discount.getFavorites()).get(0).getId());
         }
         log.debug(String.format("Successfully found Discount with ID %s", id));
         return discountDTO;
@@ -98,7 +96,6 @@ public class DiscountServiceImpl implements DiscountService {
                     DiscountDTO discountDTO = discountMapper.getDTO(discount);
                     if (!discount.getFavorites().isEmpty()) {
                         discountDTO.setFavorite(true);
-                        discountDTO.setFavoriteId(new ArrayList<>(discount.getFavorites()).get(0).getId());
                     }
                     return discountDTO;
                 })

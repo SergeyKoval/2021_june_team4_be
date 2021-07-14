@@ -40,7 +40,7 @@ public interface DiscountRepository extends JpaRepository<Discount, UUID>, Query
             "vendorLocations.city", "vendorLocations.city.country", "favorites"})
     @Query("SELECT d FROM Discount d " +
             "LEFT JOIN d.favorites f " +
-            "on f.user.email = :userEmail " +
+            "ON f.user.email = :userEmail " +
             "WHERE d.id = :discountId AND d.archived = :archived")
     Optional<Discount> findByIdAndArchivedWithFavoritesByUser(
             @Param("discountId") UUID id, @Param("archived") boolean archived, @Param("userEmail") String userEmail);
