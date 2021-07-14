@@ -87,7 +87,7 @@ public class CouponServiceImpl implements CouponService {
     public CouponDTO assignCouponToUser(UUID discountId) {
         log.debug(String.format("Check: if user already have Favorite of Discount with ID %s ", discountId));
         String userEmail = SecurityContextHolder.getContext().getAuthentication().getName();
-        if (couponRepository.existsCouponByDiscountIdAndAndUserEmail(discountId, userEmail)) {
+        if (couponRepository.findByDiscountIdAndAndUserEmail(discountId, userEmail).isPresent()) {
             throw new CreationRestrictedException(String
                     .format("Coupon for Discount with id %s does already exist", discountId));
         }
@@ -106,10 +106,9 @@ public class CouponServiceImpl implements CouponService {
         coupon.setUser(user);
         coupon.setDiscount(discount);
         coupon.setDate(LocalDateTime.now());
-
-        Coupon couponSaved = couponRepository.save(coupon);
+        coupon = couponRepository.save(coupon);
         log.debug(String.format("Successfully added Coupon for Discount with ID %s to user", discountId));
-        return couponMapper.toCouponDTO(couponSaved);
+        return couponMapper.toCouponDTO(coupon);
     }
 
     private Predicate preparePredicateForFindingAllCoupons(CouponFilter couponFilter) {

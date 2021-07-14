@@ -1,6 +1,7 @@
 package com.exadel.discount.service.impl;
 
 import com.exadel.discount.exception.CreationRestrictedException;
+import com.exadel.discount.exception.DeletionRestrictedException;
 import com.exadel.discount.exception.NotFoundException;
 import com.exadel.discount.model.dto.favorite.FavoriteDTO;
 import com.exadel.discount.model.dto.favorite.FavoriteFilter;
@@ -87,9 +88,10 @@ public class FavoriteServiceImpl implements FavoriteService {
     public FavoriteDTO assignFavoriteToUser(UUID discountId) {
         log.debug(String.format("Check: if user already have Favorite of Discount with ID %s ", discountId));
         String userEmail = SecurityContextHolder.getContext().getAuthentication().getName();
-        Favorite favorite = favoriteRepository.findByDiscountIdAndAndUserEmail(discountId, userEmail)
-                .orElseThrow(() -> new CreationRestrictedException(String
-                        .format("Favorite for discount with id %s does already exist", discountId)));
+        if (favoriteRepository.findByDiscountIdAndAndUserEmail(discountId, userEmail).isPresent()) {
+            throw  new CreationRestrictedException(String
+                    .format("Favorite for discount with id %s does already exist", discountId));
+        }
 
         User user = userRepository
                 .findByEmail(userEmail)
@@ -102,6 +104,7 @@ public class FavoriteServiceImpl implements FavoriteService {
                         .format("Discount with id %s not found", discountId)));
         log.debug("Successfully certain User and Discount are found by ID. Starting favorite creation/saving.");
 
+        Favorite favorite = new Favorite();
         favorite.setUser(user);
         favorite.setDiscount(discount);
         Favorite favoriteSaved = favoriteRepository.save(favorite);
@@ -116,8 +119,8 @@ public class FavoriteServiceImpl implements FavoriteService {
         log.debug("Finding & deleting Favorite by DiscountID");
         String userEmail = SecurityContextHolder.getContext().getAuthentication().getName();
         if (favoriteRepository.findByDiscountIdAndAndUserEmail(discountId, userEmail).isEmpty()) {
-            throw new CreationRestrictedException(String
-                    .format("Favorite for discount with id %s does already exist", discountId));
+            throw new DeletionRestrictedException(String
+                    .format("Favorite for discount with id %s does not already exist", discountId));
         }
 
         favoriteRepository.deleteFavoriteByDiscountIdAndUserEmail(discountId, userEmail);

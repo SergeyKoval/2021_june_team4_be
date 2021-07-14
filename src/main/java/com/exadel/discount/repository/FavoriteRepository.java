@@ -8,7 +8,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -36,24 +35,16 @@ public interface FavoriteRepository extends JpaRepository<Favorite, UUID>, Query
             "discount.vendor", "discount.vendorLocations.city", "discount.vendorLocations.city.country"})
     List<Favorite> findAllByIdIn(Iterable<UUID> ids, Sort sort);
 
-//    @EntityGraph(attributePaths = {"user", "user.city.country", "user.city", "discount", "discount.category"
-//    , "discount.vendorLocations", "discount.tags",
-//            "discount.vendor", "discount.vendorLocations.city", "discount.vendorLocations.city.country"})
-//    boolean existsFavoriteByDiscountIdAndAndUserEmail(@Param("discountId") UUID discountId,
-//                                                      @Param("userEmail") String userEmail);
     @Modifying
     void deleteFavoriteByDiscountIdAndUserEmail(@Param("discountId") UUID discountId,
-                                                   @Param("userEmail") String userEmail);
+                                                @Param("userEmail") String userEmail);
 
-
-//    @EntityGraph(attributePaths = {"user", "discount"})
-//    @Query("SELECT f FROM Favorite f WHERE f.discount.id =:discountId AND f.user.email=:userEmail")
-//    Optional<Favorite> existsFavoriteByDiscountIdAndAndUserEmail(@Param("discountId") UUID discountId,
-//                                                      @Param("userEmail") String userEmail);
 
     @EntityGraph(attributePaths = {"user", "discount"})
- //   @Query("SELECT f FROM Favorite f WHERE f.discount.id =:discountId AND f.user.email=:userEmail")
     Optional<Favorite> findByDiscountIdAndAndUserEmail(@Param("discountId") UUID discountId,
-                                                                 @Param("userEmail") String userEmail);
+                                                       @Param("userEmail") String userEmail);
 
+    @EntityGraph(attributePaths = {"user", "discount"})
+    boolean existsFavoriteByDiscountIdAndAndUserEmail(@Param("discountId") UUID discountId,
+                                                      @Param("userEmail") String userEmail);
 }
