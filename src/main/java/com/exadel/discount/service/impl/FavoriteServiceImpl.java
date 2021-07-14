@@ -52,7 +52,7 @@ public class FavoriteServiceImpl implements FavoriteService {
             filteredFavoriteList = favoriteRepository.findAll(paging).toList();
         } else {
             List<UUID> favoriteIds = favoriteRepository
-                    .findAllCouponIds(preparePredicateForFindingAllFavorites(favoriteFilter),
+                    .findAllFavoriteIds(preparePredicateForFindingAllFavorites(favoriteFilter),
                             PageRequest.of(pageNumber, pageSize));
             filteredFavoriteList = favoriteRepository.findAllByIdIn(favoriteIds,
                     SortPageUtil.makeSort(sortDirection, sortField));
@@ -65,9 +65,9 @@ public class FavoriteServiceImpl implements FavoriteService {
     public List<FavoriteDTO> search(Integer size, String searchText) {
         log.debug("Getting sorted page-list of all Favorites by searchText");
         List<UUID> favoritesIds = favoriteRepository
-                .findAllCouponIds(prepareSearchPredicate(searchText), PageRequest.of(0, size));
+                .findAllFavoriteIds(prepareSearchPredicate(searchText), PageRequest.of(0, size));
         List<Favorite> favorites = favoriteRepository
-                .findAllByIdIn(favoritesIds, Sort.by("viewNumber").descending());
+                .findAllByIdIn(favoritesIds, Sort.by("id").descending());
         log.debug("Successfully got sorted page-list of all Favorites by searchText");
         return favoriteMapper.toFavoriteDTOList(favorites);
     }

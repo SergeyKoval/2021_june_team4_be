@@ -67,7 +67,7 @@ public class CouponServiceImpl implements CouponService {
         List<UUID> couponsIds = couponRepository
                 .findAllCouponIds(prepareSearchPredicate(searchText), PageRequest.of(0, size));
         List<Coupon> coupons = couponRepository
-                .findAllByIdIn(couponsIds, Sort.by("viewNumber").descending());
+                .findAllByIdIn(couponsIds, Sort.by("date").descending());
         log.debug("Successfully got sorted page-list of all Coupons by searchText");
         return couponMapper.toCouponDTOList(coupons);
     }
