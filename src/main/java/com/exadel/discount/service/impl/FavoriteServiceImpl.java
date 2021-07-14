@@ -1,12 +1,14 @@
 package com.exadel.discount.service.impl;
 
-import com.exadel.discount.model.dto.coupon.CouponDTO;
 import com.exadel.discount.model.dto.favorite.CreateFavoriteDTO;
 import com.exadel.discount.model.dto.favorite.FavoriteDTO;
 import com.exadel.discount.model.dto.favorite.FavoriteFilter;
 import com.exadel.discount.exception.NotFoundException;
 import com.exadel.discount.model.dto.mapper.FavoriteMapper;
-import com.exadel.discount.model.entity.*;
+import com.exadel.discount.model.entity.Discount;
+import com.exadel.discount.model.entity.Favorite;
+import com.exadel.discount.model.entity.QFavorite;
+import com.exadel.discount.model.entity.User;
 import com.exadel.discount.repository.DiscountRepository;
 import com.exadel.discount.repository.FavoriteRepository;
 import com.exadel.discount.repository.UserRepository;
@@ -42,10 +44,10 @@ public class FavoriteServiceImpl implements FavoriteService {
 
     @Override
     public List<FavoriteDTO> getAll(int pageNumber, int pageSize, String sortDirection, String sortField,
-                                              FavoriteFilter favoriteFilter) {
+                                    FavoriteFilter favoriteFilter) {
         Pageable paging = SortPageUtil.makePageable(pageNumber, pageSize, sortDirection, sortField);
         log.debug("Getting sorted page-list of all Favorites");
-        List<Favorite> filteredFavoriteList = null;
+        List<Favorite> filteredFavoriteList;
         if (preparePredicateForFindingAllFavorites(favoriteFilter) == null) {
             filteredFavoriteList = favoriteRepository.findAll(paging).toList();
         } else {

@@ -11,7 +11,7 @@ public interface UserService {
     UserDTO findUserById(UUID id);
 
     List<UserDTO> search(int pageNumber, int pageSize, String sortDirection, String sortField,
-                               UserFilter userfilter);
+                         UserFilter userfilter);
 
     List<UserDTO> findUsersByFirstNameAndLastName(String lastName, String firstName);
 }

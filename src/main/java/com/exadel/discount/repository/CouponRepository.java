@@ -17,7 +17,7 @@ import java.util.UUID;
 
 @Repository
 public interface CouponRepository extends JpaRepository<Coupon, UUID>, QuerydslPredicateExecutor<Coupon>,
-                                          QueryFactoryCouponRepository {
+        QueryFactoryCouponRepository {
     @EntityGraph(attributePaths = {"discount", "discount.category", "discount.vendorLocations", "discount.tags",
             "discount.vendor", "discount.vendorLocations.city", "discount.vendorLocations.city.country"})
     Optional<Coupon> findById(UUID userId);

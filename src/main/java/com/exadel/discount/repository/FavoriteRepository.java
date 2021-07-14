@@ -16,7 +16,7 @@ import java.util.UUID;
 
 @Repository
 public interface FavoriteRepository extends JpaRepository<Favorite, UUID>, QuerydslPredicateExecutor<Favorite>,
-                                            QueryFactoryCouponRepository {
+        QueryFactoryCouponRepository {
     @EntityGraph(attributePaths = {"discount", "discount.category", "discount.vendorLocations", "discount.tags",
             "discount.vendor", "discount.vendorLocations.city", "discount.vendorLocations.city.country"})
     Page<Favorite> findAll(Predicate predicate, Pageable paging);

@@ -16,7 +16,7 @@ public interface FavoriteService {
     FavoriteDTO assignFavoriteToUser(CreateFavoriteDTO createFavoriteDTO);
 
     List<FavoriteDTO> getAll(int pageNumber, int pageSize, String sortDirection, String sortField,
-                                       FavoriteFilter filter);
+                             FavoriteFilter filter);
 
     List<FavoriteDTO> search(Integer size, String searchText);
 }

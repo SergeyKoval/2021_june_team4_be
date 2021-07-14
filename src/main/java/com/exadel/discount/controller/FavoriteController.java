@@ -45,11 +45,11 @@ public class FavoriteController {
                                              @RequestParam(required = false) List<UUID> cityId,
                                              @RequestParam(required = false) List<UUID> tagId,
                                              @RequestParam(required = false)
-                                                 @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
-                                                         LocalDateTime endDateTimeFrom,
+                                             @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+                                                     LocalDateTime endDateTimeFrom,
                                              @RequestParam(required = false)
-                                                 @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
-                                                         LocalDateTime endDateTimeTo,
+                                             @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+                                                     LocalDateTime endDateTimeTo,
                                              @RequestParam(value = "userId", required = false) UUID userId) {
         FavoriteFilter filter = FavoriteFilter.builder()
                 .vendorIds(vendorId)
