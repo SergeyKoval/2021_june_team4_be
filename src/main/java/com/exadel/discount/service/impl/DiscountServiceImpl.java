@@ -4,6 +4,7 @@ import com.exadel.discount.exception.NotFoundException;
 import com.exadel.discount.model.dto.discount.CreateDiscountDTO;
 import com.exadel.discount.model.dto.discount.DiscountDTO;
 import com.exadel.discount.model.dto.discount.DiscountFilter;
+import com.exadel.discount.model.dto.discount.UpdateDiscountDTO;
 import com.exadel.discount.model.dto.mapper.DiscountMapper;
 import com.exadel.discount.model.entity.Category;
 import com.exadel.discount.model.entity.Discount;
@@ -84,6 +85,32 @@ public class DiscountServiceImpl implements DiscountService {
         List<Discount> discounts = discountRepository.findAllByIdIn(discountIds, sort);
         log.debug("Successfully got list of all Discounts by filter");
         return discountMapper.getListDTO(discounts);
+    }
+
+    @Override
+    @Transactional
+    public DiscountDTO updateDiscountById(UpdateDiscountDTO updateDiscountDTO, UUID id) {
+        log.debug("Update discount by ID");
+        return discountRepository.findById(id).map(discount -> {
+            if (updateDiscountDTO.getCategoryId() != null) {
+                findCategory(updateDiscountDTO.getCategoryId());
+            }
+            if (updateDiscountDTO.getVendorId() != null) {
+                findVendor(updateDiscountDTO.getVendorId());
+            }
+            if (updateDiscountDTO.getVendorId() != null && updateDiscountDTO.getVendorLocationsIds() != null) {
+                findVendorLocations(updateDiscountDTO.getVendorId(), updateDiscountDTO.getVendorLocationsIds());
+            }
+            if (updateDiscountDTO.getTagIds() != null) {
+                findTags(updateDiscountDTO.getTagIds());
+            }
+            discount = discountMapper.update(updateDiscountDTO, discount);
+            discount.setId(id);
+            DiscountDTO discountDTO = discountMapper.getDTO(discountRepository.save(discount));
+            log.debug("Successfully updated discount by ID");
+            return discountDTO;
+        })
+                .orElseThrow(() -> new NotFoundException(String.format("Not all tags with IDs %s exist", id)));
     }
 
     @Override

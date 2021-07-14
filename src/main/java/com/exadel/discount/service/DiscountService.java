@@ -3,6 +3,7 @@ package com.exadel.discount.service;
 import com.exadel.discount.model.dto.discount.DiscountFilter;
 import com.exadel.discount.model.dto.discount.CreateDiscountDTO;
 import com.exadel.discount.model.dto.discount.DiscountDTO;
+import com.exadel.discount.model.dto.discount.UpdateDiscountDTO;
 
 import java.util.List;
 import java.util.UUID;
@@ -20,4 +21,6 @@ public interface DiscountService {
     DiscountDTO restoreById(UUID id);
 
     List<DiscountDTO> search(Integer size, String searchText);
+
+    DiscountDTO updateDiscountById(UpdateDiscountDTO updateDiscountDTO, UUID id);
 }
