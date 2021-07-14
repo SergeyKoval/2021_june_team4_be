@@ -81,7 +81,7 @@ public class DiscountController {
     }
 
     @PutMapping("/{id}")
-    //@AdminAccess
+    @AdminAccess
     @ApiOperation("Update discount")
     public DiscountDTO updateDiscount(@PathVariable @NotNull UUID id,
                                       @RequestBody @Valid UpdateDiscountDTO discountDTO) {

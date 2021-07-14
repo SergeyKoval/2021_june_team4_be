@@ -91,26 +91,26 @@ public class DiscountServiceImpl implements DiscountService {
     @Transactional
     public DiscountDTO updateDiscountById(UpdateDiscountDTO updateDiscountDTO, UUID id) {
         log.debug("Update discount by ID");
-        return discountRepository.findById(id).map(discount -> {
-            if (updateDiscountDTO.getCategoryId() != null) {
-                findCategory(updateDiscountDTO.getCategoryId());
-            }
-            if (updateDiscountDTO.getVendorId() != null) {
-                findVendor(updateDiscountDTO.getVendorId());
-            }
-            if (updateDiscountDTO.getVendorId() != null && updateDiscountDTO.getVendorLocationsIds() != null) {
-                findVendorLocations(updateDiscountDTO.getVendorId(), updateDiscountDTO.getVendorLocationsIds());
-            }
-            if (updateDiscountDTO.getTagIds() != null) {
-                findTags(updateDiscountDTO.getTagIds());
-            }
-            discount = discountMapper.update(updateDiscountDTO, discount);
-            discount.setId(id);
-            DiscountDTO discountDTO = discountMapper.getDTO(discountRepository.save(discount));
-            log.debug("Successfully updated discount by ID");
-            return discountDTO;
-        })
+        Discount discount = discountRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException(String.format("Not all tags with IDs %s exist", id)));
+
+        if (updateDiscountDTO.getCategoryId() != null) {
+            findCategory(updateDiscountDTO.getCategoryId());
+        }
+        if (updateDiscountDTO.getVendorId() != null) {
+            findVendor(updateDiscountDTO.getVendorId());
+        }
+        if (updateDiscountDTO.getVendorId() != null && updateDiscountDTO.getVendorLocationsIds() != null) {
+            findVendorLocations(updateDiscountDTO.getVendorId(), updateDiscountDTO.getVendorLocationsIds());
+        }
+        if (updateDiscountDTO.getTagIds() != null) {
+            findTags(updateDiscountDTO.getTagIds());
+        }
+        discount = discountMapper.update(updateDiscountDTO, discount);
+        discount.setId(id);
+        DiscountDTO discountDTO = discountMapper.getDTO(discountRepository.save(discount));
+        log.debug("Successfully updated discount by ID");
+        return discountDTO;
     }
 
     @Override
