@@ -35,14 +35,14 @@ public class CategoryServiceImpl implements CategoryService {
     @Transactional
     public CategoryDTO updateCategoryById(CategoryDTO categoryDTO, UUID id) {
         log.debug(String.format("Update Category with ID %s", id));
-        return categoryRepository.findCategoryById(id).map(category -> {
+        if (categoryRepository.existsById(id)) {
+            Category category = new Category();
             category = categoryMapper.update(categoryDTO, category);
             category.setId(id);
-            CategoryDTO updatedCategory = categoryMapper.getDTO(categoryRepository.save(category));
-            log.debug(String.format("Successfully update Category with ID %s", id));
-            return updatedCategory;
-        })
-                .orElseThrow(() -> new NotFoundException(String.format("Category with ID %s not found", id)));
+            return categoryMapper.getDTO(categoryRepository.save(category));
+        } else {
+            throw new NotFoundException(String.format("Category with ID %s not found", id));
+        }
     }
 
     @Override

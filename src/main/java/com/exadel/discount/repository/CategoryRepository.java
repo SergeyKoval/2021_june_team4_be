@@ -13,6 +13,4 @@ public interface CategoryRepository extends JpaRepository<Category, UUID> {
 
     @EntityGraph(attributePaths = {"discounts"})
     Optional<Category> findById(UUID uuid);
-
-    Optional<Category> findCategoryById(UUID id);
 }
