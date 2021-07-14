@@ -57,14 +57,6 @@ public class UserServiceImpl implements UserService {
 
     }
 
-    @Override
-    public List<UserDTO> findUsersByFirstNameAndLastName(String lastName, String firstName) {
-        log.debug("Finding User by lastName and firstName");
-        List<User> users = userRepository.findDistinctByLastNameAndFirstName(lastName, firstName);
-        log.debug("Successfully User is found by lastname and firstname");
-        return userMapper.toUserDTOList(users);
-    }
-
     private Predicate preparePredicateForFindingAllUsers(UserFilter userFilter) {
         return ExpressionUtils.and(
                 QueryPredicateBuilder.init()

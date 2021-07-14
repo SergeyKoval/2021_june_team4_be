@@ -52,12 +52,4 @@ public class UserController {
     public UserDTO getUserById(@PathVariable @NotNull final UUID id) {
         return userService.findUserById(id);
     }
-
-    @GetMapping("/name")
-    @ApiOperation("Get users by lastname and firstname")
-    @AdminAccess
-    public List<UserDTO> getUsersByName(@RequestParam("lastname") @NotNull String lastName,
-                                        @RequestParam("firstname") @NotNull String firstName) {
-        return userService.findUsersByFirstNameAndLastName(lastName, firstName);
-    }
 }
