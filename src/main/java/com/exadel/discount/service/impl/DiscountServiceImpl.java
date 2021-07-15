@@ -66,12 +66,14 @@ public class DiscountServiceImpl implements DiscountService {
     }
 
     @Override
+    @Transactional
     public DiscountDTO getById(UUID id) {
         log.debug(String.format("Finding Discount with ID %s", id));
         String userEmail = SecurityContextHolder.getContext().getAuthentication().getName();
         Discount discount = discountRepository
                 .findByIdAndArchivedWithFavoritesByUser(id, false, userEmail)
                 .orElseThrow(() -> new NotFoundException(String.format("Discount with id %s not found", id)));
+        discountRepository.increaseViewNumberById(id);
         DiscountDTO discountDTO = discountMapper.getDTO(discount);
         if (!discount.getFavorites().isEmpty()) {
             discountDTO.setFavorite(true);
@@ -89,8 +91,7 @@ public class DiscountServiceImpl implements DiscountService {
         List<UUID> discountIds = discountRepository
                 .findAllDiscountIds(preparePredicateForFindingAll(filter), PageRequest.of(page, size));
         String userEmail = SecurityContextHolder.getContext().getAuthentication().getName();
-        List<DiscountDTO> discountDTOS = discountRepository
-                .findAllByIdInWithFavoritesByUser(discountIds, sort, userEmail)
+        List<DiscountDTO> discountDTOS = findAllDiscounts(discountIds, sort, userEmail, filter)
                 .stream()
                 .map(discount -> {
                     DiscountDTO discountDTO = discountMapper.getDTO(discount);
@@ -210,5 +211,18 @@ public class DiscountServiceImpl implements DiscountService {
                         .buildOr())
                 .collect(Collectors.toList());
         return ExpressionUtils.allOf(searchPredicates);
+    }
+
+    private List<Discount> findAllDiscounts(List<UUID> discountIds, Sort sort, String userEmail,
+                                            DiscountFilter filter) {
+        if (filter.getCityIds() != null || filter.getCountryIds() != null) {
+            return discountRepository
+                    .findAllByIdInWithFavoritesByUserAndLocations(discountIds, sort, userEmail,
+                            filter.getCityIds(), filter.getCountryIds());
+        } else {
+            return discountRepository
+                    .findAllByIdInWithFavoritesByUser(discountIds, sort, userEmail);
+        }
+
     }
 }

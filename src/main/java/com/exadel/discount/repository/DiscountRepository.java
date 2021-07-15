@@ -45,6 +45,23 @@ public interface DiscountRepository extends JpaRepository<Discount, UUID>, Query
     Optional<Discount> findByIdAndArchivedWithFavoritesByUser(
             @Param("discountId") UUID id, @Param("archived") boolean archived, @Param("userEmail") String userEmail);
 
+    @EntityGraph(attributePaths = {"category", "vendorLocations", "tags", "vendor",
+            "vendorLocations.city", "vendorLocations.city.country", "favorites"})
+    @Query("SELECT d FROM Discount d " +
+            "LEFT JOIN d.favorites f " +
+            "ON f.user.email = :userEmail " +
+            "LEFT JOIN d.vendorLocations l " +
+            "ON l.city.id IN :cityIds OR l.city.country.id IN :countryIds " +
+            "WHERE d.id IN :discountIds")
+    List<Discount> findAllByIdInWithFavoritesByUserAndLocations(
+            @Param("discountIds") Iterable<UUID> ids, Sort sort,
+            @Param("userEmail") String userEmail, @Param("cityIds") Iterable<UUID> cityIds,
+            @Param("countryIds") Iterable<UUID> countryIds);
+
+    @Modifying
+    @Query("UPDATE Discount d SET d.viewNumber = d.viewNumber + 1" +
+            "WHERE d.id = :discountId")
+    void increaseViewNumberById(@Param("discountId") UUID id);
 
     @EntityGraph(attributePaths = {"category", "vendorLocations", "tags", "vendor",
             "vendorLocations.city", "vendorLocations.city.country"})
