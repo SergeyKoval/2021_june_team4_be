@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-import static org.junit.Assert.assertEquals;
+
 import static org.junit.Assert.assertThrows;
 import static org.mockito.Mockito.*;
 
@@ -81,5 +81,10 @@ public class UserServiceTest {
         List<UserDTO>actual = userService.findUsersByFirstNameAndLastName("f","a");
         actual.add(dto);
         Assertions.assertEquals(expectedList,actual);
+    }
+
+    @Test
+    public void testSearch(){
+
     }
 }
