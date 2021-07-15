@@ -14,4 +14,6 @@ public interface CategoryService {
     void deleteById(UUID id);
 
     List<CategoryDTO> getAll();
+
+    CategoryDTO updateCategoryById(CategoryDTO categoryDTO, UUID id);
 }
