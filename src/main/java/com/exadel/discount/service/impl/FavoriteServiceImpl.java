@@ -1,7 +1,8 @@
 package com.exadel.discount.service.impl;
 
+import com.exadel.discount.exception.CreationRestrictedException;
+import com.exadel.discount.exception.DeletionRestrictedException;
 import com.exadel.discount.exception.NotFoundException;
-import com.exadel.discount.model.dto.favorite.CreateFavoriteDTO;
 import com.exadel.discount.model.dto.favorite.FavoriteDTO;
 import com.exadel.discount.model.dto.favorite.FavoriteFilter;
 import com.exadel.discount.model.dto.mapper.FavoriteMapper;
@@ -23,6 +24,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -83,39 +85,46 @@ public class FavoriteServiceImpl implements FavoriteService {
 
     @Transactional
     @Override
-    public FavoriteDTO assignFavoriteToUser(CreateFavoriteDTO createFavoriteDTO) {
-        log.debug("Finding of certain user by ID");
+    public FavoriteDTO assignFavoriteToUser(UUID discountId) {
+        log.debug(String.format("Check: if user already have Favorite of Discount with ID %s ", discountId));
+        String userEmail = SecurityContextHolder.getContext().getAuthentication().getName();
+        if (favoriteRepository.existsByDiscountIdAndUserEmail(discountId, userEmail)) {
+            throw  new CreationRestrictedException(String
+                    .format("Favorite for discount with id %s does already exist", discountId));
+        }
+
         User user = userRepository
-                .findById(createFavoriteDTO.getUserId())
+                .findByEmail(userEmail)
                 .orElseThrow(() -> new NotFoundException(String
-                        .format("User with id %s not found", createFavoriteDTO.getUserId())));
+                        .format("User with email %s not found", userEmail)));
 
         Discount discount = discountRepository
-                .findById(createFavoriteDTO.getDiscountId())
+                .findById(discountId)
                 .orElseThrow(() -> new NotFoundException(String
-                        .format("Discount with id %s not found", createFavoriteDTO.getDiscountId())));
-        log.debug("Successfully certain User and Discount are found by ID. Starting Favorite creation/saving.");
+                        .format("Discount with id %s not found", discountId)));
+        log.debug("Successfully certain User and Discount are found by ID. Starting favorite creation/saving.");
 
         Favorite favorite = new Favorite();
         favorite.setUser(user);
         favorite.setDiscount(discount);
-
         Favorite favoriteSaved = favoriteRepository.save(favorite);
-        log.debug("Successfully new Favorite is saved to certain user");
+        log.debug(String.format("Successfully added Favorite for Discount with ID %s to user", discountId));
 
         return favoriteMapper.toFavoriteDTO(favoriteSaved);
     }
 
     @Transactional
     @Override
-    public void deleteFavoriteByID(UUID id) {
-        log.debug("Finding & deleting Favorite by ID");
+    public void deleteFavoriteByDiscountID(UUID discountId) {
+        log.debug("Finding & deleting Favorite by DiscountID");
+        String userEmail = SecurityContextHolder.getContext().getAuthentication().getName();
+        if (!favoriteRepository.existsByDiscountIdAndUserEmail(discountId, userEmail)) {
+            throw new DeletionRestrictedException(String
+                    .format("Favorite for discount with id %s does not already exist", discountId));
+        }
 
-        favoriteRepository
-                .findById(id)
-                .orElseThrow(() -> new NotFoundException(String.format("Favorite with id %s not found", id)));
-        favoriteRepository.deleteById(id);
-        log.debug("Successfully Favorite is deleted  by ID");
+        favoriteRepository.deleteFavoriteByDiscountIdAndUserEmail(discountId, userEmail);
+        log.debug("Successfully deleted Favorite by DiscountID");
     }
 
     private Predicate preparePredicateForFindingAllFavorites(FavoriteFilter favoriteFilter) {
