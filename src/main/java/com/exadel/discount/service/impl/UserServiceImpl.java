@@ -1,11 +1,11 @@
 package com.exadel.discount.service.impl;
 
 import com.exadel.discount.exception.NotFoundException;
+import com.exadel.discount.model.dto.mapper.UserMapper;
 import com.exadel.discount.model.dto.user.UserDTO;
 import com.exadel.discount.model.dto.user.UserFilter;
 import com.exadel.discount.model.entity.QUser;
 import com.exadel.discount.model.entity.User;
-import com.exadel.discount.model.dto.mapper.UserMapper;
 import com.exadel.discount.repository.UserRepository;
 import com.exadel.discount.repository.query.QueryPredicateBuilder;
 import com.exadel.discount.repository.query.SortPageUtil;
@@ -40,24 +40,21 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<UserDTO> search(int pageNumber, int pageSize, String sortDirection, String sortField,
-                                      UserFilter userFilter) {
+                                UserFilter userFilter) {
         Pageable paging = SortPageUtil.makePageable(pageNumber, pageSize, sortDirection, sortField);
 
         log.debug("Getting sorted page-list of  Users");
 
-        Page<User> userList = userRepository.findAll(preparePredicateForFindingAllUsers(userFilter), paging);
-        log.debug("Successfully sorted page-list of Users is got without filtering");
+        Page<User> userList;
+        if (preparePredicateForFindingAllUsers(userFilter) == null) {
+            userList = userRepository.findAll(paging);
+        } else {
+            userList = userRepository.findAll(preparePredicateForFindingAllUsers(userFilter), paging);
+            log.debug("Successfully sorted page-list of Users is got without filtering");
+        }
 
         return userMapper.toUserDTOList(userList.toList());
 
-    }
-
-    @Override
-    public List<UserDTO> findUsersByFirstNameAndLastName(String lastName, String firstName) {
-        log.debug("Finding User by lastName and firstName");
-        List<User> users = userRepository.findDistinctByLastNameAndFirstName(lastName, firstName);
-        log.debug("Successfully User is found by lastname and firstname");
-        return userMapper.toUserDTOList(users);
     }
 
     private Predicate preparePredicateForFindingAllUsers(UserFilter userFilter) {

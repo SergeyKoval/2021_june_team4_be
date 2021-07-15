@@ -55,7 +55,8 @@ public class CategoryServiceImpl implements CategoryService {
                 .findById(id)
                 .orElseThrow(() -> new NotFoundException(String.format("Category with ID %s not found", id)));
         if (!category.getDiscounts().isEmpty()) {
-            throw new DeletionRestrictedException(String.format("Category with ID %s can't be deleted as it has discounts", id));
+            throw new DeletionRestrictedException(String.
+                    format("Category with ID %s can't be deleted as it has discounts", id));
         }
         categoryRepository.deleteById(id);
         log.debug(String.format("Successfully deleted Category with ID %s", id));
