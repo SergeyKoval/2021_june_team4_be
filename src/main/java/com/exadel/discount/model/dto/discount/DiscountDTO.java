@@ -1,5 +1,6 @@
 package com.exadel.discount.model.dto.discount;
 
+import com.exadel.discount.model.dto.image.DiscountImageDTO;
 import com.exadel.discount.model.entity.DiscountType;
 import com.exadel.discount.model.dto.CategoryDTO;
 import com.exadel.discount.model.dto.TagDTO;
@@ -28,4 +29,5 @@ public class DiscountDTO {
     private Set<TagDTO> tags;
     private Set<LocationDTO> vendorLocations;
     private BaseVendorDTO vendor;
+    private Set<DiscountImageDTO> discountImages;
 }

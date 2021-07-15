@@ -1,0 +1,27 @@
+databaseChangeLog:
+  - changeSet:
+      id: 0.6-create-discounts-image-table
+      author: artem_kishenets
+      changes:
+        - createTable:
+            tableName: discounts_image
+            columns:
+              - column:
+                  name: id
+                  type: UUID
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: discount_id
+                  type: UUID
+                  constraints:
+                    nullable: false
+              - column:
+                  name: image
+                  type: varchar(255)
+              - column:
+                  name: by_default
+                  type: boolean
+                  defaultValue: false
+                  constraints:
+                    nullable: false

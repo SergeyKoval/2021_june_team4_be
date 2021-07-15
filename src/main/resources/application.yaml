@@ -18,3 +18,13 @@ jwt:
 cors:
   hosts:
     - http://localhost:4200
+cloud:
+  aws:
+    credentials:
+      access-key: AKIAQWULYLKETO4CVGFE
+      secret-key: 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
+    bucket:
+      - name: exdadel-discounts-image-upload
+        folders:
+          - exdadel-discounts-image-upload/discounts-images
+          - exdadel-discounts-image-upload/vendors-images

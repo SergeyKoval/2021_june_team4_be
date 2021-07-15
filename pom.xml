@@ -59,6 +59,13 @@
             <version>${spring.version}</version>
         </dependency>
 
+        <!-- Amazon AWS -->
+        <dependency>
+            <groupId>com.amazonaws</groupId>
+            <artifactId>aws-java-sdk</artifactId>
+            <version>1.12.21</version>
+        </dependency>
+
         <!-- Jwt -->
         <dependency>
             <groupId>com.auth0</groupId>
