@@ -46,9 +46,7 @@ public class VendorLocationServiceImpl implements VendorLocationService {
     @Override
     public LocationDTO getById(UUID id) {
         log.debug(String.format("Finding VendorLocation with ID %s", id));
-        VendorLocation vendorLocation = vendorLocationRepository
-                .findById(id)
-                .orElseThrow(() -> new NotFoundException(String.format("VendorLocation %s not found", id)));
+        VendorLocation vendorLocation = findVendorLocation(id);
         log.debug(String.format("Successfully found VendorLocation with ID %s", id));
         return vendorLocationMapper.getDTO(vendorLocation);
     }
@@ -78,9 +76,7 @@ public class VendorLocationServiceImpl implements VendorLocationService {
     @Transactional
     public LocationDTO updateLocationById(UpdateLocationDTO updateLocationDTO, UUID id) {
         log.debug(String.format("Update VendorLocation with ID %s", id));
-        VendorLocation vendorLocation = vendorLocationRepository
-                .findById(id)
-                .orElseThrow(() -> new NotFoundException(String.format("VendorLocation with ID %s not found", id)));
+        VendorLocation vendorLocation = findVendorLocation(id);
         if (updateLocationDTO.getCityId() != null) {
             City city = findCity(updateLocationDTO.getCityId());
             vendorLocation.setCity(city);
@@ -90,11 +86,15 @@ public class VendorLocationServiceImpl implements VendorLocationService {
             vendorLocation.setVendor(vendor);
         }
         vendorLocation = vendorLocationMapper.update(updateLocationDTO, vendorLocation);
-        System.out.println(vendorLocation.toString());
-
         LocationDTO locationDTO = vendorLocationMapper.getDTO(vendorLocationRepository.save(vendorLocation));
-        log.debug(String.format("Successfully VendorLocation with ID %s", id));
+        log.debug(String.format("Successfully update VendorLocation with ID %s", id));
         return locationDTO;
+    }
+
+    VendorLocation findVendorLocation(UUID id) {
+        return vendorLocationRepository
+                .findById(id)
+                .orElseThrow(() -> new NotFoundException(String.format("VendorLocation %s not found", id)));
     }
 
     private City findCity(UUID id) {
