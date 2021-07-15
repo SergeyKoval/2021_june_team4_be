@@ -1,7 +1,6 @@
 package com.exadel.discount.repository;
 
 import com.exadel.discount.model.entity.Discount;
-import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -25,7 +24,7 @@ public interface DiscountRepository extends JpaRepository<Discount, UUID>, Query
     Optional<Discount> findById(UUID id);
 
     @EntityGraph(attributePaths = {"category", "vendorLocations", "tags", "vendor"})
-    List<Discount> findAllByIdIn(Iterable<UUID> ids, Sort sort);
+    List<Discount> findAllByIdIn(Iterable<UUID> ids);
 
     @EntityGraph(attributePaths = {"category", "vendorLocations", "tags", "vendor",
             "vendorLocations.city", "vendorLocations.city.country", "favorites"})
@@ -33,7 +32,7 @@ public interface DiscountRepository extends JpaRepository<Discount, UUID>, Query
             "LEFT JOIN d.favorites f " +
             "ON f.user.email = :userEmail " +
             "WHERE d.id IN :discountIds")
-    List<Discount> findAllByIdInWithFavoritesByUser(@Param("discountIds") Iterable<UUID> ids, Sort sort,
+    List<Discount> findAllByIdInWithFavoritesByUser(@Param("discountIds") Iterable<UUID> ids,
                                                     @Param("userEmail") String userEmail);
 
     @EntityGraph(attributePaths = {"category", "vendorLocations", "tags", "vendor",
@@ -54,9 +53,8 @@ public interface DiscountRepository extends JpaRepository<Discount, UUID>, Query
             "ON l.city.id IN :cityIds OR l.city.country.id IN :countryIds " +
             "WHERE d.id IN :discountIds")
     List<Discount> findAllByIdInWithFavoritesByUserAndLocations(
-            @Param("discountIds") Iterable<UUID> ids, Sort sort,
-            @Param("userEmail") String userEmail, @Param("cityIds") Iterable<UUID> cityIds,
-            @Param("countryIds") Iterable<UUID> countryIds);
+            @Param("discountIds") Iterable<UUID> ids, @Param("userEmail") String userEmail,
+            @Param("cityIds") Iterable<UUID> cityIds, @Param("countryIds") Iterable<UUID> countryIds);
 
     @Modifying
     @Query("UPDATE Discount d SET d.viewNumber = d.viewNumber + 1" +

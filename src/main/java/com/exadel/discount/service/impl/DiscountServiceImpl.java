@@ -89,9 +89,9 @@ public class DiscountServiceImpl implements DiscountService {
                 Sort.by(sortBy);
         log.debug("Getting list of all Discounts by filter");
         List<UUID> discountIds = discountRepository
-                .findAllDiscountIds(preparePredicateForFindingAll(filter), PageRequest.of(page, size));
+                .findAllDiscountIds(preparePredicateForFindingAll(filter), PageRequest.of(page, size, sort));
         String userEmail = SecurityContextHolder.getContext().getAuthentication().getName();
-        List<DiscountDTO> discountDTOS = findAllDiscounts(discountIds, sort, userEmail, filter)
+        List<DiscountDTO> discountDTOS = findAllDiscounts(discountIds, userEmail, filter)
                 .stream()
                 .map(discount -> {
                     DiscountDTO discountDTO = discountMapper.getDTO(discount);
@@ -136,9 +136,10 @@ public class DiscountServiceImpl implements DiscountService {
     public List<BaseDiscountDTO> search(Integer size, String searchText) {
         log.debug("Getting list of all Discounts by searchText");
         List<UUID> discountsIds = discountRepository
-                .findAllDiscountIds(prepareSearchPredicate(searchText), PageRequest.of(0, size));
+                .findAllDiscountIds(prepareSearchPredicate(searchText),
+                        PageRequest.of(0, size, Sort.by("viewNumber").descending()));
         List<Discount> discounts = discountRepository
-                .findAllByIdIn(discountsIds, Sort.by("viewNumber").descending());
+                .findAllByIdIn(discountsIds);
         log.debug("Successfully got list of all Discounts by searchText");
         return discountMapper.getListBaseDTO(discounts);
     }
@@ -213,15 +214,15 @@ public class DiscountServiceImpl implements DiscountService {
         return ExpressionUtils.allOf(searchPredicates);
     }
 
-    private List<Discount> findAllDiscounts(List<UUID> discountIds, Sort sort, String userEmail,
+    private List<Discount> findAllDiscounts(List<UUID> discountIds, String userEmail,
                                             DiscountFilter filter) {
         if (filter.getCityIds() != null || filter.getCountryIds() != null) {
             return discountRepository
-                    .findAllByIdInWithFavoritesByUserAndLocations(discountIds, sort, userEmail,
+                    .findAllByIdInWithFavoritesByUserAndLocations(discountIds, userEmail,
                             filter.getCityIds(), filter.getCountryIds());
         } else {
             return discountRepository
-                    .findAllByIdInWithFavoritesByUser(discountIds, sort, userEmail);
+                    .findAllByIdInWithFavoritesByUser(discountIds, userEmail);
         }
 
     }
