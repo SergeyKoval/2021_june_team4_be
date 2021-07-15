@@ -9,20 +9,21 @@ import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.TypeDef;
 
-import javax.persistence.FetchType;
-import javax.persistence.Entity;
-import javax.persistence.Table;
-import javax.persistence.Id;
-import javax.persistence.GeneratedValue;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToMany;
-import javax.persistence.Enumerated;
-import javax.persistence.EnumType;
-import javax.persistence.JoinTable;
-import javax.persistence.CascadeType;
+import javax.persistence.Table;
+
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Set;
@@ -32,8 +33,8 @@ import java.util.UUID;
 @NoArgsConstructor
 @Entity
 @Table(name = "discounts")
-@EqualsAndHashCode(exclude = {"tags", "vendorLocations"})
-@ToString(exclude = {"tags", "vendorLocations"})
+@EqualsAndHashCode(exclude = {"tags", "vendorLocations", "coupons", "favorites"})
+@ToString(exclude = {"tags", "vendorLocations", "coupons", "favorites"})
 @TypeDef(
         name = "discount_type",
         typeClass = EnumPostgresSQLType.class
@@ -106,4 +107,10 @@ public class Discount {
     @OneToMany(cascade = CascadeType.REMOVE,
             mappedBy = "discount")
     private Set<DiscountImage> discountImages;
+
+    @OneToMany(mappedBy = "discount", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private Set<Favorite> favorites;
+
+    @OneToMany(mappedBy = "discount", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private Set<Coupon> coupons;
 }
