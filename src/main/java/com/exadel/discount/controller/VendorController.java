@@ -1,5 +1,6 @@
 package com.exadel.discount.controller;
 
+import com.exadel.discount.model.dto.vendor.BaseVendorDTO;
 import com.exadel.discount.model.dto.vendor.CreateVendorDTO;
 import com.exadel.discount.model.dto.vendor.VendorDTO;
 import com.exadel.discount.security.annotation.AdminAccess;
@@ -33,7 +34,7 @@ public class VendorController {
     @GetMapping
     @ApiOperation("Get list of all vendors")
     @UserAccess
-    public List<VendorDTO> getVendorsList() {
+    public List<BaseVendorDTO> getVendorsList() {
         return vendorService.getAll();
     }
 
@@ -52,6 +53,14 @@ public class VendorController {
         return vendorService.save(vendor);
     }
 
+    @PutMapping("/{id}")
+    @AdminAccess
+    @ApiOperation("Edit vendor by ID")
+    public VendorDTO updateVendor(@PathVariable @NotNull UUID id,
+                                  @RequestBody @NotNull BaseVendorDTO vendorDTO) {
+        return vendorService.updateVendorById(vendorDTO, id);
+    }
+
     @DeleteMapping("/{id}")
     @ApiOperation("Delete vendor by ID")
     @AdminAccess
@@ -62,7 +71,7 @@ public class VendorController {
     @GetMapping("/archived")
     @ApiOperation("Get all archived Vendors")
     @AdminAccess
-    public List<VendorDTO> getAllArchivedVendors() {
+    public List<BaseVendorDTO> getAllArchivedVendors() {
         return vendorService.getAllArchived();
     }
 

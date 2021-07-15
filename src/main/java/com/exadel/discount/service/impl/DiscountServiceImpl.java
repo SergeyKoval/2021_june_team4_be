@@ -1,16 +1,17 @@
 package com.exadel.discount.service.impl;
 
+import com.exadel.discount.exception.NotFoundException;
+import com.exadel.discount.model.dto.discount.BaseDiscountDTO;
 import com.exadel.discount.model.dto.discount.CreateDiscountDTO;
 import com.exadel.discount.model.dto.discount.DiscountDTO;
 import com.exadel.discount.model.dto.discount.DiscountFilter;
+import com.exadel.discount.model.dto.mapper.DiscountMapper;
 import com.exadel.discount.model.entity.Category;
 import com.exadel.discount.model.entity.Discount;
 import com.exadel.discount.model.entity.QDiscount;
 import com.exadel.discount.model.entity.Tag;
 import com.exadel.discount.model.entity.Vendor;
 import com.exadel.discount.model.entity.VendorLocation;
-import com.exadel.discount.exception.NotFoundException;
-import com.exadel.discount.model.dto.mapper.DiscountMapper;
 import com.exadel.discount.repository.CategoryRepository;
 import com.exadel.discount.repository.DiscountRepository;
 import com.exadel.discount.repository.TagRepository;
@@ -25,6 +26,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -64,13 +66,20 @@ public class DiscountServiceImpl implements DiscountService {
     }
 
     @Override
+    @Transactional
     public DiscountDTO getById(UUID id) {
         log.debug(String.format("Finding Discount with ID %s", id));
+        String userEmail = SecurityContextHolder.getContext().getAuthentication().getName();
         Discount discount = discountRepository
-                .findByIdAndArchived(id, false)
+                .findByIdAndArchivedWithFavoritesByUser(id, false, userEmail)
                 .orElseThrow(() -> new NotFoundException(String.format("Discount with id %s not found", id)));
+        discountRepository.increaseViewNumberById(id);
+        DiscountDTO discountDTO = discountMapper.getDTO(discount);
+        if (!discount.getFavorites().isEmpty()) {
+            discountDTO.setFavorite(true);
+        }
         log.debug(String.format("Successfully found Discount with ID %s", id));
-        return discountMapper.getDTO(discount);
+        return discountDTO;
     }
 
     @Override
@@ -81,9 +90,19 @@ public class DiscountServiceImpl implements DiscountService {
         log.debug("Getting list of all Discounts by filter");
         List<UUID> discountIds = discountRepository
                 .findAllDiscountIds(preparePredicateForFindingAll(filter), PageRequest.of(page, size));
-        List<Discount> discounts = discountRepository.findAllById(discountIds);
+        String userEmail = SecurityContextHolder.getContext().getAuthentication().getName();
+        List<DiscountDTO> discountDTOS = findAllDiscounts(discountIds, sort, userEmail, filter)
+                .stream()
+                .map(discount -> {
+                    DiscountDTO discountDTO = discountMapper.getDTO(discount);
+                    if (!discount.getFavorites().isEmpty()) {
+                        discountDTO.setFavorite(true);
+                    }
+                    return discountDTO;
+                })
+                .collect(Collectors.toList());
         log.debug("Successfully got list of all Discounts by filter");
-        return discountMapper.getListDTO(discounts);
+        return discountDTOS;
     }
 
     @Override
@@ -114,14 +133,14 @@ public class DiscountServiceImpl implements DiscountService {
     }
 
     @Override
-    public List<DiscountDTO> search(Integer size, String searchText) {
+    public List<BaseDiscountDTO> search(Integer size, String searchText) {
         log.debug("Getting list of all Discounts by searchText");
         List<UUID> discountsIds = discountRepository
-                .findAllDiscountIds(prepareSearchPredicate(searchText),
-                        PageRequest.of(0, size, Sort.by("viewNumber").descending()));
-        List<Discount> discounts = discountRepository.findAllById(discountsIds);
+                .findAllDiscountIds(prepareSearchPredicate(searchText), PageRequest.of(0, size));
+        List<Discount> discounts = discountRepository
+                .findAllByIdIn(discountsIds, Sort.by("viewNumber").descending());
         log.debug("Successfully got list of all Discounts by searchText");
-        return discountMapper.getListDTO(discounts);
+        return discountMapper.getListBaseDTO(discounts);
     }
 
     private Set<Tag> findTags(Set<UUID> tagIds) {
@@ -192,5 +211,18 @@ public class DiscountServiceImpl implements DiscountService {
                         .buildOr())
                 .collect(Collectors.toList());
         return ExpressionUtils.allOf(searchPredicates);
+    }
+
+    private List<Discount> findAllDiscounts(List<UUID> discountIds, Sort sort, String userEmail,
+                                            DiscountFilter filter) {
+        if (filter.getCityIds() != null || filter.getCountryIds() != null) {
+            return discountRepository
+                    .findAllByIdInWithFavoritesByUserAndLocations(discountIds, sort, userEmail,
+                            filter.getCityIds(), filter.getCountryIds());
+        } else {
+            return discountRepository
+                    .findAllByIdInWithFavoritesByUser(discountIds, sort, userEmail);
+        }
+
     }
 }
