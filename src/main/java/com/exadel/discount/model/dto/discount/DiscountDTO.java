@@ -6,6 +6,7 @@ import com.exadel.discount.model.dto.CategoryDTO;
 import com.exadel.discount.model.dto.TagDTO;
 import com.exadel.discount.model.dto.location.LocationDTO;
 import com.exadel.discount.model.dto.vendor.BaseVendorDTO;
+import com.exadel.discount.model.entity.DiscountType;
 import lombok.Data;
 
 import java.math.BigDecimal;
@@ -30,4 +31,5 @@ public class DiscountDTO {
     private Set<LocationDTO> vendorLocations;
     private BaseVendorDTO vendor;
     private Set<DiscountImageDTO> discountImages;
+    private boolean favorite;
 }
