@@ -5,5 +5,5 @@ import lombok.Data;
 @Data
 public class DiscountImageDTO {
     private String image;
-    private String byDefault;
+    private boolean byDefault;
 }

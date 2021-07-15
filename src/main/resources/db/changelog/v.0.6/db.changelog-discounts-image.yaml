@@ -19,6 +19,8 @@ databaseChangeLog:
               - column:
                   name: image
                   type: varchar(255)
+                  constraints:
+                    nullable: false
               - column:
                   name: by_default
                   type: boolean

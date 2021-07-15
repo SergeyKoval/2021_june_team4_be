@@ -57,9 +57,6 @@ databaseChangeLog:
               - column:
                   name: image
                   value: "https://exdadel-discounts-image-upload.s3.eu-central-1.amazonaws.com/discounts-images/sport1.jpg"
-              - column:
-                  name: by_default
-                  value: false
         - insert:
             tableName: discounts_image
             columns:
@@ -87,9 +84,6 @@ databaseChangeLog:
               - column:
                   name: image
                   value: "https://exdadel-discounts-image-upload.s3.eu-central-1.amazonaws.com/discounts-images/fitness1.jpg"
-              - column:
-                  name: by_default
-                  value: false
         - insert:
             tableName: discounts_image
             columns:
@@ -117,9 +111,6 @@ databaseChangeLog:
               - column:
                   name: image
                   value: "https://exdadel-discounts-image-upload.s3.eu-central-1.amazonaws.com/discounts-images/makeup1.jpg"
-              - column:
-                  name: by_default
-                  value: false
         - insert:
             tableName: discounts_image
             columns:
@@ -147,9 +138,6 @@ databaseChangeLog:
               - column:
                   name: image
                   value: "https://exdadel-discounts-image-upload.s3.eu-central-1.amazonaws.com/discounts-images/nails1.jpg"
-              - column:
-                  name: by_default
-                  value: false
         - insert:
             tableName: discounts_image
             columns:
@@ -192,6 +180,3 @@ databaseChangeLog:
               - column:
                   name: image
                   value: "https://exdadel-discounts-image-upload.s3.eu-central-1.amazonaws.com/discounts-images/pizza1.jpg"
-              - column:
-                  name: by_default
-                  value: false

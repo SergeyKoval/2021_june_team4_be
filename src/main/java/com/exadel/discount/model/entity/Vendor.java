@@ -40,8 +40,8 @@ public class Vendor {
     @Column(name = "contacts", length = 255)
     private String contacts;
 
-    @Column(name = "image", length = 255)
-    private String image;
+    @Column(name = "image")
+    private String vendorImage;
 
     @Column(name = "archived", columnDefinition = "boolean default false")
     private boolean archived;

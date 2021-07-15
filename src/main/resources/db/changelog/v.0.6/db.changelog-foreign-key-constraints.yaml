@@ -1,0 +1,11 @@
+databaseChangeLog:
+  - changeSet:
+      id: 0.6-foreignKeyConstraint-discount-image-to-discounts
+      author: artem_kishenets
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: discount_id
+            baseTableName: discounts_image
+            constraintName: fk_discounts_image_to_discounts
+            referencedColumnNames: id
+            referencedTableName: discounts

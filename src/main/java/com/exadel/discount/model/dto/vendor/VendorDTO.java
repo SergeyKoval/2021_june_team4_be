@@ -16,8 +16,8 @@ public class VendorDTO {
     private UUID id;
     private String name;
     private String description;
-    private String image;
     private String contacts;
+    private String vendorImage;
     private boolean archived;
     private Set<LocationDTO> vendorLocations;
     private Set<BaseDiscountDTO> discounts;

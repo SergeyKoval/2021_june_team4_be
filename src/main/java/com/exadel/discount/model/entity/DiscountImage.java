@@ -33,10 +33,10 @@ public class DiscountImage {
     @Column(name = "id")
     private UUID id;
 
-    @Column(name = "image", length = 255)
+    @Column(name = "image", nullable = false)
     private String image;
 
-    @Column(name = "by_default", length = 255)
+    @Column(name = "by_default", nullable = false)
     private boolean byDefault;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
