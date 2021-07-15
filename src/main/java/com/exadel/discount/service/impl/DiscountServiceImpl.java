@@ -66,12 +66,14 @@ public class DiscountServiceImpl implements DiscountService {
     }
 
     @Override
+    @Transactional
     public DiscountDTO getById(UUID id) {
         log.debug(String.format("Finding Discount with ID %s", id));
         String userEmail = SecurityContextHolder.getContext().getAuthentication().getName();
         Discount discount = discountRepository
                 .findByIdAndArchivedWithFavoritesByUser(id, false, userEmail)
                 .orElseThrow(() -> new NotFoundException(String.format("Discount with id %s not found", id)));
+        discountRepository.increaseViewNumberById(id);
         DiscountDTO discountDTO = discountMapper.getDTO(discount);
         if (!discount.getFavorites().isEmpty()) {
             discountDTO.setFavorite(true);
