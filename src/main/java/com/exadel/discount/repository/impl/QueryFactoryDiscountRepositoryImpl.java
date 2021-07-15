@@ -34,9 +34,7 @@ public class QueryFactoryDiscountRepositoryImpl implements QueryFactoryDiscountR
                 .limit(pageable.getPageSize());
         pageable.getSort()
                 .get()
-                .forEach(order -> {
-                    query.orderBy(getSortedColumn(order, order.getProperty()));
-                });
+                .forEach(order -> query.orderBy(getSortedColumn(order, order.getProperty())));
         return query.fetch();
     }
 

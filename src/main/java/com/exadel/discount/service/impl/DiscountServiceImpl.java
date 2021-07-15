@@ -91,7 +91,7 @@ public class DiscountServiceImpl implements DiscountService {
         List<UUID> discountIds = discountRepository
                 .findAllDiscountIds(preparePredicateForFindingAll(filter), PageRequest.of(page, size, sort));
         String userEmail = SecurityContextHolder.getContext().getAuthentication().getName();
-        List<DiscountDTO> discountDTOS = findAllDiscounts(discountIds, userEmail, sort, filter)
+        List<DiscountDTO> discountDTOS = findAllDiscounts(discountIds, sort, userEmail, filter)
                 .stream()
                 .map(discount -> {
                     DiscountDTO discountDTO = discountMapper.getDTO(discount);
@@ -137,8 +137,7 @@ public class DiscountServiceImpl implements DiscountService {
         Sort sort = Sort.by("viewNumber").descending();
         log.debug("Getting list of all Discounts by searchText");
         List<UUID> discountsIds = discountRepository
-                .findAllDiscountIds(prepareSearchPredicate(searchText),
-                        PageRequest.of(0, size, sort));
+                .findAllDiscountIds(prepareSearchPredicate(searchText), PageRequest.of(0, size, sort));
         List<Discount> discounts = discountRepository
                 .findAllByIdIn(discountsIds, sort);
         log.debug("Successfully got list of all Discounts by searchText");
@@ -215,7 +214,7 @@ public class DiscountServiceImpl implements DiscountService {
         return ExpressionUtils.allOf(searchPredicates);
     }
 
-    private List<Discount> findAllDiscounts(List<UUID> discountIds, String userEmail, Sort sort,
+    private List<Discount> findAllDiscounts(List<UUID> discountIds, Sort sort, String userEmail,
                                             DiscountFilter filter) {
         if (filter.getCityIds() != null || filter.getCountryIds() != null) {
             return discountRepository

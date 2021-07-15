@@ -54,8 +54,9 @@ public interface DiscountRepository extends JpaRepository<Discount, UUID>, Query
             "ON l.city.id IN :cityIds OR l.city.country.id IN :countryIds " +
             "WHERE d.id IN :discountIds")
     List<Discount> findAllByIdInWithFavoritesByUserAndLocations(
-            @Param("discountIds") Iterable<UUID> ids, Sort sort, @Param("userEmail") String userEmail,
-            @Param("cityIds") Iterable<UUID> cityIds, @Param("countryIds") Iterable<UUID> countryIds);
+            @Param("discountIds") Iterable<UUID> ids, Sort sort,
+            @Param("userEmail") String userEmail, @Param("cityIds") Iterable<UUID> cityIds,
+            @Param("countryIds") Iterable<UUID> countryIds);
 
     @Modifying
     @Query("UPDATE Discount d SET d.viewNumber = d.viewNumber + 1" +
