@@ -2,6 +2,7 @@ package com.exadel.discount.service.impl;
 
 import com.exadel.discount.model.dto.location.CreateLocationDTO;
 import com.exadel.discount.model.dto.location.LocationDTO;
+import com.exadel.discount.model.dto.location.UpdateLocationDTO;
 import com.exadel.discount.model.entity.City;
 import com.exadel.discount.model.entity.Vendor;
 import com.exadel.discount.model.entity.VendorLocation;
@@ -14,6 +15,7 @@ import com.exadel.discount.service.VendorLocationService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.UUID;
@@ -31,14 +33,8 @@ public class VendorLocationServiceImpl implements VendorLocationService {
     @Override
     public LocationDTO save(CreateLocationDTO vendorLocation) {
         log.debug("Saving new VendorLocation");
-        UUID vendorId = vendorLocation.getVendorId();
-        Vendor vendor = vendorRepository
-                .findByIdAndArchived(vendorId, false)
-                .orElseThrow(() -> new NotFoundException(String.format("Vendor with id %s not found", vendorId)));
-        UUID cityId = vendorLocation.getCityId();
-        City city = cityRepository
-                .findById(cityId)
-                .orElseThrow(() -> new NotFoundException(String.format("City with id %s not found", cityId)));
+        Vendor vendor = findVendor(vendorLocation.getVendorId());
+        City city = findCity(vendorLocation.getCityId());
         VendorLocation location = vendorLocationMapper.parseDTO(vendorLocation);
         location.setVendor(vendor);
         location.setCity(city);
@@ -76,5 +72,40 @@ public class VendorLocationServiceImpl implements VendorLocationService {
         }
         vendorLocationRepository.deleteById(id);
         log.debug(String.format("Successfully deleted VendorLocation with ID %s", id));
+    }
+
+    @Override
+    @Transactional
+    public LocationDTO updateLocationById(UpdateLocationDTO updateLocationDTO, UUID id) {
+        log.debug(String.format("Update VendorLocation with ID %s", id));
+        VendorLocation vendorLocation = vendorLocationRepository
+                .findById(id)
+                .orElseThrow(() -> new NotFoundException(String.format("VendorLocation with ID %s not found", id)));
+        if (updateLocationDTO.getCityId() != null) {
+            City city = findCity(updateLocationDTO.getCityId());
+            vendorLocation.setCity(city);
+        }
+        if (updateLocationDTO.getVendorId() != null) {
+            Vendor vendor = findVendor(updateLocationDTO.getVendorId());
+            vendorLocation.setVendor(vendor);
+        }
+        vendorLocation = vendorLocationMapper.update(updateLocationDTO, vendorLocation);
+        System.out.println(vendorLocation.toString());
+
+        LocationDTO locationDTO = vendorLocationMapper.getDTO(vendorLocationRepository.save(vendorLocation));
+        log.debug(String.format("Successfully VendorLocation with ID %s", id));
+        return locationDTO;
+    }
+
+    private City findCity(UUID id) {
+        return cityRepository
+                .findById(id)
+                .orElseThrow(() -> new NotFoundException(String.format("City with id %s not found", id)));
+    }
+
+    private Vendor findVendor(UUID id) {
+        return vendorRepository
+                .findByIdAndArchived(id, false)
+                .orElseThrow(() -> new NotFoundException(String.format("Vendor with id %s not found", id)));
     }
 }

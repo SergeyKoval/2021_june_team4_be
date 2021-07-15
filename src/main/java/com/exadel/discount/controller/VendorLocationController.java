@@ -2,6 +2,9 @@ package com.exadel.discount.controller;
 
 import com.exadel.discount.model.dto.location.CreateLocationDTO;
 import com.exadel.discount.model.dto.location.LocationDTO;
+import com.exadel.discount.model.dto.location.UpdateLocationDTO;
+import com.exadel.discount.model.dto.vendor.BaseVendorDTO;
+import com.exadel.discount.model.dto.vendor.VendorDTO;
 import com.exadel.discount.security.annotation.AdminAccess;
 import com.exadel.discount.security.annotation.UserAccess;
 import com.exadel.discount.service.VendorLocationService;
@@ -12,6 +15,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -49,6 +53,14 @@ public class VendorLocationController {
     @AdminAccess
     public LocationDTO addVendorLocation(@RequestBody @Valid CreateLocationDTO vendorLocation) {
         return vendorLocationService.save(vendorLocation);
+    }
+
+    @PutMapping("/{id}")
+    @AdminAccess
+    @ApiOperation("Edit location by ID")
+    public LocationDTO updateLocation(@PathVariable @NotNull UUID id,
+                                  @RequestBody @NotNull UpdateLocationDTO locationDTO) {
+        return vendorLocationService.updateLocationById(locationDTO, id);
     }
 
     @DeleteMapping("/{id}")
