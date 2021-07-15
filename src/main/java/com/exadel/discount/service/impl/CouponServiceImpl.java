@@ -87,7 +87,7 @@ public class CouponServiceImpl implements CouponService {
     public CouponDTO assignCouponToUser(UUID discountId) {
         log.debug(String.format("Check: if user already have Favorite of Discount with ID %s ", discountId));
         String userEmail = SecurityContextHolder.getContext().getAuthentication().getName();
-        if (couponRepository.findByDiscountIdAndAndUserEmail(discountId, userEmail).isPresent()) {
+        if (couponRepository.existsByDiscountIdAndUserEmail(discountId, userEmail)) {
             throw new CreationRestrictedException(String
                     .format("Coupon for Discount with id %s does already exist", discountId));
         }

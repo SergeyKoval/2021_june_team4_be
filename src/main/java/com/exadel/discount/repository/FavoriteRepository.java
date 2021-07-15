@@ -35,16 +35,7 @@ public interface FavoriteRepository extends JpaRepository<Favorite, UUID>, Query
             "discount.vendor", "discount.vendorLocations.city", "discount.vendorLocations.city.country"})
     List<Favorite> findAllByIdIn(Iterable<UUID> ids, Sort sort);
 
-    @Modifying
-    void deleteFavoriteByDiscountIdAndUserEmail(@Param("discountId") UUID discountId,
-                                                @Param("userEmail") String userEmail);
+    void deleteFavoriteByDiscountIdAndUserEmail(UUID discountId, String userEmail);
 
-
-    @EntityGraph(attributePaths = {"user", "discount"})
-    Optional<Favorite> findByDiscountIdAndAndUserEmail(@Param("discountId") UUID discountId,
-                                                       @Param("userEmail") String userEmail);
-
-    @EntityGraph(attributePaths = {"user", "discount"})
-    boolean existsFavoriteByDiscountIdAndAndUserEmail(@Param("discountId") UUID discountId,
-                                                      @Param("userEmail") String userEmail);
+    boolean existsByDiscountIdAndUserEmail(UUID discountId, String userEmail);
 }

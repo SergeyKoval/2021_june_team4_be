@@ -10,7 +10,7 @@ import java.util.UUID;
 public interface FavoriteService {
     FavoriteDTO findFavoriteById(UUID id);
 
-    void deleteFavoriteByID(UUID id);
+    void deleteFavoriteByDiscountID(UUID discountId);
 
     FavoriteDTO assignFavoriteToUser(UUID discountId);
 

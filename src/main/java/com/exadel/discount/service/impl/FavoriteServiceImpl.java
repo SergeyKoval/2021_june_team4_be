@@ -88,7 +88,7 @@ public class FavoriteServiceImpl implements FavoriteService {
     public FavoriteDTO assignFavoriteToUser(UUID discountId) {
         log.debug(String.format("Check: if user already have Favorite of Discount with ID %s ", discountId));
         String userEmail = SecurityContextHolder.getContext().getAuthentication().getName();
-        if (favoriteRepository.findByDiscountIdAndAndUserEmail(discountId, userEmail).isPresent()) {
+        if (favoriteRepository.existsByDiscountIdAndUserEmail(discountId, userEmail)) {
             throw  new CreationRestrictedException(String
                     .format("Favorite for discount with id %s does already exist", discountId));
         }
@@ -115,10 +115,10 @@ public class FavoriteServiceImpl implements FavoriteService {
 
     @Transactional
     @Override
-    public void deleteFavoriteByID(UUID discountId) {
+    public void deleteFavoriteByDiscountID(UUID discountId) {
         log.debug("Finding & deleting Favorite by DiscountID");
         String userEmail = SecurityContextHolder.getContext().getAuthentication().getName();
-        if (favoriteRepository.findByDiscountIdAndAndUserEmail(discountId, userEmail).isEmpty()) {
+        if (!favoriteRepository.existsByDiscountIdAndUserEmail(discountId, userEmail)) {
             throw new DeletionRestrictedException(String
                     .format("Favorite for discount with id %s does not already exist", discountId));
         }

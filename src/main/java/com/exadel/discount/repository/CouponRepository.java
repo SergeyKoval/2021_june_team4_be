@@ -34,7 +34,5 @@ public interface CouponRepository extends JpaRepository<Coupon, UUID>, QuerydslP
             "discount.vendor", "discount.vendorLocations.city", "discount.vendorLocations.city.country"})
     List<Coupon> findAllByIdIn(Iterable<UUID> ids, Sort sort);
 
-    @EntityGraph(attributePaths = {"user", "discount"})
-    Optional<Coupon> findByDiscountIdAndAndUserEmail(@Param("discountId") UUID discountId,
-                                                     @Param("userEmail") String userEmail);
+    boolean existsByDiscountIdAndUserEmail(UUID discountId, String userEmail);
 }

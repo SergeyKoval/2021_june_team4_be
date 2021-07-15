@@ -89,7 +89,7 @@ public class FavoriteController {
     @ApiOperation("Delete favorite by ID")
     @UserAccess
     public void deleteFavorite(@PathVariable @NotNull final UUID discountId) {
-        favoriteService.deleteFavoriteByID(discountId);
+        favoriteService.deleteFavoriteByDiscountID(discountId);
     }
 }
 
