@@ -20,6 +20,7 @@ import java.util.UUID;
 
 import static org.junit.Assert.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 
@@ -95,8 +96,15 @@ public class CountryServiceTest {
         Assertions.assertEquals("Country with Id "+ID+" not found",exception.getMessage());
     }
 
-    @Test
+
     public void testFindByName(){
+
+        Country country = mapper.countryDTOToCountry(input);
+        when(countryRepository.findByName(anyString())).thenReturn(Optional.of(country));
+        CountryServiceImpl c = Mockito.mock(CountryServiceImpl.class);
+        CountryDTO actual = c.findByName(anyString());
+
+        Assertions.assertEquals(actual,input);
 
     }
 
