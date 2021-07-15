@@ -57,7 +57,7 @@ public class VendorLocationController {
     @AdminAccess
     @ApiOperation("Edit location by ID")
     public LocationDTO updateLocation(@PathVariable @NotNull UUID id,
-                                  @RequestBody @NotNull UpdateLocationDTO locationDTO) {
+                                      @RequestBody @NotNull UpdateLocationDTO locationDTO) {
         return vendorLocationService.updateLocationById(locationDTO, id);
     }
 
