@@ -36,4 +36,7 @@ public interface VendorRepository extends JpaRepository<Vendor, UUID> {
     boolean existsByIdWithNoDiscounts(@Param("vendorId") UUID vendorId);
 
     boolean existsByIdAndArchived(UUID id, boolean archived);
+
+    @EntityGraph(attributePaths = {"vendorLocations", "vendorLocations.city", "vendorLocations.city.country"})
+    Vendor save(Vendor vendor);
 }
