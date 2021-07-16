@@ -16,23 +16,19 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import java.util.UUID;
 
-import static org.mockito.Mockito.when;
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
 @SpringBootTest
 @AutoConfigureMockMvc
-@WithMockUser(username="admin",roles={"USER","ADMIN"})
+@WithMockUser(username = "admin", roles = {"USER", "ADMIN"})
 public class TagControllerTests {
 
     private static final UUID ID = UUID.fromString("971bf698-f3ea-4a97-85e8-0a2a770736d6");
     private static final TagDTO tag;
+
     static {
         tag = new TagDTO();
         tag.setName("Test");
     }
+
     @Autowired
     private MockMvc mockMvc;
 
@@ -41,15 +37,14 @@ public class TagControllerTests {
 
 
     @Test
-    public void getAllTagsTest()throws Exception {
-       // List<TagDTO> expected = tagService.getAllTags();
+    public void getAllTagsTest() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.get("/tags"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.status().is2xxSuccessful());
     }
 
     @Test
-    public void saveTagTest() throws Exception{
+    public void saveTagTest() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.post("/tags")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{\"name\": \"Test\"" + "}"))
@@ -57,31 +52,24 @@ public class TagControllerTests {
     }
 
     @Test
-    public void saveTagExceptionTest() throws Exception{
-        when(tagService.getById(UUID.randomUUID())).thenReturn(tag);
-
-        mockMvc.perform(post("/tags")
-                .param("name","Test")
-                .with(csrf())
-                .contentType(MediaType.APPLICATION_FORM_URLENCODED))
-                .andExpect(status().is5xxServerError())
-                .andDo(print());
+    public void saveTagExceptionTest() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.post("/tags")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().is5xxServerError());
     }
 
     @Test
     public void getTagByIdTest() throws Exception {
-        when(tagService.getById(ID)).thenReturn(tag);
-        mockMvc.perform(get("/tags")
-                .contentType(MediaType.TEXT_HTML))
-                .andExpect(status().isOk())
-                .andDo(print());
+        mockMvc.perform(MockMvcRequestBuilders.get("/tags/971bf698-f3ea-4a97-85e8-0a2a770736d6"))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.status().is2xxSuccessful());
     }
 
     @Test
-    public void deleteTagTest() throws Exception{
-        mockMvc.perform(delete("/tags")
-                .contentType(MediaType.TEXT_HTML))
-                .andExpect(status().is5xxServerError())
-                .andDo(print());
+    public void deleteTagTest() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.delete("/tags/971bf698-f3ea-4a97-85e8-0a2a770736d6")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.status().is2xxSuccessful());
     }
 }
