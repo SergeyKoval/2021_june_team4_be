@@ -50,13 +50,10 @@ public class TagControllerTests {
 
     @Test
     public void saveTagTest() throws Exception{
-        when(tagService.getById(ID)).thenReturn(tag);
-
-        mockMvc.perform(post("/tags")
-                .param("name","Test")
-                .with(csrf())
-                .contentType(MediaType.APPLICATION_FORM_URLENCODED))
-                .andDo(print());
+        mockMvc.perform(MockMvcRequestBuilders.post("/tags")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{\"name\": \"Test\"" + "}"))
+                .andExpect(MockMvcResultMatchers.status().is2xxSuccessful());
     }
 
     @Test
