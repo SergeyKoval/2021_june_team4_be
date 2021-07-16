@@ -27,23 +27,9 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 @AutoConfigureMockMvc
 @WithMockUser(username = "admin", roles = {"USER", "ADMIN"})
 public class CountryControllerTest {
-    private static final UUID ID = UUID.fromString("971bf698-f3ea-4a97-85e8-0a2a770736d6");
-    private static final Country country;
-
-    static {
-        country = new Country();
-        country.setName("Test");
-        country.setId(ID);
-    }
 
     @Autowired
     private MockMvc mockMvc;
-
-    @MockBean
-    private CountryService countryService;
-
-    @MockBean
-    private CityService cityService;
 
     @Test
     public void getAllCountriesTest() throws Exception {
