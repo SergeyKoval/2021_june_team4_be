@@ -1,8 +1,8 @@
 package com.exadel.discount.model.exception;
 
 import com.exadel.discount.controller.GlobalExceptionHandler;
-import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
+import lombok.experimental.SuperBuilder;
 
 /**
  * This class is used for exception information that are transferred to the client side.
@@ -10,10 +10,9 @@ import lombok.Data;
  * @see GlobalExceptionHandler
  */
 
-@Data
-@Builder
+@Getter
+@SuperBuilder
 public class ExceptionDetails {
-    private String message;
-    private String field;
-    private ExceptionCause cause;
+    protected final String message;
+    protected final ExceptionCause cause;
 }

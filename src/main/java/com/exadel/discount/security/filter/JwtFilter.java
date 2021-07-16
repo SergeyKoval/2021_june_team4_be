@@ -7,7 +7,6 @@ import com.exadel.discount.model.exception.ExceptionDetails;
 import com.exadel.discount.service.impl.JwtServiceImpl;
 import com.exadel.discount.service.impl.UserDetailsServiceImpl;
 import lombok.RequiredArgsConstructor;
-import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.json.JSONObject;
@@ -42,7 +41,6 @@ import static org.apache.commons.lang3.StringUtils.isNoneEmpty;
  */
 
 @Component
-@Setter
 @RequiredArgsConstructor
 @Slf4j
 public class JwtFilter extends OncePerRequestFilter {
@@ -83,7 +81,7 @@ public class JwtFilter extends OncePerRequestFilter {
             setErrorResponse(response, HttpStatus.FORBIDDEN, exception, ExceptionCause.INCORRECT_TOKEN);
         } catch (TokenExpiredException exception) {
             log.info("Exception stack trace: ", exception);
-            setErrorResponse(response, HttpStatus.FORBIDDEN, exception, ExceptionCause.EXPIRED_TOKEN);
+            setErrorResponse(response, HttpStatus.UNAUTHORIZED, exception, ExceptionCause.EXPIRED_TOKEN);
         } catch (Exception exception) {
             log.error("Exception stack trace: ", exception);
             setErrorResponse(response, HttpStatus.INTERNAL_SERVER_ERROR, exception, ExceptionCause.UNCAUGHT_EXCEPTION);
