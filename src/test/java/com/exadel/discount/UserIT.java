@@ -39,7 +39,7 @@ public class UserIT {
                 .andExpect(jsonPath("$[0].city.name").value("Kyiv"));
     }
 
-    @WithMockUser(username = "admin", roles = {"USER"})
+    @WithMockUser
     @Test
     void getUserById() throws Exception {
         mockMvc.perform(get("/users/91cf19dd-2af7-49ee-825e-94c0831ba1f2")
