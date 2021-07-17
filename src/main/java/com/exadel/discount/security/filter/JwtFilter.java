@@ -91,7 +91,7 @@ public class JwtFilter extends OncePerRequestFilter {
     /**
      * This method sets an exception response to the clint side when in this filter appears an exception.
      *
-     * @param response   a service class that provide a transmission to the client side.
+     * @param response   a service class that provides a transmission to the client side.
      * @param httpStatus a http status that will be appropriate for this issue.
      * @param exception  an exception that was caught in the filter.
      * @param cause      a logic word that describes the subject of the issue.

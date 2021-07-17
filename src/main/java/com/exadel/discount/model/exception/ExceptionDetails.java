@@ -6,6 +6,8 @@ import lombok.experimental.SuperBuilder;
 
 /**
  * This class is used for exception information that are transferred to the client side.
+ * It is used for exceptions that are not related to fields
+ * as opposed to its inheritor {@link com.exadel.discount.model.exception.FieldExceptionDetails}.
  *
  * @see GlobalExceptionHandler
  */
