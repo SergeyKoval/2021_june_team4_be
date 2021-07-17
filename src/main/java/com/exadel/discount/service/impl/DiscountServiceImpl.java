@@ -89,7 +89,7 @@ public class DiscountServiceImpl implements DiscountService {
                 Sort.by(sortBy);
         log.debug("Getting list of all Discounts by filter");
         List<UUID> discountIds = discountRepository
-                .findAllDiscountIds(preparePredicateForFindingAll(filter), PageRequest.of(page, size));
+                .findAllDiscountIds(preparePredicateForFindingAll(filter), PageRequest.of(page, size, sort));
         String userEmail = SecurityContextHolder.getContext().getAuthentication().getName();
         List<DiscountDTO> discountDTOS = findAllDiscounts(discountIds, sort, userEmail, filter)
                 .stream()
@@ -134,11 +134,12 @@ public class DiscountServiceImpl implements DiscountService {
 
     @Override
     public List<BaseDiscountDTO> search(Integer size, String searchText) {
+        Sort sort = Sort.by("viewNumber").descending();
         log.debug("Getting list of all Discounts by searchText");
         List<UUID> discountsIds = discountRepository
-                .findAllDiscountIds(prepareSearchPredicate(searchText), PageRequest.of(0, size));
+                .findAllDiscountIds(prepareSearchPredicate(searchText), PageRequest.of(0, size, sort));
         List<Discount> discounts = discountRepository
-                .findAllByIdIn(discountsIds, Sort.by("viewNumber").descending());
+                .findAllByIdIn(discountsIds, sort);
         log.debug("Successfully got list of all Discounts by searchText");
         return discountMapper.getListBaseDTO(discounts);
     }
