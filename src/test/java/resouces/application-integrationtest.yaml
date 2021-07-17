@@ -1,0 +1,21 @@
+spring:
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: validate
+    open-in-view: false
+  datasource:
+    driver-class-name: org.postgresql.Driver
+
+
+jwt:
+  token:
+    expiration:
+      seconds:
+        access: 120
+        refresh: 3600
+    encryption:
+      key: encryptionSecret
+cors:
+  hosts:
+    - http://localhost:4200
