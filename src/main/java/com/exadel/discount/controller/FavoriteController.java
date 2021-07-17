@@ -1,5 +1,6 @@
 package com.exadel.discount.controller;
 
+import com.exadel.discount.model.dto.discount.DiscountDTO;
 import com.exadel.discount.model.dto.favorite.FavoriteDTO;
 import com.exadel.discount.model.dto.favorite.FavoriteFilter;
 import com.exadel.discount.security.annotation.AdminAccess;
@@ -81,15 +82,15 @@ public class FavoriteController {
     @PostMapping
     @ApiOperation("Save new favorite to user")
     @UserAccess
-    public FavoriteDTO addFavorite(@RequestParam @NotNull final UUID discountId) {
+    public DiscountDTO addFavorite(@RequestParam @NotNull final UUID discountId) {
         return favoriteService.assignFavoriteToUser(discountId);
     }
 
     @DeleteMapping("{discountId}")
     @ApiOperation("Delete favorite by ID")
     @UserAccess
-    public void deleteFavorite(@PathVariable @NotNull final UUID discountId) {
-        favoriteService.deleteFavoriteByDiscountID(discountId);
+    public DiscountDTO deleteFavorite(@PathVariable @NotNull final UUID discountId) {
+        return favoriteService.deleteFavoriteByDiscountID(discountId);
     }
 }
 

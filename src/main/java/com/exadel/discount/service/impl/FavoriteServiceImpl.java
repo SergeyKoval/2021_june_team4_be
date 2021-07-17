@@ -3,8 +3,10 @@ package com.exadel.discount.service.impl;
 import com.exadel.discount.exception.CreationRestrictedException;
 import com.exadel.discount.exception.DeletionRestrictedException;
 import com.exadel.discount.exception.NotFoundException;
+import com.exadel.discount.model.dto.discount.DiscountDTO;
 import com.exadel.discount.model.dto.favorite.FavoriteDTO;
 import com.exadel.discount.model.dto.favorite.FavoriteFilter;
+import com.exadel.discount.model.dto.mapper.DiscountMapper;
 import com.exadel.discount.model.dto.mapper.FavoriteMapper;
 import com.exadel.discount.model.entity.Discount;
 import com.exadel.discount.model.entity.Favorite;
@@ -40,7 +42,9 @@ public class FavoriteServiceImpl implements FavoriteService {
     private final FavoriteRepository favoriteRepository;
     private final UserRepository userRepository;
     private final FavoriteMapper favoriteMapper;
+    private final DiscountMapper discountMapper;
     private final DiscountRepository discountRepository;
+
     private static final int SEARCH_WORD_MIN_LENGTH = 3;
 
 
@@ -85,11 +89,11 @@ public class FavoriteServiceImpl implements FavoriteService {
 
     @Transactional
     @Override
-    public FavoriteDTO assignFavoriteToUser(UUID discountId) {
+    public DiscountDTO assignFavoriteToUser(UUID discountId) {
         log.debug(String.format("Check: if user already have Favorite of Discount with ID %s ", discountId));
         String userEmail = SecurityContextHolder.getContext().getAuthentication().getName();
         if (favoriteRepository.existsByDiscountIdAndUserEmail(discountId, userEmail)) {
-            throw  new CreationRestrictedException(String
+            throw new CreationRestrictedException(String
                     .format("Favorite for discount with id %s does already exist", discountId));
         }
 
@@ -109,13 +113,14 @@ public class FavoriteServiceImpl implements FavoriteService {
         favorite.setDiscount(discount);
         Favorite favoriteSaved = favoriteRepository.save(favorite);
         log.debug(String.format("Successfully added Favorite for Discount with ID %s to user", discountId));
-
-        return favoriteMapper.toFavoriteDTO(favoriteSaved);
+        DiscountDTO discountDTO = discountMapper.getDTO(discount);
+        discountDTO.setFavorite(true);
+        return discountDTO;
     }
 
     @Transactional
     @Override
-    public void deleteFavoriteByDiscountID(UUID discountId) {
+    public DiscountDTO deleteFavoriteByDiscountID(UUID discountId) {
         log.debug("Finding & deleting Favorite by DiscountID");
         String userEmail = SecurityContextHolder.getContext().getAuthentication().getName();
         if (!favoriteRepository.existsByDiscountIdAndUserEmail(discountId, userEmail)) {
@@ -125,6 +130,12 @@ public class FavoriteServiceImpl implements FavoriteService {
 
         favoriteRepository.deleteFavoriteByDiscountIdAndUserEmail(discountId, userEmail);
         log.debug("Successfully deleted Favorite by DiscountID");
+        Discount discount = discountRepository
+                .findByIdAndArchived(discountId, false)
+                .orElseThrow(() -> new NotFoundException(String.format("Discount with id %s not found", discountId)));
+        DiscountDTO discountDTO = discountMapper.getDTO(discount);
+        discountDTO.setFavorite(false);
+        return discountDTO;
     }
 
     private Predicate preparePredicateForFindingAllFavorites(FavoriteFilter favoriteFilter) {
