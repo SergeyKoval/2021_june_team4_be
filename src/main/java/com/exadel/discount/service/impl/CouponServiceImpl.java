@@ -46,17 +46,16 @@ public class CouponServiceImpl implements CouponService {
     @Override
     public List<CouponDTO> getAll(int pageNumber, int pageSize, String sortDirection, String sortField,
                                   CouponFilter couponFilter) {
-        Pageable paging = SortPageUtil.makePageable(pageNumber, pageSize, sortDirection, sortField);
+        Sort sort = SortPageUtil.makeSort(sortDirection, sortField);
+        Pageable paging = PageRequest.of(pageNumber, pageSize, sort);
         log.debug("Getting sorted page-list of all Coupons");
         List<Coupon> filteredCouponList;
         if (preparePredicateForFindingAllCoupons(couponFilter) == null) {
             filteredCouponList = couponRepository.findAll(paging).toList();
         } else {
             List<UUID> couponIds = couponRepository
-                    .findAllCouponIds(preparePredicateForFindingAllCoupons(couponFilter),
-                            PageRequest.of(pageNumber, pageSize));
-            filteredCouponList = couponRepository.findAllByIdIn(couponIds,
-                    SortPageUtil.makeSort(sortDirection, sortField));
+                    .findAllCouponIds(preparePredicateForFindingAllCoupons(couponFilter), paging);
+            filteredCouponList = couponRepository.findAllByIdIn(couponIds, sort);
         }
         log.debug("Successfully sorted page-list of all Coupons is got");
         return couponMapper.toCouponDTOList(filteredCouponList);
@@ -65,10 +64,11 @@ public class CouponServiceImpl implements CouponService {
     @Override
     public List<CouponDTO> search(Integer size, String searchText) {
         log.debug("Getting sorted page-list of all Coupons by searchText");
+        Sort sort = Sort.by("date").descending();
         List<UUID> couponsIds = couponRepository
-                .findAllCouponIds(prepareSearchPredicate(searchText), PageRequest.of(0, size));
+                .findAllCouponIds(prepareSearchPredicate(searchText), PageRequest.of(0, size, sort));
         List<Coupon> coupons = couponRepository
-                .findAllByIdIn(couponsIds, Sort.by("date").descending());
+                .findAllByIdIn(couponsIds, sort);
         log.debug("Successfully got sorted page-list of all Coupons by searchText");
         return couponMapper.toCouponDTOList(coupons);
     }
