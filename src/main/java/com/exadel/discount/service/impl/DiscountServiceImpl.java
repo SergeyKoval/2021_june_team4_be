@@ -1,7 +1,6 @@
 package com.exadel.discount.service.impl;
 
 import com.exadel.discount.exception.NotFoundException;
-import com.exadel.discount.model.dto.discount.BaseDiscountDTO;
 import com.exadel.discount.model.dto.discount.CreateDiscountDTO;
 import com.exadel.discount.model.dto.discount.DiscountDTO;
 import com.exadel.discount.model.dto.discount.DiscountFilter;
@@ -133,15 +132,25 @@ public class DiscountServiceImpl implements DiscountService {
     }
 
     @Override
-    public List<BaseDiscountDTO> search(Integer size, String searchText) {
+    public List<DiscountDTO> search(Integer size, String searchText) {
         Sort sort = Sort.by("viewNumber").descending();
         log.debug("Getting list of all Discounts by searchText");
         List<UUID> discountsIds = discountRepository
                 .findAllDiscountIds(prepareSearchPredicate(searchText), PageRequest.of(0, size, sort));
-        List<Discount> discounts = discountRepository
-                .findAllByIdIn(discountsIds, sort);
+        String userEmail = SecurityContextHolder.getContext().getAuthentication().getName();
+        List<DiscountDTO> discountDTOS = discountRepository
+                .findAllByIdIn(discountsIds, sort)
+                .stream()
+                .map(discount -> {
+                    DiscountDTO discountDTO = discountMapper.getDTO(discount);
+                    if (!discount.getFavorites().isEmpty()) {
+                        discountDTO.setFavorite(true);
+                    }
+                    return discountDTO;
+                })
+                .collect(Collectors.toList());
         log.debug("Successfully got list of all Discounts by searchText");
-        return discountMapper.getListBaseDTO(discounts);
+        return discountDTOS;
     }
 
     private Set<Tag> findTags(Set<UUID> tagIds) {

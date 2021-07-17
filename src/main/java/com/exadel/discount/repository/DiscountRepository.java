@@ -24,7 +24,8 @@ public interface DiscountRepository extends JpaRepository<Discount, UUID>, Query
             "vendorLocations.city", "vendorLocations.city.country"})
     Optional<Discount> findById(UUID id);
 
-    @EntityGraph(attributePaths = {"category", "vendorLocations", "tags", "vendor"})
+    @EntityGraph(attributePaths = {"category", "vendorLocations", "tags", "vendor",
+            "vendorLocations.city", "vendorLocations.city.country", "favorites"})
     List<Discount> findAllByIdIn(Iterable<UUID> ids, Sort sort);
 
     @EntityGraph(attributePaths = {"category", "vendorLocations", "tags", "vendor",
