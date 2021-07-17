@@ -14,16 +14,16 @@ import org.springframework.transaction.annotation.Transactional;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
+@ActiveProfiles("test")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
 @Transactional
-@ActiveProfiles("integrationtest")
 public class UserIT {
 
     @Autowired
     private MockMvc mockMvc;
 
-    @WithMockUser(username = "admin", roles = {"ADMIN"})
+    @WithMockUser(username = "admin@mail.com", roles = {"USER", "ADMIN"})
     @Test
     public void getAllFilteredUsersIT() throws Exception {
         mockMvc.perform(get("/users")
