@@ -6,12 +6,15 @@ import com.exadel.discount.exception.InvalidTokenException;
 import com.exadel.discount.exception.NotFoundException;
 import com.exadel.discount.model.exception.ExceptionCause;
 import com.exadel.discount.model.exception.ExceptionDetails;
+import com.exadel.discount.model.exception.FieldExceptionDetails;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.InternalAuthenticationServiceException;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.validation.BindException;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -20,6 +23,9 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static org.apache.commons.lang3.StringUtils.wrap;
+import static org.apache.commons.lang3.StringUtils.SPACE;
 
 /**
  * This class handles exceptions that were written in {@link ExceptionHandler}
@@ -36,7 +42,7 @@ public class GlobalExceptionHandler {
     /**
      * This method handles a problem at the level of database data searching
      * about the values that were not found in a database expect for authentication searching that is handled by
-     * {@link #handleIncorrectAuthentication(APIException)}
+     * {@link #handleIncorrectAuthentication(AuthenticationException)}
      *
      * @param exception take a caught exception in {@link ExceptionHandler}.
      * @return the {@link ExceptionDetails} class with default message
@@ -58,28 +64,32 @@ public class GlobalExceptionHandler {
      * This method handles a problem at the level of the validation about an incorrect data and its format.
      *
      * @param exception take a caught exception in {@link ExceptionHandler}.
-     * @return one or many of {@link ExceptionDetails} classes with default messages
+     * @return the {@link FieldExceptionDetails} class with default message,
+     * with the fields that causes the exception
      * and an appropriate logic word {@link ExceptionCause#INCORRECT_VALUE}.
      */
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseBody
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public List<ExceptionDetails> handleIncorrectValue(BindException exception) {
-        List<ExceptionDetails> exceptionDetailsList = exception
-                .getBindingResult()
-                .getFieldErrors()
-                .stream()
-                .map(error ->
-                        ExceptionDetails.builder()
-                                .message(error.getDefaultMessage())
-                                .cause(ExceptionCause.INCORRECT_VALUE)
-                                .field(error.getField())
-                                .build())
-                .collect(Collectors.toList());
-
+    public FieldExceptionDetails handleIncorrectValue(BindException exception) {
         log.info("Exception stack trace: ", exception);
 
-        return exceptionDetailsList;
+        List<FieldError> fieldErrors = exception.getBindingResult().getFieldErrors();
+
+        return FieldExceptionDetails.builder()
+                .message(fieldErrors
+                        .stream()
+                        .map(fieldError ->
+                                wrap(fieldError.getField(), "'") +
+                                        SPACE +
+                                        fieldError.getDefaultMessage())
+                        .collect(Collectors.joining(", ")))
+                .field(fieldErrors
+                        .stream()
+                        .map(FieldError::getField)
+                        .toArray(String[]::new))
+                .cause(ExceptionCause.INCORRECT_VALUE)
+                .build();
     }
 
     /**
@@ -92,7 +102,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler({InternalAuthenticationServiceException.class, BadCredentialsException.class})
     @ResponseBody
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
-    public ExceptionDetails handleIncorrectAuthentication(APIException exception) {
+    public ExceptionDetails handleIncorrectAuthentication(AuthenticationException exception) {
         log.info("Exception stack trace: ", exception);
 
         return ExceptionDetails.builder()

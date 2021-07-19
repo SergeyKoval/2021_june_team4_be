@@ -1,10 +1,11 @@
 package com.exadel.discount.model.exception;
 
 /**
- * This enumeration represents logical words for the exceptions bodies that
- * are transferred to a client code and are used for localisation.
+ * This enumeration represents logical words for the exception body that
+ * is transferred to a client code for more detailed information about an exception.
  * <p>
  * It is used in the class {@link ExceptionDetails}.
+ * It is used in the class {@link FieldExceptionDetails}.
  */
 public enum ExceptionCause {
     /**
@@ -22,7 +23,7 @@ public enum ExceptionCause {
     INCORRECT_VALUE,
     /**
      * It means a problem at the level of database data searching.
-     * It is intended for a situation where search key founds nothing in database.
+     * It is intended for a situation where a search key founds nothing in database.
      */
     NOT_FOUND_VALUE,
     /**
