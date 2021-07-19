@@ -33,7 +33,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
 @Transactional
-@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
+@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 public class NewDiscountIT {
 
     @Autowired
@@ -56,7 +56,7 @@ public class NewDiscountIT {
     private Tag testTag;
     private Discount testDiscount;
 
-    @BeforeEach
+//   @BeforeEach
     public void setUp() {
 
         //create new vendor for test
