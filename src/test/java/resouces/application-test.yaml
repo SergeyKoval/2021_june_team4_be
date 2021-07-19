@@ -11,9 +11,6 @@ spring:
     change-log: classpath:/db/changelog/db.changelog-master-test.yaml
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:5432/db_nura
-    username: nura
-    password: nura
 
 jwt:
   token:
