@@ -6,11 +6,6 @@ spring:
     open-in-view: false
   profiles:
     active: test
-  liquibase:
-    enabled: true
-    change-log: classpath:/db/changelog/db.changelog-master-test.yaml
-  datasource:
-    driver-class-name: org.postgresql.Driver
 
 jwt:
   token:
