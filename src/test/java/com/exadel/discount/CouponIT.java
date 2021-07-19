@@ -38,6 +38,8 @@ public class CouponIT {
     @Autowired
     DiscountRepository discountRepository;
 
+
+
     @WithMockUser(username = "admin@mail.com", roles = {"USER", "ADMIN"})
     @Test
     public void postNewCouponAndGetByFiltersAndSearchingAndByIdIT() throws Exception {
