@@ -1,6 +1,5 @@
 package com.exadel.discount.controller;
 
-import com.exadel.discount.model.dto.discount.BaseDiscountDTO;
 import com.exadel.discount.model.dto.discount.CreateDiscountDTO;
 import com.exadel.discount.model.dto.discount.DiscountDTO;
 import com.exadel.discount.model.dto.discount.DiscountFilter;
@@ -139,7 +138,7 @@ public class DiscountController {
     @ApiOperation("Get Discounts by search text")
     @UserAccess
     public List<DiscountDTO> search(@RequestParam(defaultValue = "8", required = false) Integer size,
-                                        @RequestParam String searchText) {
+                                    @RequestParam String searchText) {
         return discountService.search(size, searchText);
     }
 }
