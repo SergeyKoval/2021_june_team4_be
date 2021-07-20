@@ -1,0 +1,46 @@
+spring:
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQL9Dialect
+    show-sql: true
+    hibernate:
+      ddl-auto: none
+    open-in-view: false
+    properties:
+      hibernate:
+        default-schema: public
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/postgres
+    username: postgres
+    password: postgres
+  test:
+    database:
+      replace: none
+  liquibase:
+    change-log: classpath:/db/changelog/db.changelog-master.yaml
+    contexts: test
+
+server:
+  accessIpAddress: localhost,127.0.0.1
+  friendlyName: Test Server
+
+logging:
+  level:
+    liquibase: INFO
+
+jwt:
+  token:
+    expiration:
+      seconds:
+        access: 120
+        refresh: 3600
+    encryption:
+      key: encryptionSecret
+cors:
+  hosts:
+    - http://localhost:4200
+
+#  datasource:
+#    driver-class-name: org.testcontainers.jdbc.ContainerDatabaseDriver
+#    url: jdbc:tc:postgresql:11.1:///?TC_INITSCRIPT=file:src/main/resources/init_db.sql
+#      TC_INITSCRIPT: file:src/main/resources/test_db.sql
