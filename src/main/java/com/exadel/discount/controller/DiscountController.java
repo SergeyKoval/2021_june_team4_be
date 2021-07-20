@@ -4,6 +4,7 @@ import com.exadel.discount.model.dto.discount.BaseDiscountDTO;
 import com.exadel.discount.model.dto.discount.CreateDiscountDTO;
 import com.exadel.discount.model.dto.discount.DiscountDTO;
 import com.exadel.discount.model.dto.discount.DiscountFilter;
+import com.exadel.discount.model.dto.discount.UpdateDiscountDTO;
 import com.exadel.discount.security.annotation.AdminAccess;
 import com.exadel.discount.security.annotation.UserAccess;
 import com.exadel.discount.service.DiscountService;
@@ -78,6 +79,14 @@ public class DiscountController {
     @AdminAccess
     public DiscountDTO addDiscount(@RequestBody @Valid CreateDiscountDTO discountDTO) {
         return discountService.save(discountDTO);
+    }
+
+    @PutMapping("/{id}")
+    @AdminAccess
+    @ApiOperation("Update discount")
+    public DiscountDTO updateDiscount(@PathVariable @NotNull UUID id,
+                                      @RequestBody @Valid UpdateDiscountDTO discountDTO) {
+        return discountService.updateDiscountById(discountDTO, id);
     }
 
     @DeleteMapping("/{id}")
