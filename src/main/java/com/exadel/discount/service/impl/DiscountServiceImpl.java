@@ -139,7 +139,7 @@ public class DiscountServiceImpl implements DiscountService {
                 .findAllDiscountIds(prepareSearchPredicate(searchText), PageRequest.of(0, size, sort));
         String userEmail = SecurityContextHolder.getContext().getAuthentication().getName();
         List<DiscountDTO> discountDTOS = discountRepository
-                .findAllByIdIn(discountsIds, sort)
+                .findAllByIdInWithFavoritesByUser(discountsIds, sort, userEmail)
                 .stream()
                 .map(discount -> {
                     DiscountDTO discountDTO = discountMapper.getDTO(discount);
@@ -220,6 +220,9 @@ public class DiscountServiceImpl implements DiscountService {
                         .append(word, QDiscount.discount.tags.any().name::containsIgnoreCase)
                         .buildOr())
                 .collect(Collectors.toList());
+        searchPredicates.add(QueryPredicateBuilder.init()
+                .append(false, QDiscount.discount.archived::eq)
+                .buildAnd());
         return ExpressionUtils.allOf(searchPredicates);
     }
 
