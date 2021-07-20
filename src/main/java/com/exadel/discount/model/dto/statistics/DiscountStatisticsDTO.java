@@ -11,5 +11,5 @@ public class DiscountStatisticsDTO {
     private UUID id;
     private String name;
     private Integer viewNumber;
-    private Long getPromoNumber;
+    private Long numberOfGettingPromo;
 }

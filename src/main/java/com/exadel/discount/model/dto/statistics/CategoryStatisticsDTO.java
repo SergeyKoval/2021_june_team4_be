@@ -12,5 +12,5 @@ public class CategoryStatisticsDTO {
     private String name;
     private Long discountsNumber;
     private Long viewNumber;
-    private Long getPromoNumber;
+    private Long numberOfGettingPromo;
 }

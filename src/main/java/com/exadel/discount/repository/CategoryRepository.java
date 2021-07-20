@@ -26,7 +26,7 @@ public interface CategoryRepository extends JpaRepository<Category, UUID> {
             "   WHEN(COUNT(d) > 0) THEN SUM(d.viewNumber) " +
             "   ELSE 0 " +
             "END AS viewNumber, " +
-            "COUNT(cou) AS getPromoNumber) " +
+            "COUNT(cou) AS numberOfGettingPromo) " +
             "FROM Category c " +
             "LEFT JOIN c.discounts d " +
             "LEFT JOIN d.coupons cou " +
@@ -42,7 +42,7 @@ public interface CategoryRepository extends JpaRepository<Category, UUID> {
             "   WHEN(COUNT(d) > 0) THEN SUM(d.viewNumber) " +
             "   ELSE 0 " +
             "END AS viewNumber, " +
-            "COUNT(cou) AS getPromoNumber) " +
+            "COUNT(cou) AS numberOfGettingPromo) " +
             "FROM Category c " +
             "LEFT JOIN c.discounts d " +
             "LEFT JOIN d.coupons cou " +

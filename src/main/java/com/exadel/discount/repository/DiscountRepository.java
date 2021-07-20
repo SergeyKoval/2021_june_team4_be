@@ -79,7 +79,7 @@ public interface DiscountRepository extends JpaRepository<Discount, UUID>, Query
     boolean existsByIdAndArchivedAndVendorArchived(UUID id, boolean discountArchived, boolean vendorArchived);
 
     @Query("SELECT new com.exadel.discount.model.dto.statistics.DiscountStatisticsDTO " +
-            "(d.id, d.name, d.viewNumber, COUNT(cou) AS getPromoNumber) FROM Discount d " +
+            "(d.id, d.name, d.viewNumber, COUNT(cou) AS numberOfGettingPromo) FROM Discount d " +
             "LEFT JOIN d.vendor v " +
             "LEFT JOIN d.category c " +
             "LEFT JOIN d.coupons cou " +
@@ -90,7 +90,7 @@ public interface DiscountRepository extends JpaRepository<Discount, UUID>, Query
                                                        Pageable pageable);
 
     @Query("SELECT new com.exadel.discount.model.dto.statistics.DiscountStatisticsDTO " +
-            "(d.id, d.name, d.viewNumber, COUNT(cou) AS getPromoNumber) FROM Discount d " +
+            "(d.id, d.name, d.viewNumber, COUNT(cou) AS numberOfGettingPromo) FROM Discount d " +
             "LEFT JOIN d.vendor v " +
             "LEFT JOIN d.category c " +
             "LEFT JOIN d.coupons cou " +

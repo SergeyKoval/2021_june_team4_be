@@ -49,7 +49,7 @@ public interface VendorRepository extends JpaRepository<Vendor, UUID> {
             "   WHEN(COUNT(d) > 0) THEN SUM(d.viewNumber) " +
             "   ELSE 0 " +
             "END AS viewNumber, " +
-            "COUNT(cou) AS getPromoNumber) FROM Vendor v " +
+            "COUNT(cou) AS numberOfGettingPromo) FROM Vendor v " +
             "LEFT JOIN v.discounts d " +
             "LEFT JOIN d.coupons cou " +
             "ON cou.date <= :dateTo AND cou.date >= :dateFrom " +
@@ -64,7 +64,7 @@ public interface VendorRepository extends JpaRepository<Vendor, UUID> {
             "   WHEN(COUNT(d) > 0) THEN SUM(d.viewNumber) " +
             "   ELSE 0 " +
             "END AS viewNumber, " +
-            "COUNT(cou) AS getPromoNumber) FROM Vendor v " +
+            "COUNT(cou) AS numberOfGettingPromo) FROM Vendor v " +
             "LEFT JOIN v.discounts d " +
             "LEFT JOIN d.coupons cou " +
             "ON cou.date <= :dateTo AND cou.date >= :dateFrom " +
