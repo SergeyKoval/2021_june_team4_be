@@ -1,20 +1,26 @@
 package com.exadel.discount;
 
 import com.exadel.discount.model.entity.*;
+import com.exadel.discount.model.entity.Tag;
 import com.exadel.discount.repository.*;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import lombok.SneakyThrows;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.transaction.BeforeTransaction;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.support.TransactionSynchronizationAdapter;
+import org.springframework.transaction.support.TransactionSynchronizationManager;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -22,6 +28,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
+import static org.springframework.boot.jdbc.EmbeddedDatabaseConnection.NONE;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -29,11 +36,18 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+//@DataJpaTest // will disable full auto-configuration and instead apply only configuration relevant to JPA tests
+//@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
+//configures a test database to use instead of the application-defined or auto-configured DataSource
+
+
+@SuppressWarnings("checkstyle:WhitespaceAround")
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class) //in case you need tests to be in specific order
 @ActiveProfiles("test")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
 @Transactional
-@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
+////@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 public class NewDiscountIT {
 
     @Autowired
@@ -48,23 +62,45 @@ public class NewDiscountIT {
     private VendorLocationRepository vendorLocationRepository;
     @Autowired
     private TagRepository tagRepository;
+    @Autowired
+    private CityRepository cityRepository;
+    @Autowired
+    private CountryRepository countryRepository;
 
+    private Country testCountry;
+    private City testCity;
     private Vendor testVendor;
     private VendorLocation testVendorLocation1;
     private VendorLocation testVendorLocation2;
     private Category testCategory;
     private Tag testTag;
     private Discount testDiscount;
-
-//   @BeforeEach
-    public void setUp() {
+    // @BeforeAll
+    @BeforeTransaction
+   // @Rollback(false)
+    private void setUp() {
 
         //create new vendor for test
         testVendor = new Vendor();
         testVendor.setId(UUID.fromString
                 ("93577f24-f68f-403e-aa04-0a60c3a445d2"));
         testVendor.setName("Dog stuff");
-        vendorRepository.save(testVendor);
+        // vendorRepository.save(testVendor);
+
+        //create new Country for test
+        testCountry = new Country();
+        testCountry.setId(UUID.fromString
+                ("93577f24-f68f-403e-aa04-0a60c3a445d7"));
+        testCountry.setName("Ukraine");
+        // countryRepository.save(testCountry);
+
+        //create new city for test
+        testCity = new City();
+        testCity.setId(UUID.fromString
+                ("93577f24-f68f-403e-aa04-0a60c3a445d8"));
+        testCity.setName("Kyiv");
+        testCity.setCountry(testCountry);
+        // cityRepository.save(testCity);
 
         //create new vendor locations for test
         Set<VendorLocation> testVendorLocations = new HashSet<>();
@@ -75,7 +111,9 @@ public class NewDiscountIT {
         point1.setLatitude(24.3454111);
         point1.setLongitude(10.123111);
         testVendorLocation1.setVendor(testVendor);
-        vendorLocationRepository.save(testVendorLocation1);
+        testVendorLocation1.setCity(testCity);
+        testVendorLocation1.setCountry(testCountry);
+        // vendorLocationRepository.save(testVendorLocation1);
 
         testVendorLocation2 = new VendorLocation();
         testVendorLocation2.setId(UUID.fromString
@@ -84,7 +122,9 @@ public class NewDiscountIT {
         point2.setLatitude(24.3454222);
         point2.setLongitude(10.123222);
         testVendorLocation2.setVendor(testVendor);
-        vendorLocationRepository.save(testVendorLocation2);
+        testVendorLocation1.setCity(testCity);
+        testVendorLocation1.setCountry(testCountry);
+        // vendorLocationRepository.save(testVendorLocation2);
 
         testVendorLocations.add(testVendorLocation1);
         testVendorLocations.add(testVendorLocation2);
@@ -95,7 +135,7 @@ public class NewDiscountIT {
         testCategory.setName("Dogs");
         testCategory.setId(UUID.fromString
                 ("93577f24-f68f-403e-aa04-0a60c3a445d6"));
-        categoryRepository.save(testCategory);
+        //categoryRepository.save(testCategory);
 
 
         //create new tags for test
@@ -104,7 +144,7 @@ public class NewDiscountIT {
         testTag.setName("Pets");
         testTag.setId(UUID.fromString
                 ("93577f24-f68f-403e-aa04-0a60c3a445d5"));
-        tagRepository.save(testTag);
+        //   tagRepository.save(testTag);
         tags.add(testTag);
 
         //create new discount for test
@@ -125,14 +165,29 @@ public class NewDiscountIT {
         //  testDiscount.setTags(tags);
         testDiscount.setVendorLocations(testVendorLocations);
         testDiscount.setCategory(testCategory);
+        //discountRepository.save(testDiscount);
+
+        synchronized (this) {
+
+        vendorRepository.save(testVendor);
+        countryRepository.save(testCountry);
+        cityRepository.save(testCity);
+        vendorLocationRepository.save(testVendorLocation1);
+        vendorLocationRepository.save(testVendorLocation2);
+        categoryRepository.save(testCategory);
+        tagRepository.save(testTag);
         discountRepository.save(testDiscount);
+    }
     }
 
     @Test
+    @Rollback(false)
+    //  @Order(2)
     @WithMockUser(username = "admin@mail.com", roles = {"USER", "ADMIN"})
     public void addDiscountIT() throws Exception {
-
         setUp();
+        Assertions.assertEquals(discountRepository.findById(UUID.fromString("93577f24-f68f-403e-aa04-0a60c3a445d1")).get().getName(), "Toy for your dog");
+
         mockMvc.perform(post("/discounts")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{\"name\": \"Toy for your dog\", " +
@@ -146,8 +201,7 @@ public class NewDiscountIT {
                         "\"tagIds\": [\"93577f24-f68f-403e-aa04-0a60c3a445d5\"]}"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.status().is2xxSuccessful())
-                .andExpect(jsonPath("$.name").value("Toy for your dog"))
-                .andExpect(jsonPath("$.vendor.id").value("93577f24-f68f-403e-aa04-0a60c3a445d2"));
+                .andExpect(jsonPath("$.name").value("Toy for your dog"));
     }
 
     @Test
@@ -184,7 +238,7 @@ public class NewDiscountIT {
         mockMvc.perform(get("/discounts/archived")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$[0].category.id").value(categoryId))
-                .andExpect(jsonPath("$[0].archived").value(false))//hope, it will be true after Lisa's fix merging
+                .andExpect(jsonPath("$[0].archived").value(true))//hope, it will be true after Lisa's fix merging
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.status().is2xxSuccessful());
     }
