@@ -51,17 +51,17 @@ public class FavoriteServiceImpl implements FavoriteService {
     @Override
     public List<FavoriteDTO> getAll(int pageNumber, int pageSize, String sortDirection, String sortField,
                                     FavoriteFilter favoriteFilter) {
-        Pageable paging = SortPageUtil.makePageable(pageNumber, pageSize, sortDirection, sortField);
+        Sort sort = SortPageUtil.makeSort(sortDirection, sortField);
+        Pageable paging = PageRequest.of(pageNumber, pageSize, sort);
+
         log.debug("Getting sorted page-list of all Favorites");
         List<Favorite> filteredFavoriteList;
         if (preparePredicateForFindingAllFavorites(favoriteFilter) == null) {
             filteredFavoriteList = favoriteRepository.findAll(paging).toList();
         } else {
             List<UUID> favoriteIds = favoriteRepository
-                    .findAllFavoriteIds(preparePredicateForFindingAllFavorites(favoriteFilter),
-                            PageRequest.of(pageNumber, pageSize));
-            filteredFavoriteList = favoriteRepository.findAllByIdIn(favoriteIds,
-                    SortPageUtil.makeSort(sortDirection, sortField));
+                    .findAllFavoriteIds(preparePredicateForFindingAllFavorites(favoriteFilter), paging);
+            filteredFavoriteList = favoriteRepository.findAllByIdIn(favoriteIds, sort);
         }
         log.debug("Successfully got sorted page-list of all Favorites");
         return favoriteMapper.toFavoriteDTOList(filteredFavoriteList);
@@ -69,11 +69,12 @@ public class FavoriteServiceImpl implements FavoriteService {
 
     @Override
     public List<FavoriteDTO> search(Integer size, String searchText) {
+        Sort sort = Sort.by("id").descending();
         log.debug("Getting sorted page-list of all Favorites by searchText");
         List<UUID> favoritesIds = favoriteRepository
-                .findAllFavoriteIds(prepareSearchPredicate(searchText), PageRequest.of(0, size));
+                .findAllFavoriteIds(prepareSearchPredicate(searchText), PageRequest.of(0, size, sort));
         List<Favorite> favorites = favoriteRepository
-                .findAllByIdIn(favoritesIds, Sort.by("id").descending());
+                .findAllByIdIn(favoritesIds, sort);
         log.debug("Successfully got sorted page-list of all Favorites by searchText");
         return favoriteMapper.toFavoriteDTOList(favorites);
     }
