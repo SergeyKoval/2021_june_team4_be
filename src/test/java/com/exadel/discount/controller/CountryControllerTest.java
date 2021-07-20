@@ -20,7 +20,7 @@ import java.util.UUID;
 @SpringBootTest
 @AutoConfigureMockMvc
 @WithMockUser(username = "admin", roles = {"USER", "ADMIN"})
-@ActiveProfiles("test")
+@ActiveProfiles("integrationtest")
 public class CountryControllerTest {
     private static final UUID ID = UUID.fromString("971bf698-f3ea-4a97-85e8-0a2a770736d6");
     private static final Country country;
