@@ -23,7 +23,7 @@ public class StatisticsFilter {
             dateFrom = LocalDateTime.parse(DEFAULT_DATE_FROM);
         }
         if (dateTo == null) {
-            dateFrom = LocalDateTime.parse(DEFAULT_DATE_TO);
+            dateTo = LocalDateTime.parse(DEFAULT_DATE_TO);
         }
         return new StatisticsFilter(countryIds, cityIds, dateFrom, dateTo);
     }
