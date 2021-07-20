@@ -10,14 +10,14 @@ import java.util.UUID;
 
 public class UserDetailsImpl implements UserDetails {
     private String id;
-    private String email;
+    private String username;
     private String password;
     private Collection<? extends GrantedAuthority> grantedAuthorities;
 
-    private UserDetailsImpl(String id, String email, String password,
+    private UserDetailsImpl(String id, String username, String password,
                             Collection<? extends GrantedAuthority> grantedAuthorities) {
         this.id = id;
-        this.email = email;
+        this.username = username;
         this.password = password;
         this.grantedAuthorities = grantedAuthorities;
     }
@@ -42,7 +42,7 @@ public class UserDetailsImpl implements UserDetails {
 
     @Override
     public String getUsername() {
-        return email;
+        return username;
     }
 
     @Override
