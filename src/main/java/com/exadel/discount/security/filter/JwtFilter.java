@@ -7,7 +7,6 @@ import com.exadel.discount.model.exception.ExceptionDetails;
 import com.exadel.discount.service.impl.JwtServiceImpl;
 import com.exadel.discount.service.impl.UserDetailsServiceImpl;
 import lombok.RequiredArgsConstructor;
-import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.json.JSONObject;
@@ -42,7 +41,6 @@ import static org.apache.commons.lang3.StringUtils.isNoneEmpty;
  */
 
 @Component
-@Setter
 @RequiredArgsConstructor
 @Slf4j
 public class JwtFilter extends OncePerRequestFilter {
@@ -83,7 +81,7 @@ public class JwtFilter extends OncePerRequestFilter {
             setErrorResponse(response, HttpStatus.FORBIDDEN, exception, ExceptionCause.INCORRECT_TOKEN);
         } catch (TokenExpiredException exception) {
             log.info("Exception stack trace: ", exception);
-            setErrorResponse(response, HttpStatus.FORBIDDEN, exception, ExceptionCause.EXPIRED_TOKEN);
+            setErrorResponse(response, HttpStatus.UNAUTHORIZED, exception, ExceptionCause.EXPIRED_TOKEN);
         } catch (Exception exception) {
             log.error("Exception stack trace: ", exception);
             setErrorResponse(response, HttpStatus.INTERNAL_SERVER_ERROR, exception, ExceptionCause.UNCAUGHT_EXCEPTION);
@@ -93,7 +91,7 @@ public class JwtFilter extends OncePerRequestFilter {
     /**
      * This method sets an exception response to the clint side when in this filter appears an exception.
      *
-     * @param response   a service class that provide a transmission to the client side.
+     * @param response   a service class that provides a transmission to the client side.
      * @param httpStatus a http status that will be appropriate for this issue.
      * @param exception  an exception that was caught in the filter.
      * @param cause      a logic word that describes the subject of the issue.

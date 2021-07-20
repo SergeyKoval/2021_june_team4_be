@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.UUID;
 
@@ -28,6 +29,19 @@ public class CategoryServiceImpl implements CategoryService {
         CategoryDTO category = categoryMapper.getDTO(categoryRepository.save(categoryMapper.parseDTO(categoryDTO)));
         log.debug("Successfully saved new Category");
         return category;
+    }
+
+    @Override
+    @Transactional
+    public CategoryDTO updateCategoryById(CategoryDTO categoryDTO, UUID id) {
+        log.debug(String.format("Update Category with ID %s", id));
+        if (!categoryRepository.existsById(id)) {
+            throw new NotFoundException(String.format("Category with ID %s not found", id));
+        }
+        Category category = new Category();
+        category = categoryMapper.update(categoryDTO, category);
+        category.setId(id);
+        return categoryMapper.getDTO(categoryRepository.save(category));
     }
 
     @Override
@@ -55,7 +69,8 @@ public class CategoryServiceImpl implements CategoryService {
                 .findById(id)
                 .orElseThrow(() -> new NotFoundException(String.format("Category with ID %s not found", id)));
         if (!category.getDiscounts().isEmpty()) {
-            throw new DeletionRestrictedException(String.format("Category with ID %s can't be deleted as it has discounts", id));
+            throw new DeletionRestrictedException(String.
+                    format("Category with ID %s can't be deleted as it has discounts", id));
         }
         categoryRepository.deleteById(id);
         log.debug(String.format("Successfully deleted Category with ID %s", id));

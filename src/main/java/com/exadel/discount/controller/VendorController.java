@@ -53,6 +53,14 @@ public class VendorController {
         return vendorService.save(vendor);
     }
 
+    @PutMapping("/{id}")
+    @AdminAccess
+    @ApiOperation("Edit vendor by ID")
+    public VendorDTO updateVendor(@PathVariable @NotNull UUID id,
+                                  @RequestBody @NotNull BaseVendorDTO vendorDTO) {
+        return vendorService.updateVendorById(vendorDTO, id);
+    }
+
     @DeleteMapping("/{id}")
     @ApiOperation("Delete vendor by ID")
     @AdminAccess

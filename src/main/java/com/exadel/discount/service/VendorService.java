@@ -20,4 +20,6 @@ public interface VendorService {
     List<BaseVendorDTO> getAllArchived();
 
     VendorDTO restoreById(UUID id);
+
+    VendorDTO updateVendorById(BaseVendorDTO vendorDTO, UUID id);
 }
