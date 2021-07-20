@@ -59,11 +59,11 @@ public class JwtFilter extends OncePerRequestFilter {
             if (SecurityContextHolder.getContext().getAuthentication() == null
                     && startsWith(authorizationHeader, AUTHORIZATION_HEADER_TYPE)) {
                 final String token = substringAfter(authorizationHeader, AUTHORIZATION_HEADER_TYPE);
-                final String givenUsername = jwtService.getSubject(token);
+                final String givenSubject = jwtService.getSubject(token);
                 final String givenRole = jwtService.getRole(token);
 
-                if (isNoneEmpty(givenUsername)) {
-                    final UserDetails userDetails = userDetailsService.loadUserByUsername(givenUsername);
+                if (isNoneEmpty(givenSubject)) {
+                    final UserDetails userDetails = userDetailsService.loadUserById(givenSubject);
 
                     Collection<? extends GrantedAuthority> permissions = StringUtils.equals(givenRole, jwtService.REFRESH_ROLE) ?
                             Collections.singletonList(new SimpleGrantedAuthority(givenRole)) : userDetails.getAuthorities();

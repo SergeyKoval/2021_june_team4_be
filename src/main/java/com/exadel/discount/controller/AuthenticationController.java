@@ -67,8 +67,8 @@ public class AuthenticationController {
     @RefreshAccess
     @PostMapping("/refresh")
     public RefreshResponse refreshAccessJWT() {
-        String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        UserDetails userDetails = this.userDetailsService.loadUserByUsername(username);
+        String userId = SecurityContextHolder.getContext().getAuthentication().getName();
+        UserDetails userDetails = this.userDetailsService.loadUserById(userId);
 
         return RefreshResponse.builder()
                 .accessToken(jwtGenerationService.generateAccessToken(userDetails))

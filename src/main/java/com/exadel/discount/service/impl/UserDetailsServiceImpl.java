@@ -9,6 +9,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 
+import java.util.UUID;
+
 @Service
 @Slf4j
 @RequiredArgsConstructor
@@ -24,7 +26,21 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
         log.debug("creating a security user with a given user data");
         return User
-                .withUsername(user.getEmail())
+                .withUsername(String.valueOf(user.getId()))
+                .password(user.getPassword())
+                .roles(user.getRole().name())
+                .build();
+    }
+
+    public UserDetails loadUserById(String id) {
+        log.debug("getting a user data from a database");
+        com.exadel.discount.model.entity.User user = repository
+                .findById(UUID.fromString(id))
+                .orElseThrow(() -> new BadCredentialsException(String.format("User with id %s not found", id)));
+
+        log.debug("creating a security user with a given user data");
+        return User
+                .withUsername(String.valueOf(user.getId()))
                 .password(user.getPassword())
                 .roles(user.getRole().name())
                 .build();
