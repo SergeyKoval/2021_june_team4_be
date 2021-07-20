@@ -3,6 +3,7 @@ package com.exadel.discount.service.impl;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.exadel.discount.exception.InvalidTokenException;
+import com.exadel.discount.security.entity.UserDetailsImpl;
 import com.exadel.discount.service.JwtGenerationService;
 import com.exadel.discount.service.JwtService;
 import lombok.extern.slf4j.Slf4j;
@@ -22,6 +23,7 @@ import java.util.Date;
 @Slf4j
 public class JwtServiceImpl implements JwtService, JwtGenerationService {
     private final String ROLES_CLAIM_NAME = "role";
+    private final String ID_CLAIM_NAME = "id";
     public final String REFRESH_ROLE = "ROLE_REFRESH";
 
     @Value("${jwt.token.expiration.seconds.access}")
@@ -51,6 +53,17 @@ public class JwtServiceImpl implements JwtService, JwtGenerationService {
     @Override
     public String generateAccessToken(UserDetails userDetails) {
         log.debug("preparing an access token creation data");
+        if (userDetails instanceof UserDetailsImpl) {
+            return buildToken(
+                    userDetails.getUsername(),
+                    ACCESS_TOKEN_EXPIRATION_TIME,
+                    userDetails.getAuthorities()
+                            .stream()
+                            .map(GrantedAuthority::getAuthority)
+                            .findFirst()
+                            .orElseThrow(() -> new InvalidTokenException("User does not have any role")),
+                    ((UserDetailsImpl) userDetails).getId());
+        }
         return buildToken(
                 userDetails.getUsername(),
                 ACCESS_TOKEN_EXPIRATION_TIME,
@@ -64,6 +77,10 @@ public class JwtServiceImpl implements JwtService, JwtGenerationService {
     @Override
     public String generateRefreshToken(UserDetails userDetails) {
         log.debug("preparing a refresh token creation data");
+        if (userDetails instanceof UserDetailsImpl) {
+            return buildToken(userDetails.getUsername(), REFRESH_TOKEN_EXPIRATION_TIME, REFRESH_ROLE,
+                    ((UserDetailsImpl) userDetails).getId());
+        }
         return buildToken(userDetails.getUsername(), REFRESH_TOKEN_EXPIRATION_TIME, REFRESH_ROLE);
     }
 
@@ -76,6 +93,18 @@ public class JwtServiceImpl implements JwtService, JwtGenerationService {
      * @param role           it will be set in a role claim.
      * @return a built JWT.
      */
+    private String buildToken(String subject, long expirationTime, String role, String id) {
+        log.debug("creating a token");
+        Instant currentTime = Instant.now();
+        return JWT.create()
+                .withSubject(subject)
+                .withIssuedAt(Date.from(currentTime))
+                .withExpiresAt(Date.from(currentTime.plusSeconds(expirationTime)))
+                .withClaim(ROLES_CLAIM_NAME, role)
+                .withClaim(ID_CLAIM_NAME, id)
+                .sign(Algorithm.HMAC256(TOKEN_ENCRYPTION_KEY));
+    }
+
     private String buildToken(String subject, long expirationTime, String role) {
         log.debug("creating a token");
         Instant currentTime = Instant.now();
