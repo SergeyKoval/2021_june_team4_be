@@ -1,21 +1,16 @@
 package com.exadel.discount.controller;
 
 
-import com.exadel.discount.model.dto.TagDTO;
-import com.exadel.discount.service.TagService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
-
-import java.util.UUID;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -26,19 +21,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ActiveProfiles("integrationtest")
 public class TagControllerTests {
 
-    private static final UUID ID = UUID.fromString("971bf698-f3ea-4a97-85e8-0a2a770736d6");
-    private static final TagDTO tag;
-
-    static {
-        tag = new TagDTO();
-        tag.setName("Test");
-    }
-
     @Autowired
     private MockMvc mockMvc;
-
-    @MockBean
-    private TagService tagService;
 
 
     @Test
@@ -67,14 +51,16 @@ public class TagControllerTests {
 
     @Test
     public void getTagByIdTest() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.get("/tags/971bf698-f3ea-4a97-85e8-0a2a770736d6"))
+
+        mockMvc.perform(MockMvcRequestBuilders.get("/tags/b28349b5-0b39-45ee-bb3c-4f96c1abfe75"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.status().is2xxSuccessful());
     }
 
     @Test
     public void deleteTagTest() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.delete("/tags/971bf698-f3ea-4a97-85e8-0a2a770736d6")
+
+        mockMvc.perform(MockMvcRequestBuilders.delete("/tags/452e5fc0-100a-41e9-951d-ba51f06a795e")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.status().is2xxSuccessful());

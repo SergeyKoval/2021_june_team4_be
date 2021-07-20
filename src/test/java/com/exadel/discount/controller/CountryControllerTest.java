@@ -1,13 +1,9 @@
 package com.exadel.discount.controller;
 
-import com.exadel.discount.model.entity.Country;
-import com.exadel.discount.service.CityService;
-import com.exadel.discount.service.CountryService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
@@ -15,30 +11,16 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-import java.util.UUID;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
 @SpringBootTest
 @AutoConfigureMockMvc
 @WithMockUser(username = "admin", roles = {"USER", "ADMIN"})
 @ActiveProfiles("integrationtest")
 public class CountryControllerTest {
-    private static final UUID ID = UUID.fromString("971bf698-f3ea-4a97-85e8-0a2a770736d6");
-    private static final Country country;
-
-    static {
-        country = new Country();
-        country.setName("Test");
-        country.setId(ID);
-    }
 
     @Autowired
     private MockMvc mockMvc;
-
-    @MockBean
-    private CountryService countryService;
-
-    @MockBean
-    private CityService cityService;
 
     @Test
     public void getAllCountriesTest() throws Exception {
@@ -50,7 +32,7 @@ public class CountryControllerTest {
     @Test
     public void getCountryByIdTest() throws Exception {
 
-        mockMvc.perform(MockMvcRequestBuilders.get("/countries/971bf698-f3ea-4a97-85e8-0a2a770736d6"))
+        mockMvc.perform(MockMvcRequestBuilders.get("/countries/b49abef5-83fe-4d0c-9927-c0aaaf49a2b7"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.status().is2xxSuccessful());
     }
@@ -61,12 +43,13 @@ public class CountryControllerTest {
         mockMvc.perform(MockMvcRequestBuilders.post("/countries")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{\"name\": \"Test\"" + "}"))
-                .andExpect(MockMvcResultMatchers.status().is2xxSuccessful());
+                .andExpect(MockMvcResultMatchers.status().is2xxSuccessful())
+                .andExpect(jsonPath("$.name").value("Test"));
     }
 
     @Test
     public void deleteCountryByIdTest() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.delete("/countries/971bf698-f3ea-4a97-85e8-0a2a770736d6")
+        mockMvc.perform(MockMvcRequestBuilders.delete("/countries/ec62f606-7de5-443a-8d37-cee82134c6cf")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.status().is2xxSuccessful());
@@ -74,7 +57,7 @@ public class CountryControllerTest {
 
     @Test
     public void getAllCitiesByCountryIdTest() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.get("/countries/5a009936-ac14-4b4b-9121-3638122ea6b5/cities")
+        mockMvc.perform(MockMvcRequestBuilders.get("/countries/b49abef5-83fe-4d0c-9927-c0aaaf49a2b7/cities")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.status().is2xxSuccessful());
@@ -82,23 +65,24 @@ public class CountryControllerTest {
 
     @Test
     public void saveCityTest() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.post("/countries/5a009936-ac14-4b4b-9121-3638122ea6b5/cities")
+        mockMvc.perform(MockMvcRequestBuilders.post("/countries/b49abef5-83fe-4d0c-9927-c0aaaf49a2b7/cities")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{\"name\": \"Test\"" + "}"))
-                .andExpect(MockMvcResultMatchers.status().is2xxSuccessful());
+                .andExpect(MockMvcResultMatchers.status().is2xxSuccessful())
+                .andExpect(jsonPath("$.name").value("Test"));
     }
 
     @Test
     public void getCityByIdTest() throws Exception {
 
-        mockMvc.perform(MockMvcRequestBuilders.get("/countries/971bf698-f3ea-4a97-85e8-0a2a770736d6/cities/5a009936-ac14-4b4b-9121-3638122ea6b5"))
+        mockMvc.perform(MockMvcRequestBuilders.get("/countries/b49abef5-83fe-4d0c-9927-c0aaaf49a2b7/cities/489cd7f8-870c-4dd1-abc8-e31145a15c5c"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.status().is2xxSuccessful());
     }
 
     @Test
     public void deleteCityTest() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.delete("/countries/971bf698-f3ea-4a97-85e8-0a2a770736d6/cities/5a009936-ac14-4b4b-9121-3638122ea6b5")
+        mockMvc.perform(MockMvcRequestBuilders.delete("/countries/13e43451-6b1b-4e0f-bc61-8d903d226617/cities/794a4106-ff4d-44bb-960a-3dec50b033ab")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.status().is2xxSuccessful());
