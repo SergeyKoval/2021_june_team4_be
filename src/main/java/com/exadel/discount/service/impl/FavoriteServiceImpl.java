@@ -1,9 +1,12 @@
 package com.exadel.discount.service.impl;
 
+import com.exadel.discount.exception.CreationRestrictedException;
+import com.exadel.discount.exception.DeletionRestrictedException;
 import com.exadel.discount.exception.NotFoundException;
-import com.exadel.discount.model.dto.favorite.CreateFavoriteDTO;
+import com.exadel.discount.model.dto.discount.DiscountDTO;
 import com.exadel.discount.model.dto.favorite.FavoriteDTO;
 import com.exadel.discount.model.dto.favorite.FavoriteFilter;
+import com.exadel.discount.model.dto.mapper.DiscountMapper;
 import com.exadel.discount.model.dto.mapper.FavoriteMapper;
 import com.exadel.discount.model.entity.Discount;
 import com.exadel.discount.model.entity.Favorite;
@@ -23,6 +26,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -38,24 +42,26 @@ public class FavoriteServiceImpl implements FavoriteService {
     private final FavoriteRepository favoriteRepository;
     private final UserRepository userRepository;
     private final FavoriteMapper favoriteMapper;
+    private final DiscountMapper discountMapper;
     private final DiscountRepository discountRepository;
+
     private static final int SEARCH_WORD_MIN_LENGTH = 3;
 
 
     @Override
     public List<FavoriteDTO> getAll(int pageNumber, int pageSize, String sortDirection, String sortField,
                                     FavoriteFilter favoriteFilter) {
-        Pageable paging = SortPageUtil.makePageable(pageNumber, pageSize, sortDirection, sortField);
+        Sort sort = SortPageUtil.makeSort(sortDirection, sortField);
+        Pageable paging = PageRequest.of(pageNumber, pageSize, sort);
+
         log.debug("Getting sorted page-list of all Favorites");
         List<Favorite> filteredFavoriteList;
         if (preparePredicateForFindingAllFavorites(favoriteFilter) == null) {
             filteredFavoriteList = favoriteRepository.findAll(paging).toList();
         } else {
             List<UUID> favoriteIds = favoriteRepository
-                    .findAllFavoriteIds(preparePredicateForFindingAllFavorites(favoriteFilter),
-                            PageRequest.of(pageNumber, pageSize));
-            filteredFavoriteList = favoriteRepository.findAllByIdIn(favoriteIds,
-                    SortPageUtil.makeSort(sortDirection, sortField));
+                    .findAllFavoriteIds(preparePredicateForFindingAllFavorites(favoriteFilter), paging);
+            filteredFavoriteList = favoriteRepository.findAllByIdIn(favoriteIds, sort);
         }
         log.debug("Successfully got sorted page-list of all Favorites");
         return favoriteMapper.toFavoriteDTOList(filteredFavoriteList);
@@ -63,11 +69,12 @@ public class FavoriteServiceImpl implements FavoriteService {
 
     @Override
     public List<FavoriteDTO> search(Integer size, String searchText) {
+        Sort sort = Sort.by("id").descending();
         log.debug("Getting sorted page-list of all Favorites by searchText");
         List<UUID> favoritesIds = favoriteRepository
-                .findAllFavoriteIds(prepareSearchPredicate(searchText), PageRequest.of(0, size));
+                .findAllFavoriteIds(prepareSearchPredicate(searchText), PageRequest.of(0, size, sort));
         List<Favorite> favorites = favoriteRepository
-                .findAllByIdIn(favoritesIds, Sort.by("id").descending());
+                .findAllByIdIn(favoritesIds, sort);
         log.debug("Successfully got sorted page-list of all Favorites by searchText");
         return favoriteMapper.toFavoriteDTOList(favorites);
     }
@@ -83,39 +90,50 @@ public class FavoriteServiceImpl implements FavoriteService {
 
     @Transactional
     @Override
-    public FavoriteDTO assignFavoriteToUser(CreateFavoriteDTO createFavoriteDTO) {
-        log.debug("Finding of certain user by ID");
+    public DiscountDTO assignFavoriteToUser(UUID discountId) {
+        log.debug(String.format("Check: if user already have Favorite of Discount with ID %s ", discountId));
+        String userEmail = SecurityContextHolder.getContext().getAuthentication().getName();
+        if (favoriteRepository.existsByDiscountIdAndUserEmail(discountId, userEmail)) {
+            throw new CreationRestrictedException(String
+                    .format("Favorite for discount with id %s does already exist", discountId));
+        }
+
         User user = userRepository
-                .findById(createFavoriteDTO.getUserId())
+                .findByEmail(userEmail)
                 .orElseThrow(() -> new NotFoundException(String
-                        .format("User with id %s not found", createFavoriteDTO.getUserId())));
+                        .format("User with email %s not found", userEmail)));
 
         Discount discount = discountRepository
-                .findById(createFavoriteDTO.getDiscountId())
+                .findById(discountId)
                 .orElseThrow(() -> new NotFoundException(String
-                        .format("Discount with id %s not found", createFavoriteDTO.getDiscountId())));
-        log.debug("Successfully certain User and Discount are found by ID. Starting Favorite creation/saving.");
+                        .format("Discount with id %s not found", discountId)));
+        log.debug("Successfully certain User and Discount are found by ID. Starting favorite creation/saving.");
 
         Favorite favorite = new Favorite();
         favorite.setUser(user);
         favorite.setDiscount(discount);
-
-        Favorite favoriteSaved = favoriteRepository.save(favorite);
-        log.debug("Successfully new Favorite is saved to certain user");
-
-        return favoriteMapper.toFavoriteDTO(favoriteSaved);
+        favoriteRepository.save(favorite);
+        log.debug(String.format("Successfully added Favorite for Discount with ID %s to user", discountId));
+        DiscountDTO discountDTO = discountMapper.getDTO(discount);
+        discountDTO.setFavorite(true);
+        return discountDTO;
     }
 
     @Transactional
     @Override
-    public void deleteFavoriteByID(UUID id) {
-        log.debug("Finding & deleting Favorite by ID");
-
-        favoriteRepository
-                .findById(id)
-                .orElseThrow(() -> new NotFoundException(String.format("Favorite with id %s not found", id)));
-        favoriteRepository.deleteById(id);
-        log.debug("Successfully Favorite is deleted  by ID");
+    public DiscountDTO deleteFavoriteByDiscountID(UUID discountId) {
+        log.debug("Finding & deleting Favorite by DiscountID");
+        String userEmail = SecurityContextHolder.getContext().getAuthentication().getName();
+        Favorite favorite = favoriteRepository
+                .findByDiscountIdAndUserEmail(discountId, userEmail)
+                .orElseThrow(() -> new DeletionRestrictedException(String
+                        .format("Favorite for discount with id %s does not already exist", discountId)));
+        favoriteRepository.deleteFavoriteByDiscountIdAndUserEmail(discountId, userEmail);
+        log.debug("Successfully deleted Favorite by DiscountID");
+        Discount discount = favorite.getDiscount();
+        DiscountDTO discountDTO = discountMapper.getDTO(discount);
+        discountDTO.setFavorite(false);
+        return discountDTO;
     }
 
     private Predicate preparePredicateForFindingAllFavorites(FavoriteFilter favoriteFilter) {

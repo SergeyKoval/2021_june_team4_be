@@ -5,7 +5,6 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.exadel.discount.exception.InvalidTokenException;
 import com.exadel.discount.service.JwtGenerationService;
 import com.exadel.discount.service.JwtService;
-import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.GrantedAuthority;
@@ -20,7 +19,6 @@ import java.util.Date;
  */
 
 @Service
-@Setter
 @Slf4j
 public class JwtServiceImpl implements JwtService, JwtGenerationService {
     private final String ROLES_CLAIM_NAME = "role";

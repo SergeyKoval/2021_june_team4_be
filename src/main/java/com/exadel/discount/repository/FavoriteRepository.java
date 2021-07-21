@@ -32,4 +32,12 @@ public interface FavoriteRepository extends JpaRepository<Favorite, UUID>, Query
     @EntityGraph(attributePaths = {"discount", "discount.category", "discount.vendorLocations", "discount.tags",
             "discount.vendor", "discount.vendorLocations.city", "discount.vendorLocations.city.country"})
     List<Favorite> findAllByIdIn(Iterable<UUID> ids, Sort sort);
+
+    void deleteFavoriteByDiscountIdAndUserEmail(UUID discountId, String userEmail);
+
+    boolean existsByDiscountIdAndUserEmail(UUID discountId, String userEmail);
+
+    @EntityGraph(attributePaths = {"discount", "discount.category", "discount.vendorLocations", "discount.tags",
+            "discount.vendor", "discount.vendorLocations.city", "discount.vendorLocations.city.country"})
+    Optional<Favorite> findByDiscountIdAndUserEmail(UUID discountId, String userEmail);
 }

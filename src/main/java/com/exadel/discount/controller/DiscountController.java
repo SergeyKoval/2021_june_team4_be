@@ -1,9 +1,9 @@
 package com.exadel.discount.controller;
 
-import com.exadel.discount.model.dto.discount.BaseDiscountDTO;
 import com.exadel.discount.model.dto.discount.CreateDiscountDTO;
 import com.exadel.discount.model.dto.discount.DiscountDTO;
 import com.exadel.discount.model.dto.discount.DiscountFilter;
+import com.exadel.discount.model.dto.discount.UpdateDiscountDTO;
 import com.exadel.discount.security.annotation.AdminAccess;
 import com.exadel.discount.security.annotation.UserAccess;
 import com.exadel.discount.service.DiscountService;
@@ -80,6 +80,14 @@ public class DiscountController {
         return discountService.save(discountDTO);
     }
 
+    @PutMapping("/{id}")
+    @AdminAccess
+    @ApiOperation("Update discount")
+    public DiscountDTO updateDiscount(@PathVariable @NotNull UUID id,
+                                      @RequestBody @Valid UpdateDiscountDTO discountDTO) {
+        return discountService.updateDiscountById(discountDTO, id);
+    }
+
     @DeleteMapping("/{id}")
     @ApiOperation("Delete discount")
     @AdminAccess
@@ -129,8 +137,8 @@ public class DiscountController {
     @GetMapping("/search")
     @ApiOperation("Get Discounts by search text")
     @UserAccess
-    public List<BaseDiscountDTO> search(@RequestParam(defaultValue = "8", required = false) Integer size,
-                                        @RequestParam String searchText) {
+    public List<DiscountDTO> search(@RequestParam(defaultValue = "8", required = false) Integer size,
+                                    @RequestParam String searchText) {
         return discountService.search(size, searchText);
     }
 }

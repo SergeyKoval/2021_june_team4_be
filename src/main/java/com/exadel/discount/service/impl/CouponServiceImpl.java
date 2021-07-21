@@ -1,9 +1,9 @@
 package com.exadel.discount.service.impl;
 
+import com.exadel.discount.exception.CreationRestrictedException;
 import com.exadel.discount.exception.NotFoundException;
 import com.exadel.discount.model.dto.coupon.CouponDTO;
 import com.exadel.discount.model.dto.coupon.CouponFilter;
-import com.exadel.discount.model.dto.coupon.CreateCouponDTO;
 import com.exadel.discount.model.dto.mapper.CouponMapper;
 import com.exadel.discount.model.entity.Coupon;
 import com.exadel.discount.model.entity.Discount;
@@ -23,6 +23,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -45,17 +46,16 @@ public class CouponServiceImpl implements CouponService {
     @Override
     public List<CouponDTO> getAll(int pageNumber, int pageSize, String sortDirection, String sortField,
                                   CouponFilter couponFilter) {
-        Pageable paging = SortPageUtil.makePageable(pageNumber, pageSize, sortDirection, sortField);
+        Sort sort = SortPageUtil.makeSort(sortDirection, sortField);
+        Pageable paging = PageRequest.of(pageNumber, pageSize, sort);
         log.debug("Getting sorted page-list of all Coupons");
         List<Coupon> filteredCouponList;
         if (preparePredicateForFindingAllCoupons(couponFilter) == null) {
             filteredCouponList = couponRepository.findAll(paging).toList();
         } else {
             List<UUID> couponIds = couponRepository
-                    .findAllCouponIds(preparePredicateForFindingAllCoupons(couponFilter),
-                            PageRequest.of(pageNumber, pageSize));
-            filteredCouponList = couponRepository.findAllByIdIn(couponIds,
-                    SortPageUtil.makeSort(sortDirection, sortField));
+                    .findAllCouponIds(preparePredicateForFindingAllCoupons(couponFilter), paging);
+            filteredCouponList = couponRepository.findAllByIdIn(couponIds, sort);
         }
         log.debug("Successfully sorted page-list of all Coupons is got");
         return couponMapper.toCouponDTOList(filteredCouponList);
@@ -64,10 +64,11 @@ public class CouponServiceImpl implements CouponService {
     @Override
     public List<CouponDTO> search(Integer size, String searchText) {
         log.debug("Getting sorted page-list of all Coupons by searchText");
+        Sort sort = Sort.by("date").descending();
         List<UUID> couponsIds = couponRepository
-                .findAllCouponIds(prepareSearchPredicate(searchText), PageRequest.of(0, size));
+                .findAllCouponIds(prepareSearchPredicate(searchText), PageRequest.of(0, size, sort));
         List<Coupon> coupons = couponRepository
-                .findAllByIdIn(couponsIds, Sort.by("date").descending());
+                .findAllByIdIn(couponsIds, sort);
         log.debug("Successfully got sorted page-list of all Coupons by searchText");
         return couponMapper.toCouponDTOList(coupons);
     }
@@ -83,28 +84,31 @@ public class CouponServiceImpl implements CouponService {
 
     @Transactional
     @Override
-    public CouponDTO assignCouponToUser(CreateCouponDTO createCouponDTO) {
-        log.debug("Finding of certain user by ID");
-
+    public CouponDTO assignCouponToUser(UUID discountId) {
+        log.debug(String.format("Check: if user already have Favorite of Discount with ID %s ", discountId));
+        String userEmail = SecurityContextHolder.getContext().getAuthentication().getName();
+        if (couponRepository.existsByDiscountIdAndUserEmail(discountId, userEmail)) {
+            throw new CreationRestrictedException(String
+                    .format("Coupon for Discount with id %s does already exist", discountId));
+        }
         User user = userRepository
-                .findById(createCouponDTO.getUserId())
+                .findByEmail(userEmail)
                 .orElseThrow(() -> new NotFoundException(String
-                        .format("User with id %s not found", createCouponDTO.getUserId())));
+                        .format("User with email %s not found", userEmail)));
 
         Discount discount = discountRepository
-                .findById(createCouponDTO.getDiscountId())
+                .findById(discountId)
                 .orElseThrow(() -> new NotFoundException(String
-                        .format("Discount with id %s not found", createCouponDTO.getDiscountId())));
-        log.debug("Successfully certain User and Discount are found by ID. Starting coupon creation/saving.");
+                        .format("Discount with id %s not found", discountId)));
+        log.debug("Successfully certain User and Discount are found by ID. Starting Coupon creation/saving.");
 
         Coupon coupon = new Coupon();
         coupon.setUser(user);
         coupon.setDiscount(discount);
         coupon.setDate(LocalDateTime.now());
-
-        Coupon couponSaved = couponRepository.save(coupon);
-        log.debug("Successfully new coupon is saved to certain user");
-        return couponMapper.toCouponDTO(couponSaved);
+        coupon = couponRepository.save(coupon);
+        log.debug(String.format("Successfully added Coupon for Discount with ID %s to user", discountId));
+        return couponMapper.toCouponDTO(coupon);
     }
 
     private Predicate preparePredicateForFindingAllCoupons(CouponFilter couponFilter) {

@@ -2,7 +2,6 @@ package com.exadel.discount.controller;
 
 import com.exadel.discount.model.dto.coupon.CouponDTO;
 import com.exadel.discount.model.dto.coupon.CouponFilter;
-import com.exadel.discount.model.dto.coupon.CreateCouponDTO;
 import com.exadel.discount.security.annotation.AdminAccess;
 import com.exadel.discount.security.annotation.UserAccess;
 import com.exadel.discount.service.CouponService;
@@ -13,7 +12,6 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -89,7 +87,7 @@ public class CouponController {
     @PostMapping
     @ApiOperation("Save new coupon to user")
     @UserAccess
-    public CouponDTO addCoupon(@RequestBody @NotNull final CreateCouponDTO createCouponDTO) {
-        return couponService.assignCouponToUser(createCouponDTO);
+    public CouponDTO addCoupon(@RequestParam @NotNull final UUID discountId) {
+        return couponService.assignCouponToUser(discountId);
     }
 }
