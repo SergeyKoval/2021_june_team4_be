@@ -4,5 +4,10 @@ spring:
     hibernate:
       ddl-auto: validate
       open-in-view: false
+  datasource:
+    url:
+    username:
+    password:
+    driver-class-name: org.postgresql.Driver
   profiles:
     active: integrationtest
