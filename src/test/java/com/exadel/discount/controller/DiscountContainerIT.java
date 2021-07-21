@@ -1,6 +1,5 @@
-package com.exadel.discount;
+package com.exadel.discount.controller;
 
-import com.exadel.discount.controller.AbstractIT;
 import com.exadel.discount.repository.CategoryRepository;
 import com.exadel.discount.repository.DiscountRepository;
 import org.junit.jupiter.api.Test;
@@ -16,10 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.UUID;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -27,7 +23,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
 @Transactional
-public class DiscountIT extends AbstractIT {
+public class DiscountContainerIT extends AbstractIT {
 
     @Autowired
     private MockMvc mockMvc;

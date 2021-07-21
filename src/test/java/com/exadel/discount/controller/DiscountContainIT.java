@@ -25,7 +25,7 @@ public class DiscountContainIT extends AbstractIT {
     WebApplicationContext wac;
 
   //  @Sql("classpath:/test_db.sql")
-    @WithMockUser//(username = "admin@mail.com", roles = {"USER", "ADMIN"})
+    @WithMockUser(username = "admin@mail.com", roles = {"USER", "ADMIN"})
     @Test
     void findLoadedDiscount() throws Exception {
         given()
