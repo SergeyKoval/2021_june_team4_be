@@ -9,6 +9,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.transaction.annotation.Transactional;
@@ -33,6 +34,27 @@ public class DiscountContainerIT extends AbstractIT {
     @Autowired
     CategoryRepository categoryRepository;
 
+    @Test
+    @Sql("/test_db.sql")
+    @WithMockUser(username = "admin@mail.com", roles = {"USER", "ADMIN"})
+    public void addDiscountSqlIT() throws Exception {
+
+        mockMvc.perform(post("/discounts")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{\"name\": \"Discount on yoga weekdays\", " +
+                        "\"promo\": \"11aa3g7\"," +
+                        "\"discountType\": \"PERCENT\"," +
+                        "\"value\":\"10\"," +
+                        "\"categoryId\": \"5a009936-ac14-4b4b-9121-3638122ea6b5\"," +
+                        "\"vendorId\": \"3633f3cf-7208-4d67-923d-ce6b2cec29e2\", " +
+                        "\"vendorLocationsIds\": [\"bb682ec1-c86a-4b64-b306-53346c189aca\", " +
+                        "\"6089a6fb-572b-4f29-a2c6-46ac0a5fbca5\"]," +
+                        "\"tagIds\": [\"537edc43-1616-4622-bf45-7b060e6d6471\"]}"))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.status().is2xxSuccessful())
+                .andExpect(jsonPath("$.name").value("Discount on yoga weekdays"))
+                .andExpect(jsonPath("$.vendor.id").value("3633f3cf-7208-4d67-923d-ce6b2cec29e2"));
+    }
     @Test
     @WithMockUser(username = "admin@mail.com", roles = {"USER", "ADMIN"})
     public void addDiscountIT() throws Exception {
