@@ -1,5 +1,6 @@
 package com.exadel.discount.service;
 
+import com.exadel.discount.controller.AbstractIT;
 import com.exadel.discount.exception.NotFoundException;
 import com.exadel.discount.model.dto.mapper.UserMapper;
 import com.exadel.discount.model.dto.user.UserDTO;
@@ -25,7 +26,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.times;
 
 @SpringBootTest
-public class UserServiceTest {
+public class UserServiceTest extends AbstractIT {
 
     private static final UUID ID = UUID.fromString("971bf698-f3ea-4a97-85e8-0a2a770736d6");
 

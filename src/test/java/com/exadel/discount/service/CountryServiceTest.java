@@ -1,5 +1,6 @@
 package com.exadel.discount.service;
 
+import com.exadel.discount.controller.AbstractIT;
 import com.exadel.discount.exception.NotFoundException;
 import com.exadel.discount.model.dto.CountryDTO;
 import com.exadel.discount.model.dto.mapper.CountryMapper;
@@ -26,7 +27,7 @@ import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest
-public class CountryServiceTest {
+public class CountryServiceTest extends AbstractIT {
 
     private static final UUID ID = UUID.fromString("971bf698-f3ea-4a97-85e8-0a2a770736d6");
 

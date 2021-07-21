@@ -17,7 +17,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 @WithMockUser(username = "admin", roles = {"USER", "ADMIN"})
 @ActiveProfiles("integrationtest")
-public class CountryControllerTest {
+public class CountryControllerTest extends AbstractIT {
 
     @Autowired
     private MockMvc mockMvc;
