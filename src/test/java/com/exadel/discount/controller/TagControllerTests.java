@@ -11,13 +11,14 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+import org.springframework.transaction.annotation.Transactional;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
-@SpringBootTest
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
-@WithMockUser(username = "admin", roles = {"USER", "ADMIN"})
+@Transactional
 @ActiveProfiles("test")
 public class TagControllerTests extends AbstractIT {
 
@@ -26,6 +27,7 @@ public class TagControllerTests extends AbstractIT {
 
 
     @Test
+    @WithMockUser(username = "admin", roles = {"USER", "ADMIN"})
     public void getAllTagsTest() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.get("/tags"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
@@ -33,6 +35,7 @@ public class TagControllerTests extends AbstractIT {
     }
 
     @Test
+    @WithMockUser(username = "admin", roles = {"USER", "ADMIN"})
     public void saveTagTest() throws Exception {
         mockMvc.perform(post("/tags")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -43,6 +46,7 @@ public class TagControllerTests extends AbstractIT {
     }
 
     @Test
+    @WithMockUser(username = "admin", roles = {"USER", "ADMIN"})
     public void saveTagExceptionTest() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.post("/tags")
                 .contentType(MediaType.APPLICATION_JSON))
@@ -50,6 +54,7 @@ public class TagControllerTests extends AbstractIT {
     }
 
     @Test
+    @WithMockUser(username = "admin", roles = {"USER", "ADMIN"})
     public void getTagByIdTest() throws Exception {
 
         mockMvc.perform(MockMvcRequestBuilders.get("/tags/b28349b5-0b39-45ee-bb3c-4f96c1abfe75"))
@@ -58,6 +63,7 @@ public class TagControllerTests extends AbstractIT {
     }
 
     @Test
+    @WithMockUser(username = "admin", roles = {"USER", "ADMIN"})
     public void deleteTagTest() throws Exception {
 
         mockMvc.perform(MockMvcRequestBuilders.delete("/tags/452e5fc0-100a-41e9-951d-ba51f06a795e")

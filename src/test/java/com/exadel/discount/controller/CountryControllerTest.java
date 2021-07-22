@@ -10,12 +10,13 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+import org.springframework.transaction.annotation.Transactional;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
-@SpringBootTest
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
-@WithMockUser(username = "admin", roles = {"USER", "ADMIN"})
+@Transactional
 @ActiveProfiles("test")
 public class CountryControllerTest extends AbstractIT {
 
@@ -23,6 +24,7 @@ public class CountryControllerTest extends AbstractIT {
     private MockMvc mockMvc;
 
     @Test
+    @WithMockUser(username = "admin", roles = {"USER", "ADMIN"})
     public void getAllCountriesTest() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.get("/countries"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
@@ -30,6 +32,7 @@ public class CountryControllerTest extends AbstractIT {
     }
 
     @Test
+    @WithMockUser(username = "admin", roles = {"USER", "ADMIN"})
     public void getCountryByIdTest() throws Exception {
 
         mockMvc.perform(MockMvcRequestBuilders.get("/countries/b49abef5-83fe-4d0c-9927-c0aaaf49a2b7"))
@@ -38,6 +41,7 @@ public class CountryControllerTest extends AbstractIT {
     }
 
     @Test
+    @WithMockUser(username = "admin", roles = {"USER", "ADMIN"})
     public void saveCountryTest() throws Exception {
 
         mockMvc.perform(MockMvcRequestBuilders.post("/countries")
@@ -56,6 +60,7 @@ public class CountryControllerTest extends AbstractIT {
     }*/
 
     @Test
+    @WithMockUser(username = "admin", roles = {"USER", "ADMIN"})
     public void getAllCitiesByCountryIdTest() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.get("/countries/b49abef5-83fe-4d0c-9927-c0aaaf49a2b7/cities")
                 .contentType(MediaType.APPLICATION_JSON))
@@ -64,6 +69,7 @@ public class CountryControllerTest extends AbstractIT {
     }
 
     @Test
+    @WithMockUser(username = "admin", roles = {"USER", "ADMIN"})
     public void saveCityTest() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.post("/countries/b49abef5-83fe-4d0c-9927-c0aaaf49a2b7/cities")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -73,6 +79,7 @@ public class CountryControllerTest extends AbstractIT {
     }
 
     @Test
+    @WithMockUser(username = "admin", roles = {"USER", "ADMIN"})
     public void getCityByIdTest() throws Exception {
 
         mockMvc.perform(MockMvcRequestBuilders.get("/countries/b49abef5-83fe-4d0c-9927-c0aaaf49a2b7/cities/489cd7f8-870c-4dd1-abc8-e31145a15c5c"))
