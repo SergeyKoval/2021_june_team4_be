@@ -38,6 +38,7 @@
     </properties>
 
     <dependencies>
+        <!-- Test -->
         <dependency>
             <groupId>org.testcontainers</groupId>
             <artifactId>testcontainers</artifactId>
@@ -325,6 +326,7 @@
                     </execution>
                 </executions>
             </plugin>
+            <!-- Test -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
