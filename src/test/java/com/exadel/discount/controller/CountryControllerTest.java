@@ -51,13 +51,14 @@ public class CountryControllerTest extends AbstractIT {
                 .andExpect(jsonPath("$.name").value("Test"));
     }
 
-   /* @Test
+    @Test
+    @WithMockUser(username = "admin", roles = {"USER", "ADMIN"})
     public void deleteCountryByIdTest() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.delete("/countries/ec62f606-7de5-443a-8d37-cee82134c6cf")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.status().is2xxSuccessful());
-    }*/
+    }
 
     @Test
     @WithMockUser(username = "admin", roles = {"USER", "ADMIN"})
@@ -87,11 +88,12 @@ public class CountryControllerTest extends AbstractIT {
                 .andExpect(MockMvcResultMatchers.status().is2xxSuccessful());
     }
 
-   /* @Test
+    @Test
+    @WithMockUser(username = "admin", roles = {"USER", "ADMIN"})
     public void deleteCityTest() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.delete("/countries/13e43451-6b1b-4e0f-bc61-8d903d226617/cities/794a4106-ff4d-44bb-960a-3dec50b033ab")
+        mockMvc.perform(MockMvcRequestBuilders.delete("/countries/b49abef5-83fe-4d0c-9927-c0aaaf49a2b7/cities/658b74f2-4fb5-4b9d-a87f-0b8f44f06f09")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.status().is2xxSuccessful());
-    }*/
+    }
 }
