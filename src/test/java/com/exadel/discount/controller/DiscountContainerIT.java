@@ -1,18 +1,16 @@
 package com.exadel.discount.controller;
 
-import com.exadel.discount.repository.CategoryRepository;
-import com.exadel.discount.repository.DiscountRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
+import org.springframework.boot.test.autoconfigure.json.AutoConfigureJsonTesters;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.UUID;
 
@@ -23,19 +21,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ActiveProfiles("test")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
-@Transactional
 public class DiscountContainerIT extends AbstractIT {
 
     @Autowired
     private MockMvc mockMvc;
 
-    @Autowired
-    DiscountRepository discountRepository;
-    @Autowired
-    CategoryRepository categoryRepository;
-
     @Test
-    @Sql("/test_db.sql")
     @WithMockUser(username = "admin@mail.com", roles = {"USER", "ADMIN"})
     public void addDiscountSqlIT() throws Exception {
 
@@ -55,6 +46,7 @@ public class DiscountContainerIT extends AbstractIT {
                 .andExpect(jsonPath("$.name").value("Discount on yoga weekdays"))
                 .andExpect(jsonPath("$.vendor.id").value("3633f3cf-7208-4d67-923d-ce6b2cec29e2"));
     }
+
     @Test
     @WithMockUser(username = "admin@mail.com", roles = {"USER", "ADMIN"})
     public void addDiscountIT() throws Exception {
@@ -81,8 +73,7 @@ public class DiscountContainerIT extends AbstractIT {
     public void removeAndRestoreDiscountIT() throws Exception {
         mockMvc.perform(delete("/discounts/{id}", "5f69268b-705e-4fb9-8147-722b4ec1d9da")
                 .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.status().is2xxSuccessful());
+                .andExpect(status().isNotFound());
 
         mockMvc.perform(get("/discounts/{id}", UUID.fromString
                 ("5f69268b-705e-4fb9-8147-722b4ec1d9da"))
@@ -100,17 +91,16 @@ public class DiscountContainerIT extends AbstractIT {
     @WithMockUser(username = "admin@mail.com", roles = {"USER", "ADMIN"})
     public void getArchivedAfterDeletionIT() throws Exception {
         UUID discountId = UUID.fromString("5f69268b-705e-4fb9-8147-722b4ec1d9da");
-        String categoryId = discountRepository.findById(discountId).get().getCategory().getId().toString();
+        String categoryId = UUID.fromString("5a009936-ac14-4b4b-9121-3638122ea6b5").toString();
         mockMvc.perform(delete("/discounts/{id}", "5f69268b-705e-4fb9-8147-722b4ec1d9da")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.status().is2xxSuccessful());
 
-        //discountRepository.setArchivedById(discountId, true);
         mockMvc.perform(get("/discounts/archived")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$[0].category.id").value(categoryId))
-                .andExpect(jsonPath("$[0].archived").value(false))//hope, it will be true after Lisa's fix merging
+                .andExpect(jsonPath("$[0].archived").value(true))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.status().is2xxSuccessful());
     }
