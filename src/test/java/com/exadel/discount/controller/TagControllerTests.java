@@ -18,7 +18,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 @WithMockUser(username = "admin", roles = {"USER", "ADMIN"})
-@ActiveProfiles("integrationtest")
+@ActiveProfiles("test")
 public class TagControllerTests extends AbstractIT {
 
     @Autowired

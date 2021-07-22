@@ -20,7 +20,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
 @Transactional
-@ActiveProfiles("integrationtest")
+@ActiveProfiles("test")
 public class VendorLocationMockIT extends AbstractIT {
 
     @Autowired
