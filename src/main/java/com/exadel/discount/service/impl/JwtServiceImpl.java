@@ -14,6 +14,8 @@ import org.springframework.stereotype.Service;
 
 import java.time.Instant;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * This class represent a service for JWTs.
@@ -53,35 +55,28 @@ public class JwtServiceImpl implements JwtService, JwtGenerationService {
     @Override
     public String generateAccessToken(UserDetails userDetails) {
         log.debug("preparing an access token creation data");
+        Map<String, String> claims = new HashMap<>();
+        String role = userDetails.getAuthorities()
+                .stream()
+                .map(GrantedAuthority::getAuthority)
+                .findFirst()
+                .orElseThrow(() -> new InvalidTokenException("User does not have any role"));
+        claims.put(ROLES_CLAIM_NAME, role);
         if (userDetails instanceof UserDetailsImpl) {
-            return buildToken(
-                    userDetails.getUsername(),
-                    ACCESS_TOKEN_EXPIRATION_TIME,
-                    userDetails.getAuthorities()
-                            .stream()
-                            .map(GrantedAuthority::getAuthority)
-                            .findFirst()
-                            .orElseThrow(() -> new InvalidTokenException("User does not have any role")),
-                    ((UserDetailsImpl) userDetails).getId());
+            claims.put(ID_CLAIM_NAME, ((UserDetailsImpl) userDetails).getId());
         }
-        return buildToken(
-                userDetails.getUsername(),
-                ACCESS_TOKEN_EXPIRATION_TIME,
-                userDetails.getAuthorities()
-                        .stream()
-                        .map(GrantedAuthority::getAuthority)
-                        .findFirst()
-                        .orElseThrow(() -> new InvalidTokenException("User does not have any role")));
+        return buildToken(userDetails.getUsername(), ACCESS_TOKEN_EXPIRATION_TIME, claims);
     }
 
     @Override
     public String generateRefreshToken(UserDetails userDetails) {
         log.debug("preparing a refresh token creation data");
+        Map<String, String> claims = new HashMap<>();
+        claims.put(ROLES_CLAIM_NAME, REFRESH_ROLE);
         if (userDetails instanceof UserDetailsImpl) {
-            return buildToken(userDetails.getUsername(), REFRESH_TOKEN_EXPIRATION_TIME, REFRESH_ROLE,
-                    ((UserDetailsImpl) userDetails).getId());
+            claims.put(ID_CLAIM_NAME, ((UserDetailsImpl) userDetails).getId());
         }
-        return buildToken(userDetails.getUsername(), REFRESH_TOKEN_EXPIRATION_TIME, REFRESH_ROLE);
+        return buildToken(userDetails.getUsername(), REFRESH_TOKEN_EXPIRATION_TIME, claims);
     }
 
     /**
@@ -90,29 +85,16 @@ public class JwtServiceImpl implements JwtService, JwtGenerationService {
      *
      * @param subject        it will be set in a subject claim.
      * @param expirationTime it will be set in a expiration time claim.
-     * @param role           it will be set in a role claim.
      * @return a built JWT.
      */
-    private String buildToken(String subject, long expirationTime, String role, String id) {
+    private String buildToken(String subject, long expirationTime, Map<String, String> claims) {
         log.debug("creating a token");
         Instant currentTime = Instant.now();
         return JWT.create()
                 .withSubject(subject)
                 .withIssuedAt(Date.from(currentTime))
                 .withExpiresAt(Date.from(currentTime.plusSeconds(expirationTime)))
-                .withClaim(ROLES_CLAIM_NAME, role)
-                .withClaim(ID_CLAIM_NAME, id)
-                .sign(Algorithm.HMAC256(TOKEN_ENCRYPTION_KEY));
-    }
-
-    private String buildToken(String subject, long expirationTime, String role) {
-        log.debug("creating a token");
-        Instant currentTime = Instant.now();
-        return JWT.create()
-                .withSubject(subject)
-                .withIssuedAt(Date.from(currentTime))
-                .withExpiresAt(Date.from(currentTime.plusSeconds(expirationTime)))
-                .withClaim(ROLES_CLAIM_NAME, role)
+                .withPayload(claims)
                 .sign(Algorithm.HMAC256(TOKEN_ENCRYPTION_KEY));
     }
 }
