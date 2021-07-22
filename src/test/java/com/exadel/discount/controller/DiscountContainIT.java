@@ -7,14 +7,13 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.web.context.WebApplicationContext;
 
 import java.util.UUID;
 
 import static io.restassured.module.mockmvc.RestAssuredMockMvc.given;
-
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
 @ActiveProfiles("test")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -36,9 +35,9 @@ public class DiscountContainIT extends AbstractIT {
                 .then()
                 .status(HttpStatus.OK)
                 .assertThat(MockMvcResultMatchers.status().isOk())
-                .assertThat(MockMvcResultMatchers.status().is2xxSuccessful());
-        //  .assertThat(jsonPath("$.name").value("Discount on yoga weekdays"))
-        // .assertThat(jsonPath("$.vendor.id").value("3633f3cf-7208-4d67-923d-ce6b2cec29e2"));
+                .assertThat(MockMvcResultMatchers.status().is2xxSuccessful())
+                .assertThat(jsonPath("$.name").value("Discount on yoga weekdays"))
+                .assertThat(jsonPath("$.vendor.id").value("3633f3cf-7208-4d67-923d-ce6b2cec29e2"));
 
     }
 }
