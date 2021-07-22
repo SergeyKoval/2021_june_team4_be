@@ -3,6 +3,7 @@ package com.exadel.discount.service.impl;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.exadel.discount.exception.InvalidTokenException;
+import com.exadel.discount.security.entity.UserDetailsImpl;
 import com.exadel.discount.service.JwtGenerationService;
 import com.exadel.discount.service.JwtService;
 import lombok.Setter;
@@ -15,6 +16,8 @@ import org.springframework.stereotype.Service;
 
 import java.time.Instant;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * This class represent a service for JWTs.
@@ -26,6 +29,7 @@ import java.util.Date;
 @Slf4j
 public class JwtServiceImpl implements JwtService, JwtGenerationService {
     private final String ROLES_CLAIM_NAME = "role";
+    private final String ID_CLAIM_NAME = "id";
     public final String REFRESH_ROLE = "ROLE_REFRESH";
     @Value("${jwt.expiration.access}")
     private long ACCESS_EXPIRATION;
@@ -53,20 +57,28 @@ public class JwtServiceImpl implements JwtService, JwtGenerationService {
     @Override
     public String generateAccessToken(UserDetails userDetails) {
         log.debug("preparing an access token creation data");
-        return buildToken(
-                userDetails.getUsername(),
-                ACCESS_EXPIRATION,
-                userDetails.getAuthorities()
-                        .stream()
-                        .map(GrantedAuthority::getAuthority)
-                        .findFirst()
-                        .orElseThrow(() -> new InvalidTokenException("User does not have any role")));
+        Map<String, String> claims = new HashMap<>();
+        String role = userDetails.getAuthorities()
+                .stream()
+                .map(GrantedAuthority::getAuthority)
+                .findFirst()
+                .orElseThrow(() -> new InvalidTokenException("User does not have any role"));
+        claims.put(ROLES_CLAIM_NAME, role);
+        if (userDetails instanceof UserDetailsImpl) {
+            claims.put(ID_CLAIM_NAME, ((UserDetailsImpl) userDetails).getId());
+        }
+        return buildToken(userDetails.getUsername(), ACCESS_EXPIRATION, claims);
     }
 
     @Override
     public String generateRefreshToken(UserDetails userDetails) {
         log.debug("preparing a refresh token creation data");
-        return buildToken(userDetails.getUsername(), REFRESH_EXPIRATION, REFRESH_ROLE);
+        Map<String, String> claims = new HashMap<>();
+        claims.put(ROLES_CLAIM_NAME, REFRESH_ROLE);
+        if (userDetails instanceof UserDetailsImpl) {
+            claims.put(ID_CLAIM_NAME, ((UserDetailsImpl) userDetails).getId());
+        }
+        return buildToken(userDetails.getUsername(), REFRESH_EXPIRATION, claims);
     }
 
     /**
@@ -75,17 +87,16 @@ public class JwtServiceImpl implements JwtService, JwtGenerationService {
      *
      * @param subject        it will be set in a subject claim.
      * @param expirationTime it will be set in a expiration time claim.
-     * @param role           it will be set in a role claim.
      * @return a built JWT.
      */
-    private String buildToken(String subject, long expirationTime, String role) {
+    private String buildToken(String subject, long expirationTime, Map<String, String> claims) {
         log.debug("creating a token");
         Instant currentTime = Instant.now();
         return JWT.create()
                 .withSubject(subject)
                 .withIssuedAt(Date.from(currentTime))
                 .withExpiresAt(Date.from(currentTime.plusSeconds(expirationTime)))
-                .withClaim(ROLES_CLAIM_NAME, role)
+                .withPayload(claims)
                 .sign(Algorithm.HMAC256(ENCRYPTION_KEY));
     }
 }
