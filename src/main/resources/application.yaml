@@ -8,23 +8,6 @@ spring:
     driver-class-name: org.postgresql.Driver
 
 jwt:
-  token:
-    expiration:
-      seconds:
-        access: 120
-        refresh: 3600
-    encryption:
-      key: encryptionSecret
-cors:
-  hosts:
-    - http://localhost:4200
-cloud:
-  aws:
-    credentials:
-      access-key: AKIAQWULYLKETO4CVGFE
-      secret-key: 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
-    bucket:
-      - name: exdadel-discounts-image-upload
-        folders:
-          - exdadel-discounts-image-upload/discounts-images
-          - exdadel-discounts-image-upload/vendors-images
+  expiration:
+    access: 120
+    refresh: 3600

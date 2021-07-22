@@ -103,8 +103,7 @@ public class Discount {
     @JoinColumn(name = "vendor_id")
     private Vendor vendor;
 
-    @OneToMany(cascade = CascadeType.REMOVE,
-            mappedBy = "discount")
+    @OneToMany(cascade = CascadeType.REMOVE, mappedBy = "discount")
     private Set<DiscountImage> discountImages;
 
     @OneToMany(mappedBy = "discount", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE, orphanRemoval = true)
