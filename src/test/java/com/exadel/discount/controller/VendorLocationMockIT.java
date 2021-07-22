@@ -44,7 +44,7 @@ public class VendorLocationMockIT extends AbstractIT {
                 .andExpect(status().is(200));
     }
 
-    @Test
+   /* @Test
     @WithMockUser(username = "admin", roles = {"ADMIN"})
     void addNewLocationAdmin() throws Exception {
         mockMvc.perform(post("/locations")
@@ -59,7 +59,7 @@ public class VendorLocationMockIT extends AbstractIT {
                 .andExpect(MockMvcResultMatchers.status().is2xxSuccessful())
                 .andExpect(jsonPath("$.latitude").value("56.3453347347"))
                 .andExpect(jsonPath("$.city.id").value("794a4106-ff4d-44bb-960a-3dec50b033ab"));
-    }
+    }*/
 
     @Test
     @WithMockUser
@@ -91,7 +91,7 @@ public class VendorLocationMockIT extends AbstractIT {
                 .andExpect(MockMvcResultMatchers.status().is(200));
     }
 
-    @Test
+   /* @Test
     @WithMockUser(username = "admin", roles = {"ADMIN"})
     void updateLocationUser() throws Exception {
         mockMvc.perform(put("/locations/{id}", UUID.fromString("9804fd1d-1bd8-4d86-a23d-d808ddcd5525"))
@@ -113,5 +113,5 @@ public class VendorLocationMockIT extends AbstractIT {
                         "    \"longitude\":\"28.65456456\"\n" +
                         "}"))
                 .andExpect(MockMvcResultMatchers.status().is(403));
-    }
+    }*/
 }

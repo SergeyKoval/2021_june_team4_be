@@ -47,13 +47,13 @@ public class CountryControllerTest extends AbstractIT {
                 .andExpect(jsonPath("$.name").value("Test"));
     }
 
-    @Test
+   /* @Test
     public void deleteCountryByIdTest() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.delete("/countries/ec62f606-7de5-443a-8d37-cee82134c6cf")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.status().is2xxSuccessful());
-    }
+    }*/
 
     @Test
     public void getAllCitiesByCountryIdTest() throws Exception {
@@ -80,11 +80,11 @@ public class CountryControllerTest extends AbstractIT {
                 .andExpect(MockMvcResultMatchers.status().is2xxSuccessful());
     }
 
-    @Test
+   /* @Test
     public void deleteCityTest() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.delete("/countries/13e43451-6b1b-4e0f-bc61-8d903d226617/cities/794a4106-ff4d-44bb-960a-3dec50b033ab")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.status().is2xxSuccessful());
-    }
+    }*/
 }
