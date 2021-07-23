@@ -33,10 +33,8 @@ public class DiscountTests extends AbstractIT {
 
         given()
                 .webAppContextSetup(wac)
-                .header("Content-Type", "application/json")
                 .contentType(ContentType.JSON)
                 .accept(ContentType.JSON)
-                .auth().with(SecurityMockMvcRequestPostProcessors.user("admin@mail.com").roles("ADMIN"))
                 .contentType("application/json")
                 .body("{\"name\": \"Discount on tennis weekdays\", " +
                         "\"promo\": \"11aa3g7\"," +
@@ -62,7 +60,6 @@ public class DiscountTests extends AbstractIT {
 
         given()
                 .webAppContextSetup(wac)
-                .header("Content-Type", "application/json")
                 .contentType(ContentType.JSON)
                 .accept(ContentType.JSON)
                 .when()
@@ -79,7 +76,6 @@ public class DiscountTests extends AbstractIT {
     void findAllDiscountsIT() throws Exception {
         given()
                 .webAppContextSetup(wac)
-                .header("Content-Type", "application/json")
                 .contentType(ContentType.JSON)
                 .accept(ContentType.JSON)
                 .when()
@@ -94,10 +90,8 @@ public class DiscountTests extends AbstractIT {
     void findAllDiscountsWithFiltersIT() throws Exception {
         given()
                 .webAppContextSetup(wac)
-                .header("Content-Type", "application/json")
                 .contentType(ContentType.JSON)
                 .accept(ContentType.JSON)
-                .contentType("application/json")
                 .param("categoryId", "93577f24-f68f-403e-aa04-0a60c3a445d6")
                 .param("vendorId", "93577f24-f68f-403e-aa04-0a60c3a445d2")
                 .param("vendorLocationsIds", "93577f24-f68f-403e-aa04-0a60c3a445d3",
@@ -125,10 +119,8 @@ public class DiscountTests extends AbstractIT {
     @Order(5)
     public void getDiscountSearchingIT() throws Exception {
         given().webAppContextSetup(wac)
-                .header("Content-Type", "application/json")
                 .contentType(ContentType.JSON)
                 .accept(ContentType.JSON)
-                .contentType("application/json")
                 .param("searchText", "Toy for")
                 .when()
                 .get("/discounts/search")
@@ -151,11 +143,8 @@ public class DiscountTests extends AbstractIT {
     public void deleteDiscountAndCheckIT() throws Exception {
         given()
                 .webAppContextSetup(wac)
-                .header("Content-Type", "application/json")
                 .contentType(ContentType.JSON)
                 .accept(ContentType.JSON)
-                .contentType("application/json")
-                .auth().with(SecurityMockMvcRequestPostProcessors.user("admin@mail.com").roles("ADMIN"))
                 .when()
                 .delete("/discounts/93577f24-f68f-403e-aa04-0a60c3a445d1")
                 .then()
@@ -163,7 +152,6 @@ public class DiscountTests extends AbstractIT {
 
         given()
                 .webAppContextSetup(wac)
-                .header("Content-Type", "application/json")
                 .contentType(ContentType.JSON)
                 .accept(ContentType.JSON)
                 .param("categoryId", "93577f24-f68f-403e-aa04-0a60c3a445d6")
@@ -190,7 +178,6 @@ public class DiscountTests extends AbstractIT {
 
         given()
                 .webAppContextSetup(wac)
-                .header("Content-Type", "application/json")
                 .contentType(ContentType.JSON)
                 .accept(ContentType.JSON)
                 .when()
