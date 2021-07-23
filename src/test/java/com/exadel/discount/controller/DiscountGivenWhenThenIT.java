@@ -11,6 +11,7 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.jdbc.Sql;
+import org.springframework.test.web.servlet.ResultMatcher;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.web.context.WebApplicationContext;
 
@@ -19,7 +20,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @ActiveProfiles("test")
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-@Sql("classpath:test_db.sql")
+@Sql("classpath:testsql/test_db.sql")
 @WithMockUser(username = "admin@mail.com", roles = {"USER", "ADMIN"})
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class DiscountGivenWhenThenIT extends AbstractIT {
@@ -140,7 +141,7 @@ public class DiscountGivenWhenThenIT extends AbstractIT {
 
     @Test
     @Order(6)
-    public void deleteDiscountAndCheckIT() throws Exception {
+    public void deleteDiscountByIdtIT() throws Exception {
         given()
                 .webAppContextSetup(wac)
                 .contentType(ContentType.JSON)
@@ -149,7 +150,26 @@ public class DiscountGivenWhenThenIT extends AbstractIT {
                 .delete("/discounts/93577f24-f68f-403e-aa04-0a60c3a445d1")
                 .then()
                 .assertThat(MockMvcResultMatchers.status().is2xxSuccessful());
+    }
 
+    @Test
+    @Order(7)
+    public void getDeletedDiscounByIdtIT() throws Exception {
+        given()
+                .webAppContextSetup(wac)
+                .contentType(ContentType.JSON)
+                .accept(ContentType.JSON)
+                .when()
+                .get("/discounts/93577f24-f68f-403e-aa04-0a60c3a445d1")
+                .then()
+                .assertThat(MockMvcResultMatchers.status().isNotFound())
+                .assertThat(MockMvcResultMatchers.status().is4xxClientError());
+    }
+
+    @Test
+    @Order(8)
+    @Sql("classpath:testsql/delete_discount.sql")
+    public void retrieveArchivedDiscountIT() throws Exception {
         given()
                 .webAppContextSetup(wac)
                 .contentType(ContentType.JSON)
@@ -175,6 +195,12 @@ public class DiscountGivenWhenThenIT extends AbstractIT {
                 .assertThat(jsonPath("$[0].archived").value("true"))
                 .assertThat(jsonPath("$[0].vendor.name").value("Dog stuff"))
                 .assertThat(jsonPath("$[0].category.name").value("Dogs"));
+    }
+
+    @Test
+    @Order(9)
+    @Sql("classpath:testsql/delete_discount.sql")
+    public void deleteDiscountAndCheckIT() throws Exception {
 
         given()
                 .webAppContextSetup(wac)
