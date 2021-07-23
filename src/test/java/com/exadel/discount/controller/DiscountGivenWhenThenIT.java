@@ -22,7 +22,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @Sql("classpath:test_db.sql")
 @WithMockUser(username = "admin@mail.com", roles = {"USER", "ADMIN"})
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class DiscountContainIT extends AbstractIT {
+public class DiscountGivenWhenThenIT extends AbstractIT {
 
     @Autowired
     WebApplicationContext wac;
