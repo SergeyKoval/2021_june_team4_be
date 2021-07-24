@@ -1,0 +1,11 @@
+databaseChangeLog:
+  - changeSet:
+      id: 0.6-update-vendors-table
+      author: artem_kishenets
+      changes:
+        - addColumn:
+            tableName: vendors
+            columns:
+              - column:
+                  name: image
+                  type: varchar(255)

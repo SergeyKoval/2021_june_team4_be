@@ -33,7 +33,7 @@ public class FavoriteController {
 
     @GetMapping
     @ApiOperation("Get page-list of all favorites with filtering/sorting")
-    @AdminAccess
+    @UserAccess
     public List<FavoriteDTO> getAllFavorites(@RequestParam(required = false, defaultValue = "0") int pageNumber,
                                              @RequestParam(required = false, defaultValue = "10") int pageSize,
                                              @RequestParam(required = false, defaultValue = "") String sortDirection,
