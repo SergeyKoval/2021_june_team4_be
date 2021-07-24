@@ -20,18 +20,18 @@ import java.util.UUID;
 public interface DiscountRepository extends JpaRepository<Discount, UUID>, QueryFactoryDiscountRepository {
 
     @EntityGraph(attributePaths = {"category", "vendorLocations", "tags", "vendor",
-            "vendorLocations.city", "vendorLocations.city.country"})
+            "vendorLocations.city", "vendorLocations.city.country", "discountImages"})
     List<Discount> findAll();
 
     @EntityGraph(attributePaths = {"category", "vendorLocations", "tags", "vendor",
-            "vendorLocations.city", "vendorLocations.city.country"})
+            "vendorLocations.city", "vendorLocations.city.country", "discountImages"})
     Optional<Discount> findById(UUID id);
 
-    @EntityGraph(attributePaths = {"category", "vendorLocations", "tags", "vendor"})
+    @EntityGraph(attributePaths = {"category", "vendorLocations", "tags", "vendor", "discountImages"})
     List<Discount> findAllByIdIn(Iterable<UUID> ids, Sort sort);
 
     @EntityGraph(attributePaths = {"category", "vendorLocations", "tags", "vendor",
-            "vendorLocations.city", "vendorLocations.city.country", "favorites"})
+            "vendorLocations.city", "vendorLocations.city.country", "favorites", "discountImages"})
     @Query("SELECT d FROM Discount d " +
             "LEFT JOIN d.favorites f " +
             "ON f.user.email = :userEmail " +
@@ -40,7 +40,7 @@ public interface DiscountRepository extends JpaRepository<Discount, UUID>, Query
                                                     @Param("userEmail") String userEmail);
 
     @EntityGraph(attributePaths = {"category", "vendorLocations", "tags", "vendor",
-            "vendorLocations.city", "vendorLocations.city.country", "favorites"})
+            "vendorLocations.city", "vendorLocations.city.country", "favorites", "discountImages"})
     @Query("SELECT d FROM Discount d " +
             "LEFT JOIN d.favorites f " +
             "ON f.user.email = :userEmail " +
@@ -49,7 +49,7 @@ public interface DiscountRepository extends JpaRepository<Discount, UUID>, Query
             @Param("discountId") UUID id, @Param("archived") boolean archived, @Param("userEmail") String userEmail);
 
     @EntityGraph(attributePaths = {"category", "vendorLocations", "tags", "vendor",
-            "vendorLocations.city", "vendorLocations.city.country", "favorites"})
+            "vendorLocations.city", "vendorLocations.city.country", "favorites", "discountImages"})
     @Query("SELECT d FROM Discount d " +
             "LEFT JOIN d.favorites f " +
             "ON f.user.email = :userEmail " +
@@ -67,7 +67,7 @@ public interface DiscountRepository extends JpaRepository<Discount, UUID>, Query
     void increaseViewNumberById(@Param("discountId") UUID id);
 
     @EntityGraph(attributePaths = {"category", "vendorLocations", "tags", "vendor",
-            "vendorLocations.city", "vendorLocations.city.country"})
+            "vendorLocations.city", "vendorLocations.city.country", "discountImages"})
     Optional<Discount> findByIdAndArchived(UUID id, boolean archived);
 
     @Modifying
