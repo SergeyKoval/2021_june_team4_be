@@ -5,7 +5,6 @@ import com.exadel.discount.exception.DeletionRestrictedException;
 import com.exadel.discount.exception.NotFoundException;
 import com.exadel.discount.model.dto.discount.DiscountDTO;
 import com.exadel.discount.model.dto.favorite.FavoriteDTO;
-import com.exadel.discount.model.dto.favorite.FavoriteFilter;
 import com.exadel.discount.model.dto.mapper.DiscountMapper;
 import com.exadel.discount.model.dto.mapper.FavoriteMapper;
 import com.exadel.discount.model.entity.Discount;
@@ -46,8 +45,7 @@ public class FavoriteServiceImpl implements FavoriteService {
     private final DiscountRepository discountRepository;
 
     private static final int SEARCH_WORD_MIN_LENGTH = 3;
-
-
+    
     @Override
     public List<DiscountDTO> getAll(int pageNumber, int pageSize, String sortDirection, String sortField,
                                     UUID userId) {
@@ -131,25 +129,6 @@ public class FavoriteServiceImpl implements FavoriteService {
         DiscountDTO discountDTO = discountMapper.getDTO(discount);
         discountDTO.setFavorite(false);
         return discountDTO;
-    }
-
-    private Predicate preparePredicateForFindingAllFavorites(FavoriteFilter favoriteFilter) {
-        return ExpressionUtils.and(
-                QueryPredicateBuilder.init()
-                        .append(favoriteFilter.getCountryIds(),
-                                QFavorite.favorite.discount.vendorLocations.any().city.country.id::in)
-                        .append(favoriteFilter.getCityIds(),
-                                QFavorite.favorite.discount.vendorLocations.any().city.id::in)
-                        .buildOr(),
-                QueryPredicateBuilder.init()
-                        .append(favoriteFilter.getUserId(), QFavorite.favorite.user.id::eq)
-                        .append(favoriteFilter.getArchived(), QFavorite.favorite.discount.archived::eq)
-                        .append(favoriteFilter.getEndDateFrom(), QFavorite.favorite.discount.endTime::goe)
-                        .append(favoriteFilter.getEndDateTo(), QFavorite.favorite.discount.endTime::loe)
-                        .append(favoriteFilter.getCategoryIds(), QFavorite.favorite.discount.category.id::in)
-                        .append(favoriteFilter.getTagIds(), QFavorite.favorite.discount.tags.any().id::in)
-                        .append(favoriteFilter.getVendorIds(), QFavorite.favorite.discount.vendor.id::in)
-                        .buildAnd());
     }
 
     private Predicate prepareSearchPredicate(String searchText) {
