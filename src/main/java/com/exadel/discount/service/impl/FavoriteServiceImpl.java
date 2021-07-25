@@ -49,22 +49,19 @@ public class FavoriteServiceImpl implements FavoriteService {
 
 
     @Override
-    public List<FavoriteDTO> getAll(int pageNumber, int pageSize, String sortDirection, String sortField,
-                                    FavoriteFilter favoriteFilter) {
+    public List<DiscountDTO> getAll(int pageNumber, int pageSize, String sortDirection, String sortField,
+                                    UUID userId) {
         Sort sort = SortPageUtil.makeSort(sortDirection, sortField);
         Pageable paging = PageRequest.of(pageNumber, pageSize, sort);
 
         log.debug("Getting sorted page-list of all Favorites");
-        List<Favorite> filteredFavoriteList;
-        if (preparePredicateForFindingAllFavorites(favoriteFilter) == null) {
-            filteredFavoriteList = favoriteRepository.findAll(paging).toList();
-        } else {
-            List<UUID> favoriteIds = favoriteRepository
-                    .findAllFavoriteIds(preparePredicateForFindingAllFavorites(favoriteFilter), paging);
-            filteredFavoriteList = favoriteRepository.findAllByIdIn(favoriteIds, sort);
-        }
+        List<Discount> favoriteDiscounts = discountRepository.findFavoriteDiscountsByUserId(userId, paging);
+        List<DiscountDTO> favoriteDiscountDTOs = discountMapper.getListDTO(favoriteDiscounts);
+        favoriteDiscountDTOs
+                .stream()
+                .forEach(discountDTO -> discountDTO.setFavorite(true));
         log.debug("Successfully got sorted page-list of all Favorites");
-        return favoriteMapper.toFavoriteDTOList(filteredFavoriteList);
+        return favoriteDiscountDTOs;
     }
 
     @Override

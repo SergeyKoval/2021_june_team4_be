@@ -2,13 +2,11 @@ package com.exadel.discount.controller;
 
 import com.exadel.discount.model.dto.discount.DiscountDTO;
 import com.exadel.discount.model.dto.favorite.FavoriteDTO;
-import com.exadel.discount.model.dto.favorite.FavoriteFilter;
 import com.exadel.discount.security.annotation.AdminAccess;
 import com.exadel.discount.security.annotation.UserAccess;
 import com.exadel.discount.service.FavoriteService;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.constraints.NotNull;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -34,34 +31,12 @@ public class FavoriteController {
     @GetMapping
     @ApiOperation("Get page-list of all favorites with filtering/sorting")
     @UserAccess
-    public List<FavoriteDTO> getAllFavorites(@RequestParam(required = false, defaultValue = "0") int pageNumber,
+    public List<DiscountDTO> getAllFavorites(@RequestParam(required = false, defaultValue = "0") int pageNumber,
                                              @RequestParam(required = false, defaultValue = "10") int pageSize,
                                              @RequestParam(required = false, defaultValue = "") String sortDirection,
                                              @RequestParam(required = false, defaultValue = "id") String sortField,
-                                             @RequestParam(required = false) List<UUID> vendorId,
-                                             @RequestParam(required = false) List<UUID> categoryId,
-                                             @RequestParam(required = false) List<UUID> countryId,
-                                             @RequestParam(required = false) List<UUID> cityId,
-                                             @RequestParam(required = false) List<UUID> tagId,
-                                             @RequestParam(required = false)
-                                             @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
-                                                     LocalDateTime endDateTimeFrom,
-                                             @RequestParam(required = false)
-                                             @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
-                                                     LocalDateTime endDateTimeTo,
-                                             @RequestParam(value = "userId", required = false) UUID userId) {
-        FavoriteFilter filter = FavoriteFilter.builder()
-                .vendorIds(vendorId)
-                .categoryIds(categoryId)
-                .countryIds(countryId)
-                .cityIds(cityId)
-                .tagIds(tagId)
-                .userId(userId)
-                .endDateFrom(endDateTimeFrom)
-                .endDateTo(endDateTimeTo)
-                .userId(userId)
-                .build();
-        return favoriteService.getAll(pageNumber, pageSize, sortDirection, sortField, filter);
+                                             @RequestParam UUID userId) {
+        return favoriteService.getAll(pageNumber, pageSize, sortDirection, sortField, userId);
     }
 
     @GetMapping("/search")
