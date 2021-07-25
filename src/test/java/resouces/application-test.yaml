@@ -39,8 +39,3 @@ jwt:
 cors:
   hosts:
     - http://localhost:4200
-
-#  datasource:
-#    driver-class-name: org.testcontainers.jdbc.ContainerDatabaseDriver
-#    url: jdbc:tc:postgresql:11.1:///?TC_INITSCRIPT=file:src/main/resources/init_db.sql
-#      TC_INITSCRIPT: file:src/main/resources/test_db.sql

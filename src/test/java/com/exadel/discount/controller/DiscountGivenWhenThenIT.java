@@ -8,10 +8,8 @@ import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.test.context.support.WithMockUser;
-import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.jdbc.Sql;
-import org.springframework.test.web.servlet.ResultMatcher;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.web.context.WebApplicationContext;
 
@@ -20,7 +18,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @ActiveProfiles("test")
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-@Sql("classpath:testsql/test_db.sql")
+@Sql("classpath:testdata/discount_add_test_data.sql")
 @WithMockUser(username = "admin@mail.com", roles = {"USER", "ADMIN"})
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class DiscountGivenWhenThenIT extends AbstractIT {
@@ -41,18 +39,22 @@ public class DiscountGivenWhenThenIT extends AbstractIT {
                         "\"promo\": \"11aa3g7\"," +
                         "\"discountType\": \"PERCENT\"," +
                         "\"value\":\"10\"," +
-                        "\"categoryId\": \"5a009936-ac14-4b4b-9121-3638122ea6b5\"," +
-                        "\"vendorId\": \"3633f3cf-7208-4d67-923d-ce6b2cec29e2\", " +
-                        "\"vendorLocationsIds\": [\"bb682ec1-c86a-4b64-b306-53346c189aca\", " +
-                        "\"6089a6fb-572b-4f29-a2c6-46ac0a5fbca5\"]," +
-                        "\"tagIds\": [\"537edc43-1616-4622-bf45-7b060e6d6471\"]}")
+                        "\"categoryId\": \"93577f24-f68f-403e-aa04-0a60c3a445d6\"," +
+                        "\"vendorId\": \"93577f24-f68f-403e-aa04-0a60c3a445d2\", " +
+                        "\"vendorLocationsIds\": [\"93577f24-f68f-403e-aa04-0a60c3a445d3\", " +
+                        "\"93577f24-f68f-403e-aa04-0a60c3a445d4\"]," +
+                        "\"tagIds\": [\"93577f24-f68f-403e-aa04-0a60c3a445d5\"]}")
                 .when()
                 .post("/discounts")
                 .then()
                 .assertThat(MockMvcResultMatchers.status().isOk())
                 .assertThat(MockMvcResultMatchers.status().is2xxSuccessful())
                 .assertThat(jsonPath("$.name").value("Discount on tennis weekdays"))
-                .assertThat(jsonPath("$.vendor.id").value("3633f3cf-7208-4d67-923d-ce6b2cec29e2"));
+                .assertThat(jsonPath("$.promo").value("11aa3g7"))
+                .assertThat(jsonPath("$.discountType").value("PERCENT"))
+                .assertThat(jsonPath("$.category.id").value("93577f24-f68f-403e-aa04-0a60c3a445d6"))
+                .assertThat(jsonPath("$.tagIds[0].id").value("93577f24-f68f-403e-aa04-0a60c3a445d5"))
+                .assertThat(jsonPath("$.vendor.id").value("93577f24-f68f-403e-aa04-0a60c3a445d2"));
     }
 
     @Test

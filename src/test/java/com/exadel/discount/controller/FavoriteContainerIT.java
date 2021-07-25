@@ -27,7 +27,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
 @Transactional
-public class FavoriteContainerIIT extends AbstractIT {
+public class FavoriteContainerIT extends AbstractIT {
 
     @Autowired
     MockMvc mockMvc;
