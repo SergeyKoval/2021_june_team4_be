@@ -25,7 +25,7 @@ public class CountryControllerTest extends AbstractIT {
 
     @Test
     @WithMockUser(username = "admin", roles = {"USER", "ADMIN"})
-    public void getAllCountriesTest() throws Exception {
+    public void testGetAllCountriesForAdmin() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.get("/countries"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.status().is2xxSuccessful());
@@ -33,7 +33,7 @@ public class CountryControllerTest extends AbstractIT {
 
     @Test
     @WithMockUser(username = "admin", roles = {"USER", "ADMIN"})
-    public void getCountryByIdTest() throws Exception {
+    public void testGetCountryById() throws Exception {
 
         mockMvc.perform(MockMvcRequestBuilders.get("/countries/b49abef5-83fe-4d0c-9927-c0aaaf49a2b7"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
@@ -42,7 +42,7 @@ public class CountryControllerTest extends AbstractIT {
 
     @Test
     @WithMockUser(username = "admin", roles = {"USER", "ADMIN"})
-    public void saveCountryTest() throws Exception {
+    public void testSaveCountry() throws Exception {
 
         mockMvc.perform(MockMvcRequestBuilders.post("/countries")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -53,7 +53,7 @@ public class CountryControllerTest extends AbstractIT {
 
     @Test
     @WithMockUser(username = "admin", roles = {"USER", "ADMIN"})
-    public void deleteCountryByIdTest() throws Exception {
+    public void testDeleteCountryById() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.delete("/countries/ec62f606-7de5-443a-8d37-cee82134c6cf")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk())
@@ -62,7 +62,7 @@ public class CountryControllerTest extends AbstractIT {
 
     @Test
     @WithMockUser(username = "admin", roles = {"USER", "ADMIN"})
-    public void getAllCitiesByCountryIdTest() throws Exception {
+    public void testGetAllCitiesByCountryId() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.get("/countries/b49abef5-83fe-4d0c-9927-c0aaaf49a2b7/cities")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk())
@@ -71,7 +71,7 @@ public class CountryControllerTest extends AbstractIT {
 
     @Test
     @WithMockUser(username = "admin", roles = {"USER", "ADMIN"})
-    public void saveCityTest() throws Exception {
+    public void testSaveCity() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.post("/countries/b49abef5-83fe-4d0c-9927-c0aaaf49a2b7/cities")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{\"name\": \"Test\"" + "}"))
@@ -81,7 +81,7 @@ public class CountryControllerTest extends AbstractIT {
 
     @Test
     @WithMockUser(username = "admin", roles = {"USER", "ADMIN"})
-    public void getCityByIdTest() throws Exception {
+    public void testGetCityById() throws Exception {
 
         mockMvc.perform(MockMvcRequestBuilders.get("/countries/b49abef5-83fe-4d0c-9927-c0aaaf49a2b7/cities/489cd7f8-870c-4dd1-abc8-e31145a15c5c"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
@@ -90,7 +90,7 @@ public class CountryControllerTest extends AbstractIT {
 
     @Test
     @WithMockUser(username = "admin", roles = {"USER", "ADMIN"})
-    public void deleteCityTest() throws Exception {
+    public void testDeleteCity() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.delete("/countries/b49abef5-83fe-4d0c-9927-c0aaaf49a2b7/cities/658b74f2-4fb5-4b9d-a87f-0b8f44f06f09")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk())

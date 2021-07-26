@@ -57,7 +57,7 @@ public class CountryServiceTest extends AbstractIT {
     }
 
     @Test
-    public void testFindALl() {
+    public void testFindAll() {
         List<Country> expected = List.of(new Country(), new Country());
 
         when(countryRepository.findAll()).thenReturn(expected);
@@ -67,7 +67,7 @@ public class CountryServiceTest extends AbstractIT {
         Assertions.assertEquals(actual, mapper.getListDTO(expected));
     }
 
-
+    @Test
     public void testFindById() {
         Country country = mapper.countryDTOToCountry(input);
         when(countryRepository.findById(UUID.randomUUID())).thenReturn(Optional.of(country));
@@ -98,7 +98,7 @@ public class CountryServiceTest extends AbstractIT {
         Assertions.assertEquals("Country with Id "+ID+" not found",exception.getMessage());
     }
 
-
+    @Test
     public void testFindByName(){
 
         Country country = mapper.countryDTOToCountry(input);
@@ -111,7 +111,7 @@ public class CountryServiceTest extends AbstractIT {
     }
 
     @Test
-    public void testExceptionFindByName(){
+    public void testFindByNameThrowsNotFoundException(){
         String  name = "f";
         Exception exception = assertThrows(NotFoundException.class,
                 () -> countryService.findByName(name));
