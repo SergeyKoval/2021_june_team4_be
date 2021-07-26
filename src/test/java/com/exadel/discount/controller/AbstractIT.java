@@ -16,7 +16,8 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 @ContextConfiguration(initializers = AbstractIT.DockerPostgreDataSourceInitializer.class)
 @Testcontainers
 public abstract class AbstractIT {
-    private static final String IMAGE_VERSION = "postgres:11.1";
+
+    private static final String IMAGE_VERSION = "postgres:12-alpine";
     public static PostgreSQLContainer<?> postgreDBContainer = new PostgreSQLContainer<>(IMAGE_VERSION);
 
     static {
@@ -36,4 +37,7 @@ public abstract class AbstractIT {
             );
         }
     }
+
 }
+
+
