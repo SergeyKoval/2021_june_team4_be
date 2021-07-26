@@ -21,13 +21,13 @@ public interface VendorRepository extends JpaRepository<Vendor, UUID> {
     List<Vendor> findAll();
 
     @EntityGraph(attributePaths = {"vendorLocations", "vendorLocations.city", "vendorLocations.city.country",
-            "discounts", "discounts.category", "discounts.tags"})
+            "discounts", "discounts.category", "discounts.tags", "discounts.discountImages"})
     Optional<Vendor> findById(UUID id);
 
     List<Vendor> findAllByArchived(boolean archived);
 
     @EntityGraph(attributePaths = {"vendorLocations", "vendorLocations.city", "vendorLocations.city.country",
-            "discounts", "discounts.category", "discounts.tags"})
+            "discounts", "discounts.category", "discounts.tags", "discounts.discountImages"})
     Optional<Vendor> findByIdAndArchived(UUID id, boolean archived);
 
     @Modifying
