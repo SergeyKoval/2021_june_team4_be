@@ -26,39 +26,8 @@ public class DiscountGivenWhenThenIT extends AbstractIT {
     @Autowired
     WebApplicationContext wac;
 
+    @Test
     @Order(1)
-    @Test
-    void addDiscountIT() throws Exception {
-
-        given()
-                .webAppContextSetup(wac)
-                .contentType(ContentType.JSON)
-                .accept(ContentType.JSON)
-                .contentType("application/json")
-                .body("{\"name\": \"Discount on tennis weekdays\", " +
-                        "\"promo\": \"11aa3g7\"," +
-                        "\"discountType\": \"PERCENT\"," +
-                        "\"value\":\"10\"," +
-                        "\"categoryId\": \"93577f24-f68f-403e-aa04-0a60c3a445d6\"," +
-                        "\"vendorId\": \"93577f24-f68f-403e-aa04-0a60c3a445d2\", " +
-                        "\"vendorLocationsIds\": [\"93577f24-f68f-403e-aa04-0a60c3a445d3\", " +
-                        "\"93577f24-f68f-403e-aa04-0a60c3a445d4\"]," +
-                        "\"tagIds\": [\"93577f24-f68f-403e-aa04-0a60c3a445d5\"]}")
-                .when()
-                .post("/discounts")
-                .then()
-                .assertThat(MockMvcResultMatchers.status().isOk())
-                .assertThat(MockMvcResultMatchers.status().is2xxSuccessful())
-                .assertThat(jsonPath("$.name").value("Discount on tennis weekdays"))
-                .assertThat(jsonPath("$.promo").value("11aa3g7"))
-                .assertThat(jsonPath("$.discountType").value("PERCENT"))
-                .assertThat(jsonPath("$.category.id").value("93577f24-f68f-403e-aa04-0a60c3a445d6"))
-                .assertThat(jsonPath("$.tagIds[0].id").value("93577f24-f68f-403e-aa04-0a60c3a445d5"))
-                .assertThat(jsonPath("$.vendor.id").value("93577f24-f68f-403e-aa04-0a60c3a445d2"));
-    }
-
-    @Test
-    @Order(2)
     public void retrieveDiscountByIdIT() throws Exception {
 
         given()
@@ -71,11 +40,18 @@ public class DiscountGivenWhenThenIT extends AbstractIT {
                 .assertThat(MockMvcResultMatchers.status().isOk())
                 .assertThat(MockMvcResultMatchers.status().is2xxSuccessful())
                 .assertThat(jsonPath("$.name").value("Toy for your dog"))
-                .assertThat(jsonPath("$.vendor.name").value("Dog stuff"));
+                .assertThat(jsonPath("$.description").value("Dog stuff"))
+                .assertThat(jsonPath("$.value").value("5"))
+                .assertThat(jsonPath("$.discountType").value("PERCENT"))
+                .assertThat(jsonPath("$.promo").value("1abcde1"))
+                .assertThat(jsonPath("$.endTime").value("2021-07-20T00:00:00"))
+                .assertThat(jsonPath("$.archived").value("false"))
+                .assertThat(jsonPath("$.vendor.name").value("Dog stuff"))
+                .assertThat(jsonPath("$.category.name").value("Dogs"));
     }
 
     @Test
-    @Order(3)
+    @Order(2)
     void findAllDiscountsIT() throws Exception {
         given()
                 .webAppContextSetup(wac)
@@ -89,7 +65,7 @@ public class DiscountGivenWhenThenIT extends AbstractIT {
     }
 
     @Test
-    @Order(4)
+    @Order(3)
     void findAllDiscountsWithFiltersIT() throws Exception {
         given()
                 .webAppContextSetup(wac)
@@ -119,7 +95,7 @@ public class DiscountGivenWhenThenIT extends AbstractIT {
     }
 
     @Test
-    @Order(5)
+    @Order(4)
     public void getDiscountSearchingIT() throws Exception {
         given().webAppContextSetup(wac)
                 .contentType(ContentType.JSON)
@@ -141,6 +117,37 @@ public class DiscountGivenWhenThenIT extends AbstractIT {
                 .assertThat(jsonPath("$[0].category.name").value("Dogs"));
     }
 
+    @Order(5)
+    @Test
+    void addDiscountIT() throws Exception {
+
+        given()
+                .webAppContextSetup(wac)
+                .contentType(ContentType.JSON)
+                .accept(ContentType.JSON)
+                .contentType("application/json")
+                .body("{\"name\": \"Discount on tennis weekdays\", " +
+                        "\"promo\": \"11aa3g7\"," +
+                        "\"discountType\": \"PERCENT\"," +
+                        "\"value\":\"10\"," +
+                        "\"categoryId\": \"93577f24-f68f-403e-aa04-0a60c3a445d6\"," +
+                        "\"vendorId\": \"93577f24-f68f-403e-aa04-0a60c3a445d2\", " +
+                        "\"vendorLocationsIds\": [\"93577f24-f68f-403e-aa04-0a60c3a445d3\", " +
+                        "\"93577f24-f68f-403e-aa04-0a60c3a445d4\"]," +
+                        "\"tagIds\": [\"93577f24-f68f-403e-aa04-0a60c3a445d5\"]}")
+                .when()
+                .post("/discounts")
+                .then()
+                .assertThat(MockMvcResultMatchers.status().isOk())
+                .assertThat(MockMvcResultMatchers.status().is2xxSuccessful())
+                .assertThat(jsonPath("$.name").value("Discount on tennis weekdays"))
+                .assertThat(jsonPath("$.promo").value("11aa3g7"))
+                .assertThat(jsonPath("$.discountType").value("PERCENT"))
+                .assertThat(jsonPath("$.category.id").value("93577f24-f68f-403e-aa04-0a60c3a445d6"))
+                .assertThat(jsonPath("$.tags[0].id").value("93577f24-f68f-403e-aa04-0a60c3a445d5"))
+                .assertThat(jsonPath("$.vendor.id").value("93577f24-f68f-403e-aa04-0a60c3a445d2"));
+    }
+
     @Test
     @Order(6)
     public void deleteDiscountByIdtIT() throws Exception {
@@ -156,7 +163,7 @@ public class DiscountGivenWhenThenIT extends AbstractIT {
 
     @Test
     @Order(7)
-    public void getDeletedDiscounByIdtIT() throws Exception {
+    public void getDeletedDiscountByIdIT() throws Exception {
         given()
                 .webAppContextSetup(wac)
                 .contentType(ContentType.JSON)
@@ -170,7 +177,7 @@ public class DiscountGivenWhenThenIT extends AbstractIT {
 
     @Test
     @Order(8)
-    @Sql("classpath:testsql/delete_discount.sql")
+    @Sql("classpath:testdata/archive_discount.sql")
     public void retrieveArchivedDiscountIT() throws Exception {
         given()
                 .webAppContextSetup(wac)
@@ -201,8 +208,8 @@ public class DiscountGivenWhenThenIT extends AbstractIT {
 
     @Test
     @Order(9)
-    @Sql("classpath:testsql/delete_discount.sql")
-    public void deleteDiscountAndCheckIT() throws Exception {
+    @Sql("classpath:testdata/archive_discount.sql")
+    public void restoreDiscountByIdIT() throws Exception {
 
         given()
                 .webAppContextSetup(wac)
