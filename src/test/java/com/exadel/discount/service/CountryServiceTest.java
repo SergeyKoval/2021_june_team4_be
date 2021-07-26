@@ -68,15 +68,6 @@ public class CountryServiceTest extends AbstractIT {
     }
 
     @Test
-    public void testFindById() {
-        Country country = mapper.countryDTOToCountry(input);
-        when(countryRepository.findById(UUID.randomUUID())).thenReturn(Optional.of(country));
-        CountryDTO actual = countryService.findById(UUID.randomUUID());
-
-        Assertions.assertEquals(input,actual);
-    }
-
-    @Test
     public void testExceptionFindById(){
         Exception exception = assertThrows(NotFoundException.class,
                 ()-> countryService.findById(ID));
@@ -98,17 +89,6 @@ public class CountryServiceTest extends AbstractIT {
         Assertions.assertEquals("Country with Id "+ID+" not found",exception.getMessage());
     }
 
-    @Test
-    public void testFindByName(){
-
-        Country country = mapper.countryDTOToCountry(input);
-        when(countryRepository.findByName(anyString())).thenReturn(Optional.of(country));
-        CountryServiceImpl c = Mockito.mock(CountryServiceImpl.class);
-        CountryDTO actual = c.findByName(anyString());
-
-        Assertions.assertEquals(actual,input);
-
-    }
 
     @Test
     public void testFindByNameThrowsNotFoundException(){
