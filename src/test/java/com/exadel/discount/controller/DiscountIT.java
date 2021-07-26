@@ -21,7 +21,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @Sql("classpath:testdata/discount_add_test_data.sql")
 @WithMockUser(username = "admin@mail.com", roles = {"USER", "ADMIN"})
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class DiscountGivenWhenThenIT extends AbstractIT {
+public class DiscountIT extends AbstractIT {
 
     @Autowired
     WebApplicationContext wac;
