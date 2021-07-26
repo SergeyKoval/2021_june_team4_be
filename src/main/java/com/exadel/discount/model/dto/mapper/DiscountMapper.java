@@ -12,7 +12,7 @@ import org.mapstruct.NullValuePropertyMappingStrategy;
 
 import java.util.List;
 
-@Mapper(componentModel = "spring", uses = {VendorLocationMapper.class})
+@Mapper(componentModel = "spring", uses = {VendorLocationMapper.class, ImageMapper.class})
 public interface DiscountMapper {
 
     Discount parseDTO(DiscountDTO discountDTO);

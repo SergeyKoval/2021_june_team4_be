@@ -6,8 +6,10 @@ import com.exadel.discount.exception.InvalidTokenException;
 import com.exadel.discount.security.entity.UserDetailsImpl;
 import com.exadel.discount.service.JwtGenerationService;
 import com.exadel.discount.service.JwtService;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
@@ -22,23 +24,23 @@ import java.util.Map;
  */
 
 @Service
+@ConfigurationProperties(prefix = "jwt.encryption")
+@Setter
 @Slf4j
 public class JwtServiceImpl implements JwtService, JwtGenerationService {
     private final String ROLES_CLAIM_NAME = "role";
     private final String ID_CLAIM_NAME = "id";
     public final String REFRESH_ROLE = "ROLE_REFRESH";
-
-    @Value("${jwt.token.expiration.seconds.access}")
-    private long ACCESS_TOKEN_EXPIRATION_TIME;
-    @Value("${jwt.token.expiration.seconds.refresh}")
-    private long REFRESH_TOKEN_EXPIRATION_TIME;
-    @Value("${jwt.token.encryption.key}")
-    private String TOKEN_ENCRYPTION_KEY;
+    @Value("${jwt.expiration.access}")
+    private long ACCESS_EXPIRATION;
+    @Value("${jwt.expiration.refresh}")
+    private long REFRESH_EXPIRATION;
+    private String ENCRYPTION_KEY;
 
     @Override
     public String getSubject(String token) {
         log.debug("getting a subject from a token");
-        return JWT.require(Algorithm.HMAC256(TOKEN_ENCRYPTION_KEY))
+        return JWT.require(Algorithm.HMAC256(ENCRYPTION_KEY))
                 .build().verify(token)
                 .getSubject();
     }
@@ -46,7 +48,7 @@ public class JwtServiceImpl implements JwtService, JwtGenerationService {
     @Override
     public String getRole(String token) {
         log.debug("getting a role from a token");
-        return JWT.require(Algorithm.HMAC256(TOKEN_ENCRYPTION_KEY))
+        return JWT.require(Algorithm.HMAC256(ENCRYPTION_KEY))
                 .build().verify(token)
                 .getClaim(ROLES_CLAIM_NAME)
                 .asString();
@@ -65,7 +67,7 @@ public class JwtServiceImpl implements JwtService, JwtGenerationService {
         if (userDetails instanceof UserDetailsImpl) {
             claims.put(ID_CLAIM_NAME, ((UserDetailsImpl) userDetails).getId());
         }
-        return buildToken(userDetails.getUsername(), ACCESS_TOKEN_EXPIRATION_TIME, claims);
+        return buildToken(userDetails.getUsername(), ACCESS_EXPIRATION, claims);
     }
 
     @Override
@@ -76,7 +78,7 @@ public class JwtServiceImpl implements JwtService, JwtGenerationService {
         if (userDetails instanceof UserDetailsImpl) {
             claims.put(ID_CLAIM_NAME, ((UserDetailsImpl) userDetails).getId());
         }
-        return buildToken(userDetails.getUsername(), REFRESH_TOKEN_EXPIRATION_TIME, claims);
+        return buildToken(userDetails.getUsername(), REFRESH_EXPIRATION, claims);
     }
 
     /**
@@ -95,6 +97,6 @@ public class JwtServiceImpl implements JwtService, JwtGenerationService {
                 .withIssuedAt(Date.from(currentTime))
                 .withExpiresAt(Date.from(currentTime.plusSeconds(expirationTime)))
                 .withPayload(claims)
-                .sign(Algorithm.HMAC256(TOKEN_ENCRYPTION_KEY));
+                .sign(Algorithm.HMAC256(ENCRYPTION_KEY));
     }
 }

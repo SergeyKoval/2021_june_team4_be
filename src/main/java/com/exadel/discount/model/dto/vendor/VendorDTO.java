@@ -17,6 +17,7 @@ public class VendorDTO {
     private String name;
     private String description;
     private String contacts;
+    private String vendorImage;
     private boolean archived;
     private Set<LocationDTO> vendorLocations;
     private Set<BaseDiscountDTO> discounts;

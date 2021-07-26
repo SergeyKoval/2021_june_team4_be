@@ -22,3 +22,8 @@ cors:
     - http://localhost:4200
 server:
   port: ${PORT}
+#=======
+#  expiration:
+#    access: 120
+#    refresh: 3600
+#>>>>>>> dev
