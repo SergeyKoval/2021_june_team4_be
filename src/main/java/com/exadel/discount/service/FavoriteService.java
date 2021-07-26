@@ -15,8 +15,8 @@ public interface FavoriteService {
 
     DiscountDTO assignFavoriteToUser(UUID discountId);
 
-    List<FavoriteDTO> getAll(int pageNumber, int pageSize, String sortDirection, String sortField,
-                             FavoriteFilter filter);
+    List<DiscountDTO> getAll(int pageNumber, int pageSize, String sortDirection, String sortField,
+                             UUID userId);
 
     List<FavoriteDTO> search(Integer size, String searchText);
 }

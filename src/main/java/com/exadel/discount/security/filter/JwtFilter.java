@@ -6,10 +6,11 @@ import com.exadel.discount.model.exception.ExceptionCause;
 import com.exadel.discount.model.exception.ExceptionDetails;
 import com.exadel.discount.service.impl.JwtServiceImpl;
 import com.exadel.discount.service.impl.UserDetailsServiceImpl;
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.json.JSONObject;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -49,6 +50,7 @@ public class JwtFilter extends OncePerRequestFilter {
 
     private final UserDetailsServiceImpl userDetailsService;
     private final JwtServiceImpl jwtService;
+    private final Gson gsonService;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
@@ -103,7 +105,7 @@ public class JwtFilter extends OncePerRequestFilter {
             response.setContentType(MediaType.APPLICATION_JSON_VALUE);
             response.setCharacterEncoding(ENCODING_UTF8);
 
-            JSONObject jsonException = new JSONObject(
+            JsonElement jsonException = gsonService.toJsonTree(
                     ExceptionDetails.builder()
                             .message(exception.getMessage())
                             .cause(cause)

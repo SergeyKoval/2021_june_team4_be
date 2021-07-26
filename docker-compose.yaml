@@ -5,22 +5,27 @@ services:
     image: postgres:12-alpine
     restart: always
     environment:
-      - POSTGRES_PASSWORD=asdqwe
-      - POSTGRES_USER=postgres
-      - POSTGRES_DB=discounts # пароль к локальной бд
-
+      POSTGRES_DB: discounts
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: asdqwe
     ports:
-      - "5432:5432"    # порт для бд, по умолчанию 5432
+      - "5432:5432"
+
   backend:
     build: .
     container_name: backend
     environment:
-        SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/discounts
-        SPRING_DATASOURCE_USERNAME: postgres
-        SPRING_DATASOURCE_PASSWORD: asdqwe
-        JWT_TOKEN_EXPIRATION_SECONDS_ACCESS: 900
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/discounts
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: asdqwe
+      JWT.EXPIRATION.ACCESS: 120
+      JWT.EXPIRATION.REFRESH: 3600
+      JWT.ENCRYPTION.ENCRYPTION_KEY: encryptionSecret
+      CLOUD.AWS.S3.CREDENTIALS.ACCESS_KEY: AKIAQWULYLKE4RD276W4
+      CLOUD.AWS.S3.CREDENTIALS.SECRET_KEY: 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
+      CORS.ACCEPTED_ORIGINS: http://localhost:4200
     ports:
       - "8080:8080"
-    restart: always    # при несанкционированных падениях апки, будет произведен рестарт
+    restart: always
     depends_on:
-      - postgres  # загружает апку после полной загрузки бд, а не произвольно
+      - postgres

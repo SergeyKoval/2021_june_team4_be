@@ -1,0 +1,26 @@
+databaseChangeLog:
+  - changeSet:
+      id: 0.6-add-vendors-data
+      author: artem_kishenets
+      changes:
+        - update:
+            tableName: vendors
+            columns:
+              - column:
+                  name: image
+                  value: "https://exdadel-discounts-image-upload.s3.eu-central-1.amazonaws.com/vendors-images/vendor_gym.jpg"
+            where: id='3633f3cf-7208-4d67-923d-ce6b2cec29e2'
+        - update:
+            tableName: vendors
+            columns:
+              - column:
+                  name: image
+                  value: "https://exdadel-discounts-image-upload.s3.eu-central-1.amazonaws.com/vendors-images/Vendor_Pizza.jpg"
+            where: id='2a45c583-1b63-4a95-9f35-62be759e4680'
+        - update:
+            tableName: vendors
+            columns:
+              - column:
+                  name: image
+                  value: "https://exdadel-discounts-image-upload.s3.eu-central-1.amazonaws.com/vendors-images/vendor_salon.jpg"
+            where: id='db19d31a-67d9-4ab7-9fd5-79ae594ff4e3'
