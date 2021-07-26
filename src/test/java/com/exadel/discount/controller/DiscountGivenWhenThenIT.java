@@ -148,8 +148,39 @@ public class DiscountGivenWhenThenIT extends AbstractIT {
                 .assertThat(jsonPath("$.vendor.id").value("93577f24-f68f-403e-aa04-0a60c3a445d2"));
     }
 
-    @Test
     @Order(6)
+    @Test
+    void updateDiscountIT() throws Exception {
+
+        given()
+                .webAppContextSetup(wac)
+                .contentType(ContentType.JSON)
+                .accept(ContentType.JSON)
+                .contentType("application/json")
+                .body("{\"name\": \"Discount on dog training weekdays\", " +
+                        "\"promo\": \"11aadog\"," +
+                        "\"discountType\": \"PERCENT\"," +
+                        "\"value\":\"99\"," +
+                        "\"categoryId\": \"93577f24-f68f-403e-aa04-0a60c3a445d6\"," +
+                        "\"vendorId\": \"93577f24-f68f-403e-aa04-0a60c3a445d2\", " +
+                        "\"vendorLocationsIds\": [\"93577f24-f68f-403e-aa04-0a60c3a445d3\", " +
+                        "\"93577f24-f68f-403e-aa04-0a60c3a445d4\"]," +
+                        "\"tagIds\": [\"93577f24-f68f-403e-aa04-0a60c3a445d5\"]}")
+                .when()
+                .post("/discounts")
+                .then()
+                .assertThat(MockMvcResultMatchers.status().isOk())
+                .assertThat(MockMvcResultMatchers.status().is2xxSuccessful())
+                .assertThat(jsonPath("$.name").value("Discount on dog training weekdays"))
+                .assertThat(jsonPath("$.promo").value("11aadog"))
+                .assertThat(jsonPath("$.discountType").value("PERCENT"))
+                .assertThat(jsonPath("$.category.id").value("93577f24-f68f-403e-aa04-0a60c3a445d6"))
+                .assertThat(jsonPath("$.tags[0].id").value("93577f24-f68f-403e-aa04-0a60c3a445d5"))
+                .assertThat(jsonPath("$.vendor.id").value("93577f24-f68f-403e-aa04-0a60c3a445d2"));
+    }
+
+    @Test
+    @Order(7)
     public void deleteDiscountByIdtIT() throws Exception {
         given()
                 .webAppContextSetup(wac)
@@ -162,7 +193,7 @@ public class DiscountGivenWhenThenIT extends AbstractIT {
     }
 
     @Test
-    @Order(7)
+    @Order(8)
     public void getDeletedDiscountByIdIT() throws Exception {
         given()
                 .webAppContextSetup(wac)
@@ -176,7 +207,7 @@ public class DiscountGivenWhenThenIT extends AbstractIT {
     }
 
     @Test
-    @Order(8)
+    @Order(9)
     @Sql("classpath:testdata/archive_discount.sql")
     public void retrieveArchivedDiscountIT() throws Exception {
         given()
@@ -207,8 +238,7 @@ public class DiscountGivenWhenThenIT extends AbstractIT {
     }
 
     @Test
-    @Order(9)
-    @Sql("classpath:testdata/archive_discount.sql")
+    @Order(10)
     public void restoreDiscountByIdIT() throws Exception {
 
         given()
