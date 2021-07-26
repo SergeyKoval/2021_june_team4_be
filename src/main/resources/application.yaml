@@ -6,24 +6,19 @@ spring:
     open-in-view: false
   datasource:
     driver-class-name: org.postgresql.Driver
-#    url: ${SPRING_DATASOURCE_URL}
-#    username: ${SPRING_DATASOURCE_USERNAME}
-#    password: ${SPRING_DATASOURCE_PASSWORD}
 jwt:
-  token:
-    expiration:
-      seconds:
-        access: 120
-        refresh: 3600
-    encryption:
-      key: encryptionSecret
+  expiration:
+    access: 120
+    refresh: 3600
+  encryption:
+    encryption-key: ${JWT_ENCRYPTION_KEY}
 cors:
-  hosts:
-    - http://localhost:4200
+  accepted-origins: ${CORS_ACCEPTED_ORIGINS}
 server:
   port: ${PORT}
-#=======
-#  expiration:
-#    access: 120
-#    refresh: 3600
-#>>>>>>> dev
+cloud:
+  aws:
+    s3:
+      credentials:
+        access-key: ${CLOUD_AWS_S3_CREDENTIALS_ACCESS_KEY}
+        secret-key: ${CLOUD_AWS_S3_CREDENTIALS_SECRET_KEY}
