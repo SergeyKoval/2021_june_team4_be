@@ -1,0 +1,72 @@
+databaseChangeLog:
+  - changeSet:
+      id: 0.7-update-discounts
+      author: elizaveta_dubogryz
+      changes:
+        - update:
+            tableName: discounts
+            columns:
+              - column:
+                  name: view_number
+                  value: 105
+            where: id='5f69268b-705e-4fb9-8147-722b4ec1d9da'
+        - update:
+            tableName: discounts
+            columns:
+              - column:
+                  name: view_number
+                  value: 253
+              - column:
+                  name: end_time
+                  value: "2021-08-11T00:00:00"
+            where: id='779c30b2-06f9-43d1-87e0-edf4a31784f4'
+        - update:
+            tableName: discounts
+            columns:
+              - column:
+                  name: view_number
+                  value: 137
+              - column:
+                  name: end_time
+                  value: "2021-08-05T00:00:00"
+            where: id='20a01536-1475-4809-9d2b-56cce28588bf'
+        - update:
+            tableName: discounts
+            columns:
+              - column:
+                  name: view_number
+                  value: 189
+              - column:
+                  name: end_time
+                  value: "2021-08-29T00:00:00"
+            where: id='bdcfb249-7829-4c71-bf6c-c74b25ec09b3'
+        - update:
+            tableName: discounts
+            columns:
+              - column:
+                  name: view_number
+                  value: 216
+              - column:
+                  name: end_time
+                  value: "2021-09-01T00:00:00"
+            where: id='dd5877e8-8b5a-44dd-9e4f-4675c3ba6adc'
+        - update:
+            tableName: discounts
+            columns:
+              - column:
+                  name: view_number
+                  value: 138
+              - column:
+                  name: end_time
+                  value: "2021-08-12T00:00:00"
+            where: id='490cf36f-e22e-41a0-b2bb-ff6b578f29d9'
+        - update:
+            tableName: discounts
+            columns:
+              - column:
+                  name: view_number
+                  value: 278
+              - column:
+                  name: end_time
+                  value: "2021-08-24T00:00:00"
+            where: id='670246e6-5c73-4b47-9cdc-5005f7ad4fc9'
