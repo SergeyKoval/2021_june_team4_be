@@ -16,7 +16,6 @@ import static io.restassured.module.mockmvc.RestAssuredMockMvc.given;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
 @ActiveProfiles("test")
-@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @Sql("classpath:testdata/user_add_test_data.sql")
 @WithMockUser(username = "admin@mail.com", roles = {"USER", "ADMIN"})
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
