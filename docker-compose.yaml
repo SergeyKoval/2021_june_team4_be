@@ -24,6 +24,8 @@ services:
       CLOUD.AWS.S3.CREDENTIALS.ACCESS_KEY: AKIAQWULYLKE4RD276W4
       CLOUD.AWS.S3.CREDENTIALS.SECRET_KEY: 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
       CORS.ACCEPTED_ORIGINS: http://localhost:4200
+      SPRING_MAIL_USERNAME: discounti.exadel@gmail.com
+      SPRING_MAIL_PASSWORD: ex277adelDiscount1
     ports:
       - "8080:8080"
     restart: always
