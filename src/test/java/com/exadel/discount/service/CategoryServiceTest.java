@@ -1,11 +1,13 @@
 package com.exadel.discount.service;
 
 import com.exadel.discount.controller.AbstractIT;
+import com.exadel.discount.exception.DeletionRestrictedException;
 import com.exadel.discount.exception.NotFoundException;
 import com.exadel.discount.model.dto.CategoryDTO;
 import com.exadel.discount.model.dto.mapper.CategoryMapper;
 import com.exadel.discount.model.entity.Category;
 import com.exadel.discount.model.entity.Discount;
+import com.exadel.discount.model.entity.Vendor;
 import com.exadel.discount.repository.CategoryRepository;
 import com.exadel.discount.service.impl.CategoryServiceImpl;
 import org.junit.jupiter.api.Assertions;
@@ -21,6 +23,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doNothing;
@@ -29,7 +32,7 @@ import static org.mockito.Mockito.when;
 @SpringBootTest
 public class CategoryServiceTest extends AbstractIT {
 
-    private static final UUID ID = UUID.fromString("971bf698-f3ea-4a97-85e8-0a2a770736d6");
+    private static final UUID ID = UUID.fromString("5a009936-ac14-4b4b-9121-3638122ea6b5");
 
     @Autowired
     private CategoryServiceImpl categoryService;
@@ -46,6 +49,7 @@ public class CategoryServiceTest extends AbstractIT {
     public void setUp() {
         input = CategoryDTO.builder()
                 .name("test")
+                .id(ID)
                 .build();
     }
 
@@ -69,8 +73,8 @@ public class CategoryServiceTest extends AbstractIT {
     @Test
     public void testExceptionFindById(){
         Exception exception = assertThrows(NotFoundException.class,
-                ()-> categoryService.getById(ID));
-        Assertions.assertEquals("Vendor "+ID+" not found",exception.getMessage());
+                ()-> categoryService.getById(UUID.fromString("971bf698-f3ea-4a97-85e8-0a2a770736d6")));
+        Assertions.assertEquals("Vendor "+"971bf698-f3ea-4a97-85e8-0a2a770736d6"+" not found",exception.getMessage());
 
     }
 
@@ -83,18 +87,25 @@ public class CategoryServiceTest extends AbstractIT {
     @Test
     public void testExceptionDeleteById(){
         Exception exception = assertThrows(NotFoundException.class,
-                () -> categoryService.deleteById(ID));
-        Assertions.assertEquals("Category with ID "+ID+" not found",exception.getMessage());
+                () -> categoryService.deleteById(UUID.fromString("971bf698-f3ea-4a97-85e8-0a2a770736d6")));
+        Assertions.assertEquals("Category with ID "+"971bf698-f3ea-4a97-85e8-0a2a770736d6"+" not found",exception.getMessage());
     }
 
     @Test
-    public void testExceptionDeleteByIdWithDeletionRestrictedException(){
-        Category category = new Category();
-        category.setId(ID);
-        List<Discount>discounts = new ArrayList<>();
-        category.setDiscounts(discounts);
-        Exception exception = assertThrows(NotFoundException.class,
+    public void testDeletionRestrictedExceptionDeleteById(){
+        Exception exception = assertThrows(DeletionRestrictedException.class,
                 () -> categoryService.deleteById(ID));
         Assertions.assertEquals("Category with ID "+ID+" can't be deleted as it has discounts",exception.getMessage());
+    }
+
+    @Test
+    public void testUpdateCategoryById(){
+        Category category = new Category();
+        category.setName("Sport");
+        when(categoryRepository.findById(ID)).thenReturn(Optional.of(category));
+        when(categoryRepository.save(category)).thenReturn(category);
+        CategoryDTO actual = categoryService.updateCategoryById(input, ID);
+
+        Assertions.assertEquals(input, actual);
     }
 }
