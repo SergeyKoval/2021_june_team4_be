@@ -1,0 +1,7 @@
+databaseChangeLog:
+  - include:
+      file: db.changelog-add-user.yaml
+      relativeToChangelogFile: true
+  - include:
+      file: db.changelog-change-locations.yaml
+      relativeToChangelogFile: true
