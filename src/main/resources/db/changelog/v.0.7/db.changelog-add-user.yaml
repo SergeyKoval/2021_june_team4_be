@@ -1,0 +1,35 @@
+databaseChangeLog:
+  - changeSet:
+      id: 0.7-add-user
+      author: elizaveta_dubogryz
+      changes:
+        - insert:
+            tableName: users
+            columns:
+              - column:
+                  name: id
+                  value: "da980ff4-7cf3-4c1b-9baf-d0bcc8557214"
+              - column:
+                  name: login
+                  value: "user2_login"
+              - column:
+                  name: email
+                  value: "discounti.user@gmail.com"
+              - column:
+                  name: password
+                  value: "$2a$12$eJnv/OFi2baPDYN8uxxQiuoYN1iezTVx71bWXLo/cpuRHTW6mwbhy"
+              - column:
+                  name: role
+                  value: "USER"
+              - column:
+                  name: first_name
+                  value: "Karina"
+              - column:
+                  name: last_name
+                  value: "Akopova"
+              - column:
+                  name: phone
+                  value: "+380501111111"
+              - column:
+                  name: city_id
+                  value: "c6a9f8a9-0494-4f51-9c2a-189307ad0cfd"

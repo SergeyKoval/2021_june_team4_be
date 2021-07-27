@@ -1,0 +1,71 @@
+databaseChangeLog:
+  - changeSet:
+      id: 0.7-change-discounts-locations
+      author: elizaveta_dubogryz
+      changes:
+        - delete:
+            tableName: discounts_locations
+            where: discount_id='20a01536-1475-4809-9d2b-56cce28588bf'
+        - insert:
+            tableName: discounts_locations
+            columns:
+              - column:
+                  name: id
+                  value: "a2a21a1d-5d93-4e0a-814b-f0870a99f410"
+              - column:
+                  name: discount_id
+                  value: "20a01536-1475-4809-9d2b-56cce28588bf"
+              - column:
+                  name: location_id
+                  value: "6089a6fb-572b-4f29-a2c6-46ac0a5fbca5"
+        - insert:
+            tableName: discounts_locations
+            columns:
+              - column:
+                  name: id
+                  value: "31a30ae4-cb3f-4233-9c62-7253813e1378"
+              - column:
+                  name: discount_id
+                  value: "20a01536-1475-4809-9d2b-56cce28588bf"
+              - column:
+                  name: location_id
+                  value: "952796ae-8d5b-4995-a4e7-60945d1f911a"
+        - delete:
+            tableName: discounts_locations
+            where: discount_id='670246e6-5c73-4b47-9cdc-5005f7ad4fc9'
+        - insert:
+            tableName: discounts_locations
+            columns:
+              - column:
+                  name: id
+                  value: "40621170-0fb5-45e6-ab76-1adfbd24afa1"
+              - column:
+                  name: discount_id
+                  value: "670246e6-5c73-4b47-9cdc-5005f7ad4fc9"
+              - column:
+                  name: location_id
+                  value: "66d47ca8-7257-453f-ac75-7074bb47866b"
+        - insert:
+            tableName: discounts_locations
+            columns:
+              - column:
+                  name: id
+                  value: "b02631e5-49fa-4db7-a619-04475073761e"
+              - column:
+                  name: discount_id
+                  value: "670246e6-5c73-4b47-9cdc-5005f7ad4fc9"
+              - column:
+                  name: location_id
+                  value: "85b09c46-c1c7-4f3e-be1d-9e5791fa81a8"
+        - insert:
+            tableName: discounts_locations
+            columns:
+              - column:
+                  name: id
+                  value: "286dd62c-1f91-4b3f-aea9-ea163a92697b"
+              - column:
+                  name: discount_id
+                  value: "670246e6-5c73-4b47-9cdc-5005f7ad4fc9"
+              - column:
+                  name: location_id
+                  value: "32be9036-ae66-41ef-b514-c18c01eba2c7"
