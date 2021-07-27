@@ -2,6 +2,7 @@ package com.exadel.discount.model.dto.discount;
 
 import com.exadel.discount.model.dto.CategoryDTO;
 import com.exadel.discount.model.dto.TagDTO;
+import com.exadel.discount.model.dto.image.DiscountImageDTO;
 import com.exadel.discount.model.dto.vendor.BaseVendorDTO;
 import com.exadel.discount.model.entity.DiscountType;
 import lombok.Data;
@@ -24,4 +25,5 @@ public class BaseDiscountDTO {
     private boolean active;
     private Set<TagDTO> tags;
     private BaseVendorDTO vendor;
+    private Set<DiscountImageDTO> discountImages;
 }
