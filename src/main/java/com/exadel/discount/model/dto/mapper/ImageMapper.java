@@ -13,4 +13,6 @@ public interface ImageMapper {
     DiscountImageDTO toDiscountImageDTO(DiscountImage discountImage);
 
     Set<DiscountImageDTO> toDiscountImageDTOSet(Set<DiscountImage> discountImages);
+
+    Set<DiscountImage> toDiscountImageSet(Set<DiscountImageDTO> discountImages);
 }

@@ -5,7 +5,10 @@ databaseChangeLog:
       changes:
         - addForeignKeyConstraint:
             baseColumnNames: discount_id
-            baseTableName: discounts_image
-            constraintName: fk_discounts_image_to_discounts
+            baseTableName: discounts_images
+            constraintName: fk_discounts_images_to_discounts
             referencedColumnNames: id
             referencedTableName: discounts
+        - dropNotNullConstraint:
+            tableName: discounts_images
+            columnName: discount_id

@@ -15,6 +15,7 @@ import com.exadel.discount.repository.UserRepository;
 import com.exadel.discount.repository.query.QueryPredicateBuilder;
 import com.exadel.discount.repository.query.SortPageUtil;
 import com.exadel.discount.service.CouponService;
+import com.exadel.discount.service.EmailService;
 import com.querydsl.core.types.ExpressionUtils;
 import com.querydsl.core.types.Predicate;
 import lombok.AllArgsConstructor;
@@ -37,6 +38,8 @@ import java.util.stream.Stream;
 @AllArgsConstructor
 @Slf4j
 public class CouponServiceImpl implements CouponService {
+
+    private final EmailService emailService;
     private final CouponRepository couponRepository;
     private final CouponMapper couponMapper;
     private final UserRepository userRepository;
@@ -107,6 +110,7 @@ public class CouponServiceImpl implements CouponService {
         coupon.setDiscount(discount);
         coupon.setDate(LocalDateTime.now());
         coupon = couponRepository.save(coupon);
+        sendEmail(user, discount);
         log.debug(String.format("Successfully added Coupon for Discount with ID %s to user", discountId));
         return couponMapper.toCouponDTO(coupon);
     }
@@ -145,5 +149,17 @@ public class CouponServiceImpl implements CouponService {
                         .buildOr())
                 .collect(Collectors.toList());
         return ExpressionUtils.allOf(searchPredicates);
+    }
+
+    private void sendEmail(User user, Discount discount) {
+        String subject = String.format("Promo code for %s", discount.getName());
+        String text = String.format(
+                "Dear %s,\n\n" +
+                        "thank you for your order!\n\n" +
+                        "Here is your promo code:\n%s\n\n" +
+                        "Kind regards, Discounti Team",
+                user.getFirstName(), discount.getPromo()
+        );
+        emailService.sendDiscountInfoEmail(user.getEmail(), subject, text);
     }
 }

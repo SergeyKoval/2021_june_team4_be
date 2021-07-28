@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.constraints.NotNull;
 import java.util.List;
 import java.util.UUID;
 
@@ -36,7 +37,7 @@ public class TagController {
     @PostMapping
     @ApiOperation("Save new tag")
     @AdminAccess
-    public TagDTO saveTag(@Validated(Create.class) @RequestBody TagDTO tag) {
+    public TagDTO saveTag(@Validated(Create.class) @RequestBody @NotNull TagDTO tag) {
         return tagService.saveTag(tag);
     }
 

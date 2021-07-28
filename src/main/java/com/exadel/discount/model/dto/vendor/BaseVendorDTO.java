@@ -10,5 +10,4 @@ public class BaseVendorDTO {
     private String name;
     private String description;
     private String contacts;
-    private String vendorImage;
 }

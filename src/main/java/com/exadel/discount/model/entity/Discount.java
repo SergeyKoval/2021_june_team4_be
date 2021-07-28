@@ -32,8 +32,8 @@ import java.util.UUID;
 @NoArgsConstructor
 @Entity
 @Table(name = "discounts")
-@EqualsAndHashCode(exclude = {"tags", "vendorLocations", "coupons", "favorites"})
-@ToString(exclude = {"tags", "vendorLocations", "coupons", "favorites"})
+@EqualsAndHashCode(exclude = {"tags", "vendorLocations", "coupons", "favorites", "discountImages"})
+@ToString(exclude = {"tags", "vendorLocations", "coupons", "favorites", "discountImages"})
 @TypeDef(
         name = "discount_type",
         typeClass = EnumPostgresSQLType.class
@@ -103,7 +103,7 @@ public class Discount {
     @JoinColumn(name = "vendor_id")
     private Vendor vendor;
 
-    @OneToMany(cascade = CascadeType.REMOVE, mappedBy = "discount")
+    @OneToMany(mappedBy = "discount", cascade = CascadeType.ALL)
     private Set<DiscountImage> discountImages;
 
     @OneToMany(mappedBy = "discount", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE, orphanRemoval = true)

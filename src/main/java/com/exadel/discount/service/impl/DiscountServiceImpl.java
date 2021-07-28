@@ -5,7 +5,9 @@ import com.exadel.discount.model.dto.discount.CreateDiscountDTO;
 import com.exadel.discount.model.dto.discount.DiscountDTO;
 import com.exadel.discount.model.dto.discount.DiscountFilter;
 import com.exadel.discount.model.dto.discount.UpdateDiscountDTO;
+import com.exadel.discount.model.dto.image.DiscountImageDTO;
 import com.exadel.discount.model.dto.mapper.DiscountMapper;
+import com.exadel.discount.model.dto.mapper.ImageMapper;
 import com.exadel.discount.model.entity.Category;
 import com.exadel.discount.model.entity.Discount;
 import com.exadel.discount.model.entity.QDiscount;
@@ -48,12 +50,27 @@ public class DiscountServiceImpl implements DiscountService {
     private final CategoryRepository categoryRepository;
     private final VendorLocationRepository locationRepository;
     private final DiscountMapper discountMapper;
+    private final ImageMapper imageMapper;
+    private final CloudStorageService cloudStorageService;
     private final int SEARCH_WORD_MIN_LENGTH = 3;
 
     @Override
     public DiscountDTO save(CreateDiscountDTO createDiscountDTO) {
         log.debug("Saving new Discount");
+
+        List<String> imagesCloudPaths = cloudStorageService.uploadImagesAndGetURLs(createDiscountDTO.getGivenDiscountImages());
+
+        Set<DiscountImageDTO> discountImageDTOs = new HashSet<>();
+        for (int i = 0; i < imagesCloudPaths.size(); i++) {
+            if (i == 0)
+                discountImageDTOs.add(new DiscountImageDTO(imagesCloudPaths.get(i), true));
+            else
+                discountImageDTOs.add(new DiscountImageDTO(imagesCloudPaths.get(i), false));
+        }
+
         Discount discount = discountMapper.parseDTO(createDiscountDTO);
+
+        discount.setDiscountImages(imageMapper.toDiscountImageSet(discountImageDTOs));
         discount.setCategory(findCategory(createDiscountDTO.getCategoryId()));
         discount.setTags(findTags(createDiscountDTO.getTagIds()));
         discount.setVendor(findVendor(createDiscountDTO.getVendorId()));
@@ -62,6 +79,7 @@ public class DiscountServiceImpl implements DiscountService {
 
         Discount savedDiscount = discountRepository.save(discount);
         log.debug("Successfully saved new Discount");
+
         return discountMapper.getDTO(savedDiscount);
     }
 
