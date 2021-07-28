@@ -13,6 +13,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -76,7 +77,7 @@ public class DiscountController {
     @PostMapping
     @ApiOperation("Add new discount")
     @AdminAccess
-    public DiscountDTO addDiscount(@RequestBody @Valid CreateDiscountDTO discountDTO) {
+    public DiscountDTO addDiscount(@ModelAttribute @Valid CreateDiscountDTO discountDTO) {
         return discountService.save(discountDTO);
     }
 

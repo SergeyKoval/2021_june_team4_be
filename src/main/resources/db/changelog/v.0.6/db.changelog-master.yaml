@@ -6,8 +6,5 @@ databaseChangeLog:
       file: db.changelog-add-discounts-images-data.yaml
       relativeToChangelogFile: true
   - include:
-      file: db.changelog-update-discounts.yaml
-      relativeToChangelogFile: true
-  - include:
       file: db.changelog-foreign-key-constraints.yaml
       relativeToChangelogFile: true

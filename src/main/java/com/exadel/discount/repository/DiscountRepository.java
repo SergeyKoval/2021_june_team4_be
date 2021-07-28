@@ -104,4 +104,11 @@ public interface DiscountRepository extends JpaRepository<Discount, UUID>, Query
                                                        @Param("cityIds") Iterable<UUID> cityIds,
                                                        @Param("countryIds") Iterable<UUID> countryIds,
                                                        Pageable pageable);
+
+    @EntityGraph(attributePaths = {"category", "vendorLocations", "tags", "vendor", "discountImages",
+            "vendorLocations.city", "vendorLocations.city.country", "favorites"})
+    @Query("SELECT d FROM Discount d " +
+            "LEFT JOIN d.favorites f " +
+            "WHERE f.user.id = :userId AND d.archived = false")
+    List<Discount> findFavoriteDiscountsByUserId(@Param("userId") UUID userId, Pageable pageable);
 }

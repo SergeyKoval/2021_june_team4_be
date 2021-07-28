@@ -5,7 +5,7 @@ import com.exadel.discount.model.dto.discount.CreateDiscountDTO;
 import com.exadel.discount.model.dto.discount.DiscountDTO;
 import com.exadel.discount.model.dto.discount.DiscountFilter;
 import com.exadel.discount.model.dto.discount.UpdateDiscountDTO;
-import com.exadel.discount.model.dto.image.DiscountImageDTO;
+import com.exadel.discount.model.dto.discount.DiscountImageDTO;
 import com.exadel.discount.model.dto.mapper.DiscountMapper;
 import com.exadel.discount.model.dto.mapper.ImageMapper;
 import com.exadel.discount.model.entity.Category;

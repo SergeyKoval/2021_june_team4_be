@@ -26,4 +26,4 @@ databaseChangeLog:
                   name: discount_id
                   type: UUID
                   constraints:
-                    nullable: false
+                    nullable: true

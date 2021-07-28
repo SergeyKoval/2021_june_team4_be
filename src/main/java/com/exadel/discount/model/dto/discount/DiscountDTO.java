@@ -1,6 +1,6 @@
 package com.exadel.discount.model.dto.discount;
 
-import com.exadel.discount.model.dto.image.DiscountImageDTO;
+import com.exadel.discount.model.dto.discount.DiscountImageDTO;
 import com.exadel.discount.model.entity.DiscountType;
 import com.exadel.discount.model.dto.CategoryDTO;
 import com.exadel.discount.model.dto.TagDTO;

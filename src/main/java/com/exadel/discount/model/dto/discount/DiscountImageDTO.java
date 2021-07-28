@@ -1,4 +1,4 @@
-package com.exadel.discount.model.dto.image;
+package com.exadel.discount.model.dto.discount;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -6,6 +6,6 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class DiscountImageDTO {
-    private final String image;
+    private String url;
     private boolean byDefault;
 }
