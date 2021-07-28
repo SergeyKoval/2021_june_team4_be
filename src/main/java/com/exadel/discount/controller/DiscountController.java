@@ -85,7 +85,7 @@ public class DiscountController {
     @AdminAccess
     @ApiOperation("Update discount")
     public DiscountDTO updateDiscount(@PathVariable @NotNull UUID id,
-                                      @RequestBody @Valid UpdateDiscountDTO discountDTO) {
+                                      @ModelAttribute @Valid UpdateDiscountDTO discountDTO) {
         return discountService.updateDiscountById(discountDTO, id);
     }
 

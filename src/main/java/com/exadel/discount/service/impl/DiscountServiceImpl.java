@@ -8,17 +8,13 @@ import com.exadel.discount.model.dto.discount.UpdateDiscountDTO;
 import com.exadel.discount.model.dto.discount.DiscountImageDTO;
 import com.exadel.discount.model.dto.mapper.DiscountMapper;
 import com.exadel.discount.model.dto.mapper.ImageMapper;
-import com.exadel.discount.model.entity.Category;
-import com.exadel.discount.model.entity.Discount;
-import com.exadel.discount.model.entity.QDiscount;
-import com.exadel.discount.model.entity.Tag;
-import com.exadel.discount.model.entity.Vendor;
-import com.exadel.discount.model.entity.VendorLocation;
+import com.exadel.discount.model.entity.*;
 import com.exadel.discount.repository.CategoryRepository;
 import com.exadel.discount.repository.DiscountRepository;
 import com.exadel.discount.repository.TagRepository;
 import com.exadel.discount.repository.VendorLocationRepository;
 import com.exadel.discount.repository.VendorRepository;
+import com.exadel.discount.repository.DiscountImageRepository;
 import com.exadel.discount.repository.query.QueryPredicateBuilder;
 import com.exadel.discount.service.DiscountService;
 import com.querydsl.core.types.ExpressionUtils;
@@ -49,6 +45,7 @@ public class DiscountServiceImpl implements DiscountService {
     private final TagRepository tagRepository;
     private final CategoryRepository categoryRepository;
     private final VendorLocationRepository locationRepository;
+    private final DiscountImageRepository discountImageRepository;
     private final DiscountMapper discountMapper;
     private final ImageMapper imageMapper;
     private final CloudStorageService cloudStorageService;
@@ -130,6 +127,19 @@ public class DiscountServiceImpl implements DiscountService {
         Discount discount = discountRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException(String.format("Not all tags with IDs %s exist", id)));
 
+        if (updateDiscountDTO.getGivenDiscountImages() != null) {
+            List<String> imagesCloudPaths = cloudStorageService.uploadImagesAndGetURLs(updateDiscountDTO.getGivenDiscountImages());
+
+            Set<DiscountImageDTO> discountImageDTOs = new HashSet<>();
+            imagesCloudPaths.forEach(image -> discountImageDTOs.add(new DiscountImageDTO(image, false)));
+
+            Set<DiscountImage> discountImages = imageMapper.toDiscountImageSet(discountImageDTOs);
+            for (DiscountImage discountImage : discountImages) {
+                discountImage.setDiscount(discount);
+            }
+
+            discountImageRepository.saveAll(discountImages);
+        }
         if (updateDiscountDTO.getCategoryId() != null) {
             findCategory(updateDiscountDTO.getCategoryId());
         }

@@ -2,14 +2,13 @@ package com.exadel.discount.model.dto.discount;
 
 import com.exadel.discount.model.entity.DiscountType;
 import lombok.Data;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.Size;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 @Data
 public class UpdateDiscountDTO {
@@ -25,6 +24,7 @@ public class UpdateDiscountDTO {
     private LocalDateTime endTime;
     private boolean active;
     private UUID vendorId;
+    private List<MultipartFile> givenDiscountImages = new ArrayList<>();
     private Set<UUID> tagIds = new HashSet<>();
     private Set<UUID> vendorLocationsIds = new HashSet<>();
 }
