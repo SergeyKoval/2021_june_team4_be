@@ -111,18 +111,15 @@ public class DiscountServiceImpl implements DiscountService {
         log.debug("Update discount by ID");
         Discount discount = discountRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException(String.format("Not all tags with IDs %s exist", id)));
-
         if (updateDiscountDTO.getCategoryId() != null) {
-            findCategory(updateDiscountDTO.getCategoryId());
+            discount.setCategory(findCategory(updateDiscountDTO.getCategoryId()));
         }
-        if (updateDiscountDTO.getVendorId() != null) {
-            findVendor(updateDiscountDTO.getVendorId());
-        }
-        if (updateDiscountDTO.getVendorId() != null && updateDiscountDTO.getVendorLocationsIds() != null) {
-            findVendorLocations(updateDiscountDTO.getVendorId(), updateDiscountDTO.getVendorLocationsIds());
+        if (updateDiscountDTO.getVendorLocationsIds() != null) {
+            discount.setVendorLocations(findVendorLocations(discount.getVendor().getId(),
+                    updateDiscountDTO.getVendorLocationsIds()));
         }
         if (updateDiscountDTO.getTagIds() != null) {
-            findTags(updateDiscountDTO.getTagIds());
+            discount.setTags(findTags(updateDiscountDTO.getTagIds()));
         }
         discount = discountMapper.update(updateDiscountDTO, discount);
         discount.setId(id);

@@ -21,7 +21,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 @Transactional
 @ActiveProfiles("test")
-public class VendorLocationMockIT extends AbstractIT {
+public class VendorLocationIT extends AbstractIT {
+
+    private final UUID location_id = UUID.fromString("9804fd1d-1bd8-4d86-a23d-d808ddcd5525");
+    private final String vendor_id = "3633f3cf-7208-4d67-923d-ce6b2cec29e2";
+    private final String city_id = "c6a9f8a9-0494-4f51-9c2a-189307ad0cfd";
 
     @Autowired
     private MockMvc mockMvc;
@@ -29,8 +33,7 @@ public class VendorLocationMockIT extends AbstractIT {
     @Test
     @WithMockUser(username = "admin", roles = {"ADMIN"})
     void getVendorLocationByIdAdmin() throws Exception {
-        mockMvc.perform(get("/locations/{id}", UUID.fromString
-                ("bb682ec1-c86a-4b64-b306-53346c189aca"))
+        mockMvc.perform(get("/locations/{id}", location_id)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().is(200));
     }
@@ -38,8 +41,7 @@ public class VendorLocationMockIT extends AbstractIT {
     @Test
     @WithMockUser
     void getVendorLocationByIdUser() throws Exception {
-        mockMvc.perform(get("/locations/{id}", UUID.fromString
-                ("bb682ec1-c86a-4b64-b306-53346c189aca"))
+        mockMvc.perform(get("/locations/{id}", location_id)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().is(200));
     }
@@ -52,13 +54,13 @@ public class VendorLocationMockIT extends AbstractIT {
                 .content("{\n" +
                         "    \"latitude\":\"56.3453347347\",\n" +
                         "    \"longitude\":\"23.65456456\",\n" +
-                        "    \"vendorId\": \"d4ef9391-bc48-4ba4-b0c7-81896634f611\",\n" +
-                        "    \"cityId\":\"794a4106-ff4d-44bb-960a-3dec50b033ab\"\n" +
+                        "    \"vendorId\": \"" + vendor_id + "\",\n" +
+                        "    \"cityId\":\"" + city_id + "\"\n" +
                         "}"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.status().is2xxSuccessful())
                 .andExpect(jsonPath("$.latitude").value("56.3453347347"))
-                .andExpect(jsonPath("$.city.id").value("794a4106-ff4d-44bb-960a-3dec50b033ab"));
+                .andExpect(jsonPath("$.city.id").value(city_id));
     }
 
     @Test
@@ -69,8 +71,8 @@ public class VendorLocationMockIT extends AbstractIT {
                 .content("{\n" +
                         "    \"latitude\":\"56.3453347347\",\n" +
                         "    \"longitude\":\"23.65456456\",\n" +
-                        "    \"vendorId\": \"d4ef9391-bc48-4ba4-b0c7-81896634f611\",\n" +
-                        "    \"cityId\":\"794a4106-ff4d-44bb-960a-3dec50b033ab\"\n" +
+                        "    \"vendorId\": \"" + vendor_id + "\",\n" +
+                        "    \"cityId\":\"" + city_id + "\"\n" +
                         "}"))
                 .andExpect(MockMvcResultMatchers.status().is(403));
     }
@@ -78,7 +80,7 @@ public class VendorLocationMockIT extends AbstractIT {
     @Test
     @WithMockUser
     void deleteLocationUser() throws Exception {
-        mockMvc.perform(delete("/locations/{id}", UUID.fromString("6089a6fb-572b-4f29-a2c6-46ac0a5fbca5"))
+        mockMvc.perform(delete("/locations/{id}", location_id)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().is(403));
     }
@@ -86,27 +88,27 @@ public class VendorLocationMockIT extends AbstractIT {
     @Test
     @WithMockUser(username = "admin", roles = {"ADMIN"})
     void deleteLocationAdmin() throws Exception {
-        mockMvc.perform(delete("/locations/{id}", UUID.fromString("6089a6fb-572b-4f29-a2c6-46ac0a5fbca5"))
+        mockMvc.perform(delete("/locations/{id}", location_id)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().is(200));
     }
 
     @Test
     @WithMockUser(username = "admin", roles = {"ADMIN"})
-    void updateLocationUser() throws Exception {
-        mockMvc.perform(put("/locations/{id}", UUID.fromString("9804fd1d-1bd8-4d86-a23d-d808ddcd5525"))
+    void updateLocationAdmin() throws Exception {
+        mockMvc.perform(put("/locations/{id}", location_id)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{\n" +
                         "    \"latitude\":\"56.3453347347\",\n" +
                         "    \"longitude\":\"28.65456456\"\n" +
                         "}"))
-                .andExpect(MockMvcResultMatchers.status().is(403));
+                .andExpect(MockMvcResultMatchers.status().is(200));
     }
 
     @Test
     @WithMockUser
-    void updateLocationAdmin() throws Exception {
-        mockMvc.perform(put("/locations/{id}", UUID.fromString("9804fd1d-1bd8-4d86-a23d-d808ddcd5525"))
+    void updateLocationUser() throws Exception {
+        mockMvc.perform(put("/locations/{id}", location_id)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{\n" +
                         "    \"latitude\":\"56.3453347347\",\n" +
