@@ -5,7 +5,6 @@ import com.exadel.discount.exception.DeletionRestrictedException;
 import com.exadel.discount.model.dto.mapper.VendorMapper;
 import com.exadel.discount.model.dto.vendor.BaseVendorDTO;
 import com.exadel.discount.model.dto.vendor.CreateVendorDTO;
-import com.exadel.discount.model.dto.vendor.VendorDTO;
 import com.exadel.discount.model.entity.Vendor;
 import com.exadel.discount.repository.VendorRepository;
 import com.exadel.discount.service.impl.VendorServiceImpl;
@@ -63,18 +62,6 @@ public class VendorServiceTest extends AbstractIT {
         List<BaseVendorDTO> actual = implS.getAll();
 
         Assertions.assertEquals(actual, mapper.getListBaseDTO(expected));
-    }
-
-    @Test
-    public void testUpdateCategoryById() {
-        Vendor vendor = new Vendor();
-        vendor.setName("Test");
-        when(vendorRepository.findById(ID)).thenReturn(Optional.of(vendor));
-        when(vendorRepository.save(vendor)).thenReturn(vendor);
-        VendorDTO actual = vendorService.updateVendorById(mapper.getBaseDTO(vendor), ID);
-        VendorDTO expected = new VendorDTO();
-        expected.setName("Test");
-        Assertions.assertEquals(expected, actual);
     }
 
     @Test
