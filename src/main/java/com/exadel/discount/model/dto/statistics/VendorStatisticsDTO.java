@@ -1,16 +1,16 @@
 package com.exadel.discount.model.dto.statistics;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import java.util.UUID;
 
 @Data
-@AllArgsConstructor
-public class VendorStatisticsDTO {
-    private UUID id;
-    private String name;
+public class VendorStatisticsDTO extends ItemDTO {
     private Long discountsNumber;
-    private Long viewNumber;
-    private Long numberOfGettingPromo;
+
+    public VendorStatisticsDTO(UUID id, String name, Long discountsNumber, Long viewNumber,
+                               Long numberOfGettingPromo) {
+        super(id, name, viewNumber, numberOfGettingPromo);
+        this.discountsNumber = discountsNumber;
+    }
 }
