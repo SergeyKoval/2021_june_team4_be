@@ -1,0 +1,22 @@
+databaseChangeLog:
+  - include:
+      file: v.0.1/db.changelog-master.yaml
+      relativeToChangelogFile: true
+  - include:
+      file: v.0.2/db.changelog-master.yaml
+      relativeToChangelogFile: true
+  - include:
+      file: v.0.3/db.changelog-master.yaml
+      relativeToChangelogFile: true
+  - include:
+      file: v.0.4/db.changelog-master.yaml
+      relativeToChangelogFile: true
+  - include:
+      file: v.0.5/db.changelog-master.yaml
+      relativeToChangelogFile: true
+  - include:
+      file: v.0.6/db.changelog-master.yaml
+      relativeToChangelogFile: true
+  - include:
+      file: v.0.7/db.changelog-master.yaml
+      relativeToChangelogFile: true

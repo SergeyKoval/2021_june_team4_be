@@ -1,0 +1,16 @@
+databaseChangeLog:
+  - include:
+      file: db.changelog-update-vendors.yaml
+      relativeToChangelogFile: true
+  - include:
+      file: db.changelog-add-vendors-data.yaml
+      relativeToChangelogFile: true
+  - include:
+      file: db.changelog-discounts-image.yaml
+      relativeToChangelogFile: true
+  - include:
+      file: db.changelog-add-discounts-image-data.yaml
+      relativeToChangelogFile: true
+  - include:
+      file: db.changelog-foreign-key-constraints.yaml
+      relativeToChangelogFile: true

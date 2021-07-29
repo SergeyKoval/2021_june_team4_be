@@ -1,0 +1,33 @@
+version: "3.8"
+services:
+  postgres:
+    container_name: postgres
+    image: postgres:12-alpine
+    restart: always
+    environment:
+      POSTGRES_DB: discounts
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: asdqwe
+    ports:
+      - "5432:5432"
+
+  backend:
+    build: .
+    container_name: backend
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/discounts
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: asdqwe
+      JWT.EXPIRATION.ACCESS: 120
+      JWT.EXPIRATION.REFRESH: 3600
+      JWT.ENCRYPTION.ENCRYPTION_KEY: encryptionSecret
+      CLOUD.AWS.S3.CREDENTIALS.ACCESS_KEY: AKIAQWULYLKE4RD276W4
+      CLOUD.AWS.S3.CREDENTIALS.SECRET_KEY: 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
+      CORS.ACCEPTED_ORIGINS: http://localhost:4200
+      SPRING_MAIL_USERNAME: discounti.exadel@gmail.com
+      SPRING_MAIL_PASSWORD: ex277adelDiscount1
+    ports:
+      - "8080:8080"
+    restart: always
+    depends_on:
+      - postgres

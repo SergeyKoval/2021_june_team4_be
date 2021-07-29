@@ -1,0 +1,27 @@
+databaseChangeLog:
+  - changeSet:
+      id: drop-coordinates-contact-columns
+      author: elizaveta_dubogryz
+      changes:
+        - dropColumn:
+            columnName: coordinates
+            tableName: vendor_locations
+        - dropColumn:
+            columnName: contact
+            tableName: vendor_locations
+  - changeSet:
+      id: add-new-coordinates-columns
+      author: elizaveta_dubogryz
+      changes:
+        - addColumn:
+            tableName: vendor_locations
+            columns:
+              - column:
+                  name: coordinate_x
+                  type: double
+        - addColumn:
+            tableName: vendor_locations
+            columns:
+              - column:
+                  name: coordinate_y
+                  type: double

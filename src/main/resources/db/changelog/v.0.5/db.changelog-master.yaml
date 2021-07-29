@@ -1,0 +1,16 @@
+databaseChangeLog:
+  - include:
+      file: db.changelog-rename-column-in-vendor-locations.yaml
+      relativeToChangelogFile: true
+  - include:
+      file: db.changelog-update-discounts-location.yaml
+      relativeToChangelogFile: true
+  - include:
+      file: db.changelog-add-discounts-new-data.yaml
+      relativeToChangelogFile: true
+  - include:
+      file: db.changelog-rename-column-in-discounts.yaml
+      relativeToChangelogFile: true
+  - include:
+      file: db.changelog-modify-data-type-discounts.yaml
+      relativeToChangelogFile: true

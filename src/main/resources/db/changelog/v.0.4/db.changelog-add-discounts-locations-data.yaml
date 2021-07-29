@@ -1,0 +1,65 @@
+databaseChangeLog:
+  - changeSet:
+      id: add-discounts-locations-data
+      author: elizaveta_dubogryz
+      changes:
+        - insert:
+            tableName: discounts_locations
+            columns:
+              - column:
+                  name: id
+                  value: "c5db2d91-b3f7-406c-b0ce-a783acf1db56"
+              - column:
+                  name: discount_id
+                  value: "5f69268b-705e-4fb9-8147-722b4ec1d9da"
+              - column:
+                  name: location_id
+                  value: "bb682ec1-c86a-4b64-b306-53346c189aca"
+        - insert:
+            tableName: discounts_locations
+            columns:
+              - column:
+                  name: id
+                  value: "77d2e707-4b54-4d73-b0a8-762ed3b437fa"
+              - column:
+                  name: discount_id
+                  value: "5f69268b-705e-4fb9-8147-722b4ec1d9da"
+              - column:
+                  name: location_id
+                  value: "6089a6fb-572b-4f29-a2c6-46ac0a5fbca5"
+        - insert:
+            tableName: discounts_locations
+            columns:
+              - column:
+                  name: id
+                  value: "4a4f3678-1aef-4a3c-9dfd-44ff1134a4c2"
+              - column:
+                  name: discount_id
+                  value: "5f69268b-705e-4fb9-8147-722b4ec1d9da"
+              - column:
+                  name: location_id
+                  value: "952796ae-8d5b-4995-a4e7-60945d1f911a"
+        - insert:
+            tableName: discounts_locations
+            columns:
+              - column:
+                  name: id
+                  value: "6cfa4dd2-7c8a-41f2-81ef-f4997f5ee87d"
+              - column:
+                  name: discount_id
+                  value: "779c30b2-06f9-43d1-87e0-edf4a31784f4"
+              - column:
+                  name: location_id
+                  value: "bb682ec1-c86a-4b64-b306-53346c189aca"
+        - insert:
+            tableName: discounts_locations
+            columns:
+              - column:
+                  name: id
+                  value: "34a3b4a3-d437-421c-b4af-e8825c844353"
+              - column:
+                  name: discount_id
+                  value: "779c30b2-06f9-43d1-87e0-edf4a31784f4"
+              - column:
+                  name: location_id
+                  value: "6089a6fb-572b-4f29-a2c6-46ac0a5fbca5"

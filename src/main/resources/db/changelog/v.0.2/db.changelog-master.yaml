@@ -1,0 +1,7 @@
+databaseChangeLog:
+  - include:
+      file: db.changelog-uuid-generation.yaml
+      relativeToChangelogFile: true
+  - include:
+      file: db.changelog-drop-not-null-constraint.yaml
+      relativeToChangelogFile: true
